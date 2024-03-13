@@ -5,6 +5,9 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './App.css';
 
 function App() {
+  const start = [-74.5, 40];
+  const end = [74.5, 40];
+
   return (
     <div className="App">
       <header className="App-header">
@@ -21,6 +24,8 @@ function App() {
           // dev
           // mapStyle="https://api.maptiler.com/maps/streets/style.json?key=uMYLQvAC15QgrNFraxBy"
           mapStyle="https://api.maptiler.com/maps/dataviz/style.json?key=uMYLQvAC15QgrNFraxBy"
+          // mapStyle="https://api.maptiler.com/maps/ocean/style.json?key=uMYLQvAC15QgrNFraxBy"
+          renderWorldCopies={true}
           // prod
           // mapStyle="https://api.maptiler.com/maps/streets/style.json?key=oQmpkiz9dmHrVnWZvRru"
         >
