@@ -1,0 +1,120 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Water Column UI Stack
+
+Parameters:
+  OutputBucketName:
+    Description: In PROD, the NOAA NODD bucket for Zarr store archives. In DEV a test bucket that overwrites this value.
+    Type: String
+    Default: "noaa-wcsd-zarr-pds"
+  OutputBucketRegion:
+    Description: The NOAA NODD bucket is in us-east-1. For DEV this is overwritten.
+    Type: String
+    Default: "us-east-1"
+  StackPrefix:
+    Description: A prefix that identifies this stack.
+    Type: String
+  RolePermissionsBoundary:
+    Description: An optional permissions boundary to associate with roles.
+    Type: String
+    Default: ""
+  LogRetentionInDays:
+    Type: Number
+    Default: 30
+  UiBucketName:
+    Type: String
+
+Conditions:
+  BucketDrainLambdaIsRelease:
+    Fn::Equals:
+      - @BucketDrainLambda.version@
+      - Fn::Join:
+          - ""
+          - Fn::Split:
+              - "-SNAPSHOT"
+              - @BucketDrainLambda.version@
+
+Resources:
+  BucketStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        StackPrefix: !Ref StackPrefix
+        EnvironmentType:
+          Fn::ImportValue: !Sub ${StackPrefix}-echofish-environment-type
+        PermissionsBoundary: !Ref RolePermissionsBoundary
+        DeploymentBucketName:
+          Fn::ImportValue: !Sub ${StackPrefix}-echofish-deployment-bucket
+        BucketDrainLambdaVersion: !If [ BucketDrainLambdaIsRelease, @BucketDrainLambda.version@, @BucketDrainLambda.version@@dashTimestamp@ ]
+        DevOutputBucketUserAlias: !Ref DevOutputBucketUserAlias
+        OutputBucketName: !Ref OutputBucketName
+        OutputBucketRegion: !Ref OutputBucketRegion
+      TemplateURL:
+        Fn::Sub:
+          - https://${DeploymentBucketName}.s3.${AWS::Region}.amazonaws.com/stack/nested/bucket-stack.yaml
+          - DeploymentBucketName:
+              Fn::ImportValue: !Sub ${StackPrefix}-echofish-deployment-bucket
+
+  ### Cloudfront ###
+  UiCloudFrontOai:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Ref UiBucketName
+
+  UiCloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        HttpVersion: http2
+        DefaultRootObject: index.html
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ErrorCachingMinTTL: 300
+            ResponsePagePath: /index.html
+            ResponseCode: 200
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          MaxTTL: 3600
+          MinTTL: 0
+          DefaultTTL: 3600
+          ForwardedValues:
+            QueryString: false
+          TargetOriginId: !Ref UiBucketName
+          ViewerProtocolPolicy: https-only
+        Origins:
+          - DomainName: !Sub ${UiBucketName}.s3-${AWS::Region}.amazonaws.com
+            Id: !Ref UiBucketName
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${UiCloudFrontOai}
+        PriceClass: PriceClass_100
+
+  UiBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref UiBucketName
+      PolicyDocument:
+        Version: 2008-10-17
+        Id: PolicyForCloudFrontPrivateContent
+        Statement:
+          - Sid: '1'
+            Effect: Allow
+            Principal:
+              CanonicalUser: !GetAtt UiCloudFrontOai.S3CanonicalUserId
+            Action: s3:GetObject
+            Resource: !Sub arn:${AWS::Partition}:s3:::${UiBucketName}/*
+  
+  ### End Cloudfront ###
+
+  
+
+
+Outputs:
+  UiCloudFrontDomain:
+    Value: !GetAtt UiCloudFront.DomainName

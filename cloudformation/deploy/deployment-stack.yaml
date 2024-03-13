@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Sets up AWS resources used to deploy EchoFish
+
+Parameters:
+  StackPrefix:
+    Description: A prefix that identifies this stack
+    Type: String
+  DeploymentBucketName:
+    Description: The bucket used to deploy cloudformation resources
+    Type: String
+  EnvironmentType:
+    Description: The deployment environment type
+    Type: String
+    Default: prod
+    AllowedValues:
+      - prod
+      - dev
+
+Resources:
+  DeploymentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      Tags:
+        - Key: Application
+          Value: EchoFish
+        - Key: StackPrefix
+          Value: !Ref StackPrefix
+      BucketName: !Ref DeploymentBucketName
+
+
+Outputs:
+  DeploymentBucketOutput:
+    Description: The bucket used to deploy cloudformation resources
+    Value: !Ref DeploymentBucketName
+    Export:
+      Name: !Sub ${StackPrefix}-echofish-deployment-bucket
+  EnvironmentTypeOutput:
+    Description: The deployment environment type
+    Value: !Ref EnvironmentType
+    Export:
+      Name: !Sub ${StackPrefix}-echofish-environment-type
+
