@@ -10,28 +10,26 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          The Water Column Project
-        </p>
-        <Map mapLib={maplibregl} 
-          initialViewState={{
-            longitude: -90,
-            latitude: 35,
-            zoom: 3
-          }}
-          style={{width: "100%", height: " calc(100vh - 77px)"}}
-          // dev
-          // mapStyle="https://api.maptiler.com/maps/streets/style.json?key=uMYLQvAC15QgrNFraxBy"
-          mapStyle="https://api.maptiler.com/maps/dataviz/style.json?key=uMYLQvAC15QgrNFraxBy"
-          // mapStyle="https://api.maptiler.com/maps/ocean/style.json?key=uMYLQvAC15QgrNFraxBy"
-          renderWorldCopies={true}
-          // prod
-          // mapStyle="https://api.maptiler.com/maps/streets/style.json?key=oQmpkiz9dmHrVnWZvRru"
-        >
-          <NavigationControl position="top-left" />
-        </Map>
-      </header>
+      <p>
+        Flora & Fauna — The Marine Biome
+      </p>
+      <Map mapLib={maplibregl} 
+        initialViewState={{
+          longitude: -90,
+          latitude: 35,
+          zoom: 3
+        }}
+        style={{width: "100%", height: " calc(100vh - 77px)"}}
+        // dev
+        // mapStyle="https://api.maptiler.com/maps/streets/style.json?key=uMYLQvAC15QgrNFraxBy"
+        mapStyle="https://api.maptiler.com/maps/dataviz/style.json?key=uMYLQvAC15QgrNFraxBy"
+        // mapStyle="https://api.maptiler.com/maps/ocean/style.json?key=uMYLQvAC15QgrNFraxBy"
+        renderWorldCopies={true}
+        // prod
+        // mapStyle="https://api.maptiler.com/maps/streets/style.json?key=oQmpkiz9dmHrVnWZvRru"
+      >
+        <NavigationControl position="top-left" />
+      </Map>
     </div>
   );
 }
