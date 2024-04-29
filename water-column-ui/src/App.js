@@ -7,10 +7,11 @@ import './App.css';
 function App() {
   const mapContainer = useRef();
   const map = useRef();
-  const [lng] = useState(0);
-  const [lat] = useState(0);
-  const [zoom] = useState(9);
+  const [lng] = useState(-95);
+  const [lat] = useState(35);
+  const [zoom] = useState(2);
 
+  // https://maplibre.org/maplibre-style-spec/layers/
   useEffect(() => {
     if (map.current) return;
     
@@ -1564,7 +1565,7 @@ function App() {
           "id": "coastline",
           "type": "line",
           "paint": {
-            "line-blur": 1,
+            "line-blur": 2,
             "line-color": "#198EC8",
             "line-width": {
               "stops": [
@@ -1757,8 +1758,8 @@ function App() {
     map.current = new maplibregl.Map({
       container: mapContainer.current,
       style: style,
-      center: [0, 0],
-      zoom: 1,
+      center: [lng, lat],
+      zoom: zoom,
     });
 
   }, [lat, lng, map, mapContainer, zoom]);
