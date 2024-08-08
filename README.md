@@ -81,3 +81,10 @@ https://www.researchgate.net/publication/379742801_Developing_a_hybrid_model_wit
 
 https://repository.library.noaa.gov/view/noaa/61339
 https://en.wikipedia.org/wiki/Clupeidae
+
+
+# Testing distribution build
+http-server --gzip --proxy http://localhost:8080? build/
+Notes on cloudfront:
+   Default root object: index.html
+   Error pages: 403/404, response page path: /index.html, http response code: 200

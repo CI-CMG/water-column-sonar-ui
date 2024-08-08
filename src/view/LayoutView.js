@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function LayoutView() {
   return (
@@ -7,11 +8,20 @@ export default function LayoutView() {
       <div id="wrap">
         <div id="top">
           <header role="banner" id="HeaderContent">
-            <p>header</p>
+            <p>water column project</p>
+
+            <Link to="/">home</Link>
+            <br />
+
+            <Link to="/map">map</Link>
+            <br />
+            
+            <Link to="/water-column">water column</Link>
+            <br />
           </header>
 
-          <main role="main" id="maincontentparent">
-            <div className="stp-main" id="maincontent">
+          <main role="main">
+            <div className="water-column-main" id="MainContent">
               <Outlet />
             </div>
           </main>
