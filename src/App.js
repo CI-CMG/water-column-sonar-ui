@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as pmtiles from 'pmtiles'
-import './App.css';
 
 function App() {
   const mapContainer = useRef();
@@ -17,7 +16,7 @@ function App() {
     
     const style = {
       version: 8,
-      name: "asdf",
+      name: "Water Column Project",
       glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
       sources: {
         maplibre: {
