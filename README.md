@@ -88,3 +88,9 @@ http-server --gzip --proxy http://localhost:8080? build/
 Notes on cloudfront:
    Default root object: index.html
    Error pages: 403/404, response page path: /index.html, http response code: 200
+
+
+
+# Updates
+20240813 installed material ui
+   https://mui.com/material-ui/getting-started/installation/

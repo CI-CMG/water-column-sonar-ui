@@ -4,6 +4,8 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import * as pmtiles from 'pmtiles'
 
 export default function MapView() {
+  useEffect(() => { document.title = `Map`; }, []);
+
   const mapContainer = useRef();
   const map = useRef();
   const [lng] = useState(-95);
@@ -34,6 +36,8 @@ export default function MapView() {
           "type": "background",
           "paint": {
             "background-color": "#041d29"
+            // 'The official "Brat" color code is #8ACE00'
+            // "background-color": "#8ACE00"
           },
           "filter": [
             "all"
