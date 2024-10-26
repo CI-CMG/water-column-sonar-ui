@@ -1,17 +1,19 @@
 import {
-  React,
-} from 'react';
-import {
   Route,
   Routes,
 } from 'react-router-dom';
 import ErrorView from './view/ErrorView/ErrorView';
 import HomeView from './view/HomeView/HomeView';
 import LayoutView from './view/LayoutView';
+import CruiseView from './view/CruiseView/CruiseView';
 import MapView from './view/MapView/MapView';
 import WaterColumnView from './view/WaterColumnView/WaterColumnView';
+// import { useParams } from 'react-router-dom';
+
 
 export default function App() {
+  // let { cruise } = useParams();
+
   return (
     <div className="AppView">
       <Routes>
@@ -19,9 +21,11 @@ export default function App() {
 
           <Route index element={<HomeView />} />
 
-          <Route path="map" element={<MapView />} />
+          <Route path="/cruises" element={<CruiseView />} />
 
-          <Route path="water-column" element={<WaterColumnView />} />
+          <Route path="/map" element={<MapView />} />
+
+          <Route path="/water-column" element={<WaterColumnView />} />
 
           <Route path="*" element={<ErrorView />} />
 

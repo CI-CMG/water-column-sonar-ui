@@ -1,22 +1,35 @@
-import React, {
-  useEffect,
-  useRef,
-} from 'react';
-import * as THREE from 'three';
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+// import { useParams } from "react-router-dom";
+import queryString from 'query-string';
+import { useLocation } from 'react-router-dom';
 
 
 export default function WaterColumnView() {
-  useEffect(() => { document.title = `Water Column`; }, []);
+  useEffect(() => {
+    document.title = `Water Column`;
+  }, []);
 
   const refContainer = useRef(null);
 
+  const { search } = useLocation();
+  const values = queryString.parse(search)
+
+
   useEffect(() => {
+    // console.log(`userId: ${userId}`);
     var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 1000);
+    var camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.01,
+      1000
+    );
     var renderer = new THREE.WebGLRenderer();
     // renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setSize(window.innerWidth, 600);
-    refContainer.current && refContainer.current.appendChild( renderer.domElement );
+    refContainer.current &&
+      refContainer.current.appendChild(renderer.domElement);
     var geometry = new THREE.BoxGeometry(1, 1, 1);
     var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     var cube = new THREE.Mesh(geometry, material);
@@ -30,11 +43,12 @@ export default function WaterColumnView() {
       renderer.render(scene, camera);
     };
     animate();
-    console.log('this');
+    console.log("this");
   }, []);
 
   return (
     <div className="WaterColumnView">
+      <p>ship: {values.ship}, cruise: {values.cruise}</p>
       <h1>Water Column</h1>
       <div ref={refContainer}></div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as pmtiles from 'pmtiles'
@@ -252,6 +252,7 @@ export default function MapView() {
 
   return (
     <div className="MapView">
+      <h1>Map</h1>
       <div className="map-wrap">
         <div ref={mapContainer} className="map" />
       </div>

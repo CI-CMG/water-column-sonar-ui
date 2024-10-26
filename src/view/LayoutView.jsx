@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
@@ -8,9 +7,11 @@ export default function LayoutView() {
       <div id="wrap">
         <div id="top">
           <header role="banner" id="HeaderContent">
-            <p>water column project</p>
 
             <Link to="/">home</Link>
+            <br />
+
+            <Link to="/cruises">cruises</Link>
             <br />
 
             <Link to="/map">map</Link>

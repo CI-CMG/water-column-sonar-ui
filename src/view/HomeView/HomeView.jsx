@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 
@@ -53,45 +53,48 @@ export default function HomeView() {
   ];
 
   return (
-    <Container maxWidth="md" className="HomeView">
-      
-      <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-        <h1>Water Column Sonar Data Explorer</h1>
-      </Paper>
+    <div className="HomeView">
+      <h1>Home</h1>
 
-      <br />
-      {/* https://sbcode.net/threejs/animate-on-scroll/ */}
-
-      <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-        <Button variant="contained">Hello world</Button>
+      <Container maxWidth="md">
+        <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
+          <h1>Water Column Data</h1>
+        </Paper>
 
         <br />
-        <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>
-          Outlined
-        </Button>
-        <p>
-          {isLoading ? "loading value" : `api depth value: ${value} meters`}
-        </p>
-        <p>{`error message: ${errorMessage}`}</p>
-      </Paper>
+        {/* https://sbcode.net/threejs/animate-on-scroll/ */}
 
-      <Box sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
-        <SailingIcon />
+        <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
+          <Button variant="contained">Hello world</Button>
 
-        <SpeedDial
-          ariaLabel="SpeedDial basic example"
-          sx={{ position: "absolute", bottom: 16, right: 16 }}
-          icon={<SpeedDialIcon />}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-            />
-          ))}
-        </SpeedDial>
-      </Box>
-    </Container>
+          <br />
+          <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>
+            Outlined
+          </Button>
+          <p>
+            {isLoading ? "loading value" : `api depth value: ${value} meters`}
+          </p>
+          <p>{`error message: ${errorMessage}`}</p>
+        </Paper>
+
+        <Box sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
+          <SailingIcon />
+
+          <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            sx={{ position: "absolute", bottom: 16, right: 16 }}
+            icon={<SpeedDialIcon />}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+              />
+            ))}
+          </SpeedDial>
+        </Box>
+      </Container>
+    </div>
   );
 }
