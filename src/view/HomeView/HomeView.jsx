@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import PrintIcon from "@mui/icons-material/Print";
-import ShareIcon from "@mui/icons-material/Share";
-
-import SailingIcon from "@mui/icons-material/Sailing";
+// import SpeedDial from "@mui/material/SpeedDial";
+// import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+// import SpeedDialAction from "@mui/material/SpeedDialAction";
+// import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
+// import SaveIcon from "@mui/icons-material/Save";
+// import PrintIcon from "@mui/icons-material/Print";
+// import ShareIcon from "@mui/icons-material/Share";
+// import SailingIcon from "@mui/icons-material/Sailing";
 
 import { useGetSatellitesQuery } from "../../services/api.js";
 
@@ -45,55 +43,61 @@ export default function HomeView() {
     setLoading(false);
   }, [apiResult]);
 
-  const actions = [
-    { icon: <FileCopyIcon />, name: "Copy" },
-    { icon: <SaveIcon />, name: "Save" },
-    { icon: <PrintIcon />, name: "Print" },
-    { icon: <ShareIcon />, name: "Share" },
-  ];
-
   return (
     <div className="HomeView">
       <h1>Home</h1>
 
       <Container maxWidth="md">
         <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-          <h1>Water Column Data</h1>
+          <h1>Water Column Sonar Data</h1>
+          <hr />
+
+          <h2>Who</h2>
+          <p>N ships</p>
+          <p>[map ships traveling geojson paths]</p>
+          <hr />
+                    
+          <h2>What</h2>
+          <p>200 TB of EK60 echosounder data</p>
+          <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>
+            Echosounder data
+          </Button>
+          <hr />
+
+          <h2>Where</h2>
+          <p>Publicly available data sets</p>
+          <p>[MAP]</p>
+          <Button variant="contained">Go to s3 bucket</Button>
+          <hr />
+
+          <h2>When</h2>
+          <p>2001 to Present</p>
+          <p>[bee diagram datasets by size — circles]</p>
+          <hr />
+
+          <h2>Why</h2>
+          <p>Goal is to evaluate large scale interactions between climate change and the atlantic herring population</p>
+          <p>map of population collapse</p>
+          <hr />
+
+          <h2>How</h2>
+          <p>OSPool</p>
+          <Button variant="contained">OSPool</Button>
+          <br />
+          
+          <p>ZarrJS</p>
+          <p>[ThreeJS graphic of cube]</p>
         </Paper>
 
         <br />
         {/* https://sbcode.net/threejs/animate-on-scroll/ */}
 
         <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-          <Button variant="contained">Hello world</Button>
-
-          <br />
-          <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>
-            Outlined
-          </Button>
           <p>
             {isLoading ? "loading value" : `api depth value: ${value} meters`}
           </p>
           <p>{`error message: ${errorMessage}`}</p>
         </Paper>
-
-        <Box sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
-          <SailingIcon />
-
-          <SpeedDial
-            ariaLabel="SpeedDial basic example"
-            sx={{ position: "absolute", bottom: 16, right: 16 }}
-            icon={<SpeedDialIcon />}
-          >
-            {actions.map((action) => (
-              <SpeedDialAction
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-              />
-            ))}
-          </SpeedDial>
-        </Box>
       </Container>
     </div>
   );

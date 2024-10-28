@@ -31,6 +31,9 @@ export default function LayoutView() {
         <div id="bottom">
           <footer role="contentinfo" id="FooterContent">
             <p>footer</p>
+            <center>
+              <p>[Graphic of ocean floor]</p>
+            </center>
           </footer>
         </div>
       </div>
