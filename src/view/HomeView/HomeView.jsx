@@ -84,6 +84,9 @@ export default function HomeView() {
           <p>OSPool</p>
           <Button variant="contained">OSPool</Button>
           <br />
+
+          <p>echopype</p>
+          <p>Lee, W., Mayorga, E., Setiawan, L., Majeed, I., Nguyen, K., & Staneva, V. (2021). Echopype: A Python library for interoperable and scalable processing of water column sonar data for biological information. arXiv preprint arXiv:2111.00187</p>
           
           <p>ZarrJS</p>
           <p>[ThreeJS graphic of cube]</p>

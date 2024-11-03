@@ -7,7 +7,7 @@ import HomeView from './view/HomeView/HomeView';
 import LayoutView from './view/LayoutView';
 import CruiseView from './view/CruiseView/CruiseView';
 import MapView from './view/MapView/MapView';
-import WaterColumnView from './view/WaterColumnView/WaterColumnView';
+import WaterColumnView2 from './view/WaterColumnView/WaterColumnView2';
 // import { useParams } from 'react-router-dom';
 
 
@@ -25,7 +25,7 @@ export default function App() {
 
           <Route path="/map" element={<MapView />} />
 
-          <Route path="/water-column" element={<WaterColumnView />} />
+          <Route path="/water-column" element={<WaterColumnView2 />} />
 
           <Route path="*" element={<ErrorView />} />
 

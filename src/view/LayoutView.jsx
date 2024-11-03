@@ -21,7 +21,7 @@ export default function LayoutView() {
             <br />
           </header>
 
-          <main role="main">
+          <main role="main" className="main">
             <div className="water-column-main" id="MainContent">
               <Outlet />
             </div>
@@ -32,7 +32,7 @@ export default function LayoutView() {
           <footer role="contentinfo" id="FooterContent">
             <p>footer</p>
             <center>
-              <p>[Graphic of ocean floor]</p>
+              <p>[graphic ocean floor]</p>
             </center>
           </footer>
         </div>
