@@ -13,8 +13,11 @@ import Container from "@mui/material/Container";
 // import SailingIcon from "@mui/icons-material/Sailing";
 
 import { useGetSatellitesQuery } from "../../services/api.js";
+import { Typography } from "@mui/material";
 
 export default function HomeView() {
+  console.log(`App Name: ${import.meta.env.VITE_REACT_APP_NAME}, App Version: ${import.meta.env.VITE_REACT_APP_VERSION}`)
+
   useEffect(() => {
     document.title = `Home`;
   }, []);
@@ -45,7 +48,7 @@ export default function HomeView() {
 
   return (
     <div className="HomeView">
-      <h1>Home</h1>
+      <h1>Home - Build {import.meta.env.VITE_REACT_APP_VERSION}</h1>
 
       <Container maxWidth="md">
         <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
@@ -62,6 +65,10 @@ export default function HomeView() {
           <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>
             Echosounder data
           </Button>
+          <br />
+
+          <p>ZarrJS</p>
+          <Typography align="center">[ThreeJS graphic of cube]</Typography>
           <hr />
 
           <h2>Where</h2>
@@ -82,14 +89,14 @@ export default function HomeView() {
 
           <h2>How</h2>
           <p>OSPool</p>
-          <Button variant="contained">OSPool</Button>
+          <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>OSPool</Button>
+          <p>This research was done using services provided by the OSG Consortium [1,2,3,4], which is supported by the National Science Foundation awards #2030508 and #1836650.</p>
           <br />
 
           <p>echopype</p>
+          <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>echopype</Button>
           <p>Lee, W., Mayorga, E., Setiawan, L., Majeed, I., Nguyen, K., & Staneva, V. (2021). Echopype: A Python library for interoperable and scalable processing of water column sonar data for biological information. arXiv preprint arXiv:2111.00187</p>
-          
-          <p>ZarrJS</p>
-          <p>[ThreeJS graphic of cube]</p>
+          <br />
         </Paper>
 
         <br />

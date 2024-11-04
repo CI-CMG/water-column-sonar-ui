@@ -10,7 +10,6 @@ import MapView from './view/MapView/MapView';
 import WaterColumnView2 from './view/WaterColumnView/WaterColumnView2';
 // import { useParams } from 'react-router-dom';
 
-
 export default function App() {
   // let { cruise } = useParams();
 
