@@ -2,6 +2,12 @@
   "name": "water-column-ui",
   "private": true,
   "version": "0.1.1",
+  "homepage": "https://www.watercolumnproject.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oftfrfbf/water-column-ui"
+  },
+  "license": "MIT License",
   "type": "module",
   "scripts": {
     "dev": "vite",

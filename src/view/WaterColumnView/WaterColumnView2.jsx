@@ -1,6 +1,13 @@
-// /* eslint-disable react/no-unknown-property */
 // import { useEffect, useRef } from "react";
-import * as THREE from "three";
+// import * as THREE from "three";
+import {
+  Color,
+  FrontSide,
+  MeshPhysicalMaterial,
+  Mesh,
+  Group,
+  AmbientLight,
+} from "three";
 import { Canvas } from "@react-three/fiber";
 import {
   useGLTF,
@@ -36,10 +43,10 @@ export function GelatinousCube() {
   });
   const { nodes, materials } = useGLTF("/gelatinous_cube-transformed.glb");
   return (
-    <group dispose={null}>
-      <mesh geometry={nodes.cube1.geometry} position={[-0.56, 0.38, -0.11]}>
+    <Group dispose={null}>
+      <Mesh geometry={nodes.cube1.geometry} position={[-0.56, 0.38, -0.11]}>
         {config.meshPhysicalMaterial ? (
-          <meshPhysicalMaterial
+          <MeshPhysicalMaterial
             transmission={1}
             {...config}
             thickness={config.refraction * 2 + config.rgbShift}
@@ -48,42 +55,42 @@ export function GelatinousCube() {
         ) : (
           <MeshTransmissionMaterial
             resolution={2048}
-            background={new THREE.Color(config.bg)}
+            background={new Color(config.bg)}
             {...config}
           />
         )}
-      </mesh>
-      <mesh
+      </Mesh>
+      <Mesh
         castShadow
         renderOrder={-100}
         geometry={nodes.cube2.geometry}
         material={materials.cube_mat}
-        material-side={THREE.FrontSide}
+        material-side={FrontSide}
         position={[-0.56, 0.38, -0.11]}
       />
-      <mesh
+      <Mesh
         geometry={nodes.bubbles.geometry}
         material={materials.cube_bubbles_mat}
         position={[-0.56, 0.38, -0.11]}
       />
-      <group position={[-0.56, 0.38, -0.41]}>
-        <mesh
+      <Group position={[-0.56, 0.38, -0.41]}>
+        <Mesh
           geometry={nodes.arrows.geometry}
           material={materials.weapons_mat}
         />
         <Float floatIntensity={0.2} rotationIntensity={0.2} speed={2}>
-          <mesh
+          <Mesh
             geometry={nodes.skeleton_1.geometry}
             material={materials.skele_mat}
           />
-          <mesh
+          <Mesh
             geometry={nodes.skeleton_2.geometry}
             material={materials.weapons_mat}
-            material-side={THREE.FrontSide}
+            material-side={FrontSide}
           />
         </Float>
-      </group>
-    </group>
+      </Group>
+    </Group>
   );
 }
 
@@ -93,7 +100,7 @@ export default function WaterColumnView2() {
     <div className="WaterColumnView2">
       <div className="water-column-view2">
         <Canvas shadows camera={{ position: [15, 10, 15], fov: 35 }}>
-          <ambientLight intensity={0.75} />
+          <AmbientLight intensity={0.75} />
           <Bounds fit observe margin={1.25}>
             <Center top>
               <GelatinousCube />
