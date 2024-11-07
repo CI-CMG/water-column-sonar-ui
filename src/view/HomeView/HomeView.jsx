@@ -85,6 +85,10 @@ export default function HomeView() {
           <h2>Why</h2>
           <p>Goal is to evaluate large scale interactions between climate change and the atlantic herring population</p>
           <p>map of population collapse</p>
+          <br />
+          <p>Global Warming</p>
+          <p>co2 plot -- co2 molecule</p>
+
           <hr />
 
           <h2>How</h2>
