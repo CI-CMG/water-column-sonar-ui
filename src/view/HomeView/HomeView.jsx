@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 // import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+// import Image from "material-ui-image";
 // import SpeedDial from "@mui/material/SpeedDial";
 // import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 // import SpeedDialAction from "@mui/material/SpeedDialAction";
@@ -14,6 +15,7 @@ import Container from "@mui/material/Container";
 
 import { useGetSatellitesQuery } from "../../services/api.js";
 import { Typography } from "@mui/material";
+import NOAALogo from "../../../src/assets/images/noaa/noaa.png";
 
 export default function HomeView() {
   console.log(`App Name: ${import.meta.env.VITE_REACT_APP_NAME}, App Version: ${import.meta.env.VITE_REACT_APP_VERSION}`)
@@ -51,18 +53,40 @@ export default function HomeView() {
 
       <Container maxWidth="md">
         <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-          <h1>The Water Column {import.meta.env.VITE_REACT_APP_VERSION}</h1>
+          <h1>The Water Column</h1>
+          <p>v{import.meta.env.VITE_REACT_APP_VERSION}</p>
           <hr />
 
-          <h2>Who</h2>
-          <p>N ships</p>
-          <p>[map ships traveling geojson paths]</p>
+          <h2>Henry B. Bigelow</h2>
+          <p>The Henry B. Bigelow is a fisheries research vessel that surveys the marine biome, geology and oceanographic conditions along the east coast of the United States.</p>
+          <p>The ship surveys fish stocks and conducts habitat assessments.</p>
+          
+          <br />
+          <p>[image of the ship]</p>
+          
           <hr />
                     
-          <h2>What</h2>
-          <p>200 TB of EK60 echosounder data</p>
-          <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>
-            Echosounder data
+          <h2>NOAA Open Data Dissemination</h2>
+          <p>NOAA curates hundreds of terabytes of water column sonar data. The NOAA Open Data Dissemination (NODD) program provides public access to NOAA's data via AWS S3 bucket access.</p>
+          <p>The water column sonar archive includes ~300 TB of echosounder data ready for analysis.</p>
+          
+          <img src={NOAALogo} width={100} height={100} />
+
+          <br />
+          <p>Datasets:</p>
+          <br />
+          <Button href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/" variant="outlined" sx={{ mx: "auto", width: 200 }}>
+            Level 0
+          </Button>
+          <br />
+          <br />
+          <Button href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/" variant="outlined" sx={{ mx: "auto", width: 200 }}>
+            Level 1
+          </Button>
+          <br />
+          <br />
+          <Button href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/" variant="outlined" sx={{ mx: "auto", width: 200 }}>
+            Level 2
           </Button>
           <br />
 
