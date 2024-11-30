@@ -30,10 +30,10 @@ export default function LayoutView() {
 
         <div id="bottom">
           <footer role="contentinfo" id="FooterContent">
-            <p>footer</p>
+            {/* <p>footer</p>
             <center>
               <p>[graphic ocean floor]</p>
-            </center>
+            </center> */}
           </footer>
         </div>
       </div>

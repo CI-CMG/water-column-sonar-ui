@@ -16,6 +16,15 @@ import Container from "@mui/material/Container";
 import { useGetSatellitesQuery } from "../../services/api.js";
 import { Typography } from "@mui/material";
 import NOAALogo from "../../../src/assets/images/noaa/noaa.png";
+import XarrayLogo from "../../../src/assets/images/xarray/xarray.png";
+import DaskLogo from "../../../src/assets/images/dask/dask.png";
+import ZarrLogo from "../../../src/assets/images/zarr/zarr.png";
+import PandasLogo from "../../../src/assets/images/pandas/pandas.png";
+import HenryBBigelow from "../../../src/assets/images/noaa/henry_b._bigelow.png";
+import Echopype from "../../../src/assets/images/echopype/echopype.png";
+import OSPool from "../../../src/assets/images/osdf/OSPool.png";
+import OSDF from "../../../src/assets/images/osdf/OSDF.png";
+import AWSLogo from "../../../src/assets/images/aws/aws.png";
 
 export default function HomeView() {
   console.log(`App Name: ${import.meta.env.VITE_REACT_APP_NAME}, App Version: ${import.meta.env.VITE_REACT_APP_VERSION}`)
@@ -53,51 +62,74 @@ export default function HomeView() {
 
       <Container maxWidth="md">
         <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-          <h1>The Water Column</h1>
+          <h1>Water Column Data</h1>
           <p>v{import.meta.env.VITE_REACT_APP_VERSION}</p>
           <hr />
 
-          <h2>Henry B. Bigelow</h2>
-          <p>The Henry B. Bigelow is a fisheries research vessel that surveys the marine biome, geology and oceanographic conditions along the east coast of the United States.</p>
-          <p>The ship surveys fish stocks and conducts habitat assessments.</p>
+          <h2>The Henry B. Bigelow Ship</h2>
+          <p>Henry B. Bigelow is a fisheries research vessel that surveys the east coast of the United Sates collecting oceanographic data.</p>
+          <p>The ship's surveys focus on assessments of fish stocks and research of the marine biome.</p>
           
           <br />
-          <p>[image of the ship]</p>
+          <img src={HenryBBigelow} width={400} />
+          <p><i>NOAAS Henry B. Bigelow (R 225)</i></p>
           
           <hr />
                     
           <h2>NOAA Open Data Dissemination</h2>
           <p>NOAA curates hundreds of terabytes of water column sonar data. The NOAA Open Data Dissemination (NODD) program provides public access to NOAA's data via AWS S3 bucket access.</p>
-          <p>The water column sonar archive includes ~300 TB of echosounder data ready for analysis.</p>
-          
           <img src={NOAALogo} width={100} height={100} />
+          <img src={AWSLogo} height={100} />
+          <p>The water column sonar archive includes nearly 300 TB of echosounder data ready for analysis.</p>
 
           <br />
-          <p>Datasets:</p>
+          <p>Datasets are available at three different processing levels:</p>
           <br />
-          <Button href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/" variant="outlined" sx={{ mx: "auto", width: 200 }}>
+          <Button
+            target="_blank"
+            rel="noopener noreferrer" 
+            href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/"
+            variant="outlined"
+            sx={{ mx: "auto", width: 200 }}
+          >
             Level 0
           </Button>
           <br />
           <br />
-          <Button href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/" variant="outlined" sx={{ mx: "auto", width: 200 }}>
+          <Button
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/"
+            variant="outlined"
+            sx={{ mx: "auto", width: 200 }}
+          >
             Level 1
           </Button>
           <br />
           <br />
-          <Button href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/" variant="outlined" sx={{ mx: "auto", width: 200 }}>
+          <Button
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/"
+            variant="outlined"
+            sx={{ mx: "auto", width: 200 }}
+          >
             Level 2
           </Button>
           <br />
-
-          <p>ZarrJS</p>
-          <Typography align="center">[ThreeJS graphic of cube]</Typography>
-          <hr />
 
           <h2>Where</h2>
           <p>Publicly available data sets</p>
           <p>[MAP]</p>
           <Button variant="contained">Go to s3 bucket</Button>
+          <br />
+          
+          <h3>ZarrJS</h3>
+          <p>Data are available in a cloud-native Zarr format.</p>
+          <img src={ZarrLogo} height={100} />
+          <Typography align="center">[ThreeJS graphic of cube]</Typography>
+          <br />
+          
           <hr />
 
           <h2>When</h2>
@@ -114,15 +146,32 @@ export default function HomeView() {
 
           <hr />
 
-          <h2>How</h2>
-          <p>OSPool</p>
-          <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>OSPool</Button>
+          <h2>Processing Power</h2>
+
+          <h3>echopype</h3>
+          <p>Data conversions are made possible using the open source project, "echopype."</p>
+          <img src={Echopype} width={200} />
+          <br />
+          <p>Lee, W., Mayorga, E., Setiawan, L., Majeed, I., Nguyen, K., & Staneva, V. (2021). Echopype: A Python library for interoperable and scalable processing of water column sonar data for biological information. arXiv preprint arXiv:2111.00187</p>
+          <br />
+
+          <h3>OSPool</h3>
+          <img src={OSPool} height={100} />
+          <img src={OSDF} height={100} />
           <p>This research was done using services provided by the OSG Consortium [1,2,3,4], which is supported by the National Science Foundation awards #2030508 and #1836650.</p>
           <br />
 
-          <p>echopype</p>
-          <Button variant="outlined" sx={{ mx: "auto", width: 200 }}>echopype</Button>
-          <p>Lee, W., Mayorga, E., Setiawan, L., Majeed, I., Nguyen, K., & Staneva, V. (2021). Echopype: A Python library for interoperable and scalable processing of water column sonar data for biological information. arXiv preprint arXiv:2111.00187</p>
+          <hr />
+
+          <h2>Ecosystem</h2>
+          <p>Analysis is interoperable between a suite of scientific tools in the Python ecosystem.</p>
+          {/* TODO: make these actual links to projects */}
+          <img src={XarrayLogo} height={100} />
+          <img src={DaskLogo} height={40} />
+          <img src={ZarrLogo} height={100} />
+          <img src={PandasLogo} height={100} />
+          <br />
+          <br />
           <br />
         </Paper>
 
