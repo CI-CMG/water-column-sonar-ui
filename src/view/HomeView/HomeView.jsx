@@ -48,11 +48,10 @@ export default function HomeView() {
 
   return (
     <div className="HomeView">
-      <h1>Home - Build {import.meta.env.VITE_REACT_APP_VERSION}</h1>
 
       <Container maxWidth="md">
         <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-          <h1>Water Column Sonar Data</h1>
+          <h1>The Water Column {import.meta.env.VITE_REACT_APP_VERSION}</h1>
           <hr />
 
           <h2>Who</h2>
