@@ -16,6 +16,9 @@ export default function LayoutView() {
 
             <Link to="/map">map</Link>
             <br />
+
+            <Link to="/zarr">zarr</Link>
+            <br />
             
             <Link to="/water-column">water column</Link>
             <br />
