@@ -66,7 +66,7 @@ export default function HomeView() {
           <p>version {import.meta.env.VITE_REACT_APP_VERSION}</p>
           <hr />
 
-          <h2>The Henry Bigelow Ship</h2>
+          <h2>The Henry Bigelow Research Vessel</h2>
           <p>Henry B. Bigelow is a fisheries research vessel that surveys the east coast of the United Sates collecting oceanographic data.</p>
           <p>The ship's surveys focus on assessments of fish stocks and research of the marine biome.</p>
 
@@ -227,6 +227,13 @@ export default function HomeView() {
           <img src={OSPool} height={100} />
           <img src={OSDF} height={100} />
           <p>This research was done using services provided by the OSG Consortium [1,2,3,4], which is supported by the National Science Foundation awards #2030508 and #1836650.</p>
+          <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://osg-htc.org/projects.html?project=NOAA_Bell"
+            >
+              See more about our current processing statistics here.
+            </a>
           <br />
         </Paper>
 
