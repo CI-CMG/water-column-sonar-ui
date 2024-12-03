@@ -14,7 +14,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "aws s3 cp --recursive ./dist/ s3://watercolumnproject.org/; aws cloudfront create-invalidation --distribution-id E38IRRAY5TY4MK --paths '/*'; ls",
+    "deploy": "aws s3 cp --recursive ./dist/ s3://watercolumnproject.org/; aws cloudfront create-invalidation --distribution-id E38IRRAY5TY4MK --paths '/*' >/dev/null",
     "invalidate-cache": "aws cloudfront create-invalidation --distribution-id E38IRRAY5TY4MK --paths '/*'"
   },
   "dependencies": {

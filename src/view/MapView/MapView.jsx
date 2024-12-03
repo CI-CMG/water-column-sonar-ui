@@ -25,9 +25,9 @@ export default function MapView() {
           type: "vector",
           url: "https://demotiles.maplibre.org/tiles/tiles.json"
         },
-        zcta: {
+        cruises: {
           type: "vector",
-          url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar-bugs.pmtiles",
+          url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar.pmtiles",
         },
       },
       layers: [
@@ -226,14 +226,14 @@ export default function MapView() {
           "source-layer": "centroids"
         },
         {
-          "id": "zcta",
+          "id": "cruises",
           "type": "line",
-          "source": "zcta",
+          "source": "cruises",
           "paint": {
             "line-blur": 1,
             "line-color": "rgba(255, 105, 180, 0.75)",
           },
-          "source-layer": "zcta"
+          "source-layer": "cruises"
         },
       ],
     }
