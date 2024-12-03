@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as pmtiles from 'pmtiles'
@@ -11,6 +11,13 @@ export default function MapView() {
   const [lng] = useState(-95);
   const [lat] = useState(35);
   const [zoom] = useState(2);
+  const [foo, setFoo] = useState('');
+
+  // const onMapLoad = (() => {
+  //   map.current.on('move', () => {
+  //     console.log('moving');
+  //   })
+  // });
 
   // https://maplibre.org/maplibre-style-spec/layers/
   useEffect(() => {
@@ -20,6 +27,7 @@ export default function MapView() {
       version: 8,
       name: "Water Column Project",
       glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+      // consider switching to: https://protomaps.com/
       sources: {
         maplibre: {
           type: "vector",
@@ -248,11 +256,35 @@ export default function MapView() {
       zoom: zoom,
     });
 
-  }, [lat, lng, map, mapContainer, zoom]);
+    map.current.on('mousemove', (e) => {
+      const features = map.current.queryRenderedFeatures(e.point);
+
+      // Limit the number of properties we're displaying for
+      // legibility and performance
+      const displayProperties = [
+          'type',
+          'properties',
+      ];
+
+      features.map((feat) => {
+        const displayFeat = {};
+        displayProperties.forEach((prop) => {
+            displayFeat[prop] = feat[prop];
+        });
+        if('ship' in displayFeat.properties){
+          setFoo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}`);
+        }
+      });
+      
+    });
+
+
+  }, [lat, lng, map, mapContainer, zoom, foo]);
 
   return (
     <div className="MapView">
       <h1>Map</h1>
+      <p>feature: {foo}</p>
       <div className="map-wrap">
         <div ref={mapContainer} className="map" />
       </div>
