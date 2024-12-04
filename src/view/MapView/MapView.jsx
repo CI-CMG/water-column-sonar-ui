@@ -240,9 +240,10 @@ export default function MapView() {
             "line-color": [
               'case',
               ['boolean', ['feature-state', 'hover'], false],
-              "rgba(255, 105, 180, 0.75)",
-              "rgba(138, 206, 0, 0.90)"
-            ]
+              "rgba(138, 206, 0, 0.90)",
+              "rgba(255, 105, 180, 0.75)"
+            ],
+            "line-width": 3
           },
           "source-layer": "cruises"
         },
@@ -282,45 +283,39 @@ export default function MapView() {
 
   useEffect(() => {
     // needs: https://maplibre.org/maplibre-gl-js/docs/examples/hover-styles/
-    // cruises
+    // https://maplibre.org/maplibre-gl-js/docs/API/classes/MapMouseEvent/
     map.current.on('mousemove', 'cruises', (e) => {
-      console.log('mousemoving123')
       if (e.features.length > 0) {
-      console.log(hoveredStateId)
-        if (hoveredStateId) {
-            map.current.setFeatureState(
-                {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
-                {hover: false}
-            );
-        }
-        // hoveredStateId = e.features[0].id;
+        // if (hoveredStateId !== null) {
+        //     map.current.setFeatureState(
+        //         {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
+        //         {hover: false}
+        //     );
+        // }
         setHoveredStateId(e.features[0]['id'])
-        console.log(hoveredStateId)
         map.current.setFeatureState(
-            {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
+            {source: 'cruises', sourceLayer: 'cruises', id: e.features[0]['id']},
             {hover: true}
         );
       }
     });
 
-    // When the mouse leaves the state-fill layer, update the feature state of the
-    // previously hovered feature.
     map.current.on('mouseleave', 'cruises', () => {
-      console.log('mouseleaving')
-        if (hoveredStateId) {
-            map.current.setFeatureState(
-                {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
-                {hover: false}
-            );
-        }
+        // if (hoveredStateId !== null) {
+        map.current.setFeatureState(
+            {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
+            {hover: false}
+        );
         setHoveredStateId(null);
+        // }
+        // setHoveredStateId(null);
     });
   }, [hoveredStateId])
 
   return (
     <div className="MapView">
       <h1>Map</h1>
-      <p>feature: {foo}</p>
+      <p>feature: {foo}, hover: {hoveredStateId}</p>
       <div className="map-wrap">
         <div ref={mapContainer} className="map" />
       </div>
