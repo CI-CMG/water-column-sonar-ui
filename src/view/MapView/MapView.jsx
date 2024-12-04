@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as pmtiles from 'pmtiles'
@@ -12,17 +12,13 @@ export default function MapView() {
   const [lat] = useState(35);
   const [zoom] = useState(2);
   const [foo, setFoo] = useState('');
-
-  // const onMapLoad = (() => {
-  //   map.current.on('move', () => {
-  //     console.log('moving');
-  //   })
-  // });
+  const [hoveredStateId, setHoveredStateId] = useState(null);
 
   // https://maplibre.org/maplibre-style-spec/layers/
   useEffect(() => {
     if (map.current) return;
     
+    console.log('initializeing map viewer')
     const style = {
       version: 8,
       name: "Water Column Project",
@@ -35,7 +31,8 @@ export default function MapView() {
         },
         cruises: {
           type: "vector",
-          url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar.pmtiles",
+          // url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar.pmtiles",
+          url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar-id.pmtiles"
         },
       },
       layers: [
@@ -239,7 +236,13 @@ export default function MapView() {
           "source": "cruises",
           "paint": {
             "line-blur": 1,
-            "line-color": "rgba(255, 105, 180, 0.75)",
+            // "line-color": "rgba(255, 105, 180, 0.75)",
+            "line-color": [
+              'case',
+              ['boolean', ['feature-state', 'hover'], false],
+              "rgba(255, 105, 180, 0.75)",
+              "rgba(138, 206, 0, 0.90)"
+            ]
           },
           "source-layer": "cruises"
         },
@@ -259,8 +262,6 @@ export default function MapView() {
     map.current.on('mousemove', (e) => {
       const features = map.current.queryRenderedFeatures(e.point);
 
-      // Limit the number of properties we're displaying for
-      // legibility and performance
       const displayProperties = [
           'type',
           'properties',
@@ -274,12 +275,47 @@ export default function MapView() {
         if('ship' in displayFeat.properties){
           setFoo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}`);
         }
-      });
-      
+      });  
     });
 
-
   }, [lat, lng, map, mapContainer, zoom, foo]);
+
+  useEffect(() => {
+    // needs: https://maplibre.org/maplibre-gl-js/docs/examples/hover-styles/
+    // cruises
+    map.current.on('mousemove', 'cruises', (e) => {
+      console.log('mousemoving123')
+      if (e.features.length > 0) {
+      console.log(hoveredStateId)
+        if (hoveredStateId) {
+            map.current.setFeatureState(
+                {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
+                {hover: false}
+            );
+        }
+        // hoveredStateId = e.features[0].id;
+        setHoveredStateId(e.features[0]['id'])
+        console.log(hoveredStateId)
+        map.current.setFeatureState(
+            {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
+            {hover: true}
+        );
+      }
+    });
+
+    // When the mouse leaves the state-fill layer, update the feature state of the
+    // previously hovered feature.
+    map.current.on('mouseleave', 'cruises', () => {
+      console.log('mouseleaving')
+        if (hoveredStateId) {
+            map.current.setFeatureState(
+                {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
+                {hover: false}
+            );
+        }
+        setHoveredStateId(null);
+    });
+  }, [hoveredStateId])
 
   return (
     <div className="MapView">
