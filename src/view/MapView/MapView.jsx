@@ -243,7 +243,7 @@ export default function MapView() {
               "rgba(138, 206, 0, 0.90)",
               "rgba(255, 105, 180, 0.75)"
             ],
-            "line-width": 3
+            "line-width": 4
           },
           "source-layer": "cruises"
         },
@@ -274,7 +274,7 @@ export default function MapView() {
             displayFeat[prop] = feat[prop];
         });
         if('ship' in displayFeat.properties){
-          setFoo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}`);
+          setFoo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}, sensor: ${displayFeat.properties['sensor']}`);
         }
       });  
     });
@@ -286,12 +286,6 @@ export default function MapView() {
     // https://maplibre.org/maplibre-gl-js/docs/API/classes/MapMouseEvent/
     map.current.on('mousemove', 'cruises', (e) => {
       if (e.features.length > 0) {
-        // if (hoveredStateId !== null) {
-        //     map.current.setFeatureState(
-        //         {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
-        //         {hover: false}
-        //     );
-        // }
         setHoveredStateId(e.features[0]['id'])
         map.current.setFeatureState(
             {source: 'cruises', sourceLayer: 'cruises', id: e.features[0]['id']},
@@ -301,21 +295,18 @@ export default function MapView() {
     });
 
     map.current.on('mouseleave', 'cruises', () => {
-        // if (hoveredStateId !== null) {
         map.current.setFeatureState(
             {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
             {hover: false}
         );
         setHoveredStateId(null);
-        // }
-        // setHoveredStateId(null);
     });
   }, [hoveredStateId])
 
   return (
     <div className="MapView">
       <h1>Map</h1>
-      <p>feature: {foo}, hover: {hoveredStateId}</p>
+      <p>feature: <b>{foo}</b>, hover: {hoveredStateId}</p>
       <div className="map-wrap">
         <div ref={mapContainer} className="map" />
       </div>

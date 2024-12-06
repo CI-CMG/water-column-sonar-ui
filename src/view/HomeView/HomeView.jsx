@@ -62,7 +62,7 @@ export default function HomeView() {
 
       <Container maxWidth="md">
         <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-          <h1>Water Column Data</h1>
+          <h1>Water Column Data Mesh</h1>
           <p>version {import.meta.env.VITE_REACT_APP_VERSION}</p>
           <hr />
 
