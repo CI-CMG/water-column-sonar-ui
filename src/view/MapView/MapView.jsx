@@ -13,12 +13,18 @@ export default function MapView() {
   const [zoom] = useState(2);
   const [foo, setFoo] = useState('');
   const [hoveredStateId, setHoveredStateId] = useState(null);
+  
+  // const [cursor, setCursor] = useState('auto');
+  // const onMouseEnter = useCallback(() => setCursor('pointer'), []);
+  // const onMouseLeave = useCallback(() => setCursor('auto'), []);
+
 
   // https://maplibre.org/maplibre-style-spec/layers/
   useEffect(() => {
     if (map.current) return;
     
     console.log('initializeing map viewer')
+
     const style = {
       version: 8,
       name: "Water Column Project",
@@ -107,7 +113,7 @@ export default function MapView() {
           "type": "symbol",
           "paint": {
             "text-color": "#1077B0",
-            "text-halo-blur": 2,
+            "text-halo-blur": 0.5,
             "text-halo-color": "rgba(255, 255, 255, 1)",
             "text-halo-width": 1
           },
@@ -235,15 +241,25 @@ export default function MapView() {
           "type": "line",
           "source": "cruises",
           "paint": {
-            "line-blur": 1,
+            "line-blur": 0,
             // "line-color": "rgba(255, 105, 180, 0.75)",
             "line-color": [
               'case',
               ['boolean', ['feature-state', 'hover'], false],
-              "rgba(138, 206, 0, 0.90)",
-              "rgba(255, 105, 180, 0.75)"
+              // "rgba(138, 206, 0, 1.0)", // brat green
+              //"rgba(0, 0, 255, 0.99)", // blue
+              // "rgba(255, 105, 180, 0.90)", // pink
+              "rgba(255, 255, 255, 0.90)", // white
+              "rgba(255, 105, 180, 0.20)", // pink
+              
             ],
-            "line-width": 4
+            "line-width": 2,
+            // "line-width": [
+            //   'case',
+            //   ['boolean', ['feature-state', 'hover'], false],
+            //   2,
+            //   1
+            // ],
           },
           "source-layer": "cruises"
         },
@@ -258,6 +274,9 @@ export default function MapView() {
       style: style,
       center: [lng, lat],
       zoom: zoom,
+      // onMouseEnter: onMouseEnter,
+      // onMouseLeave: onMouseLeave,
+      // cursor: "crosshair",
     });
 
     map.current.on('mousemove', (e) => {
@@ -271,7 +290,7 @@ export default function MapView() {
       features.map((feat) => {
         const displayFeat = {};
         displayProperties.forEach((prop) => {
-            displayFeat[prop] = feat[prop];
+          displayFeat[prop] = feat[prop];
         });
         if('ship' in displayFeat.properties){
           setFoo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}, sensor: ${displayFeat.properties['sensor']}`);
@@ -284,22 +303,35 @@ export default function MapView() {
   useEffect(() => {
     // needs: https://maplibre.org/maplibre-gl-js/docs/examples/hover-styles/
     // https://maplibre.org/maplibre-gl-js/docs/API/classes/MapMouseEvent/
-    map.current.on('mousemove', 'cruises', (e) => {
-      if (e.features.length > 0) {
-        setHoveredStateId(e.features[0]['id'])
+    // "click" | "contextmenu" | "dblclick" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup"
+    // map.current.on('mousemove', 'cruises', (e) => {
+    map.current.on('click', 'cruises', (e) => {
+      const features = e.features
+      if (features.length > 0) {
+        const idd = features[0]['id']
+        setHoveredStateId(idd)
         map.current.setFeatureState(
-            {source: 'cruises', sourceLayer: 'cruises', id: e.features[0]['id']},
+            {source: 'cruises', sourceLayer: 'cruises', id: idd},
             {hover: true}
         );
       }
     });
 
     map.current.on('mouseleave', 'cruises', () => {
-        map.current.setFeatureState(
-            {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
-            {hover: false}
-        );
-        setHoveredStateId(null);
+      setHoveredStateId(null);
+      map.current.setFeatureState(
+          {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
+          {hover: false}
+      );
+    });
+
+
+    map.current.on("mouseenter", "cruises", () => {
+      map.current.getCanvas().style.cursor = "crosshair";
+    });
+
+    map.current.on("mouseleave", "cruises", () => {
+      map.current.getCanvas().style.cursor = "default";
     });
   }, [hoveredStateId])
 
