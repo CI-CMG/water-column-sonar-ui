@@ -1,11 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import * as pmtiles from 'pmtiles'
+import * as pmtiles from 'pmtiles';
+// import * as turf from '@turf/turf';
+import { slice, openArray } from "zarr";
+
+
+
+// function zarrOpenLatitudeArray() {
+//   return openArray({ store: this.zarr_store_url, path: "latitude", mode: "r" });
+// }
+// zarrOpenLatitudeArray = { openArray({ store: zarr_store_url, path: "latitude", mode: "r" }) }
+
 
 export default function MapView() {
-  useEffect(() => { document.title = `Map`; }, []);
-
   const mapContainer = useRef();
   const map = useRef();
   const [lng] = useState(-95);
@@ -13,11 +21,89 @@ export default function MapView() {
   const [zoom] = useState(2);
   const [foo, setFoo] = useState('');
   const [hoveredStateId, setHoveredStateId] = useState(null);
+  // for getting clicked location
+  const [latitudeArray, setLatitudeArray] = useState(null);
+  const [latitudeArrayData, setLatitudeArrayData] = useState(null);
+  const [longitudeArray, setLongitudeArray] = useState(null);
+  const [longitudeArrayData, setLongitudeArrayData] = useState(null);
+  const [timeArray, setTimeArray] = useState(null);
+  const [timeArrayData, setTimeArrayData] = useState(null);
+  const [zarrStoreURL, setZarrStoreURL] = useState(null);
   
   // const [cursor, setCursor] = useState('auto');
   // const onMouseEnter = useCallback(() => setCursor('pointer'), []);
   // const onMouseLeave = useCallback(() => setCursor('auto'), []);
+  const zarrOpenLatitudeArray = () => {
+     return openArray({ store: zarrStoreURL, path: "latitude", mode: "r" });
+  }
+  function zarrOpenLongitudeArray() {
+    return openArray({ store: zarrStoreURL, path: "longitude", mode: "r" });
+  }
+  function zarrOpenTimeArray() {
+    return openArray({ store: zarrStoreURL, path: "time", mode: "r" });
+  }
+  function zarrOpenArrayData(z) {
+    return z.get([slice(null)]);
+  }
+  // function clickedMarkerPolyline(latlng) {
+  //   // console.log(latlng)
+  //   console.log("clicked polyline at: lat: " + latlng.lat + ", lng: " + latlng.lng)
+  
+  //   let pt = turf.point([latlng.lng, latlng.lat])
+  //   let snapped = turf.nearestPointOnLine(
+  //       this.turf_linestring, // longitude, latitude
+  //       pt,
+  //       { units: 'miles' }
+  //   )
+  //   console.log('closest polyline index: ' + snapped.properties.index)
+  
+  //   /////// now do it with the full linestring  /////
+  //   let aa = Array.from(latitudeArrayData);
+  //   let bb = Array.from(longitudeArrayData);
+  //   let cc = aa.map(function(e, i) {
+  //     return [bb[i], e];
+  //   });
+  //   let turf_linestring = turf.lineString(cc)
+  //   // why do i do this twice
+  //   let snapped2 = turf.nearestPointOnLine(
+  //       turf_linestring, // longitude, latitude
+  //       pt,
+  //       { units: 'miles' }
+  //   )
+  //   const clicked_index = snapped2.properties.index
+  //   console.log(clicked_index)
+  //   // const clicked_time = Array.from(timeArrayData)[snapped2.properties.index]
+  //   // const clicked_latitude = Array.from(latitudeArrayData)[snapped2.properties.index]
+  //   // const clicked_longitude = Array.from(longitudeArrayData)[snapped2.properties.index]
+  //   // const tz = find(clicked_latitude, clicked_longitude)
+  //   // const local_time = this.getDateTime(clicked_time, tz)
+  //   // this.click_time = local_time._i + ' ' + local_time._z.name.toUpperCase()
+  //   // console.log('closest polyline index full res: ' + snapped2.properties.index)
+  // }
 
+
+  useEffect(() => {
+    document.title = `Map`;
+
+    zarrOpenLatitudeArray().then((z) => {
+      setLatitudeArray(z);
+      zarrOpenArrayData(z).then((d) => {
+        setLatitudeArrayData(d.data);
+      })
+    })
+    zarrOpenLongitudeArray().then((z) => {
+      setLongitudeArray(z);
+      zarrOpenArrayData(z).then((d) => {
+        setLongitudeArrayData(d.data);
+      })
+    })
+    zarrOpenTimeArray().then((z) => {
+      setTimeArray(z);
+      zarrOpenArrayData(z).then((d) => {
+        setTimeArrayData(d.data);
+      })
+    })
+  }, []);
 
   // https://maplibre.org/maplibre-style-spec/layers/
   useEffect(() => {
@@ -158,7 +244,7 @@ export default function MapView() {
             "text-halo-blur": {
               "stops": [
                 [
-                  2,
+                  0.5,
                   0.2
                 ],
                 [
@@ -232,7 +318,7 @@ export default function MapView() {
             }
           },
           "source": "maplibre",
-          "maxzoom": 24,
+          "maxzoom": 22,
           "minzoom": 2,
           "source-layer": "centroids"
         },
@@ -241,7 +327,7 @@ export default function MapView() {
           "type": "line",
           "source": "cruises",
           "paint": {
-            "line-blur": 0,
+            "line-blur": 1,
             // "line-color": "rgba(255, 105, 180, 0.75)",
             "line-color": [
               'case',
@@ -250,10 +336,10 @@ export default function MapView() {
               //"rgba(0, 0, 255, 0.99)", // blue
               // "rgba(255, 105, 180, 0.90)", // pink
               "rgba(255, 255, 255, 0.90)", // white
-              "rgba(255, 105, 180, 0.20)", // pink
+              "rgba(255, 105, 180, 0.25)", // pink
               
             ],
-            "line-width": 2,
+            "line-width": 3,
             // "line-width": [
             //   'case',
             //   ['boolean', ['feature-state', 'hover'], false],
@@ -274,9 +360,6 @@ export default function MapView() {
       style: style,
       center: [lng, lat],
       zoom: zoom,
-      // onMouseEnter: onMouseEnter,
-      // onMouseLeave: onMouseLeave,
-      // cursor: "crosshair",
     });
 
     map.current.on('mousemove', (e) => {
@@ -306,17 +389,22 @@ export default function MapView() {
     // "click" | "contextmenu" | "dblclick" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup"
     // map.current.on('mousemove', 'cruises', (e) => {
     map.current.on('click', 'cruises', (e) => {
+      //// eslint-disable-next-line no-debugger
+      // debugger;
       const features = e.features
-      if (features.length > 0) {
-        const idd = features[0]['id']
-        setHoveredStateId(idd)
-        map.current.setFeatureState(
-            {source: 'cruises', sourceLayer: 'cruises', id: idd},
-            {hover: true}
-        );
-      }
+      // clickedMarkerPolyline(e.latlng) // {lng: -70.90144341724965, lat: 40.13360070192209}
+      // const ship = features[0]['properties']['ship']
+      // const cruise = features[0]['properties']['cruise']
+      // const sensor = features[0]['properties']['sensor']
+      //zarr_store_url: "https://rudy-testing-level-2-data.s3.us-west-2.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr",
+      setZarrStoreURL(`https://noaa-wcsd-zarr-pds.s3.us-east-1.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr`)
+      const idd = features[0]['id']
+      setHoveredStateId(idd)
+      map.current.setFeatureState(
+          {source: 'cruises', sourceLayer: 'cruises', id: idd},
+          {hover: true}
+      );
     });
-
     map.current.on('mouseleave', 'cruises', () => {
       setHoveredStateId(null);
       map.current.setFeatureState(
@@ -325,11 +413,9 @@ export default function MapView() {
       );
     });
 
-
     map.current.on("mouseenter", "cruises", () => {
       map.current.getCanvas().style.cursor = "crosshair";
     });
-
     map.current.on("mouseleave", "cruises", () => {
       map.current.getCanvas().style.cursor = "default";
     });
