@@ -30,6 +30,7 @@
     "@turf/turf": "^7.1.0",
     "@types/three": "0.147.1",
     "leva": "0.9.34",
+    "lodash": "^4.17.21",
     "mapbox-gl": "^3.7.0",
     "maplibre-gl": "^4.7.1",
     "pmtiles": "^4.0.1",

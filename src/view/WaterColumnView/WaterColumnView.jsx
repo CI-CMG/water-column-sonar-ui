@@ -15,7 +15,6 @@ export default function WaterColumnView() {
   const { search } = useLocation();
   const values = queryString.parse(search)
 
-
   useEffect(() => {
     // console.log(`userId: ${userId}`);
     var scene = new THREE.Scene();
@@ -48,7 +47,7 @@ export default function WaterColumnView() {
 
   return (
     <div className="WaterColumnView">
-      <p>ship: {values.ship}, cruise: {values.cruise}</p>
+      <p>ship: {values.ship}, cruise: {values.cruise}, sensor: {values.sensor}, index: {values.index}</p>
       <h1>Water Column</h1>
       <div ref={refContainer}></div>
     </div>

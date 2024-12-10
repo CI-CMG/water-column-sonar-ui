@@ -4,28 +4,26 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import * as pmtiles from 'pmtiles';
 
 
+// https://maplibre.org/maplibre-style-spec/layers/
+
 export default function MapView() {
   const mapContainer = useRef();
   const map = useRef();
   // TODO: show this on the map viewer in bottom right corner
   const [mouseCoordinates, setMouseCoordinates] = useState(null);
   // Starting point for centering the map?
-  const [lng] = useState(-95);
-  const [lat] = useState(35);
-  const [zoom] = useState(2);
   const [info, setInfo] = useState('');
+  const [selectedShip, setSelectedShip] = useState(null);
+  const [selectedCruise, setSelectedCruise] = useState(null);
+  const [selectedSensor, setSelectedSensor] = useState(null);
   const [hoveredStateId, setHoveredStateId] = useState(null);
 
   useEffect(() => {
     document.title = `Map`;
   }, []);
 
-  // https://maplibre.org/maplibre-style-spec/layers/
   useEffect(() => {
     if (map.current) return;
-    
-    console.log('initializeing map viewer')
-
     const style = {
       version: 8,
       name: "Water Column Project",
@@ -272,37 +270,12 @@ export default function MapView() {
     map.current = new maplibregl.Map({
       container: mapContainer.current,
       style: style,
-      center: [lng, lat],
-      zoom: zoom,
+      center: [-95, 35],
+      zoom: 2,
     });
-
-    map.current.on('mousemove', (e) => {
-      setMouseCoordinates(JSON.stringify(e.lngLat.wrap()))
-
-      const features = map.current.queryRenderedFeatures(e.point);
-
-      const displayProperties = [
-          'type',
-          'properties',
-      ];
-
-      features.map((feat) => {
-        const displayFeat = {};
-        displayProperties.forEach((prop) => {
-          displayFeat[prop] = feat[prop];
-        });
-        if('ship' in displayFeat.properties){
-          setInfo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}, sensor: ${displayFeat.properties['sensor']}`);
-        }
-      });  
-    });
-
-  }, [lat, lng, map, mapContainer, zoom, info]);
+  }, [map, mapContainer]);
 
   useEffect(() => {
-    // needs: https://maplibre.org/maplibre-gl-js/docs/examples/hover-styles/
-    // https://maplibre.org/maplibre-gl-js/docs/API/classes/MapMouseEvent/
-    // "click" | "contextmenu" | "dblclick" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup"
     map.current.on('click', 'cruises', (e) => {
       setHoveredStateId(null);
       map.current.setFeatureState(
@@ -329,18 +302,49 @@ export default function MapView() {
     map.current.on("mouseenter", "cruises", () => {
       map.current.getCanvas().style.cursor = "crosshair";
     });
-
     map.current.on("mouseleave", "cruises", () => {
       map.current.getCanvas().style.cursor = "default";
+    });
+
+    map.current.on('mousemove', (e) => {
+      setMouseCoordinates(JSON.stringify(e.lngLat.wrap()));
+
+      const features = map.current.queryRenderedFeatures(e.point);
+      const displayProperties = [
+          'type',
+          'properties',
+      ];
+
+      features.map((feat) => {
+        const displayFeat = {};
+        displayProperties.forEach((prop) => {
+          displayFeat[prop] = feat[prop];
+        });
+        if('ship' in displayFeat.properties){
+          // setInfo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}, sensor: ${displayFeat.properties['sensor']}`);
+          setSelectedShip(displayFeat.properties['ship'])
+          setSelectedCruise(displayFeat.properties['cruise'])
+          setSelectedSensor(displayFeat.properties['sensor'])
+        }
+      });  
     });
   }, [hoveredStateId])
 
   return (
     <div className="MapView">
       <h1>Map</h1>
-      <p>feature: <b>{info}</b>, hover: {hoveredStateId}, mouse: {mouseCoordinates}</p>
+
       <div className="map-wrap">
         <div ref={mapContainer} className="map" />
+      </div>
+
+      <div>
+        <div id="shipDescription">
+          <p>{selectedCruise}</p>
+        </div>
+        <div id="coordinates">
+          {mouseCoordinates}
+        </div>
       </div>
     </div>
   );
