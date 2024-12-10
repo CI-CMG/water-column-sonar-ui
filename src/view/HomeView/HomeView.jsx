@@ -62,7 +62,7 @@ export default function HomeView() {
 
       <Container maxWidth="md">
         <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
-          <h1>Water Column Data Mesh</h1>
+          <h1>Water Column Sonar Data Lake</h1>
           <p>version {import.meta.env.VITE_REACT_APP_VERSION}</p>
           <hr />
 
@@ -126,6 +126,8 @@ export default function HomeView() {
             Level 2
           </Button>
           <br />
+          <p>For more discussion on processing levels for water column sonar data, see here:</p>
+          <a rel="noopener noreferrer" href="https://echopype.readthedocs.io/en/v0.8.0/processing-levels.html">https://echopype.readthedocs.io/en/v0.8.0/processing-levels.html</a>
         </Paper>
 
         {/* Where */}
@@ -133,49 +135,6 @@ export default function HomeView() {
           <h2>Where</h2>
           <p>Publicly available data sets</p>
           <p>[MAP]</p>
-          <br />
-
-
-          <h2>NODD — NOAA Open Data Dissemination</h2>
-          <p>NOAA curates hundreds of terabytes of water column sonar data. The NOAA Open Data Dissemination program provides public access to NOAA's data via AWS S3 bucket access.</p>
-          <img src={NOAALogo} width={100} height={100} />
-          <img src={AWSLogo} height={100} />
-          <p>The water column sonar archive includes nearly 300 TB of echosounder data ready for analysis.</p>
-
-          <br />
-          <p>Datasets are available at three different processing levels:</p>
-          <br />
-          <Button
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/"
-            variant="outlined"
-            sx={{ mx: "auto", width: 200 }}
-          >
-            Level 0
-          </Button>
-          <br />
-          <br />
-          <Button
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/"
-            variant="outlined"
-            sx={{ mx: "auto", width: 200 }}
-          >
-            Level 1
-          </Button>
-          <br />
-          <br />
-          <Button
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/"
-            variant="outlined"
-            sx={{ mx: "auto", width: 200 }}
-          >
-            Level 2
-          </Button>
           <br />
         </Paper>
 
@@ -205,7 +164,7 @@ export default function HomeView() {
         </Paper>
 
         <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
-          <h2>Processing Power</h2>
+          <h2>Processing Utilities</h2>
 
           <h3>echopype</h3>
           <p>Data conversions are made possible using the open source project,
@@ -226,7 +185,7 @@ export default function HomeView() {
           <h3>OSPool</h3>
           <img src={OSPool} height={100} />
           <img src={OSDF} height={100} />
-          <p>This research was done using services provided by the OSG Consortium [1,2,3,4], which is supported by the National Science Foundation awards #2030508 and #1836650.</p>
+          <p><i>This research was done using services provided by the OSG Consortium [1,2,3,4], which is supported by the National Science Foundation awards #2030508 and #1836650.</i></p>
           <a
               target="_blank"
               rel="noopener noreferrer"
@@ -238,7 +197,7 @@ export default function HomeView() {
         </Paper>
 
         <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
-          <h2>Ecosystem</h2>
+          <h2>Our Data Science Ecosystem</h2>
           <p>Analysis is interoperable between a suite of scientific tools in the Python ecosystem.</p>
           {/* TODO: make these actual links to projects */}
           <img src={XarrayLogo} height={100} />
