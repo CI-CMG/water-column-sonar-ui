@@ -3,7 +3,12 @@ import {
   openArray,
   slice,
 } from 'zarr';
-import * as turf from '@turf/turf'
+import {
+  round,
+  point,
+  lineString,
+} from "@turf/helpers";
+import { nearestPointOnLine } from "@turf/nearest-point-on-line";
 
 // const zarrBaseURL="https://noaa-wcsd-zarr-pds.s3.us-east-1.amazonaws.com"
 const bucketName="noaa-wcsd-zarr-pds"
@@ -14,7 +19,7 @@ const zarrStoreUrl = (shipName, cruiseName, sensorName) => {
 // https://github.com/CI-CMG/echofish-aws-ui/blob/master/src/main/frontend/src/views/view/echofish/cruise/Echogram.vue
 export default function ZarrView() {
   const [shipName, setShipName] = useState("Henry_B._Bigelow");
-  const [cruiseName, setCruiseName] = useState("HB0902"); // HB1304 3,573,052 samples
+  const [cruiseName, setCruiseName] = useState("HB0706"); // HB1304 3,573,052 samples
   const [sensorName, setSensorName] = useState("EK60");
   const [clickedLinestringIndex, setClickedLinestringIndex] = useState(null);
   const [error, setError] = useState(null);
@@ -52,21 +57,18 @@ export default function ZarrView() {
 
   useEffect(() => {
     if(latitudeData && longitudeData) {
-      // setClickedPoint(turf.point([-28, 51]));
-      // setClickedPoint(turf.point([-65, 42]));
-      setClickedPoint(turf.point([-65, 41]));
+      setClickedPoint(point([-65, 41]));
       let aa = Array.from(latitudeData);
       let bb = Array.from(longitudeData);
-      setClickedLinestring(turf.lineString(aa.map((e, i) => [bb[i], e])));
+      setClickedLinestring(lineString(aa.map((e, i) => [bb[i], e])));
     }
   }, [latitudeData, longitudeData])
 
   useEffect(() => {
     if(clickedPoint && clickedLinestring) {
-      let snapped = turf.nearestPointOnLine(
+      let snapped = nearestPointOnLine(
           clickedLinestring, // [longitude, latitude]
-          clickedPoint,
-          { units: 'kilometers' }
+          clickedPoint
       )
       console.log('closest polyline index: ' + snapped.properties.index + ' of ' + latitudeData.length + ' indices.')
     
@@ -86,8 +88,8 @@ export default function ZarrView() {
           <p>sensor: {sensorName}</p>
           <hr />
           <p>number of samples: {latitudeData.length}</p>
-          <p>latitude[0]: {turf.round(latitudeData[0], 5)}</p>
-          <p>longitude[0]: {turf.round(longitudeData[0], 5)}</p>
+          <p>latitude[0]: {round(latitudeData[0], 5)}</p>
+          <p>longitude[0]: {round(longitudeData[0], 5)}</p>
           {clickedLinestring &&
             <p>clicked index: {clickedLinestringIndex}</p>
           }
@@ -99,6 +101,7 @@ export default function ZarrView() {
   );
 }
 
-// TODO: next use turf to get the linestring and point
-// then calculate index of the closest point on the Line
-// then jump to the water column view with the right props
+// TODO:
+// [done] use turf to get the linestring and point
+// [done] calculate index of the closest point on the Line
+// jump to the water column view with the right props

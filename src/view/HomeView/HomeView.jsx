@@ -30,7 +30,7 @@ export default function HomeView() {
   };
   const [isLoading, setLoading] = useState(false);
   const [value, setValue] = useState("nothing here");
-  const [errorMessage, setErrorMessage] = useState("no errors");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // Call API
   const apiResult = useGetSatellitesQuery(params);
@@ -204,7 +204,9 @@ export default function HomeView() {
           <p>
             {isLoading ? "loading value" : `api depth value: ${value} meters`}
           </p>
-          <p>{`error message: ${errorMessage}`}</p>
+          {errorMessage &&
+            <p>{`error message: ${errorMessage}`}</p>
+          }
         </Paper>
       </Container>
     </div>

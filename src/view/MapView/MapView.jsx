@@ -2,10 +2,12 @@ import { useState, useRef, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as pmtiles from 'pmtiles';
-import * as turf from '@turf/turf'
+import { round } from '@turf/helpers';
+import GetZarrGeospatialIndex from './GetZarrGeospatialIndex';
 
 
 // https://maplibre.org/maplibre-style-spec/layers/
+// const foo = () => console.log('asdf');
 
 export default function MapView() {
   const mapContainer = useRef();
@@ -13,18 +15,20 @@ export default function MapView() {
   // TODO: show this on the map viewer in bottom right corner
   const [mouseCoordinates, setMouseCoordinates] = useState(null);
   // Starting point for centering the map?
-  const [info, setInfo] = useState('');
+  // const [info, setInfo] = useState('');
   const [selectedShip, setSelectedShip] = useState(null);
   const [selectedCruise, setSelectedCruise] = useState(null);
   const [selectedSensor, setSelectedSensor] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [hoveredStateId, setHoveredStateId] = useState(null);
 
   useEffect(() => {
     document.title = `Map`;
+    console.log(`👆 App Name: ${import.meta.env.VITE_REACT_APP_NAME}, App Version: ${import.meta.env.VITE_REACT_APP_VERSION}`)
   }, []);
 
   useEffect(() => {
-    if (map.current) return;
+    // if (map.current) return;
     const style = {
       version: 8,
       name: "Water Column Project",
@@ -273,8 +277,60 @@ export default function MapView() {
       style: style,
       center: [-95, 35],
       zoom: 2,
+      // on: {type: 'click', layer: 'cruises', listener: foo},
     });
-  }, [map, mapContainer]);
+  
+    // styling for the mouse cursor
+    map.current.on("mouseenter", "cruises", () => {
+      map.current.getCanvas().style.cursor = "crosshair";
+    });
+    // styling for the mouse cursor
+    map.current.on("mouseleave", "cruises", () => {
+      map.current.getCanvas().style.cursor = "default";
+    });
+    
+    // hovered cruise info
+    map.current.on('mousemove', (e) => {
+      // setMouseCoordinates(JSON.stringify(e.lngLat.wrap()));
+      setMouseCoordinates(e.lngLat);
+
+      const features = map.current.queryRenderedFeatures(e.point);
+      const displayProperties = [
+          'type',
+          'properties',
+      ];
+
+      features.map((feat) => {
+        const displayFeat = {};
+        displayProperties.forEach((prop) => { // TODO: explore this further
+          displayFeat[prop] = feat[prop];
+        });
+        if('ship' in displayFeat.properties){
+          // setInfo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}, sensor: ${displayFeat.properties['sensor']}`);
+          setSelectedShip(displayFeat.properties['ship'])
+          setSelectedCruise(displayFeat.properties['cruise'])
+          setSelectedSensor(displayFeat.properties['sensor'])
+        }
+      });  
+    });
+  }, []);
+
+  useEffect(() => {
+    // display cruise card info on click
+    map.current.on('click', 'cruises', (e) => {
+      GetZarrGeospatialIndex(e.features[0].properties.cruise, e.lngLat['lng'], e.lngLat['lat'])
+        .then((clickedIndex) => {
+          console.log(clickedIndex);
+          setSelectedIndex(clickedIndex);
+        })
+
+      new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(`Cruise name: ${e.features[0].properties.cruise}`)
+        .addTo(map.current);
+    });
+
+  }, [])
 
   useEffect(() => {
     // selected cruise info
@@ -301,40 +357,6 @@ export default function MapView() {
           {hover: false}
       );
     });
-
-    // styling for the mouse cursor
-    map.current.on("mouseenter", "cruises", () => {
-      map.current.getCanvas().style.cursor = "crosshair";
-    });
-    // styling for the mouse cursor
-    map.current.on("mouseleave", "cruises", () => {
-      map.current.getCanvas().style.cursor = "default";
-    });
-
-    // hovered cruise info
-    map.current.on('mousemove', (e) => {
-      // setMouseCoordinates(JSON.stringify(e.lngLat.wrap()));
-      setMouseCoordinates(e.lngLat);
-
-      const features = map.current.queryRenderedFeatures(e.point);
-      const displayProperties = [
-          'type',
-          'properties',
-      ];
-
-      features.map((feat) => {
-        const displayFeat = {};
-        displayProperties.forEach((prop) => {
-          displayFeat[prop] = feat[prop];
-        });
-        if('ship' in displayFeat.properties){
-          // setInfo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}, sensor: ${displayFeat.properties['sensor']}`);
-          setSelectedShip(displayFeat.properties['ship'])
-          setSelectedCruise(displayFeat.properties['cruise'])
-          setSelectedSensor(displayFeat.properties['sensor'])
-        }
-      });  
-    });
   }, [hoveredStateId])
 
   return (
@@ -348,13 +370,20 @@ export default function MapView() {
       <div>
         { selectedCruise &&
           <div id="cruiseDisplay">
-            ship: {selectedShip}, 
-            cruise: {selectedCruise}
+            Ship: {selectedShip}, 
+            Cruise: {selectedCruise}, 
+            Sensor: {selectedSensor}
           </div>
         }
         { mouseCoordinates && 
           <div id="coordinateDisplay">
-            {turf.round(mouseCoordinates.lat, 5)}° N, {turf.round(mouseCoordinates.lng, 5)}° E
+            {round(mouseCoordinates.lat, 5)}° N, {round(mouseCoordinates.lng, 5)}° E
+          </div>
+        }
+
+        { selectedIndex && 
+          <div id="indexDisplay">
+            {selectedIndex}
           </div>
         }
       </div>
