@@ -1,18 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-// import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-// import Image from "material-ui-image";
-// import SpeedDial from "@mui/material/SpeedDial";
-// import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-// import SpeedDialAction from "@mui/material/SpeedDialAction";
-// import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
-// import SaveIcon from "@mui/icons-material/Save";
-// import PrintIcon from "@mui/icons-material/Print";
-// import ShareIcon from "@mui/icons-material/Share";
-// import SailingIcon from "@mui/icons-material/Sailing";
-
 import { useGetSatellitesQuery } from "../../services/api.js";
 import { Typography } from "@mui/material";
 import NOAALogo from "../../../src/assets/images/noaa/noaa.png";
@@ -27,10 +16,9 @@ import OSDF from "../../../src/assets/images/osdf/OSDF.png";
 import AWSLogo from "../../../src/assets/images/aws/aws.png";
 
 export default function HomeView() {
-  console.log(`App Name: ${import.meta.env.VITE_REACT_APP_NAME}, App Version: ${import.meta.env.VITE_REACT_APP_VERSION}`)
-
   useEffect(() => {
     document.title = `Home`;
+    console.log(`App Name: ${import.meta.env.VITE_REACT_APP_NAME}, App Version: ${import.meta.env.VITE_REACT_APP_VERSION}`)
   }, []);
 
   const params = {
@@ -68,7 +56,7 @@ export default function HomeView() {
 
           <h2>The Henry Bigelow Research Vessel</h2>
           <p>Henry B. Bigelow is a fisheries research vessel that surveys the east coast of the United Sates collecting oceanographic data.</p>
-          <p>The ship's surveys focus on assessments of fish stocks and research of the marine biome.</p>
+          <p>The ship&apos;s surveys focus on assessments of fish stocks and research of the marine biome.</p>
 
           <br />
           <img src={HenryBBigelow} width={400} />

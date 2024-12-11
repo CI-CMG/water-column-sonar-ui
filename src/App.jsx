@@ -4,16 +4,13 @@ import {
 } from 'react-router-dom';
 import ErrorView from './view/ErrorView/ErrorView';
 import HomeView from './view/HomeView/HomeView';
-import LayoutView from './view/LayoutView';
+import LayoutView from './view/LayoutView/LayoutView';
 import CruiseView from './view/CruiseView/CruiseView';
 import MapView from './view/MapView/MapView';
 import ZarrView from './view/ZarrView/ZarrView';
 import WaterColumnView from './view/WaterColumnView/WaterColumnView';
-// import { useParams } from 'react-router-dom';
 
 export default function App() {
-  // let { cruise } = useParams();
-
   return (
     <div className="AppView">
       <Routes>

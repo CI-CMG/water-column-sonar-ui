@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as pmtiles from 'pmtiles';
+import * as turf from '@turf/turf'
 
 
 // https://maplibre.org/maplibre-style-spec/layers/
@@ -251,7 +252,7 @@ export default function MapView() {
               "rgba(255, 105, 180, 0.25)", // pink
               
             ],
-            "line-width": 3,
+            "line-width": 2,
             // "line-width": [
             //   'case',
             //   ['boolean', ['feature-state', 'hover'], false],
@@ -276,7 +277,9 @@ export default function MapView() {
   }, [map, mapContainer]);
 
   useEffect(() => {
+    // selected cruise info
     map.current.on('click', 'cruises', (e) => {
+      // TODO: after first click the mouse interaction slows down a lot!
       setHoveredStateId(null);
       map.current.setFeatureState(
           {source: 'cruises', sourceLayer: 'cruises', id: hoveredStateId},
@@ -289,8 +292,8 @@ export default function MapView() {
           {source: 'cruises', sourceLayer: 'cruises', id: idd},
           {hover: true}
       );
+      // TODO: do click handler here for selected feature, jump to new page
     });
-
     map.current.on('mouseleave', 'cruises', () => {
       setHoveredStateId(null);
       map.current.setFeatureState(
@@ -299,15 +302,19 @@ export default function MapView() {
       );
     });
 
+    // styling for the mouse cursor
     map.current.on("mouseenter", "cruises", () => {
       map.current.getCanvas().style.cursor = "crosshair";
     });
+    // styling for the mouse cursor
     map.current.on("mouseleave", "cruises", () => {
       map.current.getCanvas().style.cursor = "default";
     });
 
+    // hovered cruise info
     map.current.on('mousemove', (e) => {
-      setMouseCoordinates(JSON.stringify(e.lngLat.wrap()));
+      // setMouseCoordinates(JSON.stringify(e.lngLat.wrap()));
+      setMouseCoordinates(e.lngLat);
 
       const features = map.current.queryRenderedFeatures(e.point);
       const displayProperties = [
@@ -339,12 +346,17 @@ export default function MapView() {
       </div>
 
       <div>
-        <div id="shipDescription">
-          <p>{selectedCruise}</p>
-        </div>
-        <div id="coordinates">
-          {mouseCoordinates}
-        </div>
+        { selectedCruise &&
+          <div id="cruiseDisplay">
+            ship: {selectedShip}, 
+            cruise: {selectedCruise}
+          </div>
+        }
+        { mouseCoordinates && 
+          <div id="coordinateDisplay">
+            {turf.round(mouseCoordinates.lat, 5)}° N, {turf.round(mouseCoordinates.lng, 5)}° E
+          </div>
+        }
       </div>
     </div>
   );
