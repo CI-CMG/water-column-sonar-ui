@@ -349,6 +349,7 @@ export default function MapView() {
           {hover: true}
       );
       // TODO: do click handler here for selected feature, jump to new page
+
     });
     map.current.on('mouseleave', 'cruises', () => {
       setHoveredStateId(null);
