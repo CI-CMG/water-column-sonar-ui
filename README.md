@@ -16,3 +16,4 @@ https://medium.com/@miahossain8888/how-to-create-a-react-app-with-vite-571883b10
 add link to pypi
 add link to github
 
+add globe view
