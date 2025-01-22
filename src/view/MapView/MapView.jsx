@@ -31,6 +31,9 @@ export default function MapView() {
     // if (map.current) return;
     const style = {
       version: 8,
+      projection: {
+          type: 'globe'
+      },
       name: "Water Column Project",
       glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
       // consider switching to: https://protomaps.com/
@@ -277,6 +280,7 @@ export default function MapView() {
       style: style,
       center: [-95, 35],
       zoom: 2,
+      minZoom: 2,
       // on: {type: 'click', layer: 'cruises', listener: foo},
     });
   
