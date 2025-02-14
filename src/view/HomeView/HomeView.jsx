@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import Container from "@mui/material/Container";
 import { useGetSatellitesQuery } from "../../services/api.js";
-import { Typography } from "@mui/material";
 import NOAALogo from "../../../src/assets/images/noaa/noaa.png";
 import XarrayLogo from "../../../src/assets/images/xarray/xarray.png";
 import DaskLogo from "../../../src/assets/images/dask/dask.png";
@@ -48,8 +44,8 @@ export default function HomeView() {
   return (
     <div className="HomeView">
 
-      <Container maxWidth="md">
-        <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
+      <div>
+        <div>
           <h1>Water Column Sonar Data Lake</h1>
           <p>version {import.meta.env.VITE_REACT_APP_VERSION}</p>
           <hr />
@@ -62,17 +58,17 @@ export default function HomeView() {
           <img src={HenryBBigelow} width={400} />
           <p><i>NOAAS Henry B. Bigelow (R 225). https://en.wikipedia.org/wiki/NOAAS_Henry_B._Bigelow</i></p>
 
-        </Paper>
+        </div>
 
         {/* EK60 Echosounders */}
-        <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
+        <div>
           <h2>EK60 Echosounders</h2>
           <p>EK60 data are a sonar reflectivity measurement.</p>
           <p>[Holoview Data visualization]</p>
-        </Paper>
+        </div>
 
         {/* NODD — NOAA Open Data Dissemination */}
-        <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
+        <div>
           <h2>NODD — NOAA Open Data Dissemination</h2>
           <p>NOAA curates hundreds of terabytes of water column sonar data. The NOAA Open Data Dissemination program provides public access to NOAA's data via AWS S3 bucket access.</p>
           <img src={NOAALogo} width={100} height={100} />
@@ -82,66 +78,60 @@ export default function HomeView() {
           <br />
           <p>Datasets are available at three different processing levels:</p>
           <br />
-          <Button
+          <a
             target="_blank"
             rel="noopener noreferrer"
             href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/"
-            variant="outlined"
-            sx={{ mx: "auto", width: 200 }}
           >
             Level 0
-          </Button>
+          </a>
           <br />
           <br />
-          <Button
+          <a
             target="_blank"
             rel="noopener noreferrer"
             href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/"
-            variant="outlined"
-            sx={{ mx: "auto", width: 200 }}
           >
             Level 1
-          </Button>
+          </a>
           <br />
           <br />
-          <Button
+          <a
             target="_blank"
             rel="noopener noreferrer"
             href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/"
-            variant="outlined"
-            sx={{ mx: "auto", width: 200 }}
           >
             Level 2
-          </Button>
+          </a>
           <br />
           <p>For more discussion on processing levels for water column sonar data, see here:</p>
           <a rel="noopener noreferrer" href="https://echopype.readthedocs.io/en/v0.8.0/processing-levels.html">https://echopype.readthedocs.io/en/v0.8.0/processing-levels.html</a>
-        </Paper>
+        </div>
 
         {/* Where */}
-        <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
+        <div>
           <h2>Where</h2>
           <p>Publicly available data sets</p>
           <p>[MAP]</p>
           <br />
-        </Paper>
+        </div>
 
         {/* ZarrJS */}
-        <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
+        <div>
           <h3>ZarrJS</h3>
           <p>Data are available in a cloud-native Zarr format.</p>
           <img src={ZarrLogo} height={100} />
-          <Typography align="center">[ThreeJS graphic of cube]</Typography>
+          <p>[ThreeJS graphic of cube]</p>
           <br />
-        </Paper>
+        </div>
 
-        <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
+        <div>
           <h2>When</h2>
           <p>2001 to Present</p>
           <p>[bee diagram datasets by size — circles]</p>
-        </Paper>
+        </div>
 
-        <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
+        <div>
           <h2>Why</h2>
           <p>Goal is to evaluate large scale interactions between climate change and the atlantic herring population</p>
           <p>map of population collapse</p>
@@ -149,9 +139,9 @@ export default function HomeView() {
           <p>Global Warming</p>
           {/* https://threejs.org/examples/css3d_molecules.html */}
           <p>co2 plot -- co2 molecule</p>
-        </Paper>
+        </div>
 
-        <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
+        <div>
           <h2>Processing Utilities</h2>
 
           <h3>echopype</h3>
@@ -182,9 +172,9 @@ export default function HomeView() {
               See more about our current processing statistics here.
             </a>
           <br />
-        </Paper>
+        </div>
 
-        <Paper square sx={{ m: 2, p: 4 }} elevation={10}>
+        <div>
           <h2>Our Data Science Ecosystem</h2>
           <p>Analysis is interoperable between a suite of scientific tools in the Python ecosystem.</p>
           {/* TODO: make these actual links to projects */}
@@ -195,20 +185,20 @@ export default function HomeView() {
           <br />
           <br />
           <br />
-        </Paper>
+        </div>
 
         <br />
         {/* https://sbcode.net/threejs/animate-on-scroll/ */}
 
-        <Paper square sx={{ m: 2, p: 2 }} elevation={10}>
+        <div>
           <p>
             {isLoading ? "loading value" : `api depth value: ${value} meters`}
           </p>
           {errorMessage &&
             <p>{`error message: ${errorMessage}`}</p>
           }
-        </Paper>
-      </Container>
+        </div>
+      </div>
     </div>
   );
 }

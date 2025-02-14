@@ -7,10 +7,10 @@ import { Leva } from 'leva'
 import App from "./App.jsx";
 import { setupStore } from './store.js';
 import './assets/css/Main.scss';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+// import '@fontsource/roboto/300.css';
+// import '@fontsource/roboto/400.css';
+// import '@fontsource/roboto/500.css';
+// import '@fontsource/roboto/700.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = setupStore();
