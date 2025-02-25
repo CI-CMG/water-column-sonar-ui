@@ -25,12 +25,12 @@ export default function ZarrView() {
   const [error, setError] = useState(null);
   const [latitudeData, setLatitudeData] = useState(null);
   const [longitudeData, setLongitudeData] = useState(null);
-  
+
   // lngLat: Pc {lng: -55.50282629333897, lat: 45.86529038585317}
   // const [clickedPoint, setClickedPoint] = useState(turf.point([-55.50282, 45.86529])); // turf.point([-77.037076, 38.884017])
   const [clickedPoint, setClickedPoint] = useState(null); // turf.point([-77.037076, 38.884017])
   const [clickedLinestring, setClickedLinestring] = useState(null);
-  
+
 
   useEffect(() => {
     const latitudeArray = (shipName, cruiseName, sensorName) => openArray({store: zarrStoreUrl(shipName, cruiseName, sensorName), path: "latitude", mode: "r"});
@@ -71,7 +71,7 @@ export default function ZarrView() {
           clickedPoint
       )
       console.log('closest polyline index: ' + snapped.properties.index + ' of ' + latitudeData.length + ' indices.')
-    
+
       setClickedLinestringIndex(snapped.properties.index)
     }
   }, [clickedPoint, clickedLinestring, latitudeData]);

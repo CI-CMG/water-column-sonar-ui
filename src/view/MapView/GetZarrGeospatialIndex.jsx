@@ -5,6 +5,7 @@ import { nearestPointOnLine } from "@turf/nearest-point-on-line";
 
 // const zarrBaseURL="https://noaa-wcsd-zarr-pds.s3.us-east-1.amazonaws.com"
 const bucketName = "noaa-wcsd-zarr-pds";
+
 const zarrStoreUrl = (shipName, cruiseName, sensorName) => {
   return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${shipName}/${cruiseName}/${sensorName}/${cruiseName}.zarr`;
 };
@@ -26,6 +27,7 @@ async function longitudeArray(shipName, cruiseName, sensorName) {
       path: "longitude",
       mode: "r",
     });
+    // debugger;
     return await z.get([slice(null)]).then((d) => {
       return d.data;
     });

@@ -22,30 +22,30 @@ export const api = createApi({
 
   endpoints: (builder) => ({
 
-    /* --- Cruises --- */
+    // /* --- Cruises --- */
     getCruises: builder.query({
       query: () => 'cruises',
     }),
 
     /* --- Satellites --- */
-    getSatellites: builder.query({
-      query: (args) => {
-        
-        return {
-          url: 'identify',
-          params: args,
-        }
-      },
-    }),
+    // getSatellites: builder.query({
+    //   query: (args) => {
 
-    getZarr: builder.query({
-      query: (args) => {
-        return {
-          url: 'identify',
-          params: args,
-        }
-      },
-    })
+    //     return {
+    //       url: 'identify',
+    //       params: args,
+    //     }
+    //   },
+    // }),
+
+    // getZarr: builder.query({
+    //   query: (args) => {
+    //     return {
+    //       url: 'identify',
+    //       params: args,
+    //     }
+    //   },
+    // })
 
   }),
 });

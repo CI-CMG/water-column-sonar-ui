@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { useGetSatellitesQuery } from "../../services/api.js";
+// import { useGetSatellitesQuery } from "../../services/api.js";
 import NOAALogo from "../../../src/assets/images/noaa/noaa.png";
 import XarrayLogo from "../../../src/assets/images/xarray/xarray.png";
 import DaskLogo from "../../../src/assets/images/dask/dask.png";
 import ZarrLogo from "../../../src/assets/images/zarr/zarr.png";
 import PandasLogo from "../../../src/assets/images/pandas/pandas.png";
-import HenryBBigelow from "../../../src/assets/images/noaa/henry_b._bigelow.png";
+// import HenryBBigelow from "../../../src/assets/images/noaa/henry_b._bigelow.png";
 import Echopype from "../../../src/assets/images/echopype/echopype.png";
 import OSPool from "../../../src/assets/images/osdf/OSPool.png";
 import OSDF from "../../../src/assets/images/osdf/OSDF.png";
 import AWSLogo from "../../../src/assets/images/aws/aws.png";
 
-export default function HomeView() {
+export default function AboutView() {
   useEffect(() => {
-    document.title = `Home`;
+    document.title = `About`;
     console.log(`App Name: ${import.meta.env.VITE_REACT_APP_NAME}, App Version: ${import.meta.env.VITE_REACT_APP_VERSION}`)
   }, []);
 
@@ -24,29 +24,31 @@ export default function HomeView() {
     returnCatalogItems: false,
     f: "json",
   };
-  const [isLoading, setLoading] = useState(false);
-  const [value, setValue] = useState("nothing here");
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [isLoading, setLoading] = useState(false);
+  // const [value, setValue] = useState("nothing here");
+  // const [errorMessage, setErrorMessage] = useState(null);
 
   // Call API
-  const apiResult = useGetSatellitesQuery(params);
+  // const apiResult = useGetSatellitesQuery(params);
 
   // Update files data on changed API result
-  useEffect(() => {
-    if (apiResult.status === "fulfilled") {
-      setValue(apiResult.data.value);
-    } else if (apiResult.status === "rejected") {
-      setErrorMessage("API error");
-    }
-    setLoading(false);
-  }, [apiResult]);
+  // useEffect(() => {
+  //   if (apiResult.status === "fulfilled") {
+  //     setValue(apiResult.data.value);
+  //   } else if (apiResult.status === "rejected") {
+  //     setErrorMessage("API error");
+  //   }
+  //   setLoading(false);
+  // }, [apiResult]);
 
   return (
-    <div className="HomeView">
+    <div className="AboutView">
 
       <div>
         <div>
+          <br />
           <h1>Water Column Sonar Data Lake</h1>
+          <br />
           <p>version {import.meta.env.VITE_REACT_APP_VERSION}</p>
           <hr />
 
@@ -55,8 +57,8 @@ export default function HomeView() {
           <p>The ship&apos;s surveys focus on assessments of fish stocks and research of the marine biome.</p>
 
           <br />
-          <img src={HenryBBigelow} width={400} />
-          <p><i>NOAAS Henry B. Bigelow (R 225). https://en.wikipedia.org/wiki/NOAAS_Henry_B._Bigelow</i></p>
+          {/* <img src={HenryBBigelow} width={400} /> */}
+          {/* <p><i>NOAAS Henry B. Bigelow (R 225). https://en.wikipedia.org/wiki/NOAAS_Henry_B._Bigelow</i></p> */}
 
         </div>
 
@@ -190,14 +192,14 @@ export default function HomeView() {
         <br />
         {/* https://sbcode.net/threejs/animate-on-scroll/ */}
 
-        <div>
+        {/* <div>
           <p>
             {isLoading ? "loading value" : `api depth value: ${value} meters`}
           </p>
           {errorMessage &&
             <p>{`error message: ${errorMessage}`}</p>
           }
-        </div>
+        </div> */}
       </div>
     </div>
   );

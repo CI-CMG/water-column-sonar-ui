@@ -1,55 +1,82 @@
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
-// import { useParams } from "react-router-dom";
-import queryString from 'query-string';
-import { useLocation } from 'react-router-dom';
+// import { useEffect } from "react";
+import queryString from "query-string";
+import { useLocation } from "react-router-dom";
+import { MapContainer, TileLayer } from "react-leaflet";
+import {
+  CRS,
+} from "leaflet";
+import {
+  HTTPStore, openArray, // ZarrArray, slice,
+} from 'zarr';
+
+const bucketName = "noaa-wcsd-zarr-pds";
+const shipName = "Henry_B._Bigelow"
+const cruiseName = "HB0707"
+const sensorName = "EK60"
 
 
+const zarrStoreUrl = (shipName, cruiseName, sensorName) => {
+  return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${shipName}/${cruiseName}/${sensorName}/${cruiseName}.zarr`;
+};
+
+
+function load() {
+  const store = new HTTPStore(zarrStoreUrl);
+  const depthPromise = openArray({ store, path: 'depth', mode: 'r' });
+  const timePromise = openArray({ store, path: 'time', mode: 'r' });
+  const latitudePromise = openArray({ store, path: 'latitude', mode: 'r' });
+  const longitudePromise = openArray({ store, path: 'longitude', mode: 'r' });
+  const svPromise = openArray({ store, path: 'Sv', mode: 'r' });
+
+  Promise.all([
+    depthPromise,
+    timePromise,
+    latitudePromise,
+    longitudePromise,
+    svPromise,
+  ]).then(([depthArray1, timeArray1, latitudeArray1, longitudeArray1, svArray1]) => {
+    depthArray.value = depthArray1;
+    timeArray.value = timeArray1;
+    latitudeArray.value = latitudeArray1;
+    longitudeArray.value = longitudeArray1;
+    svArray.value = svArray1;
+  }).then(() => {
+    drawTiles();
+    const latlon = new LatLng(0, storeIndex.value);
+  }).then(() => {
+    moveend();
+  });
+}
+
+
+const mapOptions = {
+  crs: CRS.Simple,
+  zoom: 0,
+  center:  [0, 0],
+  minZoom: 0,
+  maxZoom: 0,
+  zoomControl: false,
+};
+
+// http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
-  useEffect(() => {
-    document.title = `Water Column`;
-  }, []);
-
-  const refContainer = useRef(null);
 
   const { search } = useLocation();
-  const values = queryString.parse(search)
+  const values = queryString.parse(search);
 
-  useEffect(() => {
-    // console.log(`userId: ${userId}`);
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.01,
-      1000
-    );
-    var renderer = new THREE.WebGLRenderer();
-    // renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setSize(window.innerWidth, 600);
-    refContainer.current &&
-      refContainer.current.appendChild(renderer.domElement);
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
-    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    camera.position.z = 5;
-
-    var animate = function () {
-      requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-      renderer.render(scene, camera);
-    };
-    animate();
-    console.log("this");
-  }, []);
+  // useEffect(() => {
+  //   console.log("this");
+  // }, []);
 
   return (
     <div className="WaterColumnView">
       <p>ship: {values.ship}, cruise: {values.cruise}, sensor: {values.sensor}, index: {values.index}</p>
-      <h1>Water Column</h1>
-      <div ref={refContainer}></div>
+      <MapContainer
+        {...mapOptions}
+        style={{ height: "500px" }}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      </MapContainer>
     </div>
   );
 }
