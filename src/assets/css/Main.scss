@@ -1,82 +1,73 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  // background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
   background-color: #FFDEE9;
   background-image: linear-gradient(270deg, #FFDEE9 0%, #B5FFFC 100%);
-  // background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
-  // background: linear-gradient(90deg, #efd5ff 0%, #515ada 100%);
-
   // Cool patterns: https://www.gradientmagic.com/collection/lightbg
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+  height: 100vh;
+  width: 100vw;
+  border: 1px solid orange;
 }
 
 .map-wrap {
   width: 100vw;
-  height: 100vh;
+  height: 97vh;
 }
 .map {
   width: 100%;
   height: 100%;
-  /* border: 2px solid red; */
 }
 
-.main {
-  height: 70vh;
-}
+
 .water-column-main {
-  height: 70vh;
-}
-.water-column-view2 {
-  height: 70vh;
-}
+  height: 100%;
 
-.MapView {
-  border: 2px solid red;
+  .MapView {
+    .map { border: 1px solid red; }
 
-  #coordinateDisplay {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    padding: 5px;
-    background-color: black;
-    color: white;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 20px;
-  }
+    font-size: 16px;
 
-  #cruiseDisplay {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    padding: 5px;
-    background-color: black;
-    color: white;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 20px;
-  }
-  #indexDisplay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    padding: 5px;
-    background-color: black;
-    color: white;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 20px;
-  }
+    .bottom-left { position: relative; }
+    .cruise-display {
+      position: absolute;
+      bottom: 0;
+      left: 25px;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.25);
+      color: white;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+    }
 
-  .maplibregl-ctrl-bottom-right {
-    display: none;
+    .bottom-right { position: relative; }
+    .coordinate-display {
+      position: absolute;
+      bottom: 0px;
+      right: 25px;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.25);
+      color: white;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+    }
+
+    .maplibregl-ctrl-bottom-right {
+      display: none;
+    }
   }
 }
+
+
+
+// .HomeView {
+//   .container {
+//     // border: 2px solid blue;
+
+//     .col {
+//       border: 2px solid green;
+//     }
+//   }
+// }
