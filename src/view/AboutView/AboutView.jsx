@@ -17,13 +17,13 @@ export default function AboutView() {
     console.log(`App Name: ${import.meta.env.VITE_REACT_APP_NAME}, App Version: ${import.meta.env.VITE_REACT_APP_VERSION}`)
   }, []);
 
-  const params = {
-    geometry: "-39.85499,13.21980",
-    geometryType: "esriGeometryPoint",
-    returnGeometry: false,
-    returnCatalogItems: false,
-    f: "json",
-  };
+  // const params = {
+  //   geometry: "-39.85499,13.21980",
+  //   geometryType: "esriGeometryPoint",
+  //   returnGeometry: false,
+  //   returnCatalogItems: false,
+  //   f: "json",
+  // };
   // const [isLoading, setLoading] = useState(false);
   // const [value, setValue] = useState("nothing here");
   // const [errorMessage, setErrorMessage] = useState(null);

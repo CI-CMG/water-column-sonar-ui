@@ -23,7 +23,6 @@
     "@types/three": "0.147.1",
     "bootstrap": "^5.3.3",
     "leaflet": "^1.9.4",
-    "leva": "0.9.34",
     "lodash": "^4.17.21",
     "maplibre-gl": "^5.1.0",
     "pmtiles": "^4.2.0",

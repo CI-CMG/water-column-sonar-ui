@@ -52,23 +52,7 @@ const style = {
       "source-layer": "cruises",
     },
   ],
-  // sky: {
-  //   "atmosphere-blend": [
-  //     "interpolate",
-  //     ["linear"],
-  //     ["zoom"],
-  //     0,
-  //     1,
-  //     5,
-  //     1,
-  //     7,
-  //     0,
-  //   ],
-  // },
-  // light: {
-  //   anchor: "map",
-  //   position: [1.5, 90, 80],
-  // },
+  // TODO: add atmosphere
 };
 
 export default function MapView() {
@@ -78,12 +62,10 @@ export default function MapView() {
   const [selectedShip, setSelectedShip] = useState(null);
   const [selectedCruise, setSelectedCruise] = useState(null);
   const [selectedSensor, setSelectedSensor] = useState(null);
-  // const [selectedIndex, setSelectedIndex] = useState(null);
   const [hoveredStateId, setHoveredStateId] = useState(null);
 
   useEffect(() => {
     document.title = `Map`;
-
     console.log(
       `★ ${import.meta.env.VITE_REACT_APP_NAME} — v${
         import.meta.env.VITE_REACT_APP_VERSION
@@ -195,31 +177,30 @@ export default function MapView() {
 
   return (
     <div className="MapView">
+      <div ref={mapContainer} className="Map" />
+      {/* <div className="Map">
+        <p>asdf</p>
+      </div> */}
 
-      <div className="map-wrap">
-        <div ref={mapContainer} className="map" />
-      </div>
+      {/* <div>
+          {selectedCruise && (
+            <div className="bottom-left">
+              <p className="cruise-display">
+                Ship: {selectedShip} | Cruise: {selectedCruise} | Sensor:{" "}
+                {selectedSensor}
+              </p>
+            </div>
+          )}Í
 
-      <div>
-        {selectedCruise && (
-          <div className="bottom-left">
-            <p className="cruise-display">
-              Ship: {selectedShip} | Cruise: {selectedCruise} | Sensor:{" "}
-              {selectedSensor}
-            </p>
-          </div>
-        )}
-        {mouseCoordinates && (
-          <div className="bottom-right">
-            <p className="coordinate-display">
-              {round(mouseCoordinates.lat, 5)}° N,{" "}
-              {round(mouseCoordinates.lng, 5)}° E
-            </p>
-          </div>
-        )}
-
-        {/* {selectedIndex && <div id="indexDisplay">{selectedIndex}</div>} */}
-      </div>
+          {mouseCoordinates && (
+            <div className="bottom-right">
+              <p className="coordinate-display">
+                {round(mouseCoordinates.lat, 5)}° N,{" "}
+                {round(mouseCoordinates.lng, 5)}° E
+              </p>
+            </div>
+          )}
+        </div> */}
     </div>
   );
 }

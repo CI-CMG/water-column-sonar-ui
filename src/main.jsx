@@ -2,7 +2,6 @@ import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { StrictMode } from "react";
-import { Leva } from 'leva'
 
 import App from "./App.jsx";
 import { setupStore } from './store.js';
@@ -17,7 +16,6 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <App />
-        <Leva collapsed />
       </BrowserRouter>
     </Provider>
   </StrictMode>

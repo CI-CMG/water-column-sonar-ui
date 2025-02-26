@@ -1,61 +1,193 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+/////////////////////////////////////////////////////////////////////
+html, body, #root, .AppView, .LayoutView {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+
+  min-height: 100vh !important;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FFDEE9;
-  background-image: linear-gradient(270deg, #FFDEE9 0%, #B5FFFC 100%);
-  // Cool patterns: https://www.gradientmagic.com/collection/lightbg
-  height: 100vh;
-  width: 100vw;
-  border: 1px solid orange;
+
+  background-image: linear-gradient(270deg, #ffdee9 0%, #b5fffc 100%);
+  // patterns: https://www.gradientmagic.com/collection/lightbg
+
+  // .Main {
+  //   border: 1px solid orange;
+  //   min-height: 100% !important;
+  // }
+  // .WaterColumnMain {
+  //   border: 1px solid black;
+  //   min-height: 100%;
+  //   // min-height: 100% !important;
+  // }
 }
 
-.map-wrap {
-  width: 100vw;
-  height: 97vh;
-}
-.map {
-  width: 100%;
-  height: 100%;
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+// .Main {
+//   // border: 2px solid yellow;
+//   min-height: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   background: repeating-linear-gradient(
+//     -55deg,
+//     #222,
+//     #222 10px,
+//     #333 10px,
+//     #333 20px
+//   );
+
+//   > div {
+//     flex: 1;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//   }
+
+//   /////////////////////////////////////////////////////////////////
+//   .MapView {
+//     border: 2px solid rgb(67, 239, 67);
+//     font-size: 16px;
+
+//     // .MapWrapper > .Map {
+//     //   background-color: antiquewhite;
+//     //   flex: 1;
+//     //   display: flex;
+//     //   flex-direction: column;
+//     // }
+
+//     // .MapWrapper {
+//     //   // width: 100%;
+//     //   // height: 100vh;
+//     //   // background-color: orchid;
+
+//     //   // .Map {
+//     //   //   width: 100%;
+//     //   //   height: 100%;
+//     //   // }
+//     //   background: repeating-linear-gradient(
+//     //     45deg,
+//     //     #a9adca,
+//     //     #a8add0 10px,
+//     //     #8993cc 10px,
+//     //     #818ccf 20px
+//     //   );
+//     // }
+
+//     // .bottom-left {
+//     //   position: relative;
+//     // }
+
+//     // .cruise-display {
+//     //   position: absolute;
+//     //   bottom: 0;
+//     //   left: 25px;
+//     //   padding: 5px;
+//     //   background-color: rgba(0, 0, 0, 0.25);
+//     //   color: white;
+//     //   font-family: "Courier New", Courier, monospace;
+//     //   font-weight: 700;
+//     // }
+
+//     // .bottom-right {
+//     //   position: relative;
+//     // }
+
+//     // .coordinate-display {
+//     //   position: absolute;
+//     //   bottom: 0px;
+//     //   right: 25px;
+//     //   padding: 5px;
+//     //   background-color: rgba(0, 0, 0, 0.25);
+//     //   color: white;
+//     //   font-family: "Courier New", Courier, monospace;
+//     //   font-weight: 700;
+//     // }
+
+//     // .maplibregl-ctrl-bottom-right {
+//     //   display: none;
+//     // }
+//   }
+// }
+// .Main {
+//   > div {
+//     padding: 1rem;
+//     &:nth-child(1) {
+//       background: hsla(100, 50%, 60%, 1);
+//     }
+//     &:nth-child(2) {
+//       background: hsla(200, 50%, 65%, 1);
+//     }
+//     &:nth-child(3) {
+//       background: hsla(200, 50%, 70%, 1);
+//     }
+//     &:nth-child(4) {
+//       background: hsla(200, 50%, 75%, 1);
+//     }
+//     &:nth-child(5) {
+//       background: hsla(200, 50%, 80%, 1);
+//     }
+//   }
+// }
+
+.LayoutView {
+  display: flex;
+  flex-direction: column;
 }
 
-
-.water-column-main {
-  height: 100%;
+.Main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
   .MapView {
-    .map { border: 1px solid red; }
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 
-    font-size: 16px;
-
-    .bottom-left { position: relative; }
-    .cruise-display {
-      position: absolute;
-      bottom: 0;
-      left: 25px;
-      padding: 5px;
-      background-color: rgba(0, 0, 0, 0.25);
-      color: white;
-      font-family: "Courier New", Courier, monospace;
-      font-weight: 700;
-    }
-
-    .bottom-right { position: relative; }
-    .coordinate-display {
-      position: absolute;
-      bottom: 0px;
-      right: 25px;
-      padding: 5px;
-      background-color: rgba(0, 0, 0, 0.25);
-      color: white;
-      font-family: "Courier New", Courier, monospace;
-      font-weight: 700;
-    }
-
-    .maplibregl-ctrl-bottom-right {
-      display: none;
-    }
+    background: repeating-linear-gradient(
+      45deg,
+      #a9adca,
+      #a8add0 10px,
+      #8993cc 10px,
+      #818ccf 20px
+    );
   }
 }
+
+// .Main {
+//   min-height: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   // div {
+//     // background: repeating-linear-gradient(
+//     //   45deg,
+//     //   #a9adca,
+//     //   #a8add0 10px,
+//     //   #8993cc 10px,
+//     //   #818ccf 20px
+//     // );
+//   //   flex: 1;
+//   //   display: flex;
+//   //   flex-direction: column;
+//   //   justify-content: center;
+//   // }
+// }
+
+// .Main {
+//   div {
+//     padding: 1rem;
+//     // &:nth-child(1) {
+//     //   background: hsla(100, 50%, 60%, 1);
+//     // }
+//     // &:nth-child(2) {
+//     //   background: hsla(200, 50%, 65%, 1);
+//     // }
+//   }
+// }
+
+/////////////////////////////////////////////////////////////////////
