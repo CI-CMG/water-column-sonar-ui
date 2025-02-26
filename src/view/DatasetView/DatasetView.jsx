@@ -255,7 +255,7 @@ export default function DatasetView() {
             <br />
             <br />
             <br />
-            <p className="text-end">Contact <b>wcd.info@noaa.gov</b> for support with the data set</p>
+            <p className="text-end">Contact <i className="bi bi-person-arms-up"></i><b>wcd.info@noaa.gov</b> for support with the data set</p>
             <hr />
             <br />
           </Col>

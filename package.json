@@ -22,6 +22,7 @@
     "@turf/turf": "^7.2.0",
     "@types/three": "0.147.1",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "maplibre-gl": "^5.1.0",

@@ -178,11 +178,8 @@ export default function MapView() {
   return (
     <div className="MapView">
       <div ref={mapContainer} className="Map" />
-      {/* <div className="Map">
-        <p>asdf</p>
-      </div> */}
 
-      {/* <div>
+      <div>
           {selectedCruise && (
             <div className="bottom-left">
               <p className="cruise-display">
@@ -190,7 +187,7 @@ export default function MapView() {
                 {selectedSensor}
               </p>
             </div>
-          )}Í
+          )}
 
           {mouseCoordinates && (
             <div className="bottom-right">
@@ -200,7 +197,7 @@ export default function MapView() {
               </p>
             </div>
           )}
-        </div> */}
+        </div>
     </div>
   );
 }

@@ -7,6 +7,8 @@ import App from "./App.jsx";
 import { setupStore } from './store.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/Main.scss';
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = setupStore();

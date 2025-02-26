@@ -113,26 +113,6 @@ html, body, #root, .AppView, .LayoutView {
 //     // }
 //   }
 // }
-// .Main {
-//   > div {
-//     padding: 1rem;
-//     &:nth-child(1) {
-//       background: hsla(100, 50%, 60%, 1);
-//     }
-//     &:nth-child(2) {
-//       background: hsla(200, 50%, 65%, 1);
-//     }
-//     &:nth-child(3) {
-//       background: hsla(200, 50%, 70%, 1);
-//     }
-//     &:nth-child(4) {
-//       background: hsla(200, 50%, 75%, 1);
-//     }
-//     &:nth-child(5) {
-//       background: hsla(200, 50%, 80%, 1);
-//     }
-//   }
-// }
 
 .LayoutView {
   display: flex;
@@ -149,45 +129,51 @@ html, body, #root, .AppView, .LayoutView {
     display: flex;
     flex-direction: column;
 
-    background: repeating-linear-gradient(
-      45deg,
-      #a9adca,
-      #a8add0 10px,
-      #8993cc 10px,
-      #818ccf 20px
-    );
+    // background: repeating-linear-gradient(
+    //   45deg,
+    //   #a9adca,
+    //   #a8add0 10px,
+    //   #8993cc 10px,
+    //   #818ccf 20px
+    // );
+    .Map {
+      flex: 1;
+    }
+
+    .bottom-left {
+      position: relative;
+    }
+
+    .cruise-display {
+      position: absolute;
+      bottom: 0;
+      left: 25px;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.25);
+      color: white;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+    }
+
+    .bottom-right {
+      position: relative;
+    }
+
+    .coordinate-display {
+      position: absolute;
+      bottom: 0px;
+      right: 25px;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.25);
+      color: white;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+    }
+
+    .maplibregl-ctrl-bottom-right {
+      display: none;
+    }
   }
 }
-
-// .Main {
-//   min-height: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   // div {
-//     // background: repeating-linear-gradient(
-//     //   45deg,
-//     //   #a9adca,
-//     //   #a8add0 10px,
-//     //   #8993cc 10px,
-//     //   #818ccf 20px
-//     // );
-//   //   flex: 1;
-//   //   display: flex;
-//   //   flex-direction: column;
-//   //   justify-content: center;
-//   // }
-// }
-
-// .Main {
-//   div {
-//     padding: 1rem;
-//     // &:nth-child(1) {
-//     //   background: hsla(100, 50%, 60%, 1);
-//     // }
-//     // &:nth-child(2) {
-//     //   background: hsla(200, 50%, 65%, 1);
-//     // }
-//   }
-// }
 
 /////////////////////////////////////////////////////////////////////
