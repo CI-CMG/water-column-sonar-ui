@@ -230,9 +230,9 @@ export default function DatasetView() {
 
             <br />
             <ul>
-              <li><a href="">Echopype EK60 Cloud Processing</a></li>
-              <li><a href="">Frequency Differencing with L2 EK60 Data</a></li>
-              <li><a href="">Geospatial Indexing</a></li>
+              <li><a href="https://colab.research.google.com/drive/14VVFf9KRlaFyr5T-dwkM0bytDl1QChAi?usp=sharing">Echopype EK60 Cloud Processing</a></li>
+              <li><a href="https://colab.research.google.com/drive/1-I56QOIftj9sewlbyzTzncdRt54Fh51d?usp=sharing">Frequency Differencing with L2 EK60 Data</a></li>
+              <li><a href="https://colab.research.google.com/drive/12hf-1gV6QyrR9pLPfsjYIQyzleTCp-Uz?usp=sharing">Geospatial Indexing</a></li>
             </ul>
 
             <br />

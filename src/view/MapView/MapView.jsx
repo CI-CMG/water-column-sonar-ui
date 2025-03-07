@@ -2,9 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
-// import Dropdown from 'react-bootstrap/Dropdown';
-// import DropdownButton from 'react-bootstrap/DropdownButton';
-// import Stack from 'react-bootstrap/Stack';
 
 import { round } from "@turf/helpers";
 import GetZarrGeospatialIndex from "./GetZarrGeospatialIndex";
@@ -54,6 +51,11 @@ const style = {
   ],
   // TODO: add atmosphere
 };
+
+// function createPopupContent() {
+//   // const asdf = "asdf123"
+//   return <Link to="/about">About</Link>;
+// }
 
 export default function MapView() {
   const mapContainer = useRef();
@@ -133,6 +135,7 @@ export default function MapView() {
         // setSelectedIndex(clickedIndex);
       });
 
+      // const placeholder = createPopupContent();
       new maplibregl.Popup()
         .setLngLat(e.lngLat)
         .setHTML(
@@ -140,10 +143,18 @@ export default function MapView() {
           Ship: ${e.features[0].properties.ship}<br />
           Cruise: ${e.features[0].properties.cruise}<br />
           Sensor: ${e.features[0].properties.sensor}<br />
-          → <u>view water column</u>
+          → <a href="/water-column?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&frequency=38000">view water column</a>
           `
         )
+        // .setDOMContent(placeholder)
+        // .setHTML(placeholder)
         .addTo(map.current);
+
+      // const placeholder = <Link to="/about">About</Link>;
+      // const placeholder = <Link to="/about">About</Link>;
+      // const domNode = document.getElementById('PopupContent');
+      // const root = createRoot(domNode);
+      // root.render(placeholder);
     });
   }, []);
 
@@ -151,13 +162,16 @@ export default function MapView() {
     // selected cruise info
     map.current.on("click", "cruises", (e) => {
       // TODO: after first click the mouse interaction slows down a lot!
+
       setHoveredStateId(null);
       map.current.setFeatureState(
         { source: "cruises", sourceLayer: "cruises", id: hoveredStateId },
         { hover: false }
       );
+
       const features = e.features;
       const idd = features[0]["id"];
+
       setHoveredStateId(idd);
       map.current.setFeatureState(
         { source: "cruises", sourceLayer: "cruises", id: idd },
@@ -180,24 +194,24 @@ export default function MapView() {
       <div ref={mapContainer} className="Map" />
 
       <div>
-          {selectedCruise && (
-            <div className="bottom-left">
-              <p className="cruise-display">
-                Ship: {selectedShip} | Cruise: {selectedCruise} | Sensor:{" "}
-                {selectedSensor}
-              </p>
-            </div>
-          )}
+        {selectedCruise && (
+          <div className="bottom-left">
+            <p className="cruise-display">
+              Ship: {selectedShip} | Cruise: {selectedCruise} | Sensor:{" "}
+              {selectedSensor}
+            </p>
+          </div>
+        )}
 
-          {mouseCoordinates && (
-            <div className="bottom-right">
-              <p className="coordinate-display">
-                {round(mouseCoordinates.lat, 5)}° N,{" "}
-                {round(mouseCoordinates.lng, 5)}° E
-              </p>
-            </div>
-          )}
-        </div>
+        {mouseCoordinates && (
+          <div className="bottom-right">
+            <p className="coordinate-display">
+              {round(mouseCoordinates.lat, 5)}° N,{" "}
+              {round(mouseCoordinates.lng, 5)}° E
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

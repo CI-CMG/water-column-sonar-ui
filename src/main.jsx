@@ -6,8 +6,8 @@ import { StrictMode } from "react";
 import App from "./App.jsx";
 import { setupStore } from './store.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './assets/css/Main.scss';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import './assets/css/Main.scss';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

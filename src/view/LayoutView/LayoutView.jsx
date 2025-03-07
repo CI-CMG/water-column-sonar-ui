@@ -21,22 +21,28 @@ export default function LayoutView() {
             </Navbar.Brand>
 
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/water-column">
+              <Nav.Link as={Link} to="/water-column?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&x=100&y=200&frequency=38000">
                 <i className="bi bi-box"></i>
                 {' '}
+              &nbsp;
+              {' '}
                 Water Column
               </Nav.Link>
               <Nav.Link as={Link} to="/dataset">
-                <i className="bi bi-boxes"></i>
+                <i className="bi bi-collection"></i>
                 {' '}
+              &nbsp;
+              {' '}
                 Dataset
               </Nav.Link>
               {/* <Nav.Link href="#knowledge-graph">Knowledge Graph</Nav.Link> */}
-              <Nav.Link as={Link} to="/about">
+              {/* <Nav.Link as={Link} to="/about">
                 <i className="bi bi-info-square"></i>
                 {' '}
+                &nbsp;
+                {' '}
                 About
-              </Nav.Link>
+              </Nav.Link> */}
               {/* <Nav.Link href="#analysis">Analysis</Nav.Link> */}
             </Nav>
           </Container>

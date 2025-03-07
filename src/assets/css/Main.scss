@@ -27,119 +27,29 @@ html, body, #root, .AppView, .LayoutView {
 }
 
 /////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
-// .Main {
-//   // border: 2px solid yellow;
-//   min-height: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   background: repeating-linear-gradient(
-//     -55deg,
-//     #222,
-//     #222 10px,
-//     #333 10px,
-//     #333 20px
-//   );
-
-//   > div {
-//     flex: 1;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//   }
-
-//   /////////////////////////////////////////////////////////////////
-//   .MapView {
-//     border: 2px solid rgb(67, 239, 67);
-//     font-size: 16px;
-
-//     // .MapWrapper > .Map {
-//     //   background-color: antiquewhite;
-//     //   flex: 1;
-//     //   display: flex;
-//     //   flex-direction: column;
-//     // }
-
-//     // .MapWrapper {
-//     //   // width: 100%;
-//     //   // height: 100vh;
-//     //   // background-color: orchid;
-
-//     //   // .Map {
-//     //   //   width: 100%;
-//     //   //   height: 100%;
-//     //   // }
-//     //   background: repeating-linear-gradient(
-//     //     45deg,
-//     //     #a9adca,
-//     //     #a8add0 10px,
-//     //     #8993cc 10px,
-//     //     #818ccf 20px
-//     //   );
-//     // }
-
-//     // .bottom-left {
-//     //   position: relative;
-//     // }
-
-//     // .cruise-display {
-//     //   position: absolute;
-//     //   bottom: 0;
-//     //   left: 25px;
-//     //   padding: 5px;
-//     //   background-color: rgba(0, 0, 0, 0.25);
-//     //   color: white;
-//     //   font-family: "Courier New", Courier, monospace;
-//     //   font-weight: 700;
-//     // }
-
-//     // .bottom-right {
-//     //   position: relative;
-//     // }
-
-//     // .coordinate-display {
-//     //   position: absolute;
-//     //   bottom: 0px;
-//     //   right: 25px;
-//     //   padding: 5px;
-//     //   background-color: rgba(0, 0, 0, 0.25);
-//     //   color: white;
-//     //   font-family: "Courier New", Courier, monospace;
-//     //   font-weight: 700;
-//     // }
-
-//     // .maplibregl-ctrl-bottom-right {
-//     //   display: none;
-//     // }
-//   }
-// }
-
 .LayoutView {
   display: flex;
   flex-direction: column;
 }
 
+/////////////////////////////////////////////////////////////////////
 .Main {
   flex: 1;
   display: flex;
   flex-direction: column;
 
+  ///////////////////////////////////////////////////////////////////
   .MapView {
     flex: 1;
     display: flex;
     flex-direction: column;
 
-    // background: repeating-linear-gradient(
-    //   45deg,
-    //   #a9adca,
-    //   #a8add0 10px,
-    //   #8993cc 10px,
-    //   #818ccf 20px
-    // );
-    .Map {
+    /////////////////////////////////////////////////////////////////
+    .Map { // for the main view on the home page
       flex: 1;
     }
 
+    /////////////////////////////////////////////////////////////////
     .bottom-left {
       position: relative;
     }
@@ -170,10 +80,85 @@ html, body, #root, .AppView, .LayoutView {
       font-weight: 700;
     }
 
-    .maplibregl-ctrl-bottom-right {
-      display: none;
+    /////////////////////////////////////////////////////////////////
+    .maplibregl-ctrl-bottom-right { display: none; }
+  }
+
+
+  ///////////////////////////////////////////////////////////////////
+  .WaterColumnView {
+    .legend {
+      position: absolute;
+      top: 75px;
+      left: 15px;
     }
+
+    // border: 2px solid red;
+
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    background: repeating-linear-gradient(
+      45deg,
+      #a9adca,
+      #a8add0 10px,
+      #8993cc 10px,
+      #818ccf 20px
+    );
+
+    /////////////////////////////////////////////////////////////////
+    .Map { // For the Main Map View on home page
+      flex: 1;
+    }
+
+    .bottom-left {
+      position: relative;
+    }
+
+    .left-display {
+      position: absolute;
+      bottom: 0;
+      left: 25px;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.25);
+      color: white;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+    }
+
+    .bottom-right {
+      position: relative;
+    }
+
+    .right-display {
+      display: none;
+      position: absolute;
+      bottom: 0px;
+      right: 25px;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.25);
+      color: white;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+    }
+
+    .leaflet-control-attribution { display: none; }
   }
 }
 
 /////////////////////////////////////////////////////////////////////
+// .offcanvas{
+//   width: 25% !important;
+// }
+
+.MiniMapView {
+  width: 100%;
+  height: 200px;
+
+  .Map {
+    width: 100%;
+    height: 200px;
+  }
+}
+.maplibregl-control-container { display: none; }
