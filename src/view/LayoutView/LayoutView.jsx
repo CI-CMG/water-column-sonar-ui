@@ -28,6 +28,7 @@ export default function LayoutView() {
               {' '}
                 Water Column
               </Nav.Link>
+
               <Nav.Link as={Link} to="/dataset">
                 <i className="bi bi-collection"></i>
                 {' '}
@@ -35,6 +36,15 @@ export default function LayoutView() {
               {' '}
                 Dataset
               </Nav.Link>
+
+              <Nav.Link as={Link} to="/dataset">
+                <i className="bi bi-book"></i>
+                {' '}
+              &nbsp;
+              {' '}
+                Catalog
+              </Nav.Link>
+
               {/* <Nav.Link href="#knowledge-graph">Knowledge Graph</Nav.Link> */}
               {/* <Nav.Link as={Link} to="/about">
                 <i className="bi bi-info-square"></i>

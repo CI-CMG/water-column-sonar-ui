@@ -1,5 +1,4 @@
-import { useState } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import { useEffect, useState } from "react";
 
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
@@ -10,13 +9,18 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { useLocation } from "react-router-dom";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { CRS } from "leaflet";
-import {
-  HTTPStore,
-  openArray, // ZarrArray, slice,
-} from "zarr";
+// import {
+//   HTTPStore,
+//   openArray, // ZarrArray, slice,
+// } from "zarr";
+import * as zarr from "zarrita";
+// import { get } from "zarrita";
+import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
+
+
 import MiniMapView from "./MiniMapView";
 
-const bucketName = "noaa-wcsd-zarr-pds";
+// const bucketName = "noaa-wcsd-zarr-pds";
 // const shipName = "Henry_B._Bigelow";
 // const cruiseName = "HB0707";
 // const sensorName = "EK60";
@@ -25,47 +29,78 @@ const bucketName = "noaa-wcsd-zarr-pds";
 // const time_index = 100;
 // const frequency = 38000; // TODO: embed these as query parameters that define what data we are looking at
 
-const zarrStoreUrl = (ship, cruise, sensor) => {
-  return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr`;
-};
+// const zarrStoreUrl = (ship, cruise, sensor) => {
+//   return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr`;
+// };
 
-function load() {
-  const store = new HTTPStore(zarrStoreUrl);
-  const depthPromise = openArray({ store, path: "depth", mode: "r" });
-  const timePromise = openArray({ store, path: "time", mode: "r" });
-  const latitudePromise = openArray({ store, path: "latitude", mode: "r" });
-  const longitudePromise = openArray({ store, path: "longitude", mode: "r" });
-  const svPromise = openArray({ store, path: "Sv", mode: "r" });
+// function loadZarr() {
+//   debugger;
+//   const store = new HTTPStore(zarrStoreUrl);
+//   const depthPromise = openArray({ store, path: "depth", mode: "r" });
+//   const timePromise = openArray({ store, path: "time", mode: "r" });
+//   const latitudePromise = openArray({ store, path: "latitude", mode: "r" });
+//   const longitudePromise = openArray({ store, path: "longitude", mode: "r" });
+//   const svPromise = openArray({ store, path: "Sv", mode: "r" });
+//   Promise.all([
+//     depthPromise,
+//     timePromise,
+//     latitudePromise,
+//     longitudePromise,
+//     svPromise,
+//   ])
+//     .then(
+//       ([
+//         depthArray1,
+//         timeArray1,
+//         latitudeArray1,
+//         longitudeArray1,
+//         svArray1,
+//       ]) => {
+//         depthArray.value = depthArray1;
+//         timeArray.value = timeArray1;
+//         latitudeArray.value = latitudeArray1;
+//         longitudeArray.value = longitudeArray1;
+//         svArray.value = svArray1;
+//       }
+//     )
+//     .then(() => {
+//       console.log('the then')
+//       // drawTiles();
+//       // const latlon = new LatLng(0, storeIndex.value);
+//     })
+//     .then(() => {
+//       console.log('the other then')
+//       // moveend();
+//     });
+// }
 
-  Promise.all([
-    depthPromise,
-    timePromise,
-    latitudePromise,
-    longitudePromise,
-    svPromise,
-  ])
+async function loadZarrNew() {
+  // debugger;
+  // let latitudeArray;
+  // https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/latitude/
+  // https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/latitude/
+  const store = new zarr.FetchStore("https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/latitude/");
+  const latitudePromise = zarr.open.v2(store, { kind: "array" });
+
+  Promise.all([latitudePromise])
     .then(
-      ([
-        depthArray1,
-        timeArray1,
-        latitudeArray1,
-        longitudeArray1,
-        svArray1,
-      ]) => {
-        depthArray.value = depthArray1;
-        timeArray.value = timeArray1;
-        latitudeArray.value = latitudeArray1;
-        longitudeArray.value = longitudeArray1;
-        svArray.value = svArray1;
+      ([latitudeArr]) => {
+        const foo = get(latitudeArr, [zarr.slice(2, 4)])
+        Promise.all([foo])
+          .then(
+            ([values]) => {
+                console.log(values.data);
+            }
+          )
       }
     )
-    .then(() => {
-      drawTiles();
-      const latlon = new LatLng(0, storeIndex.value);
-    })
-    .then(() => {
-      moveend();
-    });
+
+    // .then((latitudeArray) => {
+    //   console.log(zarr.get(latitudeArray, [0, 10]));
+    // })
+    // .then(() => {
+    //   console.log('the other then')
+    // });
 }
 
 const mapParameters = {
@@ -79,16 +114,25 @@ const mapParameters = {
 
 // http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
+  const [zarrLoaded, setZarrLoaded] = useState(false);
+
   const [show, setShow] = useState(false); // https://react-bootstrap.netlify.app/docs/components/offcanvas
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => setShow(true); // TODO: move these to offcanvas component
 
   const { search } = useLocation();
   const values = queryString.parse(search);
 
-  // useEffect(() => {
-  //   console.log("this");
-  // }, []);
+  useEffect(() => {
+    if(!zarrLoaded){
+      setZarrLoaded(true);
+
+      loadZarrNew();
+
+      console.log('should only run once')
+    }
+
+  }, [zarrLoaded]);
 
   return (
     <div className="WaterColumnView">
@@ -118,7 +162,7 @@ export default function WaterColumnView() {
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            {values.ship} <font color="#33FF66">/</font> {values.cruise} <font color="#33FF66">/</font> {values.sensor}
+            {values.ship} <font color="grey">/</font> {values.cruise} <font color="grey">/</font> {values.sensor}
           </Offcanvas.Title>
         </Offcanvas.Header>
 
@@ -128,6 +172,7 @@ export default function WaterColumnView() {
           </center>
 
           <br />
+
           <p>
             <b>Ship:</b> {values.ship}
           </p>
@@ -158,6 +203,26 @@ export default function WaterColumnView() {
           <p>
             <b>Frequency:</b> {values.frequency} Hz
           </p>
+          <Dropdown>
+            <Dropdown.Toggle
+              variant="success"
+              id="dropdown-basic"
+              className="btn-sm"
+            >
+              Frequency
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="#">18 kHz</Dropdown.Item>
+              <Dropdown.Item className="active" href="#">
+                38 kHz
+              </Dropdown.Item>
+              <Dropdown.Item href="#">70 kHz</Dropdown.Item>
+              <Dropdown.Item href="#">120 kHz</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+
+          <hr />
+
           <p>
             <b>Color Map:</b> Viridis
           </p>
@@ -169,7 +234,6 @@ export default function WaterColumnView() {
             >
               Color Map
             </Dropdown.Toggle>
-
             <Dropdown.Menu>
               <Dropdown.Item href="#">ek80</Dropdown.Item>
               <Dropdown.Item className="active" href="#">
@@ -187,6 +251,15 @@ export default function WaterColumnView() {
           <Form.Range min="-100" max="0" step="1" />
 
           <br />
+          <p>
+            <b>Raw Data:</b>
+            <br />
+            <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/Henry_B._Bigelow/HB0707/EK60/">Level 0 — Raw Files</a>
+            <br />
+            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/">Level 1 — File-level Zarr stores</a>
+            <br />
+            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/">Level 2 — Cruise-level Zarr store</a>
+          </p>
         </Offcanvas.Body>
       </Offcanvas>
     </div>
