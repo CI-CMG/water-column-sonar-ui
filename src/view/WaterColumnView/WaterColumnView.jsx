@@ -12,7 +12,6 @@ import { CRS } from "leaflet";
 import * as zarr from "zarrita";
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 
-
 import MiniMapView from "./MiniMapView";
 
 // const bucketName = "noaa-wcsd-zarr-pds";
@@ -29,19 +28,17 @@ import MiniMapView from "./MiniMapView";
 //   return "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/";
 // };
 
-
-    // .then((timePromise) => {
-    //   const timeSlice = get(timePromise, [zarr.slice(2, 4)]);
-    //   const latitudeSlice = get(latitudePromise, [zarr.slice(2, 4)]);
-    //   const longitudeSlice = get(longitudePromise, [zarr.slice(2, 4)]);
-    // })
-    // .then(([timeValue, latitudeValue, longitudeValue]) => {
-    //   console.log(timeValue);
-    //   console.log(latitudeValue);
-    //   console.log(longitudeValue);
-    // })
-  //
-
+// .then((timePromise) => {
+//   const timeSlice = get(timePromise, [zarr.slice(2, 4)]);
+//   const latitudeSlice = get(latitudePromise, [zarr.slice(2, 4)]);
+//   const longitudeSlice = get(longitudePromise, [zarr.slice(2, 4)]);
+// })
+// .then(([timeValue, latitudeValue, longitudeValue]) => {
+//   console.log(timeValue);
+//   console.log(latitudeValue);
+//   console.log(longitudeValue);
+// })
+//
 
 const mapParameters = {
   crs: CRS.Simple,
@@ -58,10 +55,23 @@ export default function WaterColumnView() {
   const values = queryString.parse(search);
 
   const [zarrLoaded, setZarrLoaded] = useState(false);
-  const [frequencyArray, setFrequencyArray] = useState(null);
+
+  const [calibrationStatus, setCalibrationStatus] = useState(null);
+  const [processingSoftwareName, setProcessingSoftwareName] = useState(null);
+  const [processingSoftwareTime, setProcessingSoftwareTime] = useState(null);
+  const [processingSoftwareVersion, setProcessingSoftwareVersion] = useState(null);
+
+
+  const [depthArray, setDepthArray] = useState(null);
   const [timeArray, setTimeArray] = useState(null);
+  const [frequencyArray, setFrequencyArray] = useState(null);
   const [latitudeArray, setLatitudeArray] = useState(null);
   const [longitudeArray, setLongitudeArray] = useState(null);
+  const [svArray, setSvArray] = useState(null);
+  const [depthIndices, setDepthIndices] = useState(null);
+  const [timeIndices, setTimeIndices] = useState(null);
+  const [frequencyIndices, setFrequencyIndices] = useState(null);
+  const [chunkShape, setChunkShape] = useState(null);
 
   const [show, setShow] = useState(false); // https://react-bootstrap.netlify.app/docs/components/offcanvas
   const handleClose = () => setShow(false);
@@ -69,7 +79,9 @@ export default function WaterColumnView() {
 
   function loadZarr() {
     const storePromise = zarr.withConsolidated(
-      new zarr.FetchStore(`https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/${values.ship}/${values.cruise}/${values.sensor}/${values.cruise}.zarr/`)
+      new zarr.FetchStore(
+        `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/${values.ship}/${values.cruise}/${values.sensor}/${values.cruise}.zarr/`
+      )
     );
 
     storePromise // need to store the time/latitude/longitude/Sv/depth arrays for iterative use
@@ -77,37 +89,92 @@ export default function WaterColumnView() {
         return zarr.open.v2(storePromise, { kind: "group" });
       })
       .then((rootPromise) => {
-        const frequencyPromise = zarr.open(rootPromise.resolve("frequency"), { kind: "array" });
-        const timePromise = zarr.open(rootPromise.resolve("time"), { kind: "array" });
-        const latitudePromise = zarr.open(rootPromise.resolve("latitude"), { kind: "array" });
-        const longitudePromise = zarr.open(rootPromise.resolve("longitude"), { kind: "array" });
+        setCalibrationStatus(rootPromise.attrs.calibration_status);
+        const depthPromise = zarr.open(rootPromise.resolve("depth"), {
+          kind: "array",
+        });
+        const timePromise = zarr.open(rootPromise.resolve("time"), {
+          kind: "array",
+        });
+        const frequencyPromise = zarr.open(rootPromise.resolve("frequency"), {
+          kind: "array",
+        });
+        const latitudePromise = zarr.open(rootPromise.resolve("latitude"), {
+          kind: "array",
+        });
+        const longitudePromise = zarr.open(rootPromise.resolve("longitude"), {
+          kind: "array",
+        });
+        const svPromise = zarr.open(rootPromise.resolve("Sv"), {
+          kind: "array",
+        });
 
-        Promise.all([frequencyPromise, timePromise, latitudePromise, longitudePromise])
-          .then(([frequencyArray, timeArray, latitudeArray, longitudeArray]) => {
-            setFrequencyArray(frequencyArray);
+        Promise.all([
+          depthPromise,
+          timePromise,
+          frequencyPromise,
+          latitudePromise,
+          longitudePromise,
+          svPromise,
+        ]).then(
+          ([
+            depthArray,
+            timeArray,
+            frequencyArray,
+            latitudeArray,
+            longitudeArray,
+            svArray,
+          ]) => {
+            setDepthArray(depthArray);
             setTimeArray(timeArray);
+            setFrequencyArray(frequencyArray);
             setLatitudeArray(latitudeArray);
             setLongitudeArray(longitudeArray);
-          })
-      })
+            setSvArray(svArray);
+          }
+        );
+      });
   }
 
   useEffect(() => {
-    if(!zarrLoaded){
+    if (!zarrLoaded) {
       setZarrLoaded(true);
       loadZarr();
-      console.log('should only run once')
+      console.log("should only run once");
     }
   }, []);
 
   useEffect(() => {
-    if(frequencyArray !== null && timeArray !== null && latitudeArray !== null && longitudeArray != null) {
-      console.log(frequencyArray);
+    if (
+      depthArray !== null &&
+      timeArray !== null &&
+      frequencyArray !== null &&
+      latitudeArray !== null &&
+      longitudeArray !== null &&
+      svArray !== null
+    ) {
+      console.log(depthArray);
       console.log(timeArray);
+      console.log(frequencyArray);
       console.log(latitudeArray);
+      // const latitudeSlice = get(latitudePromise, [zarr.slice(2, 4)]);
       console.log(longitudeArray);
+      console.log(svArray);
+
+      const svArrayShape = svArray.shape;
+      setDepthIndices(svArrayShape[0]);
+      setTimeIndices(svArrayShape[1]);
+      setFrequencyIndices(svArrayShape[2]);
+      setChunkShape(svArray.chunks);
     }
-  }, [timeArray, latitudeArray, longitudeArray]);
+  }, [
+    depthArray,
+    timeArray,
+    frequencyArray,
+    latitudeArray,
+    longitudeArray,
+    svArray,
+  ]);
 
   return (
     <div className="WaterColumnView">
@@ -135,7 +202,8 @@ export default function WaterColumnView() {
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            {values.ship} <font color="grey">/</font> {values.cruise} <font color="grey">/</font> {values.sensor}
+            {values.ship} <font color="grey">/</font> {values.cruise}{" "}
+            <font color="grey">/</font> {values.sensor}
           </Offcanvas.Title>
         </Offcanvas.Header>
 
@@ -158,6 +226,7 @@ export default function WaterColumnView() {
           <p>
             <b>Time:</b>{" "}
             <span className="font-monospace">2025-03-06T16:13:30Z</span>
+            {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
           </p>
           <p>
             <b>Lon/Lat:</b>{" "}
@@ -227,11 +296,17 @@ export default function WaterColumnView() {
           <p>
             <b>Raw Data:</b>
             <br />
-            <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/Henry_B._Bigelow/HB0707/EK60/">Level 0 — Raw Files</a>
+            <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/Henry_B._Bigelow/HB0707/EK60/">
+              Level 0 — Raw Files
+            </a>
             <br />
-            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/">Level 1 — File-level Zarr stores</a>
+            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/">
+              Level 1 — File-level Zarr stores
+            </a>
             <br />
-            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/">Level 2 — Cruise-level Zarr store</a>
+            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/">
+              Level 2 — Cruise-level Zarr store
+            </a>
           </p>
         </Offcanvas.Body>
       </Offcanvas>
