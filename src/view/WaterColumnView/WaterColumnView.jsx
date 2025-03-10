@@ -9,12 +9,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { useLocation } from "react-router-dom";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { CRS } from "leaflet";
-// import {
-//   HTTPStore,
-//   openArray, // ZarrArray, slice,
-// } from "zarr";
 import * as zarr from "zarrita";
-// import { get } from "zarrita";
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 
 
@@ -30,78 +25,23 @@ import MiniMapView from "./MiniMapView";
 // const frequency = 38000; // TODO: embed these as query parameters that define what data we are looking at
 
 // const zarrStoreUrl = (ship, cruise, sensor) => {
-//   return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr`;
+// //   return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr`;
+//   return "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/";
 // };
 
-// function loadZarr() {
-//   debugger;
-//   const store = new HTTPStore(zarrStoreUrl);
-//   const depthPromise = openArray({ store, path: "depth", mode: "r" });
-//   const timePromise = openArray({ store, path: "time", mode: "r" });
-//   const latitudePromise = openArray({ store, path: "latitude", mode: "r" });
-//   const longitudePromise = openArray({ store, path: "longitude", mode: "r" });
-//   const svPromise = openArray({ store, path: "Sv", mode: "r" });
-//   Promise.all([
-//     depthPromise,
-//     timePromise,
-//     latitudePromise,
-//     longitudePromise,
-//     svPromise,
-//   ])
-//     .then(
-//       ([
-//         depthArray1,
-//         timeArray1,
-//         latitudeArray1,
-//         longitudeArray1,
-//         svArray1,
-//       ]) => {
-//         depthArray.value = depthArray1;
-//         timeArray.value = timeArray1;
-//         latitudeArray.value = latitudeArray1;
-//         longitudeArray.value = longitudeArray1;
-//         svArray.value = svArray1;
-//       }
-//     )
-//     .then(() => {
-//       console.log('the then')
-//       // drawTiles();
-//       // const latlon = new LatLng(0, storeIndex.value);
-//     })
-//     .then(() => {
-//       console.log('the other then')
-//       // moveend();
-//     });
-// }
 
-async function loadZarrNew() {
-  // debugger;
-  // let latitudeArray;
-  // https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/latitude/
-  // https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/latitude/
-  const store = new zarr.FetchStore("https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/latitude/");
-  const latitudePromise = zarr.open.v2(store, { kind: "array" });
-
-  Promise.all([latitudePromise])
-    .then(
-      ([latitudeArr]) => {
-        const foo = get(latitudeArr, [zarr.slice(2, 4)])
-        Promise.all([foo])
-          .then(
-            ([values]) => {
-                console.log(values.data);
-            }
-          )
-      }
-    )
-
-    // .then((latitudeArray) => {
-    //   console.log(zarr.get(latitudeArray, [0, 10]));
+    // .then((timePromise) => {
+    //   const timeSlice = get(timePromise, [zarr.slice(2, 4)]);
+    //   const latitudeSlice = get(latitudePromise, [zarr.slice(2, 4)]);
+    //   const longitudeSlice = get(longitudePromise, [zarr.slice(2, 4)]);
     // })
-    // .then(() => {
-    //   console.log('the other then')
-    // });
-}
+    // .then(([timeValue, latitudeValue, longitudeValue]) => {
+    //   console.log(timeValue);
+    //   console.log(latitudeValue);
+    //   console.log(longitudeValue);
+    // })
+  //
+
 
 const mapParameters = {
   crs: CRS.Simple,
@@ -114,25 +54,60 @@ const mapParameters = {
 
 // http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
+  const { search } = useLocation();
+  const values = queryString.parse(search);
+
   const [zarrLoaded, setZarrLoaded] = useState(false);
+  const [frequencyArray, setFrequencyArray] = useState(null);
+  const [timeArray, setTimeArray] = useState(null);
+  const [latitudeArray, setLatitudeArray] = useState(null);
+  const [longitudeArray, setLongitudeArray] = useState(null);
 
   const [show, setShow] = useState(false); // https://react-bootstrap.netlify.app/docs/components/offcanvas
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true); // TODO: move these to offcanvas component
 
-  const { search } = useLocation();
-  const values = queryString.parse(search);
+  function loadZarr() {
+    const storePromise = zarr.withConsolidated(
+      new zarr.FetchStore(`https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/${values.ship}/${values.cruise}/${values.sensor}/${values.cruise}.zarr/`)
+    );
+
+    storePromise // need to store the time/latitude/longitude/Sv/depth arrays for iterative use
+      .then((storePromise) => {
+        return zarr.open.v2(storePromise, { kind: "group" });
+      })
+      .then((rootPromise) => {
+        const frequencyPromise = zarr.open(rootPromise.resolve("frequency"), { kind: "array" });
+        const timePromise = zarr.open(rootPromise.resolve("time"), { kind: "array" });
+        const latitudePromise = zarr.open(rootPromise.resolve("latitude"), { kind: "array" });
+        const longitudePromise = zarr.open(rootPromise.resolve("longitude"), { kind: "array" });
+
+        Promise.all([frequencyPromise, timePromise, latitudePromise, longitudePromise])
+          .then(([frequencyArray, timeArray, latitudeArray, longitudeArray]) => {
+            setFrequencyArray(frequencyArray);
+            setTimeArray(timeArray);
+            setLatitudeArray(latitudeArray);
+            setLongitudeArray(longitudeArray);
+          })
+      })
+  }
 
   useEffect(() => {
     if(!zarrLoaded){
       setZarrLoaded(true);
-
-      loadZarrNew();
-
+      loadZarr();
       console.log('should only run once')
     }
+  }, []);
 
-  }, [zarrLoaded]);
+  useEffect(() => {
+    if(frequencyArray !== null && timeArray !== null && latitudeArray !== null && longitudeArray != null) {
+      console.log(frequencyArray);
+      console.log(timeArray);
+      console.log(latitudeArray);
+      console.log(longitudeArray);
+    }
+  }, [timeArray, latitudeArray, longitudeArray]);
 
   return (
     <div className="WaterColumnView">
@@ -143,7 +118,6 @@ export default function WaterColumnView() {
         />
       </MapContainer>
 
-      {/* Offcanvas control */}
       <Button
         variant="outline-secondary"
         size="sm"
@@ -152,7 +126,6 @@ export default function WaterColumnView() {
       >
         Cruise Information
       </Button>
-      {/* To nest offcanvas in div https://codepen.io/rvanlaak/pen/dympKXQ */}
       <Offcanvas
         show={show}
         onHide={handleClose}
