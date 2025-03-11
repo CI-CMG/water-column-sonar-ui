@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  useRef
+} from "react";
 
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
@@ -7,10 +11,22 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 import { useLocation } from "react-router-dom";
-import { MapContainer, TileLayer } from "react-leaflet";
-import { CRS } from "leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+  LayersControl,
+} from "react-leaflet";
+// import { useLeafletContext } from '@react-leaflet/core';
+import {
+  CRS,
+  GridLayer,
+  L,
+} from "leaflet";
 import * as zarr from "zarrita";
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
+import CustomLayer from "./CustomLayer";
+
 
 import MiniMapView from "./MiniMapView";
 
@@ -28,17 +44,6 @@ import MiniMapView from "./MiniMapView";
 //   return "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/";
 // };
 
-// .then((timePromise) => {
-//   const timeSlice = get(timePromise, [zarr.slice(2, 4)]);
-//   const latitudeSlice = get(latitudePromise, [zarr.slice(2, 4)]);
-//   const longitudeSlice = get(longitudePromise, [zarr.slice(2, 4)]);
-// })
-// .then(([timeValue, latitudeValue, longitudeValue]) => {
-//   console.log(timeValue);
-//   console.log(latitudeValue);
-//   console.log(longitudeValue);
-// })
-//
 
 const mapParameters = {
   crs: CRS.Simple,
@@ -51,6 +56,9 @@ const mapParameters = {
 
 // http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
+  const [map, setMap] = useState(null);
+  // const context = useLeafletContext();
+
   const { search } = useLocation();
   const values = queryString.parse(search);
 
@@ -90,6 +98,11 @@ export default function WaterColumnView() {
       })
       .then((rootPromise) => {
         setCalibrationStatus(rootPromise.attrs.calibration_status);
+
+        setProcessingSoftwareName(rootPromise.attrs.processing_software_name);
+        setProcessingSoftwareTime(rootPromise.attrs.processing_software_time);
+        setProcessingSoftwareVersion(rootPromise.attrs.processing_software_version);
+
         const depthPromise = zarr.open(rootPromise.resolve("depth"), {
           kind: "array",
         });
@@ -140,7 +153,6 @@ export default function WaterColumnView() {
     if (!zarrLoaded) {
       setZarrLoaded(true);
       loadZarr();
-      console.log("should only run once");
     }
   }, []);
 
@@ -176,13 +188,44 @@ export default function WaterColumnView() {
     svArray,
   ]);
 
+  useEffect(() => {
+    if (map) {
+      // debugger;
+      // https://javascript.plainenglish.io/creating-an-ellipse-in-react-leaflet-72e2c5beff03
+      // const container = context.layerContainer || context.map
+      // // const circle = new L.circle([0, 0], 10, { color: 'blue', fillColor: 'red' });
+      // // container.addLayer(circle)
+      // // const gridLayer = new L.GridLayer.extend({})
+      // L.GridLayer.DebugCoords = L.GridLayer.extend({
+      //   createTile: function (coords) {
+      //       var tile = document.createElement('div');
+      //       tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+      //       tile.style.outline = '1px solid red';
+      //       return tile;
+      //   }
+      // });
+      // L.gridLayer.debugCoords = function(opts) {
+      //     return new L.GridLayer.DebugCoords(opts);
+      // };
+      // container.addLayer( L.gridLayer.debugCoords() );
+
+      console.log('map exists')
+    }
+  }, [map]);
+
   return (
     <div className="WaterColumnView">
-      <MapContainer {...mapParameters} className="Map">
-        <TileLayer
+      <MapContainer {...mapParameters} className="Map" ref={setMap}>
+        {/* <TileLayer
           className="Map z-0"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        /> */}
+        <LayersControl>
+          <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <LayersControl.Overlay checked name="Pluscode Grid">
+            <CustomLayer />
+          </LayersControl.Overlay>
+        </LayersControl>
       </MapContainer>
 
       <Button
@@ -202,8 +245,8 @@ export default function WaterColumnView() {
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            {values.ship} <font color="grey">/</font> {values.cruise}{" "}
-            <font color="grey">/</font> {values.sensor}
+            {values.ship} <font color="#00CC33">/</font> {values.cruise}{" "}
+            <font color="#00CC33">/</font> {values.sensor}
           </Offcanvas.Title>
         </Offcanvas.Header>
 
@@ -240,7 +283,7 @@ export default function WaterColumnView() {
             <span className="font-monospace">-70.11 dB</span>
           </p>
           <p>
-            <b>Status:</b> Calibrated
+            <b>Calibration Status:</b> {calibrationStatus ? "Calibrated": "Not Calibrated"}
           </p>
           <p>
             <b>Frequency:</b> {values.frequency} Hz
@@ -293,9 +336,8 @@ export default function WaterColumnView() {
           <Form.Range min="-100" max="0" step="1" />
 
           <br />
+          <p><b>Raw Data Downloads:</b></p>
           <p>
-            <b>Raw Data:</b>
-            <br />
             <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/Henry_B._Bigelow/HB0707/EK60/">
               Level 0 — Raw Files
             </a>
@@ -308,6 +350,12 @@ export default function WaterColumnView() {
               Level 2 — Cruise-level Zarr store
             </a>
           </p>
+
+          <br />
+          <p><b>Processing Information:</b></p>
+          <p><b>Software</b>: {processingSoftwareName}</p>
+          <p><b>Date</b>: {processingSoftwareTime}</p>
+          <p><b>Version</b>: {processingSoftwareVersion}</p>
         </Offcanvas.Body>
       </Offcanvas>
     </div>

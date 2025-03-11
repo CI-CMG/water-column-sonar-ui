@@ -37,7 +37,7 @@ export default function LayoutView() {
                 Dataset
               </Nav.Link>
 
-              <Nav.Link as={Link} to="/dataset">
+              <Nav.Link as={Link} to="/catalog">
                 <i className="bi bi-book"></i>
                 {' '}
               &nbsp;
