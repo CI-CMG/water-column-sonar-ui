@@ -12,12 +12,11 @@ import PropTypes from 'prop-types';
 
 const palette = colorPalettes['viridis'];
 
-const minDB = -100; // min-db
-const maxDB = 0; // max-db
+const minDB = -150; // min-db
+const maxDB = 10; // max-db
 const TILE_SIZE = 1024; // Need to get from the zarr store
 
-/* TODO: need to pass in the Sv array */
-function drawTile(coordinateKey, canvas, svArray) {
+function drawTile(coordinateKey, canvas, svArray, selectedFrequency) {
 
     const parts = coordinateKey.split('_');
     const x = Number.parseInt(parts[0], 10);
@@ -25,14 +24,9 @@ function drawTile(coordinateKey, canvas, svArray) {
     const z = Number.parseInt(parts[2], 10);
 
     const ctx = canvas.getContext('2d');
-    // ctx.font = '12px serif';
-    // ctx.fillStyle = '#BEBEBE';
-    // ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
 
     if (ctx) {
       const dataDimension = svArray.shape;
-      // console.log(dataDimension);
-
       const maxBoundsY = Math.abs(dataDimension[0]);
       const maxBoundsX = Math.abs(dataDimension[1]);
 
@@ -59,7 +53,7 @@ function drawTile(coordinateKey, canvas, svArray) {
       }
 
       // TODO: make more like get(latitudePromise, [zarr.slice(2, 4)]);
-      get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), 0])
+      get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency])
         .then((d1) => {
           const d = d1; // as RawArray;
           const [height, width] = d.shape;
@@ -78,7 +72,7 @@ function drawTile(coordinateKey, canvas, svArray) {
     }
 }
 
-const CustomLayer = ({ svArray }) => {
+const CustomLayer = ({ svArray, selectedFrequency }) => {
     const { layerContainer } = useLeafletContext();
 
     const createLeafletElement = () => {
@@ -93,7 +87,7 @@ const CustomLayer = ({ svArray }) => {
             var tileSize = this.getTileSize();
             canvas.setAttribute('width', tileSize.x);
             canvas.setAttribute('height', tileSize.y);
-            drawTile(coordinateKey, canvas, svArray); // TODO: pass in array
+            drawTile(coordinateKey, canvas, svArray, selectedFrequency); // TODO: pass in array
 
             return canvas;
         }
@@ -111,20 +105,7 @@ const CustomLayer = ({ svArray }) => {
 
 export default CustomLayer;
 
-// // const gridLayer = new L.GridLayer.extend({})
-// L.GridLayer.DebugCoords = L.GridLayer.extend({
-//   createTile: function (coords) {
-//       var tile = document.createElement('div');
-//       tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
-//       tile.style.outline = '1px solid red';
-//       return tile;
-//   }
-// });
-// L.gridLayer.debugCoords = function(opts) {
-//     return new L.GridLayer.DebugCoords(opts);
-// };
-// container.addLayer( L.gridLayer.debugCoords() );
-
 CustomLayer.propTypes = {
-    svArray: PropTypes.instanceOf(Object) // Promise
+    svArray: PropTypes.instanceOf(Object), // Promise
+    frequency: PropTypes.instanceOf(Number)
 };

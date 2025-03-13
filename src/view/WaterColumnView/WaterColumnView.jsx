@@ -2,21 +2,20 @@ import { useEffect, useState, useRef } from "react";
 
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
-import { MapContainer, TileLayer, LayersControl } from "react-leaflet";
+import { MapContainer, LayersControl } from "react-leaflet";
 import { CRS } from "leaflet";
 import * as zarr from "zarrita";
-import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
+// import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import CustomLayer from "./CustomLayer";
 import InformationPanel from "./InformationPanel";
 
-// const bucketName = "noaa-wcsd-zarr-pds";
+const bucketName = "noaa-wcsd-zarr-pds";
 // const shipName = "Henry_B._Bigelow";
 // const cruiseName = "HB0707";
 // const sensorName = "EK60";
 // https://www.echo.fish/view/echofish/cruise/David_Starr_Jordan/DS0604/EK60/104377/447/38000
 // ?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&x=100&y=200&frequency=38000
 // const time_index = 100;
-// const frequency = 38000; // TODO: embed these as query parameters that define what data we are looking at
 
 // const zarrStoreUrl = (ship, cruise, sensor) => {
 // //   return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr`;
@@ -67,7 +66,7 @@ export default function WaterColumnView() {
   useEffect(() => {
     const storePromise = zarr.withConsolidated(
       new zarr.FetchStore(
-        `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/${queryParameters.cruise}.zarr/`
+        `https://${bucketName}.s3.amazonaws.com/level_2/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/${queryParameters.cruise}.zarr/`
       )
     );
 
@@ -143,13 +142,13 @@ export default function WaterColumnView() {
       longitudeArray !== null &&
       svArray !== null
     ) {
-      console.log(depthArray);
-      console.log(timeArray);
-      console.log(frequencyArray);
-      console.log(latitudeArray);
-      // const latitudeSlice = get(latitudePromise, [zarr.slice(2, 4)]);
-      console.log(longitudeArray);
-      console.log(svArray);
+      // console.log(depthArray);
+      // console.log(timeArray);
+      // console.log(frequencyArray);
+      // console.log(latitudeArray);
+      // // const latitudeSlice = get(latitudePromise, [zarr.slice(2, 4)]);
+      // console.log(longitudeArray);
+      // console.log(svArray);
 
       const svArrayShape = svArray.shape;
       setDepthIndices(svArrayShape[0]);
@@ -180,7 +179,7 @@ export default function WaterColumnView() {
               longitudeArray !== null &&
               svArray !== null)
               ?
-              <CustomLayer svArray={svArray} /> : <></>
+              <CustomLayer svArray={svArray} selectedFrequency={1} /> : <></>
             }</>
           </LayersControl.Overlay>
         </LayersControl>
@@ -192,6 +191,8 @@ export default function WaterColumnView() {
         processingSoftwareName={processingSoftwareName}
         processingSoftwareTime={processingSoftwareTime}
         processingSoftwareVersion={processingSoftwareVersion}
+
+        // frequencyArray={frequencyArray}
       />
     </div>
   );

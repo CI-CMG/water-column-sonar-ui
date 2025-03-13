@@ -1,6 +1,4 @@
-import {
-  useState,
-} from "react";
+import { React, useState, useEffect } from "react";
 
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
@@ -8,6 +6,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
 import MiniMapView from "./MiniMapView";
+// import { get } from "@zarrita/ndarray";
+import { get, slice } from "zarrita";
+
 
 const InformationPanel = ({
   queryParameters,
@@ -15,13 +16,28 @@ const InformationPanel = ({
   processingSoftwareName,
   processingSoftwareTime,
   processingSoftwareVersion,
-  depthIndices,
-  timeIndices,
-  frequencyIndices,
+
+  // frequencyArray,
+  // depthIndices,
+  // timeIndices,
+  // frequencyIndices,
 }) => {
   const [show, setShow] = useState(false);
+  // const [data, setData] = useState(null);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // useEffect(() => {
+  //   const loadFrequencyData = function() {
+  //     get(frequencyArray, [null]).then((d) => {
+  //       setData(d.data);
+  //     });
+  //   }
+
+  //   if (frequencyArray) {
+  //     loadFrequencyData();
+  //   }
+  // }, [data, frequencyArray]);
 
   return (
     <>
@@ -44,14 +60,8 @@ const InformationPanel = ({
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            {queryParameters.ship}
-            {" "}
-            <font color="#00CC33">/</font>
-            {" "}
-            {queryParameters.cruise}
-            {" "}
-            <font color="#00CC33">/</font>
-            {" "}
+            {queryParameters.ship} <font color="#00CC33">/</font>{" "}
+            {queryParameters.cruise} <font color="#00CC33">/</font>{" "}
             {queryParameters.sensor}
           </Offcanvas.Title>
         </Offcanvas.Header>
@@ -184,7 +194,8 @@ InformationPanel.propTypes = {
   processingSoftwareTime: PropTypes.instanceOf(String),
   processingSoftwareVersion: PropTypes.instanceOf(String),
 
-  depthIndices: PropTypes.instanceOf(String),
-  timeIndices: PropTypes.instanceOf(String),
-  frequencyIndices: PropTypes.instanceOf(String),
+  frequencyArray: PropTypes.instanceOf(Object),
+  // depthIndices: PropTypes.instanceOf(String),
+  // timeIndices: PropTypes.instanceOf(String),
+  // frequencyIndices: PropTypes.instanceOf(String),
 };
