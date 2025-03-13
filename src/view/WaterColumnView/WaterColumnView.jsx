@@ -1,34 +1,13 @@
-import {
-  useEffect,
-  useState,
-  useRef
-} from "react";
+import { useEffect, useState, useRef } from "react";
 
-import Dropdown from "react-bootstrap/Dropdown";
-import Form from "react-bootstrap/Form";
 import queryString from "query-string";
-import Button from "react-bootstrap/Button";
-import Offcanvas from "react-bootstrap/Offcanvas";
-
 import { useLocation } from "react-router-dom";
-import {
-  MapContainer,
-  TileLayer,
-  useMap,
-  LayersControl,
-} from "react-leaflet";
-// import { useLeafletContext } from '@react-leaflet/core';
-import {
-  CRS,
-  GridLayer,
-  L,
-} from "leaflet";
+import { MapContainer, TileLayer, LayersControl } from "react-leaflet";
+import { CRS } from "leaflet";
 import * as zarr from "zarrita";
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import CustomLayer from "./CustomLayer";
-
-
-import MiniMapView from "./MiniMapView";
+import InformationPanel from "./InformationPanel";
 
 // const bucketName = "noaa-wcsd-zarr-pds";
 // const shipName = "Henry_B._Bigelow";
@@ -44,7 +23,6 @@ import MiniMapView from "./MiniMapView";
 //   return "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/";
 // };
 
-
 const mapParameters = {
   crs: CRS.Simple,
   zoom: 0,
@@ -52,23 +30,23 @@ const mapParameters = {
   minZoom: 0,
   maxZoom: 0,
   zoomControl: false,
+  tileSize: 1024, // TODO: get from store?
 };
 
 // http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
-  const [map, setMap] = useState(null);
-  // const context = useLeafletContext();
+  const mapRef = useRef(null);
 
   const { search } = useLocation();
-  const values = queryString.parse(search);
+  const queryParameters = queryString.parse(search);
 
-  const [zarrLoaded, setZarrLoaded] = useState(false);
+  // const [zarrLoaded, setZarrLoaded] = useState(false);
 
   const [calibrationStatus, setCalibrationStatus] = useState(null);
   const [processingSoftwareName, setProcessingSoftwareName] = useState(null);
   const [processingSoftwareTime, setProcessingSoftwareTime] = useState(null);
-  const [processingSoftwareVersion, setProcessingSoftwareVersion] = useState(null);
-
+  const [processingSoftwareVersion, setProcessingSoftwareVersion] =
+    useState(null);
 
   const [depthArray, setDepthArray] = useState(null);
   const [timeArray, setTimeArray] = useState(null);
@@ -76,19 +54,20 @@ export default function WaterColumnView() {
   const [latitudeArray, setLatitudeArray] = useState(null);
   const [longitudeArray, setLongitudeArray] = useState(null);
   const [svArray, setSvArray] = useState(null);
+
   const [depthIndices, setDepthIndices] = useState(null);
   const [timeIndices, setTimeIndices] = useState(null);
   const [frequencyIndices, setFrequencyIndices] = useState(null);
   const [chunkShape, setChunkShape] = useState(null);
 
-  const [show, setShow] = useState(false); // https://react-bootstrap.netlify.app/docs/components/offcanvas
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true); // TODO: move these to offcanvas component
+  // function loadZarrArrays() {
+  //   console.log('______loading zarr arrays______');
+  // }
 
-  function loadZarr() {
+  useEffect(() => {
     const storePromise = zarr.withConsolidated(
       new zarr.FetchStore(
-        `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/${values.ship}/${values.cruise}/${values.sensor}/${values.cruise}.zarr/`
+        `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/${queryParameters.cruise}.zarr/`
       )
     );
 
@@ -101,7 +80,9 @@ export default function WaterColumnView() {
 
         setProcessingSoftwareName(rootPromise.attrs.processing_software_name);
         setProcessingSoftwareTime(rootPromise.attrs.processing_software_time);
-        setProcessingSoftwareVersion(rootPromise.attrs.processing_software_version);
+        setProcessingSoftwareVersion(
+          rootPromise.attrs.processing_software_version
+        );
 
         const depthPromise = zarr.open(rootPromise.resolve("depth"), {
           kind: "array",
@@ -147,13 +128,10 @@ export default function WaterColumnView() {
           }
         );
       });
-  }
 
-  useEffect(() => {
-    if (!zarrLoaded) {
-      setZarrLoaded(true);
-      loadZarr();
-    }
+      // return () => {
+      //   storePromise.cancel();
+      // };
   }, []);
 
   useEffect(() => {
@@ -188,176 +166,33 @@ export default function WaterColumnView() {
     svArray,
   ]);
 
-  useEffect(() => {
-    if (map) {
-      // debugger;
-      // https://javascript.plainenglish.io/creating-an-ellipse-in-react-leaflet-72e2c5beff03
-      // const container = context.layerContainer || context.map
-      // // const circle = new L.circle([0, 0], 10, { color: 'blue', fillColor: 'red' });
-      // // container.addLayer(circle)
-      // // const gridLayer = new L.GridLayer.extend({})
-      // L.GridLayer.DebugCoords = L.GridLayer.extend({
-      //   createTile: function (coords) {
-      //       var tile = document.createElement('div');
-      //       tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
-      //       tile.style.outline = '1px solid red';
-      //       return tile;
-      //   }
-      // });
-      // L.gridLayer.debugCoords = function(opts) {
-      //     return new L.GridLayer.DebugCoords(opts);
-      // };
-      // container.addLayer( L.gridLayer.debugCoords() );
-
-      console.log('map exists')
-    }
-  }, [map]);
-
   return (
     <div className="WaterColumnView">
-      <MapContainer {...mapParameters} className="Map" ref={setMap}>
-        {/* <TileLayer
-          className="Map z-0"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        /> */}
+      <MapContainer {...mapParameters} className="Map" ref={mapRef}>
         <LayersControl>
-          <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <LayersControl.Overlay checked name="Pluscode Grid">
-            <CustomLayer />
+          {/* <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
+          <LayersControl.Overlay checked name="Grid Example">
+            <>{
+              (depthArray !== null &&
+              timeArray !== null &&
+              frequencyArray !== null &&
+              latitudeArray !== null &&
+              longitudeArray !== null &&
+              svArray !== null)
+              ?
+              <CustomLayer svArray={svArray} /> : <></>
+            }</>
           </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>
 
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        onClick={handleShow}
-        className="legend z-9999"
-      >
-        Cruise Information
-      </Button>
-      <Offcanvas
-        show={show}
-        onHide={handleClose}
-        scroll
-        backdrop={false}
-        offcanvas-width={50}
-      >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>
-            {values.ship} <font color="#00CC33">/</font> {values.cruise}{" "}
-            <font color="#00CC33">/</font> {values.sensor}
-          </Offcanvas.Title>
-        </Offcanvas.Header>
-
-        <Offcanvas.Body>
-          <center>
-            <MiniMapView />
-          </center>
-
-          <br />
-
-          <p>
-            <b>Ship:</b> {values.ship}
-          </p>
-          <p>
-            <b>Cruise:</b> {values.cruise}
-          </p>
-          <p>
-            <b>Sensor:</b> {values.sensor}
-          </p>
-          <p>
-            <b>Time:</b>{" "}
-            <span className="font-monospace">2025-03-06T16:13:30Z</span>
-            {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
-          </p>
-          <p>
-            <b>Lon/Lat:</b>{" "}
-            <span className="font-monospace">-117.3714° E, 32.7648° N</span>
-          </p>
-          <p>
-            <b>Depth:</b> 123 meters
-          </p>
-          <p>
-            <b>Selected Sv:</b>{" "}
-            <span className="font-monospace">-70.11 dB</span>
-          </p>
-          <p>
-            <b>Calibration Status:</b> {calibrationStatus ? "Calibrated": "Not Calibrated"}
-          </p>
-          <p>
-            <b>Frequency:</b> {values.frequency} Hz
-          </p>
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="success"
-              id="dropdown-basic"
-              className="btn-sm"
-            >
-              Frequency
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="#">18 kHz</Dropdown.Item>
-              <Dropdown.Item className="active" href="#">
-                38 kHz
-              </Dropdown.Item>
-              <Dropdown.Item href="#">70 kHz</Dropdown.Item>
-              <Dropdown.Item href="#">120 kHz</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          <hr />
-
-          <p>
-            <b>Color Map:</b> Viridis
-          </p>
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="success"
-              id="dropdown-basic"
-              className="btn-sm"
-            >
-              Color Map
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="#">ek80</Dropdown.Item>
-              <Dropdown.Item className="active" href="#">
-                ek500
-              </Dropdown.Item>
-              <Dropdown.Item href="#">viridis</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <br />
-
-          <p>
-            <b>Min dB:</b> -80 dB | <b>Max dB:</b> -30 dB
-          </p>
-          <Form.Label>Range</Form.Label>
-          <Form.Range min="-100" max="0" step="1" />
-
-          <br />
-          <p><b>Raw Data Downloads:</b></p>
-          <p>
-            <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/Henry_B._Bigelow/HB0707/EK60/">
-              Level 0 — Raw Files
-            </a>
-            <br />
-            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/">
-              Level 1 — File-level Zarr stores
-            </a>
-            <br />
-            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/">
-              Level 2 — Cruise-level Zarr store
-            </a>
-          </p>
-
-          <br />
-          <p><b>Processing Information:</b></p>
-          <p><b>Software</b>: {processingSoftwareName}</p>
-          <p><b>Date</b>: {processingSoftwareTime}</p>
-          <p><b>Version</b>: {processingSoftwareVersion}</p>
-        </Offcanvas.Body>
-      </Offcanvas>
+      <InformationPanel
+        queryParameters={queryParameters}
+        calibrationStatus={calibrationStatus}
+        processingSoftwareName={processingSoftwareName}
+        processingSoftwareTime={processingSoftwareTime}
+        processingSoftwareVersion={processingSoftwareVersion}
+      />
     </div>
   );
 }
