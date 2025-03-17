@@ -92,7 +92,7 @@ const CustomLayer = ({ svArray, selectedFrequency }) => {
             return canvas;
         }
       });
-      return new Grid({ tileSize: 100 });
+      return new Grid();
     };
 
     useEffect(() => {

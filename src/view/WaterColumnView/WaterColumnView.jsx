@@ -27,7 +27,7 @@ const mapParameters = {
   zoom: 0,
   center: [0, 0],
   minZoom: 0,
-  maxZoom: 0,
+  maxZoom: 2,
   zoomControl: false,
   tileSize: 1024, // TODO: get from store?
 };
@@ -167,7 +167,11 @@ export default function WaterColumnView() {
 
   return (
     <div className="WaterColumnView">
-      <MapContainer {...mapParameters} className="Map" ref={mapRef}>
+      <MapContainer
+        {...mapParameters}
+        className="Map"
+        ref={mapRef}
+      >
         <LayersControl>
           {/* <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
           <LayersControl.Overlay checked name="Grid Example">
