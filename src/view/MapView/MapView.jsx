@@ -136,6 +136,8 @@ export default function MapView() {
       });
 
       // const placeholder = createPopupContent();
+      // eslint-disable-next-line no-debugger
+      // debugger;
       new maplibregl.Popup()
         .setLngLat(e.lngLat)
         .setHTML(
@@ -143,7 +145,7 @@ export default function MapView() {
           Ship: ${e.features[0].properties.ship}<br />
           Cruise: ${e.features[0].properties.cruise}<br />
           Sensor: ${e.features[0].properties.sensor}<br />
-          → <a href="/water-column?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&frequency=38000">view water column</a>
+          → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=38000">view water column</a>
           `
         )
         // .setDOMContent(placeholder)

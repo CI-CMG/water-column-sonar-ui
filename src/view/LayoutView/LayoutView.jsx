@@ -43,11 +43,6 @@ export default function LayoutView() {
               </Nav.Link>
 
               <Nav.Link as={Link} to="/catalog">
-              <LiaFishSolid />
-              &nbsp;AI
-              </Nav.Link>
-
-              <Nav.Link as={Link} to="/catalog">
                 <PiGraph />&nbsp;Knowledge Graph
               </Nav.Link>
 
