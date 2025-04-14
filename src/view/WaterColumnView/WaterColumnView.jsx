@@ -192,8 +192,10 @@ export default function WaterColumnView() {
         processingSoftwareName={processingSoftwareName}
         processingSoftwareTime={processingSoftwareTime}
         processingSoftwareVersion={processingSoftwareVersion}
-        // TODO: pass in frequency information?
-        // frequencyArray={frequencyArray}
+        timeArray={timeArray}
+        latitudeArray={latitudeArray}
+        longitudeArray={longitudeArray}
+        frequencyArray={frequencyArray}
       />
     </div>
   );

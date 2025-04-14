@@ -1,7 +1,7 @@
 import {
   // React,
   useState,
-  // useEffect,
+  useEffect,
 } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
@@ -10,7 +10,8 @@ import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
 import MiniMapView from "./MiniMapView";
 // import { get } from "@zarrita/ndarray";
-// import { get, slice } from "zarrita";
+import { slice } from "zarrita";
+import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 
 // color palette selected for the water column visualization
 const colorPalettes = [
@@ -20,13 +21,6 @@ const colorPalettes = [
   { key: "Red-Blue Diverging", value: "Red-Blue Diverging" },
   { key: "Cyan-Magenta", value: "Cyan-Magenta" },
 ];
-const frequencies = [
-  { key: "18 kHz", value: "18 kHz" },
-  { key: "38 kHz", value: "38 kHz" },
-  { key: "70 kHz", value: "70 kHz" },
-  { key: "120 kHz", value: "120 kHz" }
-]
-
 
 const InformationPanel = ({
   queryParameters,
@@ -35,13 +29,20 @@ const InformationPanel = ({
   processingSoftwareTime,
   processingSoftwareVersion,
 
-  // frequencyArray,
+  timeArray,
+  latitudeArray,
+  longitudeArray,
+  frequencyArray,
+
   // depthIndices,
   // timeIndices,
   // frequencyIndices,
 }) => {
+  const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-  // const [data, setData] = useState(null);
+  // TODO: should be just numbers, then format when printed
+  // const [frequencies, setFrequencies] = useState(["18 kHz", "38 kHz", "70 kHz", "120 kHz"]); // TODO: block this until loaded
+  const [frequencies, setFrequencies] = useState({});
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -49,23 +50,60 @@ const InformationPanel = ({
   const handleSelectColorPalette = (key, event) => {
     setSelectedColorPalette({ key, value: event.target.value });
   };
-
   const [selectedFrequency, setSelectedFrequency] = useState({});
   const handleSelectFrequency = (key, event) => {
     setSelectedFrequency({ key, value: event.target.value });
   };
 
-  // useEffect(() => {
-  //   const loadFrequencyData = function() {
-  //     get(frequencyArray, [null]).then((d) => {
-  //       setData(d.data);
-  //     });
-  //   }
 
-  //   if (frequencyArray) {
-  //     loadFrequencyData();
-  //   }
-  // }, [data, frequencyArray]);
+  useEffect(() => {
+    if(timeArray !== null){
+      (async () => {
+        await get(timeArray, [0])
+          .then((d1) => {
+            console.log(d1);
+          });
+      })();
+    }
+    if(frequencyArray !== null){
+      (async () => {
+        await get(frequencyArray, [slice(null)])
+          .then((f1) => {
+            let allFrequencies = []
+            f1.data.forEach(function (i) { // convert BigUInts to Numbers
+              var h = Number(i);
+              allFrequencies.push({
+                key: h,
+                value: h,
+              });
+            });
+            setFrequencies(allFrequencies);
+            setSelectedFrequency(allFrequencies[0]);
+            setLoading(false);
+          });
+      })();
+    }
+    if(latitudeArray !== null){
+      (async () => {
+        await get(latitudeArray, [0])
+          .then((la) => {
+            console.log(la.data);
+          });
+      })();
+    }
+    if(longitudeArray !== null){
+      (async () => {
+        await get(longitudeArray, [0])
+          .then((lo) => {
+            console.log(lo.data);
+          });
+      })();
+    }
+  }, [timeArray, frequencyArray, latitudeArray, longitudeArray])
+
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
 
   return (
     <>
@@ -100,40 +138,44 @@ const InformationPanel = ({
           <br />
 
           <p>
-            <b>Ship:</b> {queryParameters.ship}
+            <b>Ship:</b>
+            <span className="font-monospace float-end">{queryParameters.ship}</span>
           </p>
           <p>
-            <b>Cruise:</b> {queryParameters.cruise}
+            <b>Cruise:</b>
+            <span className="font-monospace float-end">{queryParameters.cruise}</span>
           </p>
           <p>
-            <b>Sensor:</b> {queryParameters.sensor}
+            <b>Sensor:</b>
+            <span className="font-monospace float-end">{queryParameters.sensor}</span>
           </p>
           <p>
             <b>Time:</b>{" "}
-            <span className="font-monospace">2025-03-06T16:13:30Z</span>
+            <span className="font-monospace float-end">2025-03-06T16:13:30Z</span>
             {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
           </p>
           <p>
             <b>Lon/Lat:</b>{" "}
-            <span className="font-monospace">-117.3714° E, 32.7648° N</span>
+            <span className="font-monospace float-end">-117.3714° E, 32.7648° N</span>
           </p>
           <p>
-            <b>Depth:</b> 123 meters
+            <b>Depth:</b>
+            <span className="font-monospace float-end">123 meters</span>
           </p>
           <p>
             <b>Selected Sv:</b>{" "}
-            <span className="font-monospace">-70.11 dB</span>
+            <span className="font-monospace float-end">-70.11 dB</span>
           </p>
           <p>
-            <b>Calibration Status:</b>{" "}
-            {calibrationStatus ? "Calibrated" : "Not Calibrated"}
+            <b>Calibration Status:</b>
+            <span className="font-monospace float-end">{calibrationStatus ? "Calibrated" : "Not Calibrated"}</span>
           </p>
 
-          <hr />
+          <br />
 
           <Dropdown onSelect={handleSelectFrequency}>
             <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn-sm float-end">
-              Frequency
+              Frequencies
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {frequencies.map((item, index) => {
@@ -146,14 +188,15 @@ const InformationPanel = ({
             </Dropdown.Menu>
           </Dropdown>
           <p>
-            <b>Frequency:</b> {selectedFrequency?.key || frequencies[0].key}
+            <b>Frequency:</b> {selectedFrequency?.key}
+            {/* <b>Frequency:</b> {selectedFrequency?.key || frequencies[0].key} */}
           </p>
 
-          <hr />
+          <br />
 
           <Dropdown onSelect={handleSelectColorPalette}>
             <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn-sm float-end">
-              Color Map
+              Color Maps
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {colorPalettes.map((item, index) => {
@@ -169,7 +212,7 @@ const InformationPanel = ({
             <b>Color Map:</b> {selectedColorPalette?.key || colorPalettes[0].key}
           </p>
 
-          <hr />
+          <br />
 
           <p>
             <b>Min dB:</b> -80 dB | <b>Max dB:</b> -30 dB
@@ -221,7 +264,10 @@ InformationPanel.propTypes = {
   processingSoftwareTime: PropTypes.instanceOf(String),
   processingSoftwareVersion: PropTypes.instanceOf(String),
 
-  frequencyArray: PropTypes.instanceOf(Object),
+  timeArray: PropTypes.instanceOf(Object),
+  latitudeArray: PropTypes.instanceOf(Object),
+  longitudeArray: PropTypes.instanceOf(Object),
+  frequencyArray: PropTypes.instanceOf(Object), // Number?
   // depthIndices: PropTypes.instanceOf(String),
   // timeIndices: PropTypes.instanceOf(String),
   // frequencyIndices: PropTypes.instanceOf(String),
