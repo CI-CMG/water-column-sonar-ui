@@ -1,5 +1,8 @@
-import { React, useState, useEffect } from "react";
-
+import {
+  // React,
+  useState,
+  // useEffect,
+} from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -7,7 +10,22 @@ import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
 import MiniMapView from "./MiniMapView";
 // import { get } from "@zarrita/ndarray";
-import { get, slice } from "zarrita";
+// import { get, slice } from "zarrita";
+
+// color palette selected for the water column visualization
+const colorPalettes = [
+  { key: "EK80", value: "EK80" },
+  { key: "EK500", value: "EK500" },
+  { key: "Viridis", value: "Viridis" },
+  { key: "Red-Blue Diverging", value: "Red-Blue Diverging" },
+  { key: "Cyan-Magenta", value: "Cyan-Magenta" },
+];
+const frequencies = [
+  { key: "18 kHz", value: "18 kHz" },
+  { key: "38 kHz", value: "38 kHz" },
+  { key: "70 kHz", value: "70 kHz" },
+  { key: "120 kHz", value: "120 kHz" }
+]
 
 
 const InformationPanel = ({
@@ -26,6 +44,16 @@ const InformationPanel = ({
   // const [data, setData] = useState(null);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [selectedColorPalette, setSelectedColorPalette] = useState({});
+  const handleSelectColorPalette = (key, event) => {
+    setSelectedColorPalette({ key, value: event.target.value });
+  };
+
+  const [selectedFrequency, setSelectedFrequency] = useState({});
+  const handleSelectFrequency = (key, event) => {
+    setSelectedFrequency({ key, value: event.target.value });
+  };
 
   // useEffect(() => {
   //   const loadFrequencyData = function() {
@@ -100,49 +128,48 @@ const InformationPanel = ({
             <b>Calibration Status:</b>{" "}
             {calibrationStatus ? "Calibrated" : "Not Calibrated"}
           </p>
-          <p>
-            <b>Frequency:</b> {queryParameters.frequency} Hz
-          </p>
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="success"
-              id="dropdown-basic"
-              className="btn-sm"
-            >
-              Frequency
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="#">18 kHz</Dropdown.Item>
-              <Dropdown.Item className="active" href="#">
-                38 kHz
-              </Dropdown.Item>
-              <Dropdown.Item href="#">70 kHz</Dropdown.Item>
-              <Dropdown.Item href="#">120 kHz</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
 
           <hr />
 
+          <Dropdown onSelect={handleSelectFrequency}>
+            <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn-sm float-end">
+              Frequency
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {frequencies.map((item, index) => {
+                return (
+                  <Dropdown.Item key={index} eventKey={item.key}>
+                    {item.value}
+                  </Dropdown.Item>
+                );
+              })}
+            </Dropdown.Menu>
+          </Dropdown>
           <p>
-            <b>Color Map:</b> Viridis
+            <b>Frequency:</b> {selectedFrequency?.key || frequencies[0].key}
           </p>
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="success"
-              id="dropdown-basic"
-              className="btn-sm"
-            >
+
+          <hr />
+
+          <Dropdown onSelect={handleSelectColorPalette}>
+            <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn-sm float-end">
               Color Map
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="#">ek80</Dropdown.Item>
-              <Dropdown.Item className="active" href="#">
-                ek500
-              </Dropdown.Item>
-              <Dropdown.Item href="#">viridis</Dropdown.Item>
+              {colorPalettes.map((item, index) => {
+                return (
+                  <Dropdown.Item key={index} eventKey={item.key}>
+                    {item.value}
+                  </Dropdown.Item>
+                );
+              })}
             </Dropdown.Menu>
           </Dropdown>
-          <br />
+          <p>
+            <b>Color Map:</b> {selectedColorPalette?.key || colorPalettes[0].key}
+          </p>
+
+          <hr />
 
           <p>
             <b>Min dB:</b> -80 dB | <b>Max dB:</b> -30 dB

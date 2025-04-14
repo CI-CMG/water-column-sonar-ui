@@ -136,8 +136,6 @@ export default function MapView() {
       });
 
       // const placeholder = createPopupContent();
-      // eslint-disable-next-line no-debugger
-      // debugger;
       new maplibregl.Popup()
         .setLngLat(e.lngLat)
         .setHTML(

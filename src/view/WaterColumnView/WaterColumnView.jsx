@@ -54,7 +54,7 @@ export default function WaterColumnView() {
   const [longitudeArray, setLongitudeArray] = useState(null);
   const [svArray, setSvArray] = useState(null);
 
-  const [depthIndices, setDepthIndices] = useState(null);
+  const [depthIndices, setDepthIndices] = useState(null); // change to depthIndexMax?
   const [timeIndices, setTimeIndices] = useState(null);
   const [frequencyIndices, setFrequencyIndices] = useState(null);
   const [chunkShape, setChunkShape] = useState(null);
@@ -76,12 +76,9 @@ export default function WaterColumnView() {
       })
       .then((rootPromise) => {
         setCalibrationStatus(rootPromise.attrs.calibration_status);
-
         setProcessingSoftwareName(rootPromise.attrs.processing_software_name);
         setProcessingSoftwareTime(rootPromise.attrs.processing_software_time);
-        setProcessingSoftwareVersion(
-          rootPromise.attrs.processing_software_version
-        );
+        setProcessingSoftwareVersion(rootPromise.attrs.processing_software_version);
 
         const depthPromise = zarr.open(rootPromise.resolve("depth"), {
           kind: "array",
@@ -195,7 +192,7 @@ export default function WaterColumnView() {
         processingSoftwareName={processingSoftwareName}
         processingSoftwareTime={processingSoftwareTime}
         processingSoftwareVersion={processingSoftwareVersion}
-
+        // TODO: pass in frequency information?
         // frequencyArray={frequencyArray}
       />
     </div>

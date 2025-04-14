@@ -37,10 +37,9 @@ export default function LayoutView() {
                 <PiDatabase />&nbsp;Dataset
               </Nav.Link>
 
-              <Nav.Link as={Link} to="/catalog">
-                {/* <i className="bi bi-book"></i> */}
+              {/* <Nav.Link as={Link} to="/catalog">
                 <PiBookOpenThin />&nbsp;Catalog
-              </Nav.Link>
+              </Nav.Link> */}
 
               <Nav.Link as={Link} to="/catalog">
                 <PiGraph />&nbsp;Knowledge Graph
