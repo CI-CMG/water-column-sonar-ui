@@ -17,6 +17,7 @@ import MiniMapView from "./MiniMapView";
 // import { get } from "@zarrita/ndarray";
 import { slice } from "zarrita";
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
+import ColorMap from "./ColorMap";
 
 // color palette selected for the water column visualization
 const colorPalettes = [
@@ -226,6 +227,7 @@ const InformationPanel = ({
             <b>Color Map:</b>{" "}
             <span className="font-monospace">{selectedColorPalette?.key || colorPalettes[0].key}</span>
           </p>
+          <ColorMap />
 
           <br />
           <Form.Label><b>Sv Range</b></Form.Label>

@@ -29,7 +29,7 @@ export const colorPalettes = {
       '#2D708E', '#25858E', '#1E9B8A', '#2BB07F',
       '#51C56A', '#85D54A', '#C2DF23', '#FDE725',
     ],
-    'blue-red': [
+    blueRed: [
       '#023FA5', '#5465AB', '#7D87B9', '#A1A6C8',
       '#BEC1D4', '#D6D7DD', '#E2E2E2', '#DED5D6',
       '#D6BCC0', '#CA9CA4', '#BB7784', '#A74B61',
