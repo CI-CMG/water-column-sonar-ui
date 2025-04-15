@@ -2,6 +2,9 @@ import { useEffect, useState, useRef } from "react";
 
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
+import {
+  useSearchParams
+} from 'react-router';
 import { MapContainer, LayersControl } from "react-leaflet";
 import { CRS } from "leaflet";
 import * as zarr from "zarrita";
@@ -51,6 +54,8 @@ export default function WaterColumnView() {
 
   const { search } = useLocation();
   const queryParameters = queryString.parse(search);
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log(`searchParams: ${searchParams}`)
 
   // const [zarrLoaded, setZarrLoaded] = useState(false);
 

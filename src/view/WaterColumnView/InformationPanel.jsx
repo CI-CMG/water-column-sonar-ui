@@ -3,6 +3,9 @@ import {
   useState,
   useEffect,
 } from "react";
+import {
+  useSearchParams
+} from 'react-router';
 import Col from 'react-bootstrap/Col';
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
@@ -40,6 +43,8 @@ const InformationPanel = ({
   // timeIndices,
   // frequencyIndices,
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
   // TODO: should be just numbers, then format when printed
@@ -53,8 +58,15 @@ const InformationPanel = ({
     setSelectedColorPalette({ key, value: event.target.value });
   };
   const [selectedFrequency, setSelectedFrequency] = useState({});
-  const handleSelectFrequency = (key, event) => {
-    setSelectedFrequency({ key, value: event.target.value });
+  const handleSelectFrequency = (key) => {
+    setSelectedFrequency({ key, value: key });
+    setSearchParams(
+      (prev) => {
+        prev.set('frequency', key);
+        return prev;
+      },
+      { preventScrollReset: true }
+    );
   };
 
 
@@ -82,7 +94,7 @@ const InformationPanel = ({
             setFrequencies(allFrequencies);
             setSelectedFrequency(allFrequencies[0]);
             setLoading(false);
-            history.push('?color=blue');
+            // history.push('?color=blue');
           });
       })();
     }
@@ -153,20 +165,20 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Time:</b>{" "}
-            <span className="font-monospace float-end">2025-03-06<font color="#6699CC">T</font>16:13:30<font color="#6699CC">Z</font></span>
+            <span className="font-monospace float-end"><font color="#6699CC">2025-03-06</font>T<font color="#6699CC">16:13:30</font>Z</span>
             {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
           </p>
           <p>
             <b>Lon/Lat:</b>{" "}
-            <span className="font-monospace float-end">-117.3714° <font color="#6699CC">E</font>, 32.7648° <font color="#6699CC">N</font></span>
+            <span className="font-monospace float-end">-117.3714° E, 32.7648° N</span>
           </p>
           <p>
             <b>Depth:</b>
-            <span className="font-monospace float-end">123 <font color="#6699CC">meters</font></span>
+            <span className="font-monospace float-end"><font color="#6699CC">123 meters</font></span>
           </p>
           <p>
             <b>Selected Sv:</b>{" "}
-            <span className="font-monospace float-end">-70.11 <font color="#6699CC">dB</font></span>
+            <span className="font-monospace float-end">-70.11 dB</span>
           </p>
           <p>
             <b>Calibration Status:</b>
@@ -277,7 +289,7 @@ const InformationPanel = ({
           <p><b>Processing Software:</b></p>
           <p>
             <b>name:</b>
-            <span className="font-monospace float-end">{processingSoftwareName}</span>
+            <span className="float-end softwareName">{processingSoftwareName}</span>
           </p>
           <p>
             <b>Date:</b>

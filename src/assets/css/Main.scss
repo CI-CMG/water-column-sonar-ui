@@ -162,3 +162,12 @@ html, body, #root, .AppView, .LayoutView {
     .maplibregl-control-container { display: none; }
   }
 }
+
+
+@import url('https://fonts.googleapis.com/css2?family=League+Script&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+.softwareName {
+  font-family: "League Script", cursive;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.5em;
+}
