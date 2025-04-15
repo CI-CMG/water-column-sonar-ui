@@ -32,6 +32,19 @@ const mapParameters = {
   tileSize: 1024, // TODO: get from store?
 };
 
+/*
+Water Column View Query Parameters
+  ship -> 'Henry_B._Bigelow'
+  cruise -> 'HB0707'
+  sensor -> 'EK60'
+  x -> distance along time x-axis, Number
+  y -> distance down from surface y-axis, Number
+  z -> frequency, Number
+  min_sv? -> -100 dB
+  max_sv? -> 0 dB
+  color_palette?
+*/
+
 // http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
   const mapRef = useRef(null);

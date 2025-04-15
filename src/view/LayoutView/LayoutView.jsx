@@ -3,13 +3,13 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
-import { GiWashingMachine } from "react-icons/gi";
-import { FaOctopusDeploy } from "react-icons/fa6";
+// import { GiWashingMachine } from "react-icons/gi";
+// import { FaOctopusDeploy } from "react-icons/fa6";
 import { PiGraph } from "react-icons/pi";
 import { PiCubeLight } from "react-icons/pi";
 import { PiDatabase } from "react-icons/pi";
-import { PiBookOpenThin } from "react-icons/pi";
-import { LiaFishSolid } from "react-icons/lia";
+// import { PiBookOpenThin } from "react-icons/pi";
+// import { LiaFishSolid } from "react-icons/lia";
 
 // https://react-icons.github.io/react-icons/search/#q=fish
 export default function LayoutView() {

@@ -3,9 +3,11 @@ import {
   useState,
   useEffect,
 } from "react";
+import Col from 'react-bootstrap/Col';
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
+import Row from 'react-bootstrap/Row';
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
 import MiniMapView from "./MiniMapView";
@@ -80,6 +82,7 @@ const InformationPanel = ({
             setFrequencies(allFrequencies);
             setSelectedFrequency(allFrequencies[0]);
             setLoading(false);
+            history.push('?color=blue');
           });
       })();
     }
@@ -136,7 +139,6 @@ const InformationPanel = ({
           <MiniMapView />
 
           <br />
-
           <p>
             <b>Ship:</b>
             <span className="font-monospace float-end">{queryParameters.ship}</span>
@@ -151,31 +153,31 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Time:</b>{" "}
-            <span className="font-monospace float-end">2025-03-06T16:13:30Z</span>
+            <span className="font-monospace float-end">2025-03-06<font color="#6699CC">T</font>16:13:30<font color="#6699CC">Z</font></span>
             {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
           </p>
           <p>
             <b>Lon/Lat:</b>{" "}
-            <span className="font-monospace float-end">-117.3714° E, 32.7648° N</span>
+            <span className="font-monospace float-end">-117.3714° <font color="#6699CC">E</font>, 32.7648° <font color="#6699CC">N</font></span>
           </p>
           <p>
             <b>Depth:</b>
-            <span className="font-monospace float-end">123 meters</span>
+            <span className="font-monospace float-end">123 <font color="#6699CC">meters</font></span>
           </p>
           <p>
             <b>Selected Sv:</b>{" "}
-            <span className="font-monospace float-end">-70.11 dB</span>
+            <span className="font-monospace float-end">-70.11 <font color="#6699CC">dB</font></span>
           </p>
           <p>
             <b>Calibration Status:</b>
-            <span className="font-monospace float-end">{calibrationStatus ? "Calibrated" : "Not Calibrated"}</span>
+            <span className="font-monospace float-end"><i>{calibrationStatus ? "Calibrated" : "Not Calibrated"}</i></span>
           </p>
 
           <br />
 
           <Dropdown onSelect={handleSelectFrequency}>
             <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn-sm float-end">
-              Frequencies
+              Frequency
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {frequencies.map((item, index) => {
@@ -188,15 +190,15 @@ const InformationPanel = ({
             </Dropdown.Menu>
           </Dropdown>
           <p>
-            <b>Frequency:</b> {selectedFrequency?.key}
-            {/* <b>Frequency:</b> {selectedFrequency?.key || frequencies[0].key} */}
+            <b>Frequency:</b>{" "}
+            <span className="font-monospace">{selectedFrequency?.key / 1000} kHz</span>
           </p>
 
           <br />
 
           <Dropdown onSelect={handleSelectColorPalette}>
             <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn-sm float-end">
-              Color Maps
+              Color Map
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {colorPalettes.map((item, index) => {
@@ -209,46 +211,85 @@ const InformationPanel = ({
             </Dropdown.Menu>
           </Dropdown>
           <p>
-            <b>Color Map:</b> {selectedColorPalette?.key || colorPalettes[0].key}
+            <b>Color Map:</b>{" "}
+            <span className="font-monospace">{selectedColorPalette?.key || colorPalettes[0].key}</span>
           </p>
 
           <br />
+          <Form.Label><b>Sv Range</b></Form.Label>
+          <Row className="mb-3">
+            <Form.Group
+              as={Col}
+              controlId="minDB"
+            >
+              <Form.Label>Minimum (dB)</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="-100"
+                name="minDB"
+              />
+            </Form.Group>
 
-          <p>
-            <b>Min dB:</b> -80 dB | <b>Max dB:</b> -30 dB
-          </p>
-          <Form.Label>Range</Form.Label>
-          <Form.Range min="-100" max="0" step="1" />
-
+            <Form.Group
+              as={Col}
+              controlId="maxDB"
+            >
+              <Form.Label>Maximum (dB)</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="0"
+                name="maxDB"
+              />
+            </Form.Group>
+          </Row>
           <br />
-          <p>
-            <b>Raw Data Downloads:</b>
-          </p>
-          <p>
-            <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/Henry_B._Bigelow/HB0707/EK60/">
-              Level 0 — Raw Files
-            </a>
-            <br />
-            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/">
-              Level 1 — File-level Zarr stores
-            </a>
-            <br />
-            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/">
-              Level 2 — Cruise-level Zarr store
-            </a>
-          </p>
 
           <hr />
-
+          <p><b>Data Access:</b></p>
           <p>
-            <b>Processing Software</b>: {processingSoftwareName}
+            <b>Level 0:</b>
+            <span className="font-monospace float-end">
+              <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/Henry_B._Bigelow/HB0707/EK60/" target="_blank" rel="noopener noreferrer">
+                Raw Files
+              </a>
+            </span>
           </p>
           <p>
-            <b>Date</b>: {processingSoftwareTime}
+            <b>Level 1:</b>
+            <span className="font-monospace float-end">
+              <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/" target="_blank" rel="noopener noreferrer">
+                File-level Zarr stores
+              </a>
+            </span>
           </p>
           <p>
-            <b>Version</b>: {processingSoftwareVersion}
+            <b>Level 2:</b>
+            <span className="font-monospace float-end">
+              <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/" target="_blank" rel="noopener noreferrer">
+                Cruise-level Zarr store
+              </a>
+            </span>
           </p>
+          
+          <br />
+          <hr />
+          
+          <p><b>Processing Software:</b></p>
+          <p>
+            <b>name:</b>
+            <span className="font-monospace float-end">{processingSoftwareName}</span>
+          </p>
+          <p>
+            <b>Date:</b>
+            <span className="font-monospace float-end">{processingSoftwareTime}</span>
+          </p>
+          <p>
+            <b>Version:</b>
+            <span className="font-monospace float-end">v{processingSoftwareVersion}</span>
+          </p>
+          <br />
+          <hr />
+          <p className="text-center">~</p>
         </Offcanvas.Body>
       </Offcanvas>
     </>

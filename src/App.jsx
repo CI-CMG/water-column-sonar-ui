@@ -18,13 +18,13 @@ export default function App() {
         <Route path="/" element={<LayoutView />}>
           <Route index element={<MapView />} />
 
-          <Route path="/water-column" element={<WaterColumnView />} />
+          <Route path="water-column" element={<WaterColumnView />} />
 
-          <Route path="/dataset" element={<DatasetView />} />
+          <Route path="dataset" element={<DatasetView />} />
 
-          <Route path="/catalog" element={<CatalogView />} />
+          <Route path="catalog" element={<CatalogView />} />
 
-          <Route path="/about" element={<AboutView />} />
+          <Route path="about" element={<AboutView />} />
 
           <Route path="*" element={<ErrorView />} />
 
