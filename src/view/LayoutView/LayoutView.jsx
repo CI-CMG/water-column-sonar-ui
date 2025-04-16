@@ -5,7 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 // import { GiWashingMachine } from "react-icons/gi";
 // import { FaOctopusDeploy } from "react-icons/fa6";
-import { PiGraph } from "react-icons/pi";
+// import { PiGraph } from "react-icons/pi";
 import { PiCubeLight } from "react-icons/pi";
 import { PiDatabase } from "react-icons/pi";
 // import { PiBookOpenThin } from "react-icons/pi";
@@ -41,9 +41,9 @@ export default function LayoutView() {
                 <PiBookOpenThin />&nbsp;Catalog
               </Nav.Link> */}
 
-              <Nav.Link as={Link} to="/catalog">
+              {/* <Nav.Link as={Link} to="/catalog">
                 <PiGraph />&nbsp;Knowledge Graph
-              </Nav.Link>
+              </Nav.Link> */}
 
               {/* <Nav.Link href="#knowledge-graph">Knowledge Graph</Nav.Link> */}
               {/* <Nav.Link as={Link} to="/about">

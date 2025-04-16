@@ -143,7 +143,7 @@ export default function MapView() {
           Ship: ${e.features[0].properties.ship}<br />
           Cruise: ${e.features[0].properties.cruise}<br />
           Sensor: ${e.features[0].properties.sensor}<br />
-          → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=18000">view water column</a>
+          → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0">view water column</a>
           `
         )
         // .setDOMContent(placeholder)

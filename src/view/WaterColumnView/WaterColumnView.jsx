@@ -2,9 +2,7 @@ import { useEffect, useState, useRef } from "react";
 
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
-import {
-  useSearchParams
-} from 'react-router';
+import { useSearchParams } from 'react-router';
 import { MapContainer, LayersControl } from "react-leaflet";
 import { CRS } from "leaflet";
 import * as zarr from "zarrita";
@@ -32,7 +30,7 @@ const mapParameters = {
   minZoom: 0,
   maxZoom: 2,
   zoomControl: false,
-  tileSize: 1024, // TODO: get from store?
+  tileSize: 512, // TODO: get from store?
 };
 
 /*
@@ -55,9 +53,9 @@ export default function WaterColumnView() {
   const { search } = useLocation();
   const queryParameters = queryString.parse(search);
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log(`searchParams: ${searchParams}`)
-
-  // const [zarrLoaded, setZarrLoaded] = useState(false);
+  // useEffect(() => {
+  //   console.log(`Updated search params: ${searchParams}`)
+  // }, [searchParams]);
 
   const [calibrationStatus, setCalibrationStatus] = useState(null);
   const [processingSoftwareName, setProcessingSoftwareName] = useState(null);
@@ -77,9 +75,6 @@ export default function WaterColumnView() {
   const [frequencyIndices, setFrequencyIndices] = useState(null);
   const [chunkShape, setChunkShape] = useState(null);
 
-  // function loadZarrArrays() {
-  //   console.log('______loading zarr arrays______');
-  // }
 
   useEffect(() => {
     const storePromise = zarr.withConsolidated(
@@ -142,10 +137,6 @@ export default function WaterColumnView() {
           }
         );
       });
-
-      // return () => {
-      //   storePromise.cancel();
-      // };
   }, []);
 
   useEffect(() => {
@@ -157,14 +148,6 @@ export default function WaterColumnView() {
       longitudeArray !== null &&
       svArray !== null
     ) {
-      // console.log(depthArray);
-      // console.log(timeArray);
-      // console.log(frequencyArray);
-      // console.log(latitudeArray);
-      // // const latitudeSlice = get(latitudePromise, [zarr.slice(2, 4)]);
-      // console.log(longitudeArray);
-      // console.log(svArray);
-
       const svArrayShape = svArray.shape;
       setDepthIndices(svArrayShape[0]);
       setTimeIndices(svArrayShape[1]);
@@ -187,9 +170,9 @@ export default function WaterColumnView() {
         className="Map"
         ref={mapRef}
       >
+        {/* TODO: I need to refresh when the frequency is changed */}
         <LayersControl>
-          {/* <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
-          <LayersControl.Overlay checked name="Grid Example">
+          <LayersControl.Overlay checked name="echogram">
             <>{
               (depthArray !== null &&
               timeArray !== null &&
@@ -198,7 +181,7 @@ export default function WaterColumnView() {
               longitudeArray !== null &&
               svArray !== null)
               ?
-              <CustomLayer svArray={svArray} selectedFrequency={1} /> : <></>
+              <CustomLayer svArray={svArray} selectedFrequency={Number(searchParams.get('frequency'))} /> : <></>
             }</>
           </LayersControl.Overlay>
         </LayersControl>

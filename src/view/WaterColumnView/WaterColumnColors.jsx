@@ -1,6 +1,6 @@
 // https://support.echoview.com/WebHelp/Using_Echoview/Echogram/About_color_schemes.htm#Overview
 
-export const colorPalettes = {
+export const WaterColumnColors = {
     ek80: [
       '#9b070b', '#9a0f16', '#991721', '#971f2d',
       '#962738', '#992c3a', '#9f2f38', '#a53336',
@@ -37,4 +37,6 @@ export const colorPalettes = {
     ],
   };
 
-  export const defaultColorPalette = 'viridis';
+export const defaultColorPalette = 'virids';
+
+export default WaterColumnColors;

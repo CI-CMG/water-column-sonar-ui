@@ -1,11 +1,8 @@
 import {
-  // React,
   useState,
   useEffect,
 } from "react";
-import {
-  useSearchParams
-} from 'react-router';
+import { useSearchParams } from 'react-router';
 import Col from 'react-bootstrap/Col';
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
@@ -24,7 +21,7 @@ const colorPalettes = [
   { key: "EK80", value: "EK80" },
   { key: "EK500", value: "EK500" },
   { key: "Viridis", value: "Viridis" },
-  { key: "Red-Blue Diverging", value: "Red-Blue Diverging" },
+  { key: "Red-Blue", value: "Red-Blue" },
   { key: "Cyan-Magenta", value: "Cyan-Magenta" },
 ];
 
@@ -48,8 +45,6 @@ const InformationPanel = ({
 
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-  // TODO: should be just numbers, then format when printed
-  // const [frequencies, setFrequencies] = useState(["18 kHz", "38 kHz", "70 kHz", "120 kHz"]); // TODO: block this until loaded
   const [frequencies, setFrequencies] = useState({});
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -60,7 +55,7 @@ const InformationPanel = ({
   };
   const [selectedFrequency, setSelectedFrequency] = useState({});
   const handleSelectFrequency = (key) => {
-    setSelectedFrequency({ key, value: key });
+    setSelectedFrequency({ key: Number(key), value: frequencies[Number(key)].value });
     setSearchParams(
       (prev) => {
         prev.set('frequency', key);
@@ -69,7 +64,6 @@ const InformationPanel = ({
       { preventScrollReset: true }
     );
   };
-
 
   useEffect(() => {
     if(timeArray !== null){
@@ -85,17 +79,16 @@ const InformationPanel = ({
         await get(frequencyArray, [slice(null)])
           .then((f1) => {
             let allFrequencies = []
-            f1.data.forEach(function (i) { // convert BigUInts to Numbers
-              var h = Number(i);
+            f1.data.forEach(function (element, index) { // convert BigUInts to Numbers
+              var h = Number(element);
               allFrequencies.push({
-                key: h,
+                key: index,
                 value: h,
               });
             });
             setFrequencies(allFrequencies);
             setSelectedFrequency(allFrequencies[0]);
             setLoading(false);
-            // history.push('?color=blue');
           });
       })();
     }
@@ -166,7 +159,7 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Time:</b>{" "}
-            <span className="font-monospace float-end"><font color="#6699CC">2025-03-06</font>T<font color="#6699CC">16:13:30</font>Z</span>
+            <span className="font-monospace float-end"><font color="green">2025-03-06</font>T<font color="green">16:13:30</font>Z</span>
             {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
           </p>
           <p>
@@ -175,15 +168,12 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Depth:</b>
-            <span className="font-monospace float-end"><font color="#6699CC">123 meters</font></span>
+            <span className="font-monospace float-end">123 meters</span>
+            {/* <span className="font-monospace float-end"><font color="#6699CC">123 meters</font></span> */}
           </p>
           <p>
             <b>Selected Sv:</b>{" "}
             <span className="font-monospace float-end">-70.11 dB</span>
-          </p>
-          <p>
-            <b>Calibration Status:</b>
-            <span className="font-monospace float-end"><i>{calibrationStatus ? "Calibrated" : "Not Calibrated"}</i></span>
           </p>
 
           <br />
@@ -204,7 +194,7 @@ const InformationPanel = ({
           </Dropdown>
           <p>
             <b>Frequency:</b>{" "}
-            <span className="font-monospace">{selectedFrequency?.key / 1000} kHz</span>
+            <span className="font-monospace">{selectedFrequency?.value / 1000} kHz</span>
           </p>
 
           <br />
@@ -227,7 +217,7 @@ const InformationPanel = ({
             <b>Color Map:</b>{" "}
             <span className="font-monospace">{selectedColorPalette?.key || colorPalettes[0].key}</span>
           </p>
-          <ColorMap />
+          <ColorMap min="-80" max="0" selectedColorPalette="viridis"/>
 
           <br />
           <Form.Label><b>Sv Range</b></Form.Label>
@@ -300,6 +290,10 @@ const InformationPanel = ({
           <p>
             <b>Version:</b>
             <span className="font-monospace float-end">v{processingSoftwareVersion}</span>
+          </p>
+          <p>
+            <b>Calibration Status:</b>
+            <span className="font-monospace float-end">{calibrationStatus ? "calibrated" : "not calibrated"}</span>
           </p>
           <br />
           <hr />

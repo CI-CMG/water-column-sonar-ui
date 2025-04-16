@@ -1,20 +1,24 @@
-import { useEffect } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 import L from 'leaflet';
 import { useLeafletContext } from '@react-leaflet/core';
 import { scaleLinear, scaleThreshold } from 'd3-scale';
 import * as d3 from 'd3';
+import { useSearchParams } from 'react-router';
 import { color } from 'd3-color';
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import { slice } from "zarrita";
-import { colorPalettes } from './WaterColumnColors.ts';
+import { WaterColumnColors } from './WaterColumnColors.jsx';
 import PropTypes from 'prop-types';
 
 
-const palette = colorPalettes['viridis'];
+const palette = WaterColumnColors['viridis'];
 
 const minDB = -150; // min-db
 const maxDB = 10; // max-db
-const TILE_SIZE = 1024; // Need to get from the zarr store
+const TILE_SIZE = 512; // TODO: need to get from the zarr store!
 
 function drawTile(coordinateKey, canvas, svArray, selectedFrequency) {
 
@@ -53,7 +57,7 @@ function drawTile(coordinateKey, canvas, svArray, selectedFrequency) {
       }
 
       // TODO: make more like get(latitudePromise, [zarr.slice(2, 4)]);
-      get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency])
+      get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]) // selectedF is from url
         .then((d1) => {
           const d = d1; // as RawArray;
           const [height, width] = d.shape;
@@ -72,40 +76,49 @@ function drawTile(coordinateKey, canvas, svArray, selectedFrequency) {
     }
 }
 
-const CustomLayer = ({ svArray, selectedFrequency }) => {
-    const { layerContainer } = useLeafletContext();
+const CustomLayer = ({
+  svArray,
+  selectedFrequency, // passed in value is actual frequency value e.g. "18000"
+}) => {
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const [frequencyIndex, setFrequencyIndex] = useState(0);
+  // useEffect(() => {
+  //   setFrequencyIndex(Number(searchParams.get('frequency')));
+  // }, [searchParams]);
+  // const frequencyIndex = frequencyArray[selectedFrequency]; // 18 kHz to '1'
+  const { layerContainer } = useLeafletContext();
 
-    const createLeafletElement = () => {
-      const Grid = L.GridLayer.extend({
-        getTileSize: function() {
-          return new L.Point(TILE_SIZE, TILE_SIZE);
-        },
+  const createLeafletElement = () => {
+    const Grid = L.GridLayer.extend({
+      getTileSize: function() {
+        return new L.Point(TILE_SIZE, TILE_SIZE);
+      },
 
-        createTile: function (coords) {
-            const coordinateKey = `${coords.x}_${coords.y}_${coords.z}`;
-            const canvas = document.createElement('canvas');
-            var tileSize = this.getTileSize();
-            canvas.setAttribute('width', tileSize.x);
-            canvas.setAttribute('height', tileSize.y);
-            drawTile(coordinateKey, canvas, svArray, selectedFrequency); // TODO: pass in array
+      createTile: function (coords) {
+          const coordinateKey = `${coords.x}_${coords.y}_${coords.z}`;
+          const canvas = document.createElement('canvas');
+          var tileSize = this.getTileSize();
+          canvas.setAttribute('width', tileSize.x);
+          canvas.setAttribute('height', tileSize.y);
+          drawTile(coordinateKey, canvas, svArray, selectedFrequency); // TODO: pass in array
 
-            return canvas;
-        }
-      });
-      return new Grid();
-    };
-
-    useEffect(() => {
-      // trying to add layer only once — don't focus on this now
-      if (svArray !== null) {
-        layerContainer.addLayer(createLeafletElement());
+          return canvas;
       }
-    }, []);
+    });
+    return new Grid();
+  };
+
+  useEffect(() => {
+    // trying to add layer only once — don't focus on this now
+    if (svArray !== null) {
+      layerContainer.addLayer(createLeafletElement());
+    }
+  }, []); // frequencyIndex
 };
 
 export default CustomLayer;
 
 CustomLayer.propTypes = {
     svArray: PropTypes.instanceOf(Object), // Promise
-    frequency: PropTypes.instanceOf(Number)
+    selectedFrequency: PropTypes.instanceOf(Number)
 };
