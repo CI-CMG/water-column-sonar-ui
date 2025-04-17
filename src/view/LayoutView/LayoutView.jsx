@@ -33,7 +33,7 @@ export default function LayoutView() {
               </Nav.Link>
               <Nav.Link
                 as={Link}
-                to="/water-column?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&x=100&y=200&frequency=0"
+                to="/water-column?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&x=100&y=200&frequency=0&color=0"
               >
                 {/* <i className="bi bi-box"></i> */}
                 <PiCubeLight />&nbsp;Water Column

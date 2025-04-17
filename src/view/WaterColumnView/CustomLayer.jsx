@@ -14,13 +14,14 @@ import { WaterColumnColors } from './WaterColumnColors.jsx';
 import PropTypes from 'prop-types';
 
 
-const palette = WaterColumnColors['viridis'];
+// const palette = WaterColumnColors['viridis'];
 
 const minDB = -150; // min-db
 const maxDB = 10; // max-db
 const TILE_SIZE = 512; // TODO: need to get from the zarr store!
 
-function drawTile(coordinateKey, canvas, svArray, selectedFrequency) {
+function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName) {
+    const palette = WaterColumnColors[paletteName]
 
     const parts = coordinateKey.split('_');
     const x = Number.parseInt(parts[0], 10);
@@ -80,7 +81,10 @@ const CustomLayer = ({
   svArray,
   selectedFrequency, // passed in value is actual frequency value e.g. "18000"
 }) => {
-  // const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
+    return {'key': y, 'value': x}; 
+  })[searchParams.get('color')]);
   // const [frequencyIndex, setFrequencyIndex] = useState(0);
   // useEffect(() => {
   //   setFrequencyIndex(Number(searchParams.get('frequency')));
@@ -100,7 +104,7 @@ const CustomLayer = ({
           var tileSize = this.getTileSize();
           canvas.setAttribute('width', tileSize.x);
           canvas.setAttribute('height', tileSize.y);
-          drawTile(coordinateKey, canvas, svArray, selectedFrequency); // TODO: pass in array
+          drawTile(coordinateKey, canvas, svArray, selectedFrequency, selectedColorMap.value); // TODO: pass in array
 
           return canvas;
       }
@@ -109,11 +113,11 @@ const CustomLayer = ({
   };
 
   useEffect(() => {
-    // trying to add layer only once — don't focus on this now
     if (svArray !== null) {
       layerContainer.addLayer(createLeafletElement());
     }
-  }, []); // frequencyIndex
+  }, [searchParams]); // frequencyIndex
+
 };
 
 export default CustomLayer;

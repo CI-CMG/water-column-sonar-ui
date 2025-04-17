@@ -16,6 +16,7 @@ import { slice } from "zarrita";
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import ColorMap from "./ColorMap";
 import SvPlotView from "./SvPlotView";
+import WaterColumnColors from "./WaterColumnColors.jsx";
 
 // color palette selected for the water column visualization
 const colorPalettes = [
@@ -46,13 +47,26 @@ const InformationPanel = ({
 
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-  const [frequencies, setFrequencies] = useState({});
+  const [frequencies, setFrequencies] = useState({}); // used for button
+  // const [colorMaps, setColorMaps] = useState(WaterColumnColors); // used for button
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [selectedColorPalette, setSelectedColorPalette] = useState({});
-  const handleSelectColorPalette = (key, event) => {
-    setSelectedColorPalette({ key, value: event.target.value });
+  const [colorMaps, setColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
+    return {'key': y, 'value': x}; 
+  }));
+  const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
+    return {'key': y, 'value': x}; 
+  })[searchParams.get('color')]);
+  const handleSelectColorMap = (key) => {
+    setSelectedColorMap({ key: Number(key), value: Object.keys(WaterColumnColors)[key] });
+    setSearchParams(
+      (prev) => {
+        prev.set('color', key);
+        return prev;
+      },
+      { preventScrollReset: true }
+    );
   };
   const [selectedFrequency, setSelectedFrequency] = useState({});
   const handleSelectFrequency = (key) => {
@@ -171,7 +185,7 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Depth:</b>
-            <span className="font-monospace float-end">123 meters</span>
+            <span className="font-monospace float-end">123.45 meters</span>
             {/* <span className="font-monospace float-end"><font color="#6699CC">123 meters</font></span> */}
           </p>
           <p>
@@ -186,13 +200,15 @@ const InformationPanel = ({
               Frequency
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {frequencies.map((item, index) => {
-                return (
-                  <Dropdown.Item key={index} eventKey={item.key}>
-                    {item.value}
-                  </Dropdown.Item>
-                );
-              })}
+              {
+                frequencies.map((item, index) => {
+                  return (
+                    <Dropdown.Item key={index} eventKey={item.key}>
+                      {item.value}
+                    </Dropdown.Item>
+                  );
+                })
+              }
             </Dropdown.Menu>
           </Dropdown>
           <p>
@@ -202,24 +218,26 @@ const InformationPanel = ({
 
           <br />
 
-          <Dropdown onSelect={handleSelectColorPalette}>
+          <Dropdown onSelect={handleSelectColorMap}>
             <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
               Color Map
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {colorPalettes.map((item, index) => {
-                return (
-                  <Dropdown.Item key={index} eventKey={item.key}>
-                    {item.value}
-                  </Dropdown.Item>
-                );
-              })}
+              {
+                colorMaps.map((item, index) => {
+                  return (
+                    <Dropdown.Item key={index} eventKey={item.key}>
+                      {item.value}
+                    </Dropdown.Item>
+                  );
+                })
+              }
             </Dropdown.Menu>
           </Dropdown>
 
           <p>
             <b>Color Map:</b>{" "}
-            <span className="font-monospace">{selectedColorPalette?.key || colorPalettes[0].key}</span>
+            <span className="font-monospace">{selectedColorMap.value}</span>
           </p>
           
           <ColorMap min="-80" max="-30" selectedColorPalette="viridis"/>

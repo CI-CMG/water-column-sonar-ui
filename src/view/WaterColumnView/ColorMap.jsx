@@ -50,7 +50,7 @@ const ColorMap = ({
     svgElement.selectAll("rect")
       .data(dataset, d => d)
       .join("rect")
-        .attr("width", 20)
+        .attr("width", 0)
         .attr("height", 10)
         .attr("x", d => d)
         .attr("y", 0)

@@ -3,7 +3,14 @@ import { useEffect, useState, useRef } from "react";
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
 import { useSearchParams } from 'react-router';
-import { MapContainer, LayersControl } from "react-leaflet";
+import {
+  MapContainer,
+  LayersControl,
+  Marker,
+  Popup,
+  LayerGroup,
+  Circle,
+} from "react-leaflet";
 import { CRS } from "leaflet";
 import * as zarr from "zarrita";
 // import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
@@ -170,19 +177,33 @@ export default function WaterColumnView() {
         className="Map"
         ref={mapRef}
       >
-        {/* TODO: I need to refresh when the frequency is changed */}
         <LayersControl>
           <LayersControl.Overlay checked name="echogram">
-            <>{
-              (depthArray !== null &&
-              timeArray !== null &&
-              frequencyArray !== null &&
-              latitudeArray !== null &&
-              longitudeArray !== null &&
-              svArray !== null)
-              ?
-              <CustomLayer svArray={svArray} selectedFrequency={Number(searchParams.get('frequency'))} /> : <></>
-            }</>
+            <Marker position={[0, 0]}>
+              <Popup>
+                Start of the cruise
+              </Popup>
+            </Marker>
+            <LayerGroup>
+              <Circle
+                center={[-128, 128]}
+                pathOptions={{ color: 'white', fillColor: 'white' }}
+                radius={100}
+                stroke={true}
+              />
+            </LayerGroup>
+            <>
+              {
+                (depthArray !== null &&
+                timeArray !== null &&
+                frequencyArray !== null &&
+                latitudeArray !== null &&
+                longitudeArray !== null &&
+                svArray !== null)
+                ?
+                <CustomLayer svArray={svArray} selectedFrequency={Number(searchParams.get('frequency'))} /> : <></>
+              }
+            </>
           </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>
