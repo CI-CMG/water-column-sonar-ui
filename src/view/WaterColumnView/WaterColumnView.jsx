@@ -28,7 +28,7 @@ const mapParameters = {
   zoom: 0,
   center: [0, 0],
   minZoom: 0,
-  maxZoom: 2,
+  maxZoom: 0, // TODO: add two more levels of zoom
   zoomControl: false,
   tileSize: 512, // TODO: get from store?
 };

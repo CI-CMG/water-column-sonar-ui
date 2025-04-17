@@ -1,10 +1,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 import {
+  useRef,
   useState,
   useEffect,
 } from "react";
-import Spinner from 'react-bootstrap/Spinner';
+import { useInterval } from 'usehooks-ts'
+// import Spinner from 'react-bootstrap/Spinner';
 import PropTypes from "prop-types";
+import * as d3 from 'd3'
 import WaterColumnColors from "./WaterColumnColors.jsx";
 // import {
 //   useSearchParams
@@ -18,6 +21,14 @@ function legendValue(percent, max, min) {
   return `${Number.parseFloat(value).toFixed(2)}`;
 }
 
+const generateDataset = () => {
+  // WaterColumnColors['viridis'].length
+  // Array(WaterColumnColors['viridis'].length).fill(0).map(() => ([
+  //   ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]).map((x) => x*10)
+  // ]))
+  return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => x*20);
+}
+
 //////////////////////////////////////////////////////////////////////////////////
 const ColorMap = ({
   min,
@@ -26,20 +37,30 @@ const ColorMap = ({
 }) => {
   // const [searchParams, setSearchParams] = useSearchParams();
   // const [isLoading, setLoading] = useState(true);
-  
-  const width = 300;
-  const height = 20;
-  const fill = 'black';
-  // const palette = WaterColumnColors[selectedColorPalette];
-  const legend0 = "A"; // legendValue(0, max, min);
-  const legend25 = "B"; // legendValue(25, max, min);
-  const legend50 = "C"; //legendValue(50, max, min);
-  const legend75 = "D"; // legendValue(75, max, min);
-  const legend100 = "E"; //legendValue(100, max, min);
+
+  // https://2019.wattenberger.com/blog/react-and-d3
+  const ref = useRef();
+  const [dataset, setDataset] = useState(generateDataset());
+
+  const width = 360;
+  const height = 30;
 
   useEffect(() => {
-    console.log('Loading the color map.')
-  }, [])
+    const svgElement = d3.select(ref.current)
+    svgElement.selectAll("rect")
+      .data(dataset, d => d)
+      .join("rect")
+        .attr("width", 20)
+        .attr("height", 10)
+        .attr("x", d => d)
+        .attr("y", 0)
+        .attr("fill", function(d, i){return WaterColumnColors['viridis'][i]})
+  }, [dataset]);
+
+  // useInterval(() => {
+  //   const newDataset = generateDataset()
+  //   setDataset(newDataset)
+  // }, 2000);
 
   // if (isLoading) {
   //   return <>
@@ -50,16 +71,15 @@ const ColorMap = ({
   // }
   return (
     <>
-      <p>Color Map WIP</p>
-      <svg height={height} width={width} xmlns="http://www.w3.org/2000/svg">
+      <svg height={height} width={width} ref={ref} />
+      {/* <svg height={height} width={width} xmlns="http://www.w3.org/2000/svg">
         {
           Array.from({ length: 5 }, (color, index) => (
             <text x="5" y={15*index} fill="red" key={index}>{color}</text>
           ))
         }
-      </svg>
-      <p>mid</p>
-      <svg height={height} width={width} xmlns="http://www.w3.org/2000/svg">
+      </svg> */}
+      {/* <svg height={height} width={width} xmlns="http://www.w3.org/2000/svg">
         <text
           x={width * .03}
           y={height}
@@ -95,8 +115,7 @@ const ColorMap = ({
         >
           {legend100}
         </text>
-      </svg>
-      <p>Color Map WIP</p>
+      </svg> */}
     </>
   );
 };

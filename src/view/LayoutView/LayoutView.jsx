@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 // import { PiGraph } from "react-icons/pi";
 import { PiCubeLight } from "react-icons/pi";
 import { PiDatabase } from "react-icons/pi";
+import { PiMapTrifoldThin } from "react-icons/pi";
 // import { PiBookOpenThin } from "react-icons/pi";
 // import { LiaFishSolid } from "react-icons/lia";
 
@@ -26,7 +27,13 @@ export default function LayoutView() {
             <Nav className="ms-auto">
               <Nav.Link
                 as={Link}
-                to="/water-column?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&x=100&y=200&frequency=38000"
+                to="/"
+              >
+                <PiMapTrifoldThin />&nbsp;Map
+              </Nav.Link>
+              <Nav.Link
+                as={Link}
+                to="/water-column?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&x=100&y=200&frequency=0"
               >
                 {/* <i className="bi bi-box"></i> */}
                 <PiCubeLight />&nbsp;Water Column

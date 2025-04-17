@@ -15,6 +15,7 @@ import MiniMapView from "./MiniMapView";
 import { slice } from "zarrita";
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import ColorMap from "./ColorMap";
+import SvPlotView from "./SvPlotView";
 
 // color palette selected for the water column visualization
 const colorPalettes = [
@@ -113,7 +114,6 @@ const InformationPanel = ({
   if (isLoading) {
     return <div className="App">Loading...</div>;
   }
-
   return (
     <>
       <Button
@@ -144,6 +144,8 @@ const InformationPanel = ({
         <Offcanvas.Body>
           <MiniMapView />
 
+          <SvPlotView />
+
           <br />
           <p>
             <b>Ship:</b>
@@ -159,7 +161,8 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Time:</b>{" "}
-            <span className="font-monospace float-end"><font color="green">2025-03-06</font>T<font color="green">16:13:30</font>Z</span>
+            {/* <span className="font-monospace float-end"><font color="green">2025-03-06</font>T<font color="green">16:13:30</font>Z</span> */}
+            <span className="font-monospace float-end">2025-03-06T16:13:30Z</span>
             {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
           </p>
           <p>
@@ -179,7 +182,7 @@ const InformationPanel = ({
           <br />
 
           <Dropdown onSelect={handleSelectFrequency}>
-            <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn-sm float-end">
+            <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
               Frequency
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -200,7 +203,7 @@ const InformationPanel = ({
           <br />
 
           <Dropdown onSelect={handleSelectColorPalette}>
-            <Dropdown.Toggle variant="success" id="dropdown-basic" className="btn-sm float-end">
+            <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
               Color Map
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -213,12 +216,15 @@ const InformationPanel = ({
               })}
             </Dropdown.Menu>
           </Dropdown>
+
           <p>
             <b>Color Map:</b>{" "}
             <span className="font-monospace">{selectedColorPalette?.key || colorPalettes[0].key}</span>
           </p>
-          <ColorMap min="-80" max="0" selectedColorPalette="viridis"/>
+          
+          <ColorMap min="-80" max="-30" selectedColorPalette="viridis"/>
 
+          <br />
           <br />
           <Form.Label><b>Sv Range</b></Form.Label>
           <Row className="mb-3">
@@ -229,8 +235,9 @@ const InformationPanel = ({
               <Form.Label>Minimum (dB)</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="-100"
+                defaultValue="-80"
                 name="minDB"
+                className="w-75"
               />
             </Form.Group>
 
@@ -241,8 +248,9 @@ const InformationPanel = ({
               <Form.Label>Maximum (dB)</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="0"
+                defaultValue="-30"
                 name="maxDB"
+                className="w-75"
               />
             </Form.Group>
           </Row>
@@ -281,7 +289,8 @@ const InformationPanel = ({
           <p><b>Processing Software:</b></p>
           <p>
             <b>name:</b>
-            <span className="float-end softwareName">{processingSoftwareName}</span>
+            {/* <span className="float-end softwareName">{processingSoftwareName}</span> */}
+            <span className="font-monospace float-end">{processingSoftwareName}</span>
           </p>
           <p>
             <b>Date:</b>
@@ -296,8 +305,7 @@ const InformationPanel = ({
             <span className="font-monospace float-end">{calibrationStatus ? "calibrated" : "not calibrated"}</span>
           </p>
           <br />
-          <hr />
-          <p className="text-center">~</p>
+          <p className="text-center"><i className="bi bi-layers" /></p>
         </Offcanvas.Body>
       </Offcanvas>
     </>
