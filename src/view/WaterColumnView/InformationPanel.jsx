@@ -11,21 +11,21 @@ import Row from 'react-bootstrap/Row';
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
 import MiniMapView from "./MiniMapView";
-// import { get } from "@zarrita/ndarray";
 import { slice } from "zarrita";
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import ColorMap from "./ColorMap";
 import SvPlotView from "./SvPlotView";
 import WaterColumnColors from "./WaterColumnColors.jsx";
-
-// color palette selected for the water column visualization
-// const colorPalettes = [
-//   { key: "EK80", value: "EK80" },
-//   { key: "EK500", value: "EK500" },
-//   { key: "Viridis", value: "Viridis" },
-//   { key: "Red-Blue", value: "Red-Blue" },
-//   { key: "Cyan-Magenta", value: "Cyan-Magenta" },
-// ];
+import {
+  updateShip,
+  updateCruise,
+  updateSensor,
+  selectShip,
+  selectCruise,
+  selectSensor,
+} from ".././../reducers/cruise/cruiseSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import Counter from "../../reducers/counter/Counter.tsx";
 
 const InformationPanel = ({
   queryParameters,
@@ -45,7 +45,15 @@ const InformationPanel = ({
   // timeIndices,
   // frequencyIndices,
 }) => {
+  const dispatch = useAppDispatch()
+  const ship = useAppSelector(selectShip);
+  const cruise = useAppSelector(selectCruise);
+  const sensor = useAppSelector(selectSensor);
+  // const count = useAppSelector(selectCount); // used for counter redux example;
   const [searchParams, setSearchParams] = useSearchParams();
+  dispatch(updateShip(searchParams.get('ship')));
+  dispatch(updateCruise(searchParams.get('cruise')));
+  dispatch(updateSensor(searchParams.get('sensor')));
 
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
@@ -157,29 +165,35 @@ const InformationPanel = ({
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            {queryParameters.ship} <font color="#00CC33">/</font>{" "}
-            {queryParameters.cruise} <font color="#00CC33">/</font>{" "}
-            {queryParameters.sensor}
+            {ship} <font color="#00CC33">/</font>{" "}
+            {cruise} <font color="#00CC33">/</font>{" "}
+            {sensor}
           </Offcanvas.Title>
         </Offcanvas.Header>
 
         <Offcanvas.Body>
+          {/* <Counter /> */}
+
           <MiniMapView />
 
           <SvPlotView />
 
           <br />
+          {/* <p>
+            <b>Counter:</b>{" "}
+            <span className="font-monospace float-end">{count}</span>
+          </p> */}
           <p>
             <b>Ship:</b>
-            <span className="font-monospace float-end">{queryParameters.ship}</span>
+            <span className="font-monospace float-end">{ship}</span>
           </p>
           <p>
             <b>Cruise:</b>
-            <span className="font-monospace float-end">{queryParameters.cruise}</span>
+            <span className="font-monospace float-end">{cruise}</span>
           </p>
           <p>
             <b>Sensor:</b>
-            <span className="font-monospace float-end">{queryParameters.sensor}</span>
+            <span className="font-monospace float-end">{sensor}</span>
           </p>
           <p>
             <b>Time:</b>{" "}

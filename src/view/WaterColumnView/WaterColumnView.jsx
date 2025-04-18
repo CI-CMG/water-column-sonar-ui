@@ -14,7 +14,7 @@ import {
   useMapEvents
 } from 'react-leaflet/hooks'
 
-
+// import { store } from "../../store";
 import { CRS } from "leaflet";
 import * as zarr from "zarrita";
 // import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
@@ -59,14 +59,15 @@ Water Column View Query Parameters
 
 // http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
+  // console.log(store.getState());
+  // store.dispatch({ type: 'counter/increment' })
+  // console.log(store.getState());
+
   const mapRef = useRef(null);
 
   const { search } = useLocation();
   const queryParameters = queryString.parse(search);
   const [searchParams, setSearchParams] = useSearchParams();
-  // useEffect(() => {
-  //   console.log(`Updated search params: ${searchParams}`)
-  // }, [searchParams]);
 
   const [calibrationStatus, setCalibrationStatus] = useState(null);
   const [processingSoftwareName, setProcessingSoftwareName] = useState(null);
@@ -148,6 +149,8 @@ export default function WaterColumnView() {
           }
         );
       });
+
+      // TODO: return statement for end of lifecycle
   }, []);
 
   useEffect(() => {
