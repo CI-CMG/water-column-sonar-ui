@@ -2,6 +2,12 @@ import { useRef, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
+import {
+  selectLatitude,
+  selectLongitude,
+} from "../../reducers/cruise/cruiseSlice.ts";
+import { useAppSelector } from "../../app/hooks";
+
 
 const map_key = import.meta.env.DEV
   ? import.meta.env.VITE_SOME_MAPTILER_API_DEV
@@ -49,6 +55,9 @@ const style = {
 };
 
 export default function MiniMapView() {
+  const latitude = useAppSelector(selectLatitude);
+  const longitude = useAppSelector(selectLongitude);
+
   const miniMapContainer = useRef();
   const map = useRef();
 
@@ -61,12 +70,20 @@ export default function MiniMapView() {
       map.current = new maplibregl.Map({
         container: miniMapContainer.current,
         style: style,
-        center: [-95, 35],
-        zoom: 0,
+        center: [
+          -74.5 + (Math.random() - 0.5) * 10,
+          40 + (Math.random() - 0.5) * 10
+        ],
+        zoom: 10,
         minZoom: 2,
       });
+
+      map.current.flyTo({
+        center: [longitude, latitude],
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+      });
     }
-  }, [map]);
+  }, [map, latitude, longitude]);
 
   return (
     <div className="MiniMapView">

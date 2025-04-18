@@ -5,22 +5,53 @@
 import type { RootState } from "../../app/store.js";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors.ts';
 
 export interface CruiseState {
-  ship: string,
-  cruise: string,
-  sensor: string,
-  // time: string,
-  // latitude: number,
-  // longitude: number,
-  // depth: number,
-  // sv: number,
+  ship: string | null,
+  cruise: string | null,
+  sensor: string | null,
+
+  // Clicked values
+  time: string | null,
+  latitude: number | null,
+  longitude: number | null,
+  depth: number | null,
+  sv: number | null,
+
+  // Toggle frequencies
+  frequencies: Array<number>,
+  selectedFrequency: number, // index?
+  
+  // Color Palette
+  colorMaps: Array<object>,
+  selectedColorMap: number, // index?
+
+  // Sv Range thresholds
+  svMin: number,
+  svMax: number,
+
 }
 
 const initialState: CruiseState = {
-  ship: "", // "Henry_B._Bigelow",
-  cruise: "", // "HB0707",
-  sensor: "", // "EK60",
+  ship: null, // "Henry_B._Bigelow",
+  cruise: null, // "HB0707",
+  sensor: null, // "EK60",
+
+  time: "2025-03-06T16:13:30Z", // null, // 2025-03-06T16:13:30Z
+  latitude: 42.7648, // null, // 32.7648° N
+  longitude: -68.3714, // null, // -117.3714° E
+  depth: 321.01, // null, // 123.45 meters
+  sv: -67.89, // null, // -70.11 dB
+
+  frequencies: [18000, 38000, 120000, 200000], // does this belong with the zarr stuff?
+  selectedFrequency: 0,
+
+  colorMaps: WaterColumnColors,
+  selectedColorMap: 0,
+
+  svMin: -80,
+  svMax: -30,
 }
 
 export const cruiseSlice = createSlice({
@@ -29,28 +60,84 @@ export const cruiseSlice = createSlice({
   
   initialState,
   
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     updateShip: (state, action: PayloadAction<string>) => {
       state.ship = action.payload
     },
-    
     updateCruise: (state, action: PayloadAction<string>) => {
       state.cruise = action.payload
     },
-
     updateSensor: (state, action: PayloadAction<string>) => {
       state.sensor = action.payload
     },
+
+    updateTime: (state, action: PayloadAction<string>) => {
+      state.time = action.payload
+    },
+    updateLatitude: (state, action: PayloadAction<number>) => {
+      state.latitude = action.payload
+    },
+    updateLongitude: (state, action: PayloadAction<number>) => {
+      state.longitude = action.payload
+    },
+    updateDepth: (state, action: PayloadAction<number>) => {
+      state.depth = action.payload
+    },
+    updateSv: (state, action: PayloadAction<number>) => {
+      state.sv = action.payload
+    },
+
+    // updateFrequencies: (state, action: PayloadAction<number>) => {
+    //   state.frequencies = action.payload
+    // },
+    updateSelectedFrequency: (state, action: PayloadAction<number>) => { // dropdown
+      state.selectedFrequency = action.payload
+    },
+
+    // updateColorMaps: (state, action: PayloadAction<Array<object>>) => {
+    //   state.colorMaps = action.payload
+    // },
+    updateSelectedColorMap: (state, action: PayloadAction<number>) => { // dropdown
+      state.selectedColorMap = action.payload
+    },
+
+    updateSvMin: (state, action: PayloadAction<number>) => { // button click
+      state.svMin = Number(action.payload);
+    },
+    updateSvMax: (state, action: PayloadAction<number>) => { // button click
+      state.svMax = Number(action.payload);
+    },
   },
-})
+});
 
-// Export the generated action creators for use in components
-export const { updateShip, updateCruise, updateSensor } = cruiseSlice.actions
+export const {
+  updateShip,
+  updateCruise,
+  updateSensor,
+  updateTime,
+  updateLatitude,
+  updateLongitude,
+  updateDepth,
+  updateSv,
+  updateSelectedFrequency,
+  updateSelectedColorMap,
+  updateSvMin,
+  updateSvMax,
+} = cruiseSlice.actions;
 
-export default cruiseSlice.reducer
+export default cruiseSlice.reducer;
 
-export const selectShip = (state: RootState) => state.cruise.ship
-export const selectCruise = (state: RootState) => state.cruise.cruise
-export const selectSensor = (state: RootState) => state.cruise.sensor
+export const selectShip = (state: RootState) => state.cruise.ship;
+export const selectCruise = (state: RootState) => state.cruise.cruise;
+export const selectSensor = (state: RootState) => state.cruise.sensor;
+export const selectTime = (state: RootState) => state.cruise.time;
+export const selectLatitude = (state: RootState) => state.cruise.latitude;
+export const selectLongitude = (state: RootState) => state.cruise.longitude;
+export const selectDepth = (state: RootState) => state.cruise.depth;
+export const selectSv = (state: RootState) => state.cruise.sv;
+export const selectSelectedFrequency = (state: RootState) => state.cruise.selectedFrequency;
+export const selectSelectedColorMap = (state: RootState) => state.cruise.selectedColorMap;
+export const selectSvMin = (state: RootState) => state.cruise.svMin;
+export const selectSvMax = (state: RootState) => state.cruise.svMax;
+
 

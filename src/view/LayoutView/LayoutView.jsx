@@ -21,7 +21,7 @@ export default function LayoutView() {
         <Navbar bg="dark" data-bs-theme="dark">
           <Container>
             <Navbar.Brand as={Link} to="/" className="font-weight-bold">
-              <i className="bi bi-layers"></i> &nbsp; echofish
+            <i className="bi bi-intersect"></i>&nbsp; echofish
             </Navbar.Brand>
 
             <Nav className="ms-auto">

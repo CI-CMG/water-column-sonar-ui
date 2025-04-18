@@ -20,12 +20,23 @@ import {
   updateShip,
   updateCruise,
   updateSensor,
+  updateSvMin,
+  updateSvMax,
+  // 
   selectShip,
   selectCruise,
   selectSensor,
+  selectTime,
+  selectLatitude,
+  selectLongitude,
+  selectDepth,
+  selectSv,
+  // selectedFrequency
+  selectSvMin,
+  selectSvMax,
 } from ".././../reducers/cruise/cruiseSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import Counter from "../../reducers/counter/Counter.tsx";
+// import Counter from "../../reducers/counter/Counter.tsx";
 
 const InformationPanel = ({
   queryParameters,
@@ -41,6 +52,7 @@ const InformationPanel = ({
   longitudeArray,
   frequencyArray,
 
+  // TODO: get these passed in?
   // depthIndices,
   // timeIndices,
   // frequencyIndices,
@@ -49,7 +61,16 @@ const InformationPanel = ({
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
+  const time = useAppSelector(selectTime);
+  const latitude = useAppSelector(selectLatitude);
+  const longitude = useAppSelector(selectLongitude);
+  const depth = useAppSelector(selectDepth);
+  const sv = useAppSelector(selectSv); // todo; move these to WaterColumnView in hook
+  const svMin = useAppSelector(selectSvMin);
+  const svMax = useAppSelector(selectSvMax);
+
   // const count = useAppSelector(selectCount); // used for counter redux example;
+  
   const [searchParams, setSearchParams] = useSearchParams();
   dispatch(updateShip(searchParams.get('ship')));
   dispatch(updateCruise(searchParams.get('cruise')));
@@ -135,11 +156,9 @@ const InformationPanel = ({
     }
   }, [timeArray, frequencyArray, latitudeArray, longitudeArray])
 
-  const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/`;
-  // "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/"
-  const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/`;
-  // "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/"
-  const url_level_2 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/`;
+  const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${ship}/${cruise}/${sensor}/`;
+  const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${ship}/${cruise}/${sensor}/`;
+  const url_level_2 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/${ship}/${cruise}/${sensor}/`;
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -185,34 +204,34 @@ const InformationPanel = ({
           </p> */}
           <p>
             <b>Ship:</b>
-            <span className="font-monospace float-end">{ship}</span>
+            <span className="font-monospace float-end">{ ship }</span>
           </p>
           <p>
             <b>Cruise:</b>
-            <span className="font-monospace float-end">{cruise}</span>
+            <span className="font-monospace float-end">{ cruise }</span>
           </p>
           <p>
             <b>Sensor:</b>
-            <span className="font-monospace float-end">{sensor}</span>
+            <span className="font-monospace float-end">{ sensor }</span>
           </p>
           <p>
             <b>Time:</b>{" "}
             {/* <span className="font-monospace float-end"><font color="green">2025-03-06</font>T<font color="green">16:13:30</font>Z</span> */}
-            <span className="font-monospace float-end">2025-03-06T16:13:30Z</span>
+            <span className="font-monospace float-end">{ time }</span>
             {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
           </p>
           <p>
             <b>Lon/Lat:</b>{" "}
-            <span className="font-monospace float-end">-117.3714° E, 32.7648° N</span>
+            <span className="font-monospace float-end">{ longitude }° E, { latitude }° N</span>
           </p>
           <p>
             <b>Depth:</b>
-            <span className="font-monospace float-end">123.45 meters</span>
+            <span className="font-monospace float-end">{ depth } meters</span>
             {/* <span className="font-monospace float-end"><font color="#6699CC">123 meters</font></span> */}
           </p>
           <p>
             <b>Selected Sv:</b>{" "}
-            <span className="font-monospace float-end">-70.11 dB</span>
+            <span className="font-monospace float-end">{ sv } dB</span>
           </p>
 
           <br />
@@ -275,8 +294,9 @@ const InformationPanel = ({
               <Form.Label>Minimum (dB)</Form.Label>
               <Form.Control
                 type="number"
-                defaultValue="-80"
+                defaultValue={svMin}
                 name="minDB"
+                onChange={(e) => dispatch(updateSvMin(e.target.value))}
                 className="w-75"
               />
             </Form.Group>
@@ -288,8 +308,9 @@ const InformationPanel = ({
               <Form.Label>Maximum (dB)</Form.Label>
               <Form.Control
                 type="number"
-                defaultValue="-30"
+                defaultValue={svMax}
                 name="maxDB"
+                onChange={(e) => dispatch(updateSvMax(e.target.value))}
                 className="w-75"
               />
             </Form.Group>
