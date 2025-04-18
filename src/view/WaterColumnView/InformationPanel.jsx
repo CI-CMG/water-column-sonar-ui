@@ -19,13 +19,13 @@ import SvPlotView from "./SvPlotView";
 import WaterColumnColors from "./WaterColumnColors.jsx";
 
 // color palette selected for the water column visualization
-const colorPalettes = [
-  { key: "EK80", value: "EK80" },
-  { key: "EK500", value: "EK500" },
-  { key: "Viridis", value: "Viridis" },
-  { key: "Red-Blue", value: "Red-Blue" },
-  { key: "Cyan-Magenta", value: "Cyan-Magenta" },
-];
+// const colorPalettes = [
+//   { key: "EK80", value: "EK80" },
+//   { key: "EK500", value: "EK500" },
+//   { key: "Viridis", value: "Viridis" },
+//   { key: "Red-Blue", value: "Red-Blue" },
+//   { key: "Cyan-Magenta", value: "Cyan-Magenta" },
+// ];
 
 const InformationPanel = ({
   queryParameters,
@@ -33,6 +33,8 @@ const InformationPanel = ({
   processingSoftwareName,
   processingSoftwareTime,
   processingSoftwareVersion,
+
+  // TODO: get dimensionality of Sv data
 
   timeArray,
   latitudeArray,
@@ -124,6 +126,12 @@ const InformationPanel = ({
       })();
     }
   }, [timeArray, frequencyArray, latitudeArray, longitudeArray])
+
+  const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/`;
+  // "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/"
+  const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/`;
+  // "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/"
+  const url_level_2 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/`;
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -279,7 +287,7 @@ const InformationPanel = ({
           <p>
             <b>Level 0:</b>
             <span className="font-monospace float-end">
-              <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/Henry_B._Bigelow/HB0707/EK60/" target="_blank" rel="noopener noreferrer">
+              <a href={url_level_0} target="_blank" rel="noopener noreferrer">
                 Raw Files
               </a>
             </span>
@@ -287,7 +295,7 @@ const InformationPanel = ({
           <p>
             <b>Level 1:</b>
             <span className="font-monospace float-end">
-              <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/Henry_B._Bigelow/HB0707/EK60/" target="_blank" rel="noopener noreferrer">
+              <a href={url_level_1} target="_blank" rel="noopener noreferrer">
                 File-level Zarr stores
               </a>
             </span>
@@ -295,11 +303,12 @@ const InformationPanel = ({
           <p>
             <b>Level 2:</b>
             <span className="font-monospace float-end">
-              <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/Henry_B._Bigelow/HB0707/EK60/" target="_blank" rel="noopener noreferrer">
+              <a href={url_level_2} target="_blank" rel="noopener noreferrer">
                 Cruise-level Zarr store
               </a>
             </span>
           </p>
+          <p><i>Add total dimensions of L2 data:<br />depth x time x frequency</i></p>
           
           <br />
           <hr />
@@ -320,10 +329,10 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Calibration Status:</b>
-            <span className="font-monospace float-end">{calibrationStatus ? "calibrated" : "not calibrated"}</span>
+            <span className="font-monospace float-end"><i>{calibrationStatus ? "calibrated" : "not calibrated"}</i></span>
           </p>
           <br />
-          <p className="text-center"><i className="bi bi-layers" /></p>
+          <p className="text-center"><b>~</b></p>
         </Offcanvas.Body>
       </Offcanvas>
     </>

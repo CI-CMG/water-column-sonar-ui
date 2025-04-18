@@ -6,11 +6,15 @@ import { useSearchParams } from 'react-router';
 import {
   MapContainer,
   LayersControl,
-  Marker,
-  Popup,
   LayerGroup,
   Circle,
 } from "react-leaflet";
+import {
+  useMap,
+  useMapEvents
+} from 'react-leaflet/hooks'
+
+
 import { CRS } from "leaflet";
 import * as zarr from "zarrita";
 // import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
@@ -170,6 +174,19 @@ export default function WaterColumnView() {
     svArray,
   ]);
 
+  const MapEvents = () => { // on mouse click print coordinates
+    const map = useMap()
+    useMapEvents({
+      click(e) {
+        console.log(`y: ${e.latlng.lat}, x: ${e.latlng.lng}`);
+        const center = map.getCenter();
+        console.log('map x center: ', center.lng); // TODO: write for the mini map viewer
+      },
+    });
+
+    return null;
+  }
+
   return (
     <div className="WaterColumnView">
       <MapContainer
@@ -179,11 +196,6 @@ export default function WaterColumnView() {
       >
         <LayersControl>
           <LayersControl.Overlay checked name="echogram">
-            <Marker position={[0, 0]}>
-              <Popup>
-                Start of the cruise
-              </Popup>
-            </Marker>
             <LayerGroup>
               <Circle
                 center={[-128, 128]}
@@ -193,7 +205,8 @@ export default function WaterColumnView() {
               />
             </LayerGroup>
             <>
-              {
+              { // TODO: follow this to refresh the layer:
+                //  https://react-leaflet.js.org/docs/core-architecture/
                 (depthArray !== null &&
                 timeArray !== null &&
                 frequencyArray !== null &&
@@ -206,6 +219,7 @@ export default function WaterColumnView() {
             </>
           </LayersControl.Overlay>
         </LayersControl>
+        <MapEvents />
       </MapContainer>
 
       <InformationPanel
