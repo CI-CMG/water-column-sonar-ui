@@ -5,7 +5,7 @@
 import type { RootState } from "../../app/store.js";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors.ts';
+import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors';
 
 export interface CruiseState {
   ship: string | null,
@@ -20,12 +20,12 @@ export interface CruiseState {
   sv: number | null,
 
   // Toggle frequencies
-  frequencies: Array<number>,
-  selectedFrequency: number, // index?
+  // frequencies: Array<number>,
+  // selectedFrequency: number, // index?
   
   // Color Palette
-  colorMaps: Array<object>,
-  selectedColorMap: number, // index?
+  // colorMaps: Array<object>,
+  // selectedColorMap: number, // index?
 
   // Sv Range thresholds
   svMin: number,
@@ -44,11 +44,11 @@ const initialState: CruiseState = {
   depth: 321.01, // null, // 123.45 meters
   sv: -67.89, // null, // -70.11 dB
 
-  frequencies: [18000, 38000, 120000, 200000], // does this belong with the zarr stuff?
-  selectedFrequency: 0,
+  // frequencies: [18000, 38000, 120000, 200000], // does this belong with the zarr stuff?
+  // selectedFrequency: 0,
 
-  colorMaps: WaterColumnColors,
-  selectedColorMap: 0,
+  // colorMaps: WaterColumnColors,
+  // selectedColorMap: 0,
 
   svMin: -80,
   svMax: -30,
@@ -90,16 +90,16 @@ export const cruiseSlice = createSlice({
     // updateFrequencies: (state, action: PayloadAction<number>) => {
     //   state.frequencies = action.payload
     // },
-    updateSelectedFrequency: (state, action: PayloadAction<number>) => { // dropdown
-      state.selectedFrequency = action.payload
-    },
+    // updateSelectedFrequency: (state, action: PayloadAction<number>) => { // dropdown
+    //   state.selectedFrequency = action.payload
+    // },
 
     // updateColorMaps: (state, action: PayloadAction<Array<object>>) => {
     //   state.colorMaps = action.payload
     // },
-    updateSelectedColorMap: (state, action: PayloadAction<number>) => { // dropdown
-      state.selectedColorMap = action.payload
-    },
+    // updateSelectedColorMap: (state, action: PayloadAction<number>) => { // dropdown
+    //   state.selectedColorMap = action.payload
+    // },
 
     updateSvMin: (state, action: PayloadAction<number>) => { // button click
       state.svMin = Number(action.payload);
@@ -119,8 +119,8 @@ export const {
   updateLongitude,
   updateDepth,
   updateSv,
-  updateSelectedFrequency,
-  updateSelectedColorMap,
+  // updateSelectedFrequency,
+  // updateSelectedColorMap,
   updateSvMin,
   updateSvMax,
 } = cruiseSlice.actions;
@@ -135,8 +135,8 @@ export const selectLatitude = (state: RootState) => state.cruise.latitude;
 export const selectLongitude = (state: RootState) => state.cruise.longitude;
 export const selectDepth = (state: RootState) => state.cruise.depth;
 export const selectSv = (state: RootState) => state.cruise.sv;
-export const selectSelectedFrequency = (state: RootState) => state.cruise.selectedFrequency;
-export const selectSelectedColorMap = (state: RootState) => state.cruise.selectedColorMap;
+// export const selectSelectedFrequency = (state: RootState) => state.cruise.selectedFrequency;
+// export const selectSelectedColorMap = (state: RootState) => state.cruise.selectedColorMap;
 export const selectSvMin = (state: RootState) => state.cruise.svMin;
 export const selectSvMax = (state: RootState) => state.cruise.svMax;
 

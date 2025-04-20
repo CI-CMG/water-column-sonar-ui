@@ -47,7 +47,7 @@
     "three": "0.148.0",
     "usehooks-ts": "^3.1.1",
     "zarr": "^0.6.3",
-    "zarrita": "^0.4.0-next.27"
+    "zarrita": "^0.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

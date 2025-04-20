@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
 import { useSearchParams } from 'react-router';
@@ -14,12 +16,21 @@ import {
   useMapEvents
 } from 'react-leaflet/hooks'
 
-// import { store } from "../../store";
 import { CRS } from "leaflet";
 import * as zarr from "zarrita";
 // import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import CustomLayer from "./CustomLayer";
 import InformationPanel from "./InformationPanel";
+// import {
+//   incrementAsync,
+//   selectCount,
+//   selectStatus,
+// } from "../../reducers/counter/counterSlice";
+import {
+  // storeAsync,
+  frequenciesAsync,
+} from "../../reducers/store/storeSlice";
+
 
 const bucketName = "noaa-wcsd-zarr-pds";
 // const shipName = "Henry_B._Bigelow";
@@ -44,24 +55,15 @@ const mapParameters = {
   tileSize: 512, // TODO: get from store?
 };
 
-/*
-Water Column View Query Parameters
-  ship -> 'Henry_B._Bigelow'
-  cruise -> 'HB0707'
-  sensor -> 'EK60'
-  x -> distance along time x-axis, Number
-  y -> distance down from surface y-axis, Number
-  z -> frequency, Number
-  min_sv? -> -100 dB
-  max_sv? -> 0 dB
-  color_palette?
-*/
-
 // http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
-  // console.log(store.getState());
-  // store.dispatch({ type: 'counter/increment' })
-  // console.log(store.getState());
+  ////// just for prototyping
+  const dispatch = useAppDispatch()
+  // const count = useAppSelector(selectCount)
+  // const status = useAppSelector(selectStatus)
+  // const [incrementAmount, setIncrementAmount] = useState("2")
+  // const incrementValue = Number(incrementAmount) || 0
+  //////
 
   const mapRef = useRef(null);
 
@@ -72,8 +74,7 @@ export default function WaterColumnView() {
   const [calibrationStatus, setCalibrationStatus] = useState(null);
   const [processingSoftwareName, setProcessingSoftwareName] = useState(null);
   const [processingSoftwareTime, setProcessingSoftwareTime] = useState(null);
-  const [processingSoftwareVersion, setProcessingSoftwareVersion] =
-    useState(null);
+  const [processingSoftwareVersion, setProcessingSoftwareVersion] = useState(null);
 
   const [depthArray, setDepthArray] = useState(null);
   const [timeArray, setTimeArray] = useState(null);
@@ -87,6 +88,10 @@ export default function WaterColumnView() {
   const [frequencyIndices, setFrequencyIndices] = useState(null);
   const [chunkShape, setChunkShape] = useState(null);
 
+  useEffect(() => {
+    // dispatch(storeAsync()); // access the store
+    dispatch(frequenciesAsync()); // access the store
+  }, []);
 
   useEffect(() => {
     const storePromise = zarr.withConsolidated(
@@ -192,6 +197,11 @@ export default function WaterColumnView() {
 
   return (
     <div className="WaterColumnView">
+      {/* <button
+        onClick={() => {
+          dispatch(incrementAsync(2))
+        }}
+      ></button> */}
       <MapContainer
         {...mapParameters}
         className="Map"
@@ -234,7 +244,7 @@ export default function WaterColumnView() {
         timeArray={timeArray}
         latitudeArray={latitudeArray}
         longitudeArray={longitudeArray}
-        frequencyArray={frequencyArray}
+        // frequencyArray={frequencyArray}
       />
     </div>
   );

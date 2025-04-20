@@ -37,9 +37,13 @@ import {
 } from ".././../reducers/cruise/cruiseSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 // import Counter from "../../reducers/counter/Counter.tsx";
+import {
+  // storeAsync,
+  selectFrequencies,
+} from "../../reducers/store/storeSlice";
 
 const InformationPanel = ({
-  queryParameters,
+  // queryParameters,
   calibrationStatus,
   processingSoftwareName,
   processingSoftwareTime,
@@ -50,13 +54,15 @@ const InformationPanel = ({
   timeArray,
   latitudeArray,
   longitudeArray,
-  frequencyArray,
+  // frequencyArray,
 
   // TODO: get these passed in?
   // depthIndices,
   // timeIndices,
   // frequencyIndices,
 }) => {
+  const frequencies = useAppSelector(selectFrequencies);
+
   const dispatch = useAppDispatch()
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
@@ -78,7 +84,7 @@ const InformationPanel = ({
 
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-  const [frequencies, setFrequencies] = useState({}); // used for button
+  // const [frequencies, setFrequencies] = useState({}); // used for button
   // const [colorMaps, setColorMaps] = useState(WaterColumnColors); // used for button
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -99,17 +105,17 @@ const InformationPanel = ({
       { preventScrollReset: true }
     );
   };
-  const [selectedFrequency, setSelectedFrequency] = useState({});
-  const handleSelectFrequency = (key) => {
-    setSelectedFrequency({ key: Number(key), value: frequencies[Number(key)].value });
-    setSearchParams(
-      (prev) => {
-        prev.set('frequency', key);
-        return prev;
-      },
-      { preventScrollReset: true }
-    );
-  };
+  // const [selectedFrequency, setSelectedFrequency] = useState({});
+  // const handleSelectFrequency = (key) => {
+  //   setSelectedFrequency({ key: Number(key), value: frequencies[Number(key)].value });
+  //   setSearchParams(
+  //     (prev) => {
+  //       prev.set('frequency', key);
+  //       return prev;
+  //     },
+  //     { preventScrollReset: true }
+  //   );
+  // };
 
   useEffect(() => {
     if(timeArray !== null){
@@ -120,24 +126,24 @@ const InformationPanel = ({
           });
       })();
     }
-    if(frequencyArray !== null){
-      (async () => {
-        await get(frequencyArray, [slice(null)])
-          .then((f1) => {
-            let allFrequencies = []
-            f1.data.forEach(function (element, index) { // convert BigUInts to Numbers
-              var h = Number(element);
-              allFrequencies.push({
-                key: index,
-                value: h,
-              });
-            });
-            setFrequencies(allFrequencies);
-            setSelectedFrequency(allFrequencies[0]);
-            setLoading(false);
-          });
-      })();
-    }
+    // if(frequencyArray !== null){
+    //   (async () => {
+    //     await get(frequencyArray, [slice(null)])
+    //       .then((f1) => {
+    //         let allFrequencies = []
+    //         f1.data.forEach(function (element, index) { // convert BigUInts to Numbers
+    //           var h = Number(element);
+    //           allFrequencies.push({
+    //             key: index,
+    //             value: h,
+    //           });
+    //         });
+    //         setFrequencies(allFrequencies);
+    //         setSelectedFrequency(allFrequencies[0]);
+    //         setLoading(false);
+    //       });
+    //   })();
+    // }
     if(latitudeArray !== null){
       (async () => {
         await get(latitudeArray, [0])
@@ -154,7 +160,7 @@ const InformationPanel = ({
           });
       })();
     }
-  }, [timeArray, frequencyArray, latitudeArray, longitudeArray])
+  }, [timeArray, latitudeArray, longitudeArray])
 
   const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${ship}/${cruise}/${sensor}/`;
   const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${ship}/${cruise}/${sensor}/`;
@@ -236,7 +242,7 @@ const InformationPanel = ({
 
           <br />
 
-          <Dropdown onSelect={handleSelectFrequency}>
+          {/* <Dropdown onSelect={handleSelectFrequency}>
             <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
               Frequency
             </Dropdown.Toggle>
@@ -251,11 +257,11 @@ const InformationPanel = ({
                 })
               }
             </Dropdown.Menu>
-          </Dropdown>
-          <p>
+          </Dropdown> */}
+          {/* <p>
             <b>Frequency:</b>{" "}
             <span className="font-monospace">{selectedFrequency?.value / 1000} kHz</span>
-          </p>
+          </p> */}
 
           <br />
 
@@ -281,10 +287,12 @@ const InformationPanel = ({
             <span className="font-monospace">{selectedColorMap.value}</span>
           </p>
           
+          <br />
+          <p>[ Color Palette ]</p>
           <ColorMap min="-80" max="-30" selectedColorPalette="viridis"/>
-
+          
           <br />
-          <br />
+          
           <Form.Label><b>Sv Range</b></Form.Label>
           <Row className="mb-3">
             <Form.Group
@@ -296,7 +304,7 @@ const InformationPanel = ({
                 type="number"
                 defaultValue={svMin}
                 name="minDB"
-                onChange={(e) => dispatch(updateSvMin(e.target.value))}
+                // onChange={(e) => dispatch(updateSvMin(e.target.value))}
                 className="w-75"
               />
             </Form.Group>
@@ -310,7 +318,7 @@ const InformationPanel = ({
                 type="number"
                 defaultValue={svMax}
                 name="maxDB"
-                onChange={(e) => dispatch(updateSvMax(e.target.value))}
+                // onChange={(e) => dispatch(updateSvMax(e.target.value))}
                 className="w-75"
               />
             </Form.Group>
@@ -377,7 +385,7 @@ const InformationPanel = ({
 export default InformationPanel;
 
 InformationPanel.propTypes = {
-  queryParameters: PropTypes.instanceOf(Object),
+  // queryParameters: PropTypes.instanceOf(Object),
   calibrationStatus: PropTypes.instanceOf(String),
   processingSoftwareName: PropTypes.instanceOf(String),
   processingSoftwareTime: PropTypes.instanceOf(String),
@@ -386,7 +394,7 @@ InformationPanel.propTypes = {
   timeArray: PropTypes.instanceOf(Object),
   latitudeArray: PropTypes.instanceOf(Object),
   longitudeArray: PropTypes.instanceOf(Object),
-  frequencyArray: PropTypes.instanceOf(Object), // Number?
+  // frequencyArray: PropTypes.instanceOf(Object), // Number?
   // depthIndices: PropTypes.instanceOf(String),
   // timeIndices: PropTypes.instanceOf(String),
   // frequencyIndices: PropTypes.instanceOf(String),

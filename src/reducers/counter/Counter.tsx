@@ -16,7 +16,6 @@ export default function Counter() {
   const count = useAppSelector(selectCount)
   const status = useAppSelector(selectStatus)
   const [incrementAmount, setIncrementAmount] = useState("2")
-
   const incrementValue = Number(incrementAmount) || 0
 
   return (

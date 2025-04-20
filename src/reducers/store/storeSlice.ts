@@ -1,55 +1,130 @@
-// This file demonstrates typical usage of Redux Toolkit's createSlice function
-// for defining reducer logic and actions, as well as related thunks and selectors.
-// https://codesandbox.io/p/sandbox/github/reduxjs/redux-templates/tree/master/packages/rtk-app-structure-example?file=%2Fsrc%2Ffeatures%2Fcounter%2FcounterSlice.ts%3A1%2C1-101%2C1&from-embed
+import type { PayloadAction } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import type { AppThunk, RootState } from "../../app/store.ts";
 
-import type { RootState } from "../../app/store.js";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  fetchStore,
+  // fetchDepth,
+  // fetchTime,
+  fetchFrequencies,
+  // fetchLatitude,
+  // fetchLongitude,
+  // fetchSv,
+} from "./storeAPI.js"; // switch to async zarr store
+
 
 export interface StoreState {
-  ship: string | null,
-  cruise: string | null,
-  sensor: string | null,
+  store: any,
+  storeStatus: "idle" | "loading" | "failed",
+
+  attributes: any, // metadata of the store
+
+  x: number,
+  y: number,
+
+  // depthArray: any, // temporarily any until know what it is
+  
+  // timeArray: any,
+  // timeArrayStatus: "idle" | "loading" | "failed",
+  
+  frequencies: any,
+  frequenciesStatus: "idle" | "loading" | "failed",
+  
+  // latitudeArray: any,
+  
+  // longitudeArray: any,
+  
+  // svArray: any,
 }
 
 const initialState: StoreState = {
-  ship: null, // "Henry_B._Bigelow",
-  cruise: null, // "HB0707",
-  sensor: null, // "EK60",
+  store: null,
+  storeStatus: "idle",
+  attributes: null,
+  x: 0,
+  y: 0,
+
+  // depthArray: null, // temporarily any until know what it is
+
+  // timeArray: null,
+  // timeArrayStatus: "idle",
+
+  frequencies: null, // BigUint64Array(4)
+  frequenciesStatus: "idle",
+  
+  // latitudeArray: null,
+  
+  // longitudeArray: null,
+  
+  // svArray: null,
 }
 
 export const storeSlice = createSlice({
-  
   name: "store",
   
   initialState,
   
   reducers: {
-    // TODO: need to include the zarr stores
-    // and the x, y, z of the mouse clicks
+    updateX: (state, action: PayloadAction<number>) => {
+      state.x = action.payload;
+    },
+    updateY: (state, action: PayloadAction<number>) => {
+      state.y = action.payload;
+    },
+    updateFrequencies: (state, action: PayloadAction<any>) => {
+      state.frequencies = action.payload;
+    },
+  },
 
-    updateShip: (state, action: PayloadAction<string>) => {
-      state.ship = action.payload
-    },
-    updateCruise: (state, action: PayloadAction<string>) => {
-      state.cruise = action.payload
-    },
-    updateSensor: (state, action: PayloadAction<string>) => {
-      state.sensor = action.payload
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(storeAsync.pending, state => {
+        state.storeStatus = "loading";
+      })
+      .addCase(storeAsync.fulfilled, (state, action) => {
+        state.storeStatus = "idle";
+        state.store = action.payload.store; // response.store & response.attrs
+        // state.attributes = action.payload.attrs;
+      })
+      .addCase(storeAsync.rejected, state => {
+        state.storeStatus = "failed";
+      })
+      .addCase(frequenciesAsync.pending, state => {
+        state.frequenciesStatus = "loading";
+      })
+      .addCase(frequenciesAsync.fulfilled, (state, action) => {
+        state.frequenciesStatus = "idle";
+        state.frequencies = action.payload;
+      })
+      .addCase(frequenciesAsync.rejected, state => {
+        state.frequenciesStatus = "failed";
+      })
   },
 });
 
-export const {
-  updateShip,
-  updateCruise,
-  updateSensor,
-} = storeSlice.actions;
+export const { updateX, updateY } = storeSlice.actions;
 
 export default storeSlice.reducer;
 
-export const selectShip = (state: RootState) => state.store.ship;
-export const selectCruise = (state: RootState) => state.store.cruise;
-export const selectSensor = (state: RootState) => state.store.sensor;
+export const selectX = (state: RootState) => state.store.x;
+export const selectY = (state: RootState) => state.store.y;
+export const selectFrequencies = (state: RootState) => state.store.frequencies;
 
+
+
+export const storeAsync = createAsyncThunk(
+  "store/fetchStore",
+  async () => {
+    const response = await fetchStore(); // how to pass in slice?
+    return response; // so now put response 
+  },
+)
+
+export const frequenciesAsync = createAsyncThunk(
+  "store/fetchFrequencies",
+  async () => {
+    const response = await fetchFrequencies();
+    return [...response.data].map((x) => Number(x)); // {data: BigUint64Array(4), shape: Array(1), stride: Array(1), offset: 0}
+  },
+)
 
