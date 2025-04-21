@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import queryString from "query-string";
-import { useLocation } from "react-router-dom";
+// import queryString from "query-string";
+// import { useLocation } from "react-router-dom";
 import { useSearchParams } from 'react-router';
 import {
   MapContainer,
@@ -26,6 +26,15 @@ import InformationPanel from "./InformationPanel";
 //   selectCount,
 //   selectStatus,
 // } from "../../reducers/counter/counterSlice";
+import {
+  updateShip,
+  updateCruise,
+  updateSensor,
+  selectShip,
+  selectCruise,
+  selectSensor,
+} from ".././../reducers/cruise/cruiseSlice.ts";
+
 import {
   // storeAsync,
   frequenciesAsync,
@@ -59,6 +68,15 @@ const mapParameters = {
 export default function WaterColumnView() {
   ////// just for prototyping
   const dispatch = useAppDispatch()
+  // const { search } = useLocation();
+  // const queryParameters = queryString.parse(search);
+  const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
+  dispatch(updateShip(searchParams.get('ship')));
+  dispatch(updateCruise(searchParams.get('cruise')));
+  dispatch(updateSensor(searchParams.get('sensor')));
+  const ship = useAppSelector(selectShip);
+  const cruise = useAppSelector(selectCruise);
+  const sensor = useAppSelector(selectSensor);
   // const count = useAppSelector(selectCount)
   // const status = useAppSelector(selectStatus)
   // const [incrementAmount, setIncrementAmount] = useState("2")
@@ -67,9 +85,7 @@ export default function WaterColumnView() {
 
   const mapRef = useRef(null);
 
-  const { search } = useLocation();
-  const queryParameters = queryString.parse(search);
-  const [searchParams, setSearchParams] = useSearchParams();
+  
 
   const [calibrationStatus, setCalibrationStatus] = useState(null);
   const [processingSoftwareName, setProcessingSoftwareName] = useState(null);
@@ -96,7 +112,7 @@ export default function WaterColumnView() {
   useEffect(() => {
     const storePromise = zarr.withConsolidated(
       new zarr.FetchStore(
-        `https://${bucketName}.s3.amazonaws.com/level_2/${queryParameters.ship}/${queryParameters.cruise}/${queryParameters.sensor}/${queryParameters.cruise}.zarr/`
+        `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`
       )
     );
 
@@ -228,6 +244,7 @@ export default function WaterColumnView() {
                 svArray !== null)
                 ?
                 <CustomLayer svArray={svArray} selectedFrequency={Number(searchParams.get('frequency'))} /> : <></>
+                // need to pass in the frequencyIndex
               }
             </>
           </LayersControl.Overlay>
@@ -236,7 +253,7 @@ export default function WaterColumnView() {
       </MapContainer>
 
       <InformationPanel
-        queryParameters={queryParameters}
+        // queryParameters={queryParameters}
         calibrationStatus={calibrationStatus}
         processingSoftwareName={processingSoftwareName}
         processingSoftwareTime={processingSoftwareTime}

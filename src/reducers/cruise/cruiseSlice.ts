@@ -21,7 +21,7 @@ export interface CruiseState {
 
   // Toggle frequencies
   // frequencies: Array<number>,
-  // selectedFrequency: number, // index?
+  frequency: number | null, // index?
   
   // Color Palette
   // colorMaps: Array<object>,
@@ -45,7 +45,7 @@ const initialState: CruiseState = {
   sv: -67.89, // null, // -70.11 dB
 
   // frequencies: [18000, 38000, 120000, 200000], // does this belong with the zarr stuff?
-  // selectedFrequency: 0,
+  frequency: null,
 
   // colorMaps: WaterColumnColors,
   // selectedColorMap: 0,
@@ -90,9 +90,9 @@ export const cruiseSlice = createSlice({
     // updateFrequencies: (state, action: PayloadAction<number>) => {
     //   state.frequencies = action.payload
     // },
-    // updateSelectedFrequency: (state, action: PayloadAction<number>) => { // dropdown
-    //   state.selectedFrequency = action.payload
-    // },
+    updateFrequency: (state, action: PayloadAction<number>) => { // dropdown
+      state.frequency = action.payload
+    },
 
     // updateColorMaps: (state, action: PayloadAction<Array<object>>) => {
     //   state.colorMaps = action.payload
@@ -119,7 +119,7 @@ export const {
   updateLongitude,
   updateDepth,
   updateSv,
-  // updateSelectedFrequency,
+  updateFrequency,
   // updateSelectedColorMap,
   updateSvMin,
   updateSvMax,
@@ -135,7 +135,7 @@ export const selectLatitude = (state: RootState) => state.cruise.latitude;
 export const selectLongitude = (state: RootState) => state.cruise.longitude;
 export const selectDepth = (state: RootState) => state.cruise.depth;
 export const selectSv = (state: RootState) => state.cruise.sv;
-// export const selectSelectedFrequency = (state: RootState) => state.cruise.selectedFrequency;
+export const selectFrequency = (state: RootState) => state.cruise.frequency;
 // export const selectSelectedColorMap = (state: RootState) => state.cruise.selectedColorMap;
 export const selectSvMin = (state: RootState) => state.cruise.svMin;
 export const selectSvMax = (state: RootState) => state.cruise.svMax;

@@ -11,17 +11,14 @@ import Row from 'react-bootstrap/Row';
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
 import MiniMapView from "./MiniMapView";
-import { slice } from "zarrita";
-import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
+// import { slice } from "zarrita";
+// import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import ColorMap from "./ColorMap";
 import SvPlotView from "./SvPlotView";
 import WaterColumnColors from "./WaterColumnColors.jsx";
 import {
-  updateShip,
-  updateCruise,
-  updateSensor,
-  updateSvMin,
-  updateSvMax,
+  // updateSvMin,
+  // updateSvMax,
   // 
   selectShip,
   selectCruise,
@@ -31,37 +28,29 @@ import {
   selectLongitude,
   selectDepth,
   selectSv,
-  // selectedFrequency
   selectSvMin,
   selectSvMax,
+  selectFrequency, // currently chosen value
+  updateFrequency,
 } from ".././../reducers/cruise/cruiseSlice.ts";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-// import Counter from "../../reducers/counter/Counter.tsx";
 import {
-  // storeAsync,
-  selectFrequencies,
-} from "../../reducers/store/storeSlice";
+  selectFrequencies, // all the values
+} from ".././../reducers/store/storeSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 const InformationPanel = ({
-  // queryParameters,
   calibrationStatus,
   processingSoftwareName,
   processingSoftwareTime,
   processingSoftwareVersion,
 
   // TODO: get dimensionality of Sv data
-
   timeArray,
   latitudeArray,
   longitudeArray,
-  // frequencyArray,
-
-  // TODO: get these passed in?
-  // depthIndices,
-  // timeIndices,
-  // frequencyIndices,
 }) => {
   const frequencies = useAppSelector(selectFrequencies);
+  const frequency = useAppSelector(selectFrequency);
 
   const dispatch = useAppDispatch()
   const ship = useAppSelector(selectShip);
@@ -78,9 +67,9 @@ const InformationPanel = ({
   // const count = useAppSelector(selectCount); // used for counter redux example;
   
   const [searchParams, setSearchParams] = useSearchParams();
-  dispatch(updateShip(searchParams.get('ship')));
-  dispatch(updateCruise(searchParams.get('cruise')));
-  dispatch(updateSensor(searchParams.get('sensor')));
+  // dispatch(updateShip(searchParams.get('ship')));
+  // dispatch(updateCruise(searchParams.get('cruise')));
+  // dispatch(updateSensor(searchParams.get('sensor')));
 
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
@@ -92,75 +81,81 @@ const InformationPanel = ({
   const [colorMaps, setColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
     return {'key': y, 'value': x}; 
   }));
-  const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
-    return {'key': y, 'value': x}; 
-  })[searchParams.get('color')]);
-  const handleSelectColorMap = (key) => {
-    setSelectedColorMap({ key: Number(key), value: Object.keys(WaterColumnColors)[key] });
-    setSearchParams(
-      (prev) => {
-        prev.set('color', key);
-        return prev;
-      },
-      { preventScrollReset: true }
-    );
-  };
-  // const [selectedFrequency, setSelectedFrequency] = useState({});
-  // const handleSelectFrequency = (key) => {
-  //   setSelectedFrequency({ key: Number(key), value: frequencies[Number(key)].value });
+  // const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
+  //   return {'key': y, 'value': x}; 
+  // })[searchParams.get('color')]);
+  // const handleSelectColorMap = (key) => {
+  //   setSelectedColorMap({ key: Number(key), value: Object.keys(WaterColumnColors)[key] });
   //   setSearchParams(
   //     (prev) => {
-  //       prev.set('frequency', key);
+  //       prev.set('color', key);
   //       return prev;
   //     },
   //     { preventScrollReset: true }
   //   );
   // };
+  // const [selectedFrequency, setSelectedFrequency] = useState({});
+  const handleSelectFrequency = (key) => {
+    // setSelectFrequency({ key: Number(key), value: frequencies[Number(key)].value });
+    dispatch(updateFrequency(Number(key)));
+    // setSearchParams(
+    //   (prev) => {
+    //     prev.set('frequency', key);
+    //     return prev;
+    //   },
+    //   { preventScrollReset: true }
+    // );
+  };
 
   useEffect(() => {
-    if(timeArray !== null){
-      (async () => {
-        await get(timeArray, [0])
-          .then((d1) => {
-            console.log(d1);
-          });
-      })();
+    if(frequencies !== null){
+      setLoading(false);
     }
-    // if(frequencyArray !== null){
-    //   (async () => {
-    //     await get(frequencyArray, [slice(null)])
-    //       .then((f1) => {
-    //         let allFrequencies = []
-    //         f1.data.forEach(function (element, index) { // convert BigUInts to Numbers
-    //           var h = Number(element);
-    //           allFrequencies.push({
-    //             key: index,
-    //             value: h,
-    //           });
-    //         });
-    //         setFrequencies(allFrequencies);
-    //         setSelectedFrequency(allFrequencies[0]);
-    //         setLoading(false);
-    //       });
-    //   })();
-    // }
-    if(latitudeArray !== null){
-      (async () => {
-        await get(latitudeArray, [0])
-          .then((la) => {
-            console.log(la.data);
-          });
-      })();
-    }
-    if(longitudeArray !== null){
-      (async () => {
-        await get(longitudeArray, [0])
-          .then((lo) => {
-            console.log(lo.data);
-          });
-      })();
-    }
-  }, [timeArray, latitudeArray, longitudeArray])
+  }, [frequencies]);
+  // useEffect(() => {
+  //   if(timeArray !== null){
+  //     (async () => {
+  //       await get(timeArray, [0])
+  //         .then((d1) => {
+  //           console.log(d1);
+  //         });
+  //     })();
+  //   }
+  //   // if(frequencyArray !== null){
+  //   //   (async () => {
+  //   //     await get(frequencyArray, [slice(null)])
+  //   //       .then((f1) => {
+  //   //         let allFrequencies = []
+  //   //         f1.data.forEach(function (element, index) { // convert BigUInts to Numbers
+  //   //           var h = Number(element);
+  //   //           allFrequencies.push({
+  //   //             key: index,
+  //   //             value: h,
+  //   //           });
+  //   //         });
+  //   //         setFrequencies(allFrequencies);
+  //   //         setSelectedFrequency(allFrequencies[0]);
+  //   //         setLoading(false);
+  //   //       });
+  //   //   })();
+  //   // }
+  //   if(latitudeArray !== null){
+  //     (async () => {
+  //       await get(latitudeArray, [0])
+  //         .then((la) => {
+  //           console.log(la.data);
+  //         });
+  //     })();
+  //   }
+  //   if(longitudeArray !== null){
+  //     (async () => {
+  //       await get(longitudeArray, [0])
+  //         .then((lo) => {
+  //           console.log(lo.data);
+  //         });
+  //     })();
+  //   }
+  // }, [timeArray, latitudeArray, longitudeArray])
 
   const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${ship}/${cruise}/${sensor}/`;
   const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${ship}/${cruise}/${sensor}/`;
@@ -242,7 +237,7 @@ const InformationPanel = ({
 
           <br />
 
-          {/* <Dropdown onSelect={handleSelectFrequency}>
+          <Dropdown onSelect={handleSelectFrequency}>
             <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
               Frequency
             </Dropdown.Toggle>
@@ -250,22 +245,22 @@ const InformationPanel = ({
               {
                 frequencies.map((item, index) => {
                   return (
-                    <Dropdown.Item key={index} eventKey={item.key}>
-                      {item.value}
+                    <Dropdown.Item key={index} eventKey={item}>
+                      {item}
                     </Dropdown.Item>
                   );
                 })
               }
             </Dropdown.Menu>
-          </Dropdown> */}
-          {/* <p>
+          </Dropdown>
+          <p>
             <b>Frequency:</b>{" "}
-            <span className="font-monospace">{selectedFrequency?.value / 1000} kHz</span>
-          </p> */}
+            <span className="font-monospace">{frequency?.value / 1000} kHz</span>
+          </p>
 
           <br />
 
-          <Dropdown onSelect={handleSelectColorMap}>
+          {/* <Dropdown onSelect={handleSelectColorMap}>
             <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
               Color Map
             </Dropdown.Toggle>
@@ -280,12 +275,11 @@ const InformationPanel = ({
                 })
               }
             </Dropdown.Menu>
-          </Dropdown>
-
-          <p>
+          </Dropdown> */}
+          {/* <p>
             <b>Color Map:</b>{" "}
             <span className="font-monospace">{selectedColorMap.value}</span>
-          </p>
+          </p> */}
           
           <br />
           <p>[ Color Palette ]</p>
@@ -386,7 +380,7 @@ export default InformationPanel;
 
 InformationPanel.propTypes = {
   // queryParameters: PropTypes.instanceOf(Object),
-  calibrationStatus: PropTypes.instanceOf(String),
+  calibrationStatus: PropTypes.instanceOf(String), // TODO: use redux to pass values
   processingSoftwareName: PropTypes.instanceOf(String),
   processingSoftwareTime: PropTypes.instanceOf(String),
   processingSoftwareVersion: PropTypes.instanceOf(String),

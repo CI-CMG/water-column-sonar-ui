@@ -114,17 +114,16 @@ export const selectFrequencies = (state: RootState) => state.store.frequencies;
 
 export const storeAsync = createAsyncThunk(
   "store/fetchStore",
-  async () => {
-    const response = await fetchStore(); // how to pass in slice?
+  async (ship: string, cruise: string, sensor: string) => {
+    const response = await fetchStore(ship, cruise, sensor); // how to pass in slice?
     return response; // so now put response 
   },
 )
 
 export const frequenciesAsync = createAsyncThunk(
   "store/fetchFrequencies",
-  async () => {
-    const response = await fetchFrequencies();
+  async (ship: string, cruise: string, sensor: string) => {
+    const response = await fetchFrequencies(ship, cruise, sensor);
     return [...response.data].map((x) => Number(x)); // {data: BigUint64Array(4), shape: Array(1), stride: Array(1), offset: 0}
   },
 )
-
