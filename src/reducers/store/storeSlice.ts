@@ -1,16 +1,16 @@
+// import { selectLatitude } from './../cruise/cruiseSlice';
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import type { AppThunk, RootState } from "../../app/store.ts";
+import type { RootState } from "../../app/store.ts";
 
 import {
   fetchStore,
-  // fetchDepth,
-  // fetchTime,
   fetchFrequencies,
-  // fetchLatitude,
-  fetchLatitudeArray,
-  // fetchLongitude,
-  // fetchSv,
+  fetchLatitude,
+  fetchLongitude,
+  fetchTime,
+  fetchDepth,
+  fetchSv,
 } from "./storeAPI.js";
 
 
@@ -22,23 +22,24 @@ export interface StoreState {
 
   x: number,
   y: number,
-
-  // depthArray: any, // temporarily any until know what it is
-  // timeArray: any,
-  // timeArrayStatus: "idle" | "loading" | "failed",
   
   frequencies: any,
   frequenciesStatus: "idle" | "loading" | "failed",
   
-  latitude: any,
+  latitude: number | null,
   latitudeStatus: "idle" | "loading" | "failed",
 
-  latitudeArray: any,
-  latitudeArrayStatus: "idle" | "loading" | "failed",
-  
-  // longitudeArray: any,
-  
-  // svArray: any,
+  longitude: number | null,
+  longitudeStatus: "idle" | "loading" | "failed",
+
+  time: any,
+  timeStatus: "idle" | "loading" | "failed",
+
+  depth: number | null,
+  depthStatus: "idle" | "loading" | "failed",
+
+  sv: any, // BigUInt64? -> Float32Array
+  svStatus: "idle" | "loading" | "failed",
 }
 
 const initialState: StoreState = {
@@ -48,23 +49,23 @@ const initialState: StoreState = {
   x: 0,
   y: 0,
 
-  // depthArray: null, // temporarily any until know what it is
-
-  // timeArray: null,
-  // timeArrayStatus: "idle",
-
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
   
   latitude: null,
   latitudeStatus: "idle",
+  
+  longitude: null,
+  longitudeStatus: "idle",
 
-  latitudeArray: null,
-  latitudeArrayStatus: "idle",
+  time: null,
+  timeStatus: "idle",
+
+  depth: null,
+  depthStatus: "idle",
   
-  // longitudeArray: null,
-  
-  // svArray: null,
+  sv: null,
+  svStatus: "idle",
 }
 
 export const storeSlice = createSlice({
@@ -79,11 +80,23 @@ export const storeSlice = createSlice({
     updateY: (state, action: PayloadAction<number>) => {
       state.y = action.payload;
     },
-    updateFrequencies: (state, action: PayloadAction<any>) => {
+    updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
       state.frequencies = action.payload;
     },
     updateLatitude: (state, action: PayloadAction<any>) => {
       state.latitude = action.payload;
+    },
+    updateLongitude: (state, action: PayloadAction<any>) => {
+      state.longitude = action.payload;
+    },
+    updateTime: (state, action: PayloadAction<any>) => {
+      state.longitude = action.payload;
+    },
+    updateDepth: (state, action: PayloadAction<any>) => {
+      state.depth = action.payload;
+    },
+    updateSv: (state, action: PayloadAction<any>) => {
+      state.sv = action.payload;
     },
   },
 
@@ -94,9 +107,8 @@ export const storeSlice = createSlice({
       })
       .addCase(storeAsync.fulfilled, (state, action) => {
         state.storeStatus = "idle";
-        // state.store = action.payload; // response.store & response.attrs
         state.attributes = action.payload.attrs;
-        state.store = action.payload;
+        // state.store = action.payload; // doesn't work :(
       })
       .addCase(storeAsync.rejected, state => {
         state.storeStatus = "failed";
@@ -113,17 +125,6 @@ export const storeSlice = createSlice({
         state.frequenciesStatus = "failed";
       })
       // ----------------------------------------------- //
-      .addCase(latitudeArrayAsync.pending, state => {
-        state.latitudeArrayStatus = "loading";
-      })
-      .addCase(latitudeArrayAsync.fulfilled, (state, action) => {
-        state.latitudeArrayStatus = "idle";
-        state.latitudeArray = action.payload;
-      })
-      .addCase(latitudeArrayAsync.rejected, state => {
-        state.latitudeArrayStatus = "failed";
-      })
-      // ----------------------------------------------- //
       .addCase(latitudeAsync.pending, state => {
         state.latitudeStatus = "loading";
       })
@@ -133,28 +134,85 @@ export const storeSlice = createSlice({
       })
       .addCase(latitudeAsync.rejected, state => {
         state.latitudeStatus = "failed";
+      })
+      // ----------------------------------------------- //
+      .addCase(longitudeAsync.pending, state => {
+        state.longitudeStatus = "loading";
+      })
+      .addCase(longitudeAsync.fulfilled, (state, action) => {
+        state.longitudeStatus = "idle";
+        state.longitude = action.payload;
+      })
+      .addCase(longitudeAsync.rejected, state => {
+        state.longitudeStatus = "failed";
+      })
+      // ----------------------------------------------- //
+      .addCase(timeAsync.pending, state => {
+        state.timeStatus = "loading";
+      })
+      .addCase(timeAsync.fulfilled, (state, action) => {
+        state.timeStatus = "idle";
+        state.time = action.payload;
+      })
+      .addCase(timeAsync.rejected, state => {
+        state.timeStatus = "failed";
+      })
+      // ----------------------------------------------- //
+      .addCase(depthAsync.pending, state => {
+        state.depthStatus = "loading";
+      })
+      .addCase(depthAsync.fulfilled, (state, action) => {
+        state.depthStatus = "idle";
+        state.depth = action.payload;
+      })
+      .addCase(depthAsync.rejected, state => {
+        state.depthStatus = "failed";
+      })
+      // ----------------------------------------------- //
+      .addCase(svAsync.pending, state => {
+        state.svStatus = "loading";
+      })
+      .addCase(svAsync.fulfilled, (state, action) => {
+        state.svStatus = "idle";
+        state.sv = action.payload;
+      })
+      .addCase(svAsync.rejected, state => {
+        state.svStatus = "failed";
       });
       // ----------------------------------------------- //
   },
 });
 
-export const { updateX, updateY } = storeSlice.actions;
+export const {
+  updateX,
+  updateY,
+  updateFrequencies,
+  updateLatitude,
+  updateLongitude,
+  updateTime,
+  updateDepth,
+  updateSv,
+} = storeSlice.actions;
 
 export default storeSlice.reducer;
 
 export const selectX = (state: RootState) => state.store.x;
 export const selectY = (state: RootState) => state.store.y;
-export const selectStore = (state: RootState) => state.store.store;
-export const selectLatitudeArray = (state: RootState) => state.store.latitudeArray;
+// export const selectStore = (state: RootState) => state.store.store;
+export const selectLatitude = (state: RootState) => state.store.latitude;
+export const selectLongitude = (state: RootState) => state.store.longitude;
+export const selectTime = (state: RootState) => state.store.time;
+export const selectDepth = (state: RootState) => state.store.depth;
+export const selectSv = (state: RootState) => state.store.sv;
 export const selectAttributes = (state: RootState) => state.store.attributes;
 export const selectFrequencies = (state: RootState) => state.store.frequencies;
-// export const Frequencies = (state: RootState) => state.store.frequencies;
 
+// Just getting metadata from the store
 export const storeAsync = createAsyncThunk(
   "store/fetchStore",
   async ({ ship, cruise, sensor }: { ship: string, cruise: string, sensor: string }) => {
     const response = await fetchStore(ship, cruise, sensor); // how to pass in slice?
-    return response; // this doesn't like passing non serializable data to redux
+    return response; // This doesn't like passing non serializable data to redux
   },
 )
 
@@ -162,32 +220,61 @@ export const frequenciesAsync = createAsyncThunk(
   "store/fetchFrequencies",
   async ({ ship, cruise, sensor }: { ship: string, cruise: string, sensor: string }) => {
     const response = await fetchFrequencies(ship, cruise, sensor);
-    return [...response.data].map((x) => Number(x)); // {data: BigUint64Array(4), shape: Array(1), stride: Array(1), offset: 0}
-  },
-)
-
-// working with all
-// export const latitudeAsync = createAsyncThunk( // only need to pass in the index value for one indice
-//   "store/fetchLatitude",
-//   async ({ ship, cruise, sensor, index }: { ship: string, cruise: string, sensor: string, index: number }) => {
-//     const response = await fetchLatitude(ship, cruise, sensor, index);
-//     return response; // {data: BigUint64Array(4), shape: Array(1), stride: Array(1), offset: 0}
-//   },
-// )
-
-// trying w passed in store
-export const latitudeArrayAsync = createAsyncThunk( // only need to pass in the index value for one indice
-  "store/fetchLatitudeArray",
-  async ({ ship, cruise, sensor }: { ship: string, cruise: string, sensor: string }) => {
-    const response = await fetchLatitudeArray(ship, cruise, sensor);
-    return response;
+    return [...response.data].map((x) => Number(x));
   },
 )
 
 export const latitudeAsync = createAsyncThunk( // only need to pass in the index value for one indice
   "store/fetchLatitude",
-  async ({ index }: { index: number }) => {
-    const response = await fetchLatitude(selectStore, index);
-    return response; // {data: BigUint64Array(4), shape: Array(1), stride: Array(1), offset: 0}
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    const response = await fetchLatitude(ship, cruise, sensor, indexTime);
+    return Math.round(response * 1e5) / 1e5;
+  },
+)
+
+export const longitudeAsync = createAsyncThunk(
+  "store/fetchLongitude",
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    const response = await fetchLongitude(ship, cruise, sensor, indexTime);
+    return Math.round(response * 1e5) / 1e5;
+  },
+)
+
+export const timeAsync = createAsyncThunk(
+  "store/fetchTime",
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    const response = await fetchTime(ship, cruise, sensor, indexTime);
+    return response;
+  },
+)
+
+export const depthAsync = createAsyncThunk(
+  "store/fetchDepth",
+  async ({ ship, cruise, sensor, indexDepth }: { ship: string, cruise: string, sensor: string, indexDepth: number }) => {
+    const response = await fetchDepth(ship, cruise, sensor, indexDepth);
+    return Math.round(response * 1e2) / 1e2;
+  },
+)
+
+export const svAsync = createAsyncThunk(
+  "store/fetchSv",
+  async ({
+    ship,
+    cruise,
+    sensor,
+    indexDepth,
+    indexTime,
+    indexFrequency,
+  }: {
+    ship: string,
+    cruise: string,
+    sensor: string,
+    indexDepth: number,
+    indexTime: number,
+    indexFrequency: number,
+  }) => {
+    const response = await fetchSv(ship, cruise, sensor, indexDepth, indexTime, indexFrequency);
+    // For some reason this is a dict?
+    return [...response.data].map((x: number) => Number(Math.round(x * 1e2) / 1e2))
   },
 )

@@ -2,7 +2,7 @@ import {
   useState,
   useEffect,
 } from "react";
-import { useSearchParams } from 'react-router';
+// import { useSearchParams } from 'react-router';
 import Col from 'react-bootstrap/Col';
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
@@ -23,11 +23,13 @@ import {
   selectShip,
   selectCruise,
   selectSensor,
-  selectTime,
-  selectLatitude,
-  selectLongitude,
-  selectDepth,
-  selectSv,
+  
+  // selectLatitude,
+  // selectLongitude,
+  // selectTime,
+  // selectDepth,
+
+  // selectSv,
   selectSvMin,
   selectSvMax,
   selectFrequency, // currently chosen value
@@ -35,6 +37,11 @@ import {
 } from ".././../reducers/cruise/cruiseSlice.ts";
 import {
   selectFrequencies, // all the values
+  selectLatitude, // uses clicked index
+  selectLongitude,
+  selectTime,
+  selectDepth,
+  selectSv,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
@@ -45,28 +52,31 @@ const InformationPanel = ({
   processingSoftwareVersion,
 
   // TODO: get dimensionality of Sv data
-  timeArray,
-  latitudeArray,
-  longitudeArray,
+  // timeArray,
+  // latitudeArray,
+  // longitudeArray,
 }) => {
-  const frequencies = useAppSelector(selectFrequencies);
-  const frequency = useAppSelector(selectFrequency);
+  const frequencies = useAppSelector(selectFrequencies); // from store
+  const frequency = useAppSelector(selectFrequency); // todo: get index
 
   const dispatch = useAppDispatch()
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
-  const time = useAppSelector(selectTime);
-  const latitude = useAppSelector(selectLatitude);
+  
+  const latitude = useAppSelector(selectLatitude); // from store
   const longitude = useAppSelector(selectLongitude);
+  const time = useAppSelector(selectTime);
   const depth = useAppSelector(selectDepth);
-  const sv = useAppSelector(selectSv); // todo; move these to WaterColumnView in hook
+
+  // const depth = useAppSelector(selectDepth);
+  // const sv = useAppSelector(selectSv); // todo; move these to WaterColumnView in hook
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
 
   // const count = useAppSelector(selectCount); // used for counter redux example;
   
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();
   // dispatch(updateShip(searchParams.get('ship')));
   // dispatch(updateCruise(searchParams.get('cruise')));
   // dispatch(updateSensor(searchParams.get('sensor')));
@@ -232,7 +242,7 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Selected Sv:</b>{" "}
-            <span className="font-monospace float-end">{ sv } dB</span>
+            <span className="font-monospace float-end">{ 123.45 } dB</span>
           </p>
 
           <br />
@@ -385,9 +395,9 @@ InformationPanel.propTypes = {
   processingSoftwareTime: PropTypes.instanceOf(String),
   processingSoftwareVersion: PropTypes.instanceOf(String),
 
-  timeArray: PropTypes.instanceOf(Object),
-  latitudeArray: PropTypes.instanceOf(Object),
-  longitudeArray: PropTypes.instanceOf(Object),
+  // timeArray: PropTypes.instanceOf(Object),
+  // latitudeArray: PropTypes.instanceOf(Object),
+  // longitudeArray: PropTypes.instanceOf(Object),
   // frequencyArray: PropTypes.instanceOf(Object), // Number?
   // depthIndices: PropTypes.instanceOf(String),
   // timeIndices: PropTypes.instanceOf(String),

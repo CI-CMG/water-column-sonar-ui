@@ -1,9 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-
-// import queryString from "query-string";
-// import { useLocation } from "react-router-dom";
 import { useSearchParams } from 'react-router';
 import {
   MapContainer,
@@ -15,17 +11,10 @@ import {
   useMap,
   useMapEvents
 } from 'react-leaflet/hooks'
-
 import { CRS } from "leaflet";
 import * as zarr from "zarrita";
-// import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import CustomLayer from "./CustomLayer";
 import InformationPanel from "./InformationPanel";
-// import {
-//   incrementAsync,
-//   selectCount,
-//   selectStatus,
-// } from "../../reducers/counter/counterSlice";
 import {
   updateShip,
   updateCruise,
@@ -36,26 +25,17 @@ import {
 } from ".././../reducers/cruise/cruiseSlice.ts";
 
 import {
-  selectStore,
   storeAsync,
   frequenciesAsync,
-  // latitudeAsync,
-  latitudeArrayAsync,
+  latitudeAsync,
+  longitudeAsync,
+  timeAsync,
+  depthAsync,
+  svAsync,
 } from "../../reducers/store/storeSlice";
 
 
 const bucketName = "noaa-wcsd-zarr-pds";
-// const shipName = "Henry_B._Bigelow";
-// const cruiseName = "HB0707";
-// const sensorName = "EK60";
-// https://www.echo.fish/view/echofish/cruise/David_Starr_Jordan/DS0604/EK60/104377/447/38000
-// ?ship=Henry_B._Bigelow&cruise=HB0707&sensor=EK60&x=100&y=200&frequency=38000
-// const time_index = 100;
-
-// const zarrStoreUrl = (ship, cruise, sensor) => {
-// //   return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr`;
-//   return "https://noaa-wcsd-zarr-pds.s3.amazonaws.com/level_2/Henry_B._Bigelow/HB0707/EK60/HB0707.zarr/";
-// };
 
 const mapParameters = {
   crs: CRS.Simple,
@@ -107,14 +87,28 @@ export default function WaterColumnView() {
   const [chunkShape, setChunkShape] = useState(null);
 
   useEffect(() => {
-    const index = 101;
+    const indexX = 256;
+    const indexY = 128;
+    const indexZ = 0;
     dispatch(storeAsync({ ship, cruise, sensor }));
     
     dispatch(frequenciesAsync({ ship, cruise, sensor }));
     
     // dispatch(latitudeAsync({ ship, cruise, sensor, index: index }));
     // const store = useAppSelector(selectStore); // comes from storeSlice
-    dispatch(latitudeArrayAsync({ ship, cruise, sensor }));
+    dispatch(latitudeAsync({ ship, cruise, sensor, indexTime: indexX }));
+    dispatch(longitudeAsync({ ship, cruise, sensor, indexTime: indexX }));
+    dispatch(timeAsync({ ship, cruise, sensor, indexTime: indexX }));
+    dispatch(depthAsync({ ship, cruise, sensor, indexDepth: indexY }));
+    dispatch(svAsync({
+      ship,
+      cruise,
+      sensor,
+      indexDepth: indexY,
+      indexTime: indexX,
+      indexFrequency: indexZ
+    }));
+
   }, [dispatch, ship, cruise, sensor]);
 
   useEffect(() => {
@@ -266,9 +260,9 @@ export default function WaterColumnView() {
         processingSoftwareName={processingSoftwareName}
         processingSoftwareTime={processingSoftwareTime}
         processingSoftwareVersion={processingSoftwareVersion}
-        timeArray={timeArray}
-        latitudeArray={latitudeArray}
-        longitudeArray={longitudeArray}
+        // timeArray={timeArray}
+        // latitudeArray={latitudeArray}
+        // longitudeArray={longitudeArray}
         // frequencyArray={frequencyArray}
       />
     </div>
