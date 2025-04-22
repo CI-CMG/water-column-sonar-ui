@@ -1,4 +1,3 @@
-
 import {
   useEffect,
   useState,
@@ -12,7 +11,6 @@ import {
   LineElement,
   Title,
   Tooltip,
-  // Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import {
@@ -28,7 +26,6 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  // Legend
 );
 
 const options = {
@@ -41,19 +38,6 @@ const options = {
   },
 };
 
-// const chartData = {
-//   labels: ['18 kHz', '38 kHz', '70 kHz', '120 kHz'],
-//   datasets: [
-//     {
-//       label: 'Sv',
-//       data: [-10, -70, -20, -40],
-//       borderColor: 'rgb(53, 162, 235)',
-//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-//       // borderColor: 'rgb(255, 105, 180, 0.5)',
-//       // backgroundColor: 'rgba(255, 182, 193, 0.75)',
-//     },
-//   ],
-// };
 
 export default function SvPlotView() {
   const frequencies = useAppSelector(selectFrequencies);

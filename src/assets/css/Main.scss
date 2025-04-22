@@ -175,3 +175,8 @@ html, body, #root, .AppView, .LayoutView {
   font-weight: 400;
   font-style: normal;
 }
+
+// draw box around the colormap
+#colorMap {
+  border: 1px solid blueviolet;
+}

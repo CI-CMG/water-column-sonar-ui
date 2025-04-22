@@ -42,11 +42,9 @@ const InformationPanel = () => {
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
-  // const frequency = useAppSelector(selectFrequency); // todo: index of selected frequency
 
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const colorMapButtonIndex = useAppSelector(selectColorMapButtonIndex); // 
-  // from storeSlice
   const attributes = useAppSelector(selectAttributes);
   const frequencies = useAppSelector(selectFrequencies); // from store
   const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); // 

@@ -60,7 +60,7 @@ const initialState: StoreState = {
   cruise: null, // "HB0707",
   sensor: null, // "EK60",
 
-  svMin: -80,
+  svMin: -80, // default values for min & max Sv threshold
   svMax: -30,
 
   depthIndex: 0, // these will hold mouses click coordinates

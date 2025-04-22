@@ -4,7 +4,7 @@ import {
   useState,
   useEffect,
 } from "react";
-import { useInterval } from 'usehooks-ts'
+// import { useInterval } from 'usehooks-ts';
 // import Spinner from 'react-bootstrap/Spinner';
 import PropTypes from "prop-types";
 import * as d3 from 'd3'
@@ -42,19 +42,35 @@ const ColorMap = ({
   const ref = useRef();
   const [dataset, setDataset] = useState(generateDataset());
 
-  const width = 360;
+  const width = 350;
   const height = 30;
 
   useEffect(() => {
-    const svgElement = d3.select(ref.current)
-    svgElement.selectAll("rect")
-      .data(dataset, d => d)
-      .join("rect")
-        .attr("width", 0)
-        .attr("height", 10)
-        .attr("x", d => d)
-        .attr("y", 0)
-        .attr("fill", function(d, i){return WaterColumnColors['viridis'][i]})
+    // const svgElement = d3.select(ref.current)
+    // svgElement.selectAll("rect")
+    //   .data(dataset, d => d)
+    //   .join("rect")
+    //     .attr("width", 5)
+    //     .attr("height", 10)
+    //     .attr("x", d => d)
+    //     .attr("y", 0)
+    //     .attr("fill", function(d, i){return WaterColumnColors['viridis'][i]})
+
+    var svg2 = d3.select("#res").append("svg").attr("width", 300).attr("height", 100)
+    svg2.append("circle").attr("cx", 50).attr("cy",100).attr("r",20)
+    .style("fill", "#69b3a2");
+  
+    // With Hex code
+    svg2.append("circle").attr("cx",50).attr("cy",100).attr("r",20)
+      .style("fill", d3.color("steelblue") );
+    
+    // With RGBA (last number is the opacity)
+    svg2.append("circle").attr("cx",150).attr("cy",100).attr("r",20)
+      .style("fill", "rgba(198, 45, 205, 0.8)" )
+    
+    // With RGB
+    svg2.append("circle").attr("cx",250).attr("cy",100).attr("r",20)
+      .style("fill", "rgb(12,240,233)" )
   }, [dataset]);
 
   // useInterval(() => {
@@ -70,7 +86,8 @@ const ColorMap = ({
   //   </>;
   // }
   return (
-    <>
+    <div id="colorMap">
+      <div id="res"></div>
       <svg height={height} width={width} ref={ref} />
       {/* <svg height={height} width={width} xmlns="http://www.w3.org/2000/svg">
         {
@@ -116,7 +133,7 @@ const ColorMap = ({
           {legend100}
         </text>
       </svg> */}
-    </>
+    </div>
   );
 };
 

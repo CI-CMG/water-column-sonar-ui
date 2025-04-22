@@ -61,8 +61,8 @@ export default function WaterColumnView() {
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
 
-  const indexX = 256;
-  const indexY = 128;
+  const indexX = 100; // TODO: wire this up to mouse click
+  const indexY = 200;
   const indexZ = 0;
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function WaterColumnView() {
         ship,
         cruise,
         sensor,
-        indexDepth: indexY,
+        indexDepth: indexY, // TODO: wire this up to mouse click
         indexTime: indexX,
         indexFrequency: indexZ
       }));
