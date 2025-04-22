@@ -14,6 +14,14 @@ import {
 
 
 export interface StoreState {
+  ship: string | null,
+  cruise: string | null,
+  sensor: string | null,
+
+  // Sv Range thresholds
+  svMin: number,
+  svMax: number,
+
   store: any,
   storeStatus: "idle" | "loading" | "failed",
   attributes: any, // metadata of the store
@@ -25,6 +33,7 @@ export interface StoreState {
   
   frequencies: any,
   frequenciesStatus: "idle" | "loading" | "failed",
+  frequencyButtonIndex: number,
   
   latitude: number | null,
   latitudeStatus: "idle" | "loading" | "failed",
@@ -43,6 +52,13 @@ export interface StoreState {
 }
 
 const initialState: StoreState = {
+  ship: null, // "Henry_B._Bigelow",
+  cruise: null, // "HB0707",
+  sensor: null, // "EK60",
+
+  svMin: -80,
+  svMax: -30,
+
   store: null,
   storeStatus: "idle",
   attributes: null,
@@ -53,6 +69,7 @@ const initialState: StoreState = {
 
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
+  frequencyButtonIndex: 0, // start with first frequency selected
   
   latitude: null,
   latitudeStatus: "idle",
@@ -76,6 +93,22 @@ export const storeSlice = createSlice({
   initialState,
   
   reducers: {
+    updateShip: (state, action: PayloadAction<string>) => {
+      state.ship = action.payload
+    },
+    updateCruise: (state, action: PayloadAction<string>) => {
+      state.cruise = action.payload
+    },
+    updateSensor: (state, action: PayloadAction<string>) => {
+      state.sensor = action.payload
+    },
+    updateSvMin: (state, action: PayloadAction<number>) => { // button click
+      state.svMin = Number(action.payload);
+    },
+    updateSvMax: (state, action: PayloadAction<number>) => { // button click
+      state.svMax = Number(action.payload);
+    },
+
     updateDepthIndex: (state, action: PayloadAction<number>) => {
       state.depthIndex = action.payload;
     },
@@ -89,6 +122,10 @@ export const storeSlice = createSlice({
     updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
       state.frequencies = action.payload;
     },
+    updateFrequencyButtonIndex: (state, action: PayloadAction<any>) => {
+      state.frequencyButtonIndex = action.payload;
+    },
+    //
     updateLatitude: (state, action: PayloadAction<any>) => {
       state.latitude = action.payload;
     },
@@ -190,11 +227,19 @@ export const storeSlice = createSlice({
 });
 
 export const {
+  updateShip,
+  updateCruise,
+  updateSensor,
+  updateSvMin,
+  updateSvMax,
+  //
   updateDepthIndex,
   updateTimeIndex,
   updateFrequencyIndex,
   // 
+  // TODO: colorMap
   updateFrequencies,
+  updateFrequencyButtonIndex, // holds button select index
   updateLatitude,
   updateLongitude,
   updateTime,
@@ -204,12 +249,19 @@ export const {
 
 export default storeSlice.reducer;
 
+export const selectShip = (state: RootState) => state.store.ship;
+export const selectCruise = (state: RootState) => state.store.cruise;
+export const selectSensor = (state: RootState) => state.store.sensor;
+export const selectSvMin = (state: RootState) => state.store.svMin;
+export const selectSvMax = (state: RootState) => state.store.svMax;
+
 export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
 export const selectTimeIndex = (state: RootState) => state.store.timeIndex;
 export const selectFrequencyIndex = (state: RootState) => state.store.frequencyIndex;
 
 export const selectAttributes = (state: RootState) => state.store.attributes;
 export const selectFrequencies = (state: RootState) => state.store.frequencies;
+export const selectFrequencyButtonIndex = (state: RootState) => state.store.frequencyButtonIndex;
 export const selectLatitude = (state: RootState) => state.store.latitude;
 export const selectLongitude = (state: RootState) => state.store.longitude;
 export const selectTime = (state: RootState) => state.store.time;

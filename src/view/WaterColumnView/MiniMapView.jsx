@@ -2,10 +2,14 @@ import { useRef, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
+// import {
+//   selectLatitude,
+//   selectLongitude,
+// } from "../../reducers/cruise/cruiseSlice.ts";
 import {
   selectLatitude,
   selectLongitude,
-} from "../../reducers/cruise/cruiseSlice.ts";
+} from "../../reducers/store/storeSlice.ts";
 import { useAppSelector } from "../../app/hooks";
 
 

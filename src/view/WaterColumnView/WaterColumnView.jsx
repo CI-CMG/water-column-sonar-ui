@@ -1,4 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import {
+  useEffect,
+  // useState,
+  useRef
+} from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useSearchParams } from 'react-router';
 import {
@@ -12,9 +16,10 @@ import {
   useMapEvents
 } from 'react-leaflet/hooks'
 import { CRS } from "leaflet";
-import * as zarr from "zarrita";
-import CustomLayer from "./CustomLayer";
-// import InformationPanel from "./InformationPanel";
+// import * as zarr from "zarrita";
+// import CustomLayer from "./CustomLayer";
+import InformationPanel from "./InformationPanel";
+
 import {
   updateShip,
   updateCruise,
@@ -22,9 +27,7 @@ import {
   selectShip,
   selectCruise,
   selectSensor,
-} from ".././../reducers/cruise/cruiseSlice.ts";
-
-import {
+  //
   storeAsync,
   frequenciesAsync,
   latitudeAsync,
@@ -33,10 +36,13 @@ import {
   depthAsync,
   svAsync,
   //
+  updateDepthIndex,
+  updateTimeIndex,
+  // updateFrequencyIndex,
 } from "../../reducers/store/storeSlice";
 
 
-const bucketName = "noaa-wcsd-zarr-pds";
+// const bucketName = "noaa-wcsd-zarr-pds";
 const mapParameters = {
   crs: CRS.Simple,
   zoom: 0,
@@ -90,109 +96,17 @@ export default function WaterColumnView() {
 
   const mapRef = useRef(null);
 
-  const [depthArray, setDepthArray] = useState(null);
-  const [timeArray, setTimeArray] = useState(null);
-  const [frequencyArray, setFrequencyArray] = useState(null);
-  const [latitudeArray, setLatitudeArray] = useState(null);
-  const [longitudeArray, setLongitudeArray] = useState(null);
-  const [svArray, setSvArray] = useState(null);
-
-
-  useEffect(() => {
-    const storePromise = zarr.withConsolidated(
-      new zarr.FetchStore(
-        `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`
-      )
-    );
-
-    storePromise // need to store the time/latitude/longitude/Sv/depth arrays for iterative use
-      .then((storePromise) => {
-        return zarr.open.v2(storePromise, { kind: "group" });
-      })
-      .then((rootPromise) => {
-        // setCalibrationStatus(rootPromise.attrs.calibration_status);
-        // setProcessingSoftwareName(rootPromise.attrs.processing_software_name);
-        // setProcessingSoftwareTime(rootPromise.attrs.processing_software_time);
-        // setProcessingSoftwareVersion(rootPromise.attrs.processing_software_version);
-
-        const depthPromise = zarr.open(rootPromise.resolve("depth"), {
-          kind: "array",
-        });
-        const timePromise = zarr.open(rootPromise.resolve("time"), {
-          kind: "array",
-        });
-        const frequencyPromise = zarr.open(rootPromise.resolve("frequency"), {
-          kind: "array",
-        });
-        const latitudePromise = zarr.open(rootPromise.resolve("latitude"), {
-          kind: "array",
-        });
-        const longitudePromise = zarr.open(rootPromise.resolve("longitude"), {
-          kind: "array",
-        });
-        const svPromise = zarr.open(rootPromise.resolve("Sv"), {
-          kind: "array",
-        });
-
-        Promise.all([
-          depthPromise,
-          timePromise,
-          frequencyPromise,
-          latitudePromise,
-          longitudePromise,
-          svPromise,
-        ]).then(
-          ([
-            depthArray,
-            timeArray,
-            frequencyArray,
-            latitudeArray,
-            longitudeArray,
-            svArray,
-          ]) => {
-            setDepthArray(depthArray);
-            setTimeArray(timeArray);
-            setFrequencyArray(frequencyArray);
-            setLatitudeArray(latitudeArray);
-            setLongitudeArray(longitudeArray);
-            setSvArray(svArray);
-          }
-        );
-      });
-
-      // TODO: return statement for end of lifecycle
-  }, []);
-
-  useEffect(() => {
-    if (
-      depthArray !== null &&
-      timeArray !== null &&
-      frequencyArray !== null &&
-      latitudeArray !== null &&
-      longitudeArray !== null &&
-      svArray !== null
-    ) {
-      const svArrayShape = svArray.shape;
-      setDepthIndices(svArrayShape[0]);
-      setTimeIndices(svArrayShape[1]);
-      setFrequencyIndices(svArrayShape[2]);
-      setChunkShape(svArray.chunks);
-    }
-  }, [
-    depthArray,
-    timeArray,
-    frequencyArray,
-    latitudeArray,
-    longitudeArray,
-    svArray,
-  ]);
-
   const MapEvents = () => { // on mouse click print coordinates
     const map = useMap()
     useMapEvents({
       click(e) {
         console.log(`y: ${e.latlng.lat}, x: ${e.latlng.lng}`);
+        
+        dispatch(updateTimeIndex(e.latlng.lng));
+        dispatch(updateDepthIndex(e.latlng.lat));
+        
         const center = map.getCenter();
+        
         console.log('map x center: ', center.lng); // TODO: write for the mini map viewer
       },
     });
@@ -217,7 +131,7 @@ export default function WaterColumnView() {
                 stroke={true}
               />
             </LayerGroup>
-            <>
+            {/* <>
               { // TODO: follow this to refresh the layer:
                 //  https://react-leaflet.js.org/docs/core-architecture/
                 (depthArray !== null &&
@@ -230,13 +144,13 @@ export default function WaterColumnView() {
                 <CustomLayer svArray={svArray} selectedFrequency={Number(searchParams.get('frequency'))} /> : <></>
                 // need to pass in the frequencyIndex
               }
-            </>
+            </> */}
           </LayersControl.Overlay>
         </LayersControl>
         <MapEvents />
       </MapContainer>
 
-      {/* <InformationPanel /> */}
+      <InformationPanel />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import {
   useState,
   useEffect,
 } from "react";
-// import { useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import Col from 'react-bootstrap/Col';
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
@@ -12,20 +12,22 @@ import Form from "react-bootstrap/Form";
 import MiniMapView from "./MiniMapView";
 import ColorMap from "./ColorMap";
 import SvPlotView from "./SvPlotView";
-import WaterColumnColors from "./WaterColumnColors.jsx";
+// import WaterColumnColors from "./WaterColumnColors.jsx";
+// import {
+//   selectFrequency, // currently chosen value
+//   updateFrequency,
+// } from ".././../reducers/cruise/cruiseSlice.ts";
 import {
   selectShip,
   selectCruise,
   selectSensor,
-
   selectSvMin,
   selectSvMax,
-  selectFrequency, // currently chosen value
-  updateFrequency,
-} from ".././../reducers/cruise/cruiseSlice.ts";
-import {
+  //
   selectAttributes,
   selectFrequencies, // all the values
+  selectFrequencyButtonIndex,
+  updateFrequencyButtonIndex,
   selectLatitude, // uses clicked index
   selectLongitude,
   selectTime,
@@ -41,11 +43,12 @@ const InformationPanel = () => {
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
-  const frequency = useAppSelector(selectFrequency); // todo: get index
+  // const frequency = useAppSelector(selectFrequency); // todo: index of selected frequency
 
   // from storeSlice
   const attributes = useAppSelector(selectAttributes);
   const frequencies = useAppSelector(selectFrequencies); // from store
+  const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); // 
   const latitude = useAppSelector(selectLatitude); // from store
   const longitude = useAppSelector(selectLongitude);
   const time = useAppSelector(selectTime);
@@ -57,7 +60,7 @@ const InformationPanel = () => {
 
   // const count = useAppSelector(selectCount); // used for counter redux example;
   
-  // const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   // dispatch(updateShip(searchParams.get('ship')));
   // dispatch(updateCruise(searchParams.get('cruise')));
   // dispatch(updateSensor(searchParams.get('sensor')));
@@ -69,9 +72,9 @@ const InformationPanel = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [colorMaps, setColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
-    return {'key': y, 'value': x}; 
-  }));
+  // const [colorMaps, setColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
+  //   return {'key': y, 'value': x}; 
+  // }));
   // const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
   //   return {'key': y, 'value': x}; 
   // })[searchParams.get('color')]);
@@ -87,15 +90,14 @@ const InformationPanel = () => {
   // };
   // const [selectedFrequency, setSelectedFrequency] = useState({});
   const handleSelectFrequency = (key) => {
-    // setSelectFrequency({ key: Number(key), value: frequencies[Number(key)].value });
-    dispatch(updateFrequency(Number(key)));
-    // setSearchParams(
-    //   (prev) => {
-    //     prev.set('frequency', key);
-    //     return prev;
-    //   },
-    //   { preventScrollReset: true }
-    // );
+    dispatch(updateFrequencyButtonIndex(frequencies.findIndex(x => x === Number(key))));
+    setSearchParams(
+      (prev) => {
+        prev.set('frequency', frequencies.findIndex(x => x === Number(key)));
+        return prev;
+      },
+      { preventScrollReset: true }
+    );
   };
 
   useEffect(() => {
@@ -231,7 +233,7 @@ const InformationPanel = () => {
                 frequencies.map((item, index) => {
                   return (
                     <Dropdown.Item key={index} eventKey={item}>
-                      {item}
+                      {item / 1000} kHz
                     </Dropdown.Item>
                   );
                 })
@@ -240,7 +242,8 @@ const InformationPanel = () => {
           </Dropdown>
           <p>
             <b>Frequency:</b>{" "}
-            <span className="font-monospace">{frequency?.value / 1000} kHz</span>
+            <span className="font-monospace">{frequencies[frequencyButtonIndex] / 1000} kHz</span>
+            {/* <span className="font-monospace">{frequency?.value / 1000} kHz</span> */}
           </p>
 
           <br />
