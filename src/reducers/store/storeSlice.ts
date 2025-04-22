@@ -1,6 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
+import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors';
 
 import {
   fetchStore,
@@ -22,15 +23,18 @@ export interface StoreState {
   svMin: number,
   svMax: number,
 
+  depthIndex: number,
+  timeIndex: number,
+  frequencyIndex: number,
+
+  colorMaps: any,
+  colorMapButtonIndex: number,
+
   store: any,
   storeStatus: "idle" | "loading" | "failed",
   attributes: any, // metadata of the store
   // calibration_status, cruise_name, processing_software_name, processing_software_time, processing_software_version, sensor_name, ship_name, tile_size
 
-  depthIndex: number,
-  timeIndex: number,
-  frequencyIndex: number,
-  
   frequencies: any,
   frequenciesStatus: "idle" | "loading" | "failed",
   frequencyButtonIndex: number,
@@ -59,13 +63,16 @@ const initialState: StoreState = {
   svMin: -80,
   svMax: -30,
 
-  store: null,
-  storeStatus: "idle",
-  attributes: null,
-
   depthIndex: 0, // these will hold mouses click coordinates
   timeIndex: 0,
   frequencyIndex: 0,
+
+  colorMaps: WaterColumnColors,
+  colorMapButtonIndex: 0,
+
+  store: null,
+  storeStatus: "idle",
+  attributes: null,
 
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
@@ -119,6 +126,13 @@ export const storeSlice = createSlice({
       state.frequencyIndex = action.payload;
     },
     // 
+    updateColorMaps: (state, action: PayloadAction<any>) => { // do i need these
+      state.colorMaps = action.payload;
+    },
+    updateColorMapButtonIndex: (state, action: PayloadAction<any>) => {
+      state.colorMapButtonIndex = action.payload;
+    },
+    //
     updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
       state.frequencies = action.payload;
     },
@@ -236,7 +250,9 @@ export const {
   updateDepthIndex,
   updateTimeIndex,
   updateFrequencyIndex,
-  // 
+  //
+  updateColorMaps,
+  updateColorMapButtonIndex,
   // TODO: colorMap
   updateFrequencies,
   updateFrequencyButtonIndex, // holds button select index
@@ -254,6 +270,9 @@ export const selectCruise = (state: RootState) => state.store.cruise;
 export const selectSensor = (state: RootState) => state.store.sensor;
 export const selectSvMin = (state: RootState) => state.store.svMin;
 export const selectSvMax = (state: RootState) => state.store.svMax;
+
+export const selectColorMaps = (state: RootState) => state.store.colorMaps;
+export const selectColorMapButtonIndex = (state: RootState) => state.store.colorMapButtonIndex;
 
 export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
 export const selectTimeIndex = (state: RootState) => state.store.timeIndex;

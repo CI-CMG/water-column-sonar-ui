@@ -1,7 +1,9 @@
-// import {
-//   // React,
-//   useEffect
-// } from "react";
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,6 +15,11 @@ import {
   // Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import {
+  selectFrequencies,
+  selectSv,
+} from ".././../reducers/store/storeSlice.ts";
+import { useAppSelector } from "../../app/hooks";
 
 ChartJS.register(
   CategoryScale,
@@ -34,25 +41,52 @@ const options = {
   },
 };
 
-const data = {
-  labels: ['18 kHz', '38 kHz', '70 kHz', '120 kHz'],
-  datasets: [
-    {
-      label: 'Sv',
-      data: [-10, -70, -20, -40],
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      // borderColor: 'rgb(255, 105, 180, 0.5)',
-      // backgroundColor: 'rgba(255, 182, 193, 0.75)',
-    },
-  ],
-};
+// const chartData = {
+//   labels: ['18 kHz', '38 kHz', '70 kHz', '120 kHz'],
+//   datasets: [
+//     {
+//       label: 'Sv',
+//       data: [-10, -70, -20, -40],
+//       borderColor: 'rgb(53, 162, 235)',
+//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
+//       // borderColor: 'rgb(255, 105, 180, 0.5)',
+//       // backgroundColor: 'rgba(255, 182, 193, 0.75)',
+//     },
+//   ],
+// };
 
 export default function SvPlotView() {
+  const frequencies = useAppSelector(selectFrequencies);
+  const sv = useAppSelector(selectSv);
+  const [chartData, setChartData] = useState(null)
+
+
+  useEffect(() => {
+    if(frequencies !== null && sv !== null) {
+      setChartData({
+        labels: frequencies.map(x => `${String(x/1000)} kHz`),
+        datasets: [
+          {
+            label: 'Sv',
+            data: sv,
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
+        ],
+      });
+    }
+  }, [frequencies, sv]);
 
   return (
     <div className="SvPlotView">
-      <Line options={options} data={data} />
+      {
+        chartData ?
+        <>
+          <Line options={options} data={chartData} />
+        </>
+        :
+        <></>
+      }
     </div>
   );
 }

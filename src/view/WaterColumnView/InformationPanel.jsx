@@ -12,17 +12,16 @@ import Form from "react-bootstrap/Form";
 import MiniMapView from "./MiniMapView";
 import ColorMap from "./ColorMap";
 import SvPlotView from "./SvPlotView";
-// import WaterColumnColors from "./WaterColumnColors.jsx";
-// import {
-//   selectFrequency, // currently chosen value
-//   updateFrequency,
-// } from ".././../reducers/cruise/cruiseSlice.ts";
 import {
   selectShip,
   selectCruise,
   selectSensor,
   selectSvMin,
   selectSvMax,
+  //
+  selectColorMaps,
+  selectColorMapButtonIndex,
+  updateColorMapButtonIndex,
   //
   selectAttributes,
   selectFrequencies, // all the values
@@ -45,6 +44,8 @@ const InformationPanel = () => {
   const sensor = useAppSelector(selectSensor);
   // const frequency = useAppSelector(selectFrequency); // todo: index of selected frequency
 
+  const colorMaps = useAppSelector(selectColorMaps); // from store
+  const colorMapButtonIndex = useAppSelector(selectColorMapButtonIndex); // 
   // from storeSlice
   const attributes = useAppSelector(selectAttributes);
   const frequencies = useAppSelector(selectFrequencies); // from store
@@ -57,38 +58,25 @@ const InformationPanel = () => {
 
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
-
-  // const count = useAppSelector(selectCount); // used for counter redux example;
   
   const [searchParams, setSearchParams] = useSearchParams();
-  // dispatch(updateShip(searchParams.get('ship')));
-  // dispatch(updateCruise(searchParams.get('cruise')));
-  // dispatch(updateSensor(searchParams.get('sensor')));
-
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-  // const [frequencies, setFrequencies] = useState({}); // used for button
-  // const [colorMaps, setColorMaps] = useState(WaterColumnColors); // used for button
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // const [colorMaps, setColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
-  //   return {'key': y, 'value': x}; 
-  // }));
-  // const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
-  //   return {'key': y, 'value': x}; 
-  // })[searchParams.get('color')]);
-  // const handleSelectColorMap = (key) => {
-  //   setSelectedColorMap({ key: Number(key), value: Object.keys(WaterColumnColors)[key] });
-  //   setSearchParams(
-  //     (prev) => {
-  //       prev.set('color', key);
-  //       return prev;
-  //     },
-  //     { preventScrollReset: true }
-  //   );
-  // };
-  // const [selectedFrequency, setSelectedFrequency] = useState({});
+  const handleSelectColorMap = (key) => {
+    dispatch(updateColorMapButtonIndex(Object.keys(colorMaps).findIndex(x => x === key)));
+    setSearchParams(
+      (prev) => {
+        prev.set('color', Object.keys(colorMaps).findIndex(x => x === key));
+        return prev;
+      },
+      { preventScrollReset: true }
+    );
+  };
+
   const handleSelectFrequency = (key) => {
     dispatch(updateFrequencyButtonIndex(frequencies.findIndex(x => x === Number(key))));
     setSearchParams(
@@ -105,50 +93,6 @@ const InformationPanel = () => {
       setLoading(false);
     }
   }, [frequencies]);
-  // useEffect(() => {
-  //   if(timeArray !== null){
-  //     (async () => {
-  //       await get(timeArray, [0])
-  //         .then((d1) => {
-  //           console.log(d1);
-  //         });
-  //     })();
-  //   }
-  //   // if(frequencyArray !== null){
-  //   //   (async () => {
-  //   //     await get(frequencyArray, [slice(null)])
-  //   //       .then((f1) => {
-  //   //         let allFrequencies = []
-  //   //         f1.data.forEach(function (element, index) { // convert BigUInts to Numbers
-  //   //           var h = Number(element);
-  //   //           allFrequencies.push({
-  //   //             key: index,
-  //   //             value: h,
-  //   //           });
-  //   //         });
-  //   //         setFrequencies(allFrequencies);
-  //   //         setSelectedFrequency(allFrequencies[0]);
-  //   //         setLoading(false);
-  //   //       });
-  //   //   })();
-  //   // }
-  //   if(latitudeArray !== null){
-  //     (async () => {
-  //       await get(latitudeArray, [0])
-  //         .then((la) => {
-  //           console.log(la.data);
-  //         });
-  //     })();
-  //   }
-  //   if(longitudeArray !== null){
-  //     (async () => {
-  //       await get(longitudeArray, [0])
-  //         .then((lo) => {
-  //           console.log(lo.data);
-  //         });
-  //     })();
-  //   }
-  // }, [timeArray, latitudeArray, longitudeArray])
 
   const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${ship}/${cruise}/${sensor}/`;
   const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${ship}/${cruise}/${sensor}/`;
@@ -194,34 +138,51 @@ const InformationPanel = () => {
             <b>Ship:</b>
             <span className="font-monospace float-end">{ ship }</span>
           </p>
+
           <p>
             <b>Cruise:</b>
             <span className="font-monospace float-end">{ cruise }</span>
           </p>
+
           <p>
             <b>Sensor:</b>
             <span className="font-monospace float-end">{ sensor }</span>
           </p>
+
           <p>
             <b>Time:</b>{" "}
-            {/* <span className="font-monospace float-end"><font color="green">2025-03-06</font>T<font color="green">16:13:30</font>Z</span> */}
             <span className="font-monospace float-end">{ time }</span>
-            {/* <span className="font-monospace">{get(timeArray, 1)}</span> */}
           </p>
+
           <p>
             <b>Lon/Lat:</b>{" "}
             <span className="font-monospace float-end">{ longitude }° E, { latitude }° N</span>
           </p>
-          <p>
-            <b>Depth:</b>
-            <span className="font-monospace float-end">{ depth } meters</span>
-            {/* <span className="font-monospace float-end"><font color="#6699CC">123 meters</font></span> */}
-          </p>
-          <p>
-            <b>Selected Sv:</b>{" "}
-            <span className="font-monospace float-end">{ sv } dB</span>
-          </p>
 
+          {
+            depth !== null ?
+            <>
+              <p>
+                <b>Depth:</b>
+                <span className="font-monospace float-end">{ depth } meters</span>
+              </p>
+            </>
+            :
+            <></>
+          }
+
+          {
+            sv !== null && frequencyButtonIndex !== null ?
+            <>
+              <p>
+                <b>Selected Sv:</b>{" "}
+                <span className="font-monospace float-end">{ sv[frequencyButtonIndex] } dB</span>
+              </p>
+            </>
+            :
+            <></>
+          }
+          
           <br />
 
           <Dropdown onSelect={handleSelectFrequency}>
@@ -248,26 +209,26 @@ const InformationPanel = () => {
 
           <br />
 
-          {/* <Dropdown onSelect={handleSelectColorMap}>
+          <Dropdown onSelect={handleSelectColorMap}>
             <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
               Color Map
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {
-                colorMaps.map((item, index) => {
+                Object.keys(colorMaps).map((item, index) => {
                   return (
-                    <Dropdown.Item key={index} eventKey={item.key}>
-                      {item.value}
+                    <Dropdown.Item key={index} eventKey={item}>
+                      {item}
                     </Dropdown.Item>
                   );
                 })
               }
             </Dropdown.Menu>
-          </Dropdown> */}
-          {/* <p>
+          </Dropdown>
+          <p>
             <b>Color Map:</b>{" "}
-            <span className="font-monospace">{selectedColorMap.value}</span>
-          </p> */}
+            <span className="font-monospace">{Object.keys(colorMaps)[colorMapButtonIndex]}</span>
+          </p>
           
           <br />
           <p>[ Color Palette ]</p>
@@ -339,23 +300,30 @@ const InformationPanel = () => {
           <hr />
           
           <p><b>Processing Software:</b></p>
-          <p>
-            <b>name:</b>
-            {/* <span className="float-end softwareName">{processingSoftwareName}</span> */}
-            <span className="font-monospace float-end">{attributes.processingSoftwareName}</span>
-          </p>
-          <p>
-            <b>Date:</b>
-            <span className="font-monospace float-end">{attributes.processingSoftwareTime}</span>
-          </p>
-          <p>
-            <b>Version:</b>
-            <span className="font-monospace float-end">v{attributes.processingSoftwareVersion}</span>
-          </p>
-          <p>
-            <b>Calibration Status:</b>
-            <span className="font-monospace float-end"><i>{attributes.calibrationStatus ? "calibrated" : "not calibrated"}</i></span>
-          </p>
+          {attributes ?
+            <>
+              <p>
+                <b>name:</b>
+                {/* <span className="float-end softwareName">{processingSoftwareName}</span> */}
+                <span className="font-monospace float-end">{attributes.processing_software_name}</span>
+              </p>
+              <p>
+                <b>Date:</b>
+                <span className="font-monospace float-end">{attributes.processing_software_time}</span>
+              </p>
+              <p>
+                <b>Version:</b>
+                <span className="font-monospace float-end">v{attributes.processing_software_version}</span>
+              </p>
+              <p>
+                <b>Calibration Status:</b>
+                <span className="font-monospace float-end"><i>{attributes.calibration_status ? "calibrated" : "not calibrated"}</i></span>
+              </p>
+            </>
+            :
+            <></>
+          }
+          
           <br />
           <p className="text-center"><b>~</b></p>
         </Offcanvas.Body>
