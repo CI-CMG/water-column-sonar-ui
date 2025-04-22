@@ -2,10 +2,6 @@ import { useRef, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
-// import {
-//   selectLatitude,
-//   selectLongitude,
-// } from "../../reducers/cruise/cruiseSlice.ts";
 import {
   selectLatitude,
   selectLongitude,
@@ -81,6 +77,8 @@ export default function MiniMapView() {
         zoom: 10,
         minZoom: 2,
       });
+
+
 
       map.current.flyTo({
         center: [longitude, latitude],

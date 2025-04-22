@@ -39,6 +39,27 @@ import {
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
+// import moment from 'moment-timezone';
+// import tzlookup from 'tz-lookup';
+// import debounce from 'lodash.debounce';
+// const getDateTime = (epochSeconds: number, timezone: string) => {
+//   const tempDate = new Date(0);
+//   tempDate.setUTCMilliseconds(epochSeconds * 1000);
+//   const timestamp = tempDate.toISOString().substring(0, 19);
+//   return moment.tz(timestamp, 'Etc/UTC').clone().tz(`${timezone}`);
+// };
+// return getDateTime(props.selectedEchogramPoint.timestamp, 'Etc/UTC');
+
+const getDateTime = function (epochSeconds, timezone) {
+  // timezone='Etc/UTC'
+  const tempDate = new Date(0);
+  tempDate.setUTCMilliseconds(epochSeconds * 1000);
+  // const timestamp = tempDate.toISOString().substring(0, 19);
+  return `${tempDate.toISOString().substring(0, 19)}Z`
+  // return moment.tz(timestamp, 'Etc/UTC').clone().tz(`${timezone}`);
+};
+
+
 const InformationPanel = () => {
   const dispatch = useAppDispatch()
 
@@ -103,7 +124,7 @@ const InformationPanel = () => {
   const depthIndex = useAppSelector(selectDepthIndex);
   const timeIndex = useAppSelector(selectTimeIndex);
   // const frequencyIndex = useAppSelector(selectFrequencyIndex);
-
+  
   if (isLoading) {
     return <div className="App">Loading...</div>;
   }
@@ -162,7 +183,7 @@ const InformationPanel = () => {
 
           <p>
             <b>Time:</b>{" "}
-            <span className="font-monospace float-end">{ time }</span>
+            <span className="font-monospace float-end">{ getDateTime(time, 'Etc/UTC') }</span>
           </p>
 
           {
@@ -352,18 +373,4 @@ const InformationPanel = () => {
 export default InformationPanel;
 
 InformationPanel.propTypes = {
-  // queryParameters: PropTypes.instanceOf(Object),
-  
-  // calibrationStatus: PropTypes.instanceOf(String), // TODO: use redux to pass values
-  // processingSoftwareName: PropTypes.instanceOf(String),
-  // processingSoftwareTime: PropTypes.instanceOf(String),
-  // processingSoftwareVersion: PropTypes.instanceOf(String),
-
-  // timeArray: PropTypes.instanceOf(Object),
-  // latitudeArray: PropTypes.instanceOf(Object),
-  // longitudeArray: PropTypes.instanceOf(Object),
-  // frequencyArray: PropTypes.instanceOf(Object), // Number?
-  // depthIndices: PropTypes.instanceOf(String),
-  // timeIndices: PropTypes.instanceOf(String),
-  // frequencyIndices: PropTypes.instanceOf(String),
 };

@@ -67,11 +67,6 @@ export default function WaterColumnView() {
   const indexDepth = useAppSelector(selectDepthIndex);
   const indexTime = useAppSelector(selectTimeIndex);
 
-  // opening the page 
-  // const indexX = 100; // 100
-  // const indexY = 200; // 200
-  // const indexZ = 0; // 0
-
   useEffect(() => {
     if(ship === null){
       dispatch(updateShip(searchParams.get('ship'))); // store in redux
