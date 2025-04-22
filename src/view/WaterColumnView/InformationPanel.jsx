@@ -9,33 +9,22 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
 import Row from 'react-bootstrap/Row';
 import Form from "react-bootstrap/Form";
-import PropTypes from "prop-types";
 import MiniMapView from "./MiniMapView";
-// import { slice } from "zarrita";
-// import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import ColorMap from "./ColorMap";
 import SvPlotView from "./SvPlotView";
 import WaterColumnColors from "./WaterColumnColors.jsx";
 import {
-  // updateSvMin,
-  // updateSvMax,
-  // 
   selectShip,
   selectCruise,
   selectSensor,
-  
-  // selectLatitude,
-  // selectLongitude,
-  // selectTime,
-  // selectDepth,
 
-  // selectSv,
   selectSvMin,
   selectSvMax,
   selectFrequency, // currently chosen value
   updateFrequency,
 } from ".././../reducers/cruise/cruiseSlice.ts";
 import {
+  selectAttributes,
   selectFrequencies, // all the values
   selectLatitude, // uses clicked index
   selectLongitude,
@@ -45,32 +34,24 @@ import {
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-const InformationPanel = ({
-  calibrationStatus,
-  processingSoftwareName,
-  processingSoftwareTime,
-  processingSoftwareVersion,
-
-  // TODO: get dimensionality of Sv data
-  // timeArray,
-  // latitudeArray,
-  // longitudeArray,
-}) => {
-  const frequencies = useAppSelector(selectFrequencies); // from store
-  const frequency = useAppSelector(selectFrequency); // todo: get index
-
+const InformationPanel = () => {
   const dispatch = useAppDispatch()
+
+  // from cruiseSlice
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
-  
+  const frequency = useAppSelector(selectFrequency); // todo: get index
+
+  // from storeSlice
+  const attributes = useAppSelector(selectAttributes);
+  const frequencies = useAppSelector(selectFrequencies); // from store
   const latitude = useAppSelector(selectLatitude); // from store
   const longitude = useAppSelector(selectLongitude);
   const time = useAppSelector(selectTime);
   const depth = useAppSelector(selectDepth);
+  const sv = useAppSelector(selectSv);
 
-  // const depth = useAppSelector(selectDepth);
-  // const sv = useAppSelector(selectSv); // todo; move these to WaterColumnView in hook
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
 
@@ -202,17 +183,11 @@ const InformationPanel = ({
         </Offcanvas.Header>
 
         <Offcanvas.Body>
-          {/* <Counter /> */}
-
           <MiniMapView />
 
           <SvPlotView />
 
           <br />
-          {/* <p>
-            <b>Counter:</b>{" "}
-            <span className="font-monospace float-end">{count}</span>
-          </p> */}
           <p>
             <b>Ship:</b>
             <span className="font-monospace float-end">{ ship }</span>
@@ -242,7 +217,7 @@ const InformationPanel = ({
           </p>
           <p>
             <b>Selected Sv:</b>{" "}
-            <span className="font-monospace float-end">{ 123.45 } dB</span>
+            <span className="font-monospace float-end">{ sv } dB</span>
           </p>
 
           <br />
@@ -364,19 +339,19 @@ const InformationPanel = ({
           <p>
             <b>name:</b>
             {/* <span className="float-end softwareName">{processingSoftwareName}</span> */}
-            <span className="font-monospace float-end">{processingSoftwareName}</span>
+            <span className="font-monospace float-end">{attributes.processingSoftwareName}</span>
           </p>
           <p>
             <b>Date:</b>
-            <span className="font-monospace float-end">{processingSoftwareTime}</span>
+            <span className="font-monospace float-end">{attributes.processingSoftwareTime}</span>
           </p>
           <p>
             <b>Version:</b>
-            <span className="font-monospace float-end">v{processingSoftwareVersion}</span>
+            <span className="font-monospace float-end">v{attributes.processingSoftwareVersion}</span>
           </p>
           <p>
             <b>Calibration Status:</b>
-            <span className="font-monospace float-end"><i>{calibrationStatus ? "calibrated" : "not calibrated"}</i></span>
+            <span className="font-monospace float-end"><i>{attributes.calibrationStatus ? "calibrated" : "not calibrated"}</i></span>
           </p>
           <br />
           <p className="text-center"><b>~</b></p>
@@ -390,10 +365,11 @@ export default InformationPanel;
 
 InformationPanel.propTypes = {
   // queryParameters: PropTypes.instanceOf(Object),
-  calibrationStatus: PropTypes.instanceOf(String), // TODO: use redux to pass values
-  processingSoftwareName: PropTypes.instanceOf(String),
-  processingSoftwareTime: PropTypes.instanceOf(String),
-  processingSoftwareVersion: PropTypes.instanceOf(String),
+  
+  // calibrationStatus: PropTypes.instanceOf(String), // TODO: use redux to pass values
+  // processingSoftwareName: PropTypes.instanceOf(String),
+  // processingSoftwareTime: PropTypes.instanceOf(String),
+  // processingSoftwareVersion: PropTypes.instanceOf(String),
 
   // timeArray: PropTypes.instanceOf(Object),
   // latitudeArray: PropTypes.instanceOf(Object),

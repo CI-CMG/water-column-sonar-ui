@@ -1,5 +1,5 @@
 import * as zarr from "zarrita";
-import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
+import { get } from "@zarrita/ndarray";
 import { slice } from "zarrita";
 
 

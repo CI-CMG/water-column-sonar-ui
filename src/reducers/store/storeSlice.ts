@@ -1,4 +1,3 @@
-// import { selectLatitude } from './../cruise/cruiseSlice';
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
@@ -20,8 +19,9 @@ export interface StoreState {
   attributes: any, // metadata of the store
   // calibration_status, cruise_name, processing_software_name, processing_software_time, processing_software_version, sensor_name, ship_name, tile_size
 
-  x: number,
-  y: number,
+  depthIndex: number,
+  timeIndex: number,
+  frequencyIndex: number,
   
   frequencies: any,
   frequenciesStatus: "idle" | "loading" | "failed",
@@ -46,8 +46,10 @@ const initialState: StoreState = {
   store: null,
   storeStatus: "idle",
   attributes: null,
-  x: 0,
-  y: 0,
+
+  depthIndex: 0, // these will hold mouses click coordinates
+  timeIndex: 0,
+  frequencyIndex: 0,
 
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
@@ -74,12 +76,16 @@ export const storeSlice = createSlice({
   initialState,
   
   reducers: {
-    updateX: (state, action: PayloadAction<number>) => {
-      state.x = action.payload;
+    updateDepthIndex: (state, action: PayloadAction<number>) => {
+      state.depthIndex = action.payload;
     },
-    updateY: (state, action: PayloadAction<number>) => {
-      state.y = action.payload;
+    updateTimeIndex: (state, action: PayloadAction<number>) => {
+      state.timeIndex = action.payload;
     },
+    updateFrequencyIndex: (state, action: PayloadAction<number>) => {
+      state.frequencyIndex = action.payload;
+    },
+    // 
     updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
       state.frequencies = action.payload;
     },
@@ -184,8 +190,10 @@ export const storeSlice = createSlice({
 });
 
 export const {
-  updateX,
-  updateY,
+  updateDepthIndex,
+  updateTimeIndex,
+  updateFrequencyIndex,
+  // 
   updateFrequencies,
   updateLatitude,
   updateLongitude,
@@ -196,16 +204,17 @@ export const {
 
 export default storeSlice.reducer;
 
-export const selectX = (state: RootState) => state.store.x;
-export const selectY = (state: RootState) => state.store.y;
-// export const selectStore = (state: RootState) => state.store.store;
+export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
+export const selectTimeIndex = (state: RootState) => state.store.timeIndex;
+export const selectFrequencyIndex = (state: RootState) => state.store.frequencyIndex;
+
+export const selectAttributes = (state: RootState) => state.store.attributes;
+export const selectFrequencies = (state: RootState) => state.store.frequencies;
 export const selectLatitude = (state: RootState) => state.store.latitude;
 export const selectLongitude = (state: RootState) => state.store.longitude;
 export const selectTime = (state: RootState) => state.store.time;
 export const selectDepth = (state: RootState) => state.store.depth;
 export const selectSv = (state: RootState) => state.store.sv;
-export const selectAttributes = (state: RootState) => state.store.attributes;
-export const selectFrequencies = (state: RootState) => state.store.frequencies;
 
 // Just getting metadata from the store
 export const storeAsync = createAsyncThunk(
@@ -274,7 +283,6 @@ export const svAsync = createAsyncThunk(
     indexFrequency: number,
   }) => {
     const response = await fetchSv(ship, cruise, sensor, indexDepth, indexTime, indexFrequency);
-    // For some reason this is a dict?
     return [...response.data].map((x: number) => Number(Math.round(x * 1e2) / 1e2))
   },
 )
