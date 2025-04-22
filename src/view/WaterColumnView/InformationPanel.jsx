@@ -23,6 +23,10 @@ import {
   selectColorMapButtonIndex,
   updateColorMapButtonIndex,
   //
+  selectDepthIndex,
+  selectTimeIndex,
+  // selectFrequencyIndex,
+  //
   selectAttributes,
   selectFrequencies, // all the values
   selectFrequencyButtonIndex,
@@ -96,6 +100,10 @@ const InformationPanel = () => {
   const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${ship}/${cruise}/${sensor}/`;
   const url_level_2 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/${ship}/${cruise}/${sensor}/`;
 
+  const depthIndex = useAppSelector(selectDepthIndex);
+  const timeIndex = useAppSelector(selectTimeIndex);
+  // const frequencyIndex = useAppSelector(selectFrequencyIndex);
+
   if (isLoading) {
     return <div className="App">Loading...</div>;
   }
@@ -130,8 +138,13 @@ const InformationPanel = () => {
           <MiniMapView />
 
           <SvPlotView />
+          {/* frequencyButtonIndex replaces frequencyIndex */}
 
           <br />
+          <p>
+            <b>Debug:</b>
+            <span className="font-monospace float-end">[d: { depthIndex }, t: { timeIndex }, f: { frequencyButtonIndex }]</span>
+          </p>
           <p>
             <b>Ship:</b>
             <span className="font-monospace float-end">{ ship }</span>
@@ -152,31 +165,32 @@ const InformationPanel = () => {
             <span className="font-monospace float-end">{ time }</span>
           </p>
 
-          <p>
-            <b>Lon/Lat:</b>{" "}
-            <span className="font-monospace float-end">{ longitude }° E, { latitude }° N</span>
-          </p>
+          {
+            latitude !== null && longitude !== null ?
+            <p>
+              <b>Lon/Lat:</b>{" "}
+              <span className="font-monospace float-end">{ longitude }° E, { latitude }° N</span>
+            </p>
+            :
+            <></>
+          }
 
           {
             depth !== null ?
-            <>
-              <p>
-                <b>Depth:</b>
-                <span className="font-monospace float-end">{ depth } meters</span>
-              </p>
-            </>
+            <p>
+              <b>Depth:</b>
+              <span className="font-monospace float-end">{ depth } meters</span>
+            </p>
             :
             <></>
           }
 
           {
             sv !== null && frequencyButtonIndex !== null ?
-            <>
-              <p>
-                <b>Selected Sv:</b>{" "}
-                <span className="font-monospace float-end">{ sv[frequencyButtonIndex] } dB</span>
-              </p>
-            </>
+            <p>
+              <b>Selected Sv:</b>{" "}
+              <span className="font-monospace float-end">{ sv[frequencyButtonIndex] } dB</span>
+            </p>
             :
             <></>
           }

@@ -28,6 +28,9 @@ import {
   selectCruise,
   selectSensor,
   //
+  selectDepthIndex,
+  selectTimeIndex,
+  //
   storeAsync,
   frequenciesAsync,
   latitudeAsync,
@@ -38,7 +41,6 @@ import {
   //
   updateDepthIndex,
   updateTimeIndex,
-  // updateFrequencyIndex,
 } from "../../reducers/store/storeSlice";
 
 
@@ -61,9 +63,13 @@ export default function WaterColumnView() {
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
 
-  const indexX = 100; // TODO: wire this up to mouse click
-  const indexY = 200;
-  const indexZ = 0;
+  const indexDepth = useAppSelector(selectDepthIndex);
+  const indexTime = useAppSelector(selectTimeIndex);
+
+  // opening the page 
+  // const indexX = 100; // 100
+  // const indexY = 200; // 200
+  // const indexZ = 0; // 0
 
   useEffect(() => {
     if(ship === null){
@@ -77,37 +83,43 @@ export default function WaterColumnView() {
     }
 
     if(ship !== null && cruise !== null && sensor !== null) {
-      dispatch(storeAsync({ ship, cruise, sensor }));
-      dispatch(frequenciesAsync({ ship, cruise, sensor }));    
-      dispatch(latitudeAsync({ ship, cruise, sensor, indexTime: indexX }));
-      dispatch(longitudeAsync({ ship, cruise, sensor, indexTime: indexX }));
-      dispatch(timeAsync({ ship, cruise, sensor, indexTime: indexX }));
-      dispatch(depthAsync({ ship, cruise, sensor, indexDepth: indexY }));
+      dispatch(storeAsync({ ship, cruise, sensor })); // don't need to update each time
+      dispatch(frequenciesAsync({ ship, cruise, sensor })); // don't need to update each time
+    }
+  }, [dispatch, searchParams, ship, cruise, sensor]); // TODO: update on click
+
+  useEffect(() => {
+    console.log('depth or time index updated')
+    if(ship !== null && cruise !== null && sensor !== null) {
+      dispatch(latitudeAsync({ ship, cruise, sensor, indexTime: indexTime }));
+      dispatch(longitudeAsync({ ship, cruise, sensor, indexTime: indexTime }));
+      dispatch(timeAsync({ ship, cruise, sensor, indexTime: indexTime }));
+      dispatch(depthAsync({ ship, cruise, sensor, indexDepth: indexDepth }));
       dispatch(svAsync({
         ship,
         cruise,
         sensor,
-        indexDepth: indexY, // TODO: wire this up to mouse click
-        indexTime: indexX,
-        indexFrequency: indexZ
+        indexDepth: indexDepth, // TODO: wire this up to mouse click
+        indexTime: indexTime,
+        indexFrequency: 0 // fix
       }));
     }
-  }, [dispatch, searchParams, ship, cruise, sensor]);
+  }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, indexTime]); // TODO: update on click
 
   const mapRef = useRef(null);
 
   const MapEvents = () => { // on mouse click print coordinates
-    const map = useMap()
+    // const map = useMap()
     useMapEvents({
       click(e) {
         console.log(`y: ${e.latlng.lat}, x: ${e.latlng.lng}`);
         
-        dispatch(updateTimeIndex(e.latlng.lng));
-        dispatch(updateDepthIndex(e.latlng.lat));
+        // cast as int
+        dispatch(updateTimeIndex(parseInt(e.latlng.lng, 10))); // update mouse locations
+        dispatch(updateDepthIndex(parseInt(e.latlng.lat * -1.0, 10)));
         
-        const center = map.getCenter();
-        
-        console.log('map x center: ', center.lng); // TODO: write for the mini map viewer
+        // const center = map.getCenter();
+        // console.log('map x center: ', center.lng); // TODO: write for the mini map viewer
       },
     });
 

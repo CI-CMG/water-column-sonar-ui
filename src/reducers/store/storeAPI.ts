@@ -141,7 +141,6 @@ export const fetchSv = (
 ): any => {
     const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
-
     return zarr.withConsolidated(new zarr.FetchStore(url))
         .then((storePromise) => {
             const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });

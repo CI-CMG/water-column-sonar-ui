@@ -247,9 +247,9 @@ export const {
   updateSvMin,
   updateSvMax,
   //
-  updateDepthIndex,
+  updateDepthIndex, // mouse click locations
   updateTimeIndex,
-  updateFrequencyIndex,
+  updateFrequencyIndex, // <- derive from button?
   //
   updateColorMaps,
   updateColorMapButtonIndex,
