@@ -38,7 +38,7 @@ const options = {
   },
 };
 
-
+/* -------- Line Plot of Sv Data ---------- */
 export default function SvPlotView() {
   const frequencies = useAppSelector(selectFrequencies);
   const sv = useAppSelector(selectSv);

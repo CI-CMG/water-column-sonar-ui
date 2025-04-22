@@ -84,7 +84,8 @@ export default function MiniMapView() {
 
       map.current.flyTo({
         center: [longitude, latitude],
-        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+        speed: 0.4,
       });
     }
   }, [map, latitude, longitude]);

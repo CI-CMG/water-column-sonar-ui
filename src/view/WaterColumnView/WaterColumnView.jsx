@@ -55,6 +55,7 @@ const mapParameters = {
   tileSize: 512, // TODO: get from store?
 };
 
+/* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
@@ -89,7 +90,6 @@ export default function WaterColumnView() {
   }, [dispatch, searchParams, ship, cruise, sensor]); // TODO: update on click
 
   useEffect(() => {
-    console.log('depth or time index updated')
     if(ship !== null && cruise !== null && sensor !== null) {
       dispatch(latitudeAsync({ ship, cruise, sensor, indexTime: indexTime }));
       dispatch(longitudeAsync({ ship, cruise, sensor, indexTime: indexTime }));
@@ -112,9 +112,7 @@ export default function WaterColumnView() {
     // const map = useMap()
     useMapEvents({
       click(e) {
-        console.log(`y: ${e.latlng.lat}, x: ${e.latlng.lng}`);
-        
-        // cast as int
+        // console.log(`y: ${e.latlng.lat}, x: ${e.latlng.lng}`);
         dispatch(updateTimeIndex(parseInt(e.latlng.lng, 10))); // update mouse locations
         dispatch(updateDepthIndex(parseInt(e.latlng.lat * -1.0, 10)));
         

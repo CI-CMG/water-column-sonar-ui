@@ -77,6 +77,7 @@ function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName
     }
 }
 
+/* -------- Leaflet Layer that Plots Sv Data ---------- */
 const CustomLayer = ({
   svArray,
   selectedFrequency, // passed in value is actual frequency value e.g. "18000"

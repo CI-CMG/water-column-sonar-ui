@@ -141,7 +141,7 @@ const InformationPanel = () => {
           {/* frequencyButtonIndex replaces frequencyIndex */}
 
           <br />
-          <p>
+          <p style={{ color: 'hotpink' }}>
             <b>Debug:</b>
             <span className="font-monospace float-end">[d: { depthIndex }, t: { timeIndex }, f: { frequencyButtonIndex }]</span>
           </p>
@@ -190,6 +190,15 @@ const InformationPanel = () => {
             <p>
               <b>Selected Sv:</b>{" "}
               <span className="font-monospace float-end">{ sv[frequencyButtonIndex] } dB</span>
+            </p>
+            :
+            <></>
+          }
+          {
+            attributes !== null ?
+            <p>
+              <b>Calibration Status:</b>
+              <span className="font-monospace float-end"><i>{attributes.calibration_status ? "calibrated" : "not calibrated"}</i></span>
             </p>
             :
             <></>
@@ -326,10 +335,6 @@ const InformationPanel = () => {
               <p>
                 <b>Version:</b>
                 <span className="font-monospace float-end">v{attributes.processing_software_version}</span>
-              </p>
-              <p>
-                <b>Calibration Status:</b>
-                <span className="font-monospace float-end"><i>{attributes.calibration_status ? "calibrated" : "not calibrated"}</i></span>
               </p>
             </>
             :
