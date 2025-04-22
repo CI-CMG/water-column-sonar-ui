@@ -10,6 +10,17 @@ export const store = configureStore({
     cruise: cruiseReducer,
     store: storeReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false, // TODO: make this more targeted to just the zarr store
+    // serializableCheck: {
+    //   // Ignore these action types
+    //   ignoredActions: ["store/fetchStore"],
+    //   // Ignore these field paths in all actions
+    //   //ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
+    //   // Ignore these paths in the state
+    //   ignoredPaths: ["payload"],
+    // },
+  }),
 })
 
 export type AppStore = typeof store

@@ -2,6 +2,7 @@ import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { StrictMode } from "react";
+import { configureStore } from '@reduxjs/toolkit'
 
 import App from "./App.jsx";
 import { store } from './app/store.ts';
@@ -11,7 +12,6 @@ import './assets/css/Main.scss';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-// const store = store();
 
 /* dev branding */
 window.console.log.apply(
@@ -20,8 +20,19 @@ window.console.log.apply(
 );
 
 // https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
-// to avoid needing serializable items
-
+// const rootStore = configureStore({
+//   reducer: store,
+//   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+//       serializableCheck: {
+//         // Ignore these action types
+//         ignoredActions: ["store/fetchStore"],
+//         // Ignore these field paths in all actions
+//         //ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
+//         // Ignore these paths in the state
+//         ignoredPaths: ['storeSlice.store'],
+//       },
+//     }),
+// })
 
 root.render(
   <StrictMode>

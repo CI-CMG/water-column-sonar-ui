@@ -36,8 +36,11 @@ import {
 } from ".././../reducers/cruise/cruiseSlice.ts";
 
 import {
-  // storeAsync,
+  selectStore,
+  storeAsync,
   frequenciesAsync,
+  // latitudeAsync,
+  latitudeArrayAsync,
 } from "../../reducers/store/storeSlice";
 
 
@@ -66,26 +69,25 @@ const mapParameters = {
 
 // http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB0706
 export default function WaterColumnView() {
-  ////// just for prototyping
-  const dispatch = useAppDispatch()
-  // const { search } = useLocation();
-  // const queryParameters = queryString.parse(search);
   const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
+
+  const dispatch = useAppDispatch();
   dispatch(updateShip(searchParams.get('ship')));
   dispatch(updateCruise(searchParams.get('cruise')));
   dispatch(updateSensor(searchParams.get('sensor')));
+  ////// just for prototyping /////////////
+  
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
+
   // const count = useAppSelector(selectCount)
   // const status = useAppSelector(selectStatus)
   // const [incrementAmount, setIncrementAmount] = useState("2")
   // const incrementValue = Number(incrementAmount) || 0
-  //////
+  //////                  ///////
 
   const mapRef = useRef(null);
-
-  
 
   const [calibrationStatus, setCalibrationStatus] = useState(null);
   const [processingSoftwareName, setProcessingSoftwareName] = useState(null);
@@ -105,9 +107,15 @@ export default function WaterColumnView() {
   const [chunkShape, setChunkShape] = useState(null);
 
   useEffect(() => {
-    // dispatch(storeAsync()); // access the store
-    dispatch(frequenciesAsync()); // access the store
-  }, []);
+    const index = 101;
+    dispatch(storeAsync({ ship, cruise, sensor }));
+    
+    dispatch(frequenciesAsync({ ship, cruise, sensor }));
+    
+    // dispatch(latitudeAsync({ ship, cruise, sensor, index: index }));
+    // const store = useAppSelector(selectStore); // comes from storeSlice
+    dispatch(latitudeArrayAsync({ ship, cruise, sensor }));
+  }, [dispatch, ship, cruise, sensor]);
 
   useEffect(() => {
     const storePromise = zarr.withConsolidated(
