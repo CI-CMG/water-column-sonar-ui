@@ -183,7 +183,7 @@ const InformationPanel = () => {
 
           <p>
             <b>Time:</b>{" "}
-            <span className="font-monospace float-end">{ getDateTime(time, 'Etc/UTC') }</span>
+            <span className="font-monospace float-end">{ getDateTime(time, 'Etc/UTC') } <span style={{color: '#9933CC'}}>UTC</span></span>
           </p>
 
           {
@@ -215,6 +215,7 @@ const InformationPanel = () => {
             :
             <></>
           }
+
           {
             attributes !== null ?
             <p>
@@ -224,53 +225,52 @@ const InformationPanel = () => {
             :
             <></>
           }
-          
-          <br />
 
-          <Dropdown onSelect={handleSelectFrequency}>
-            <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
-              Frequency
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {
-                frequencies.map((item, index) => {
-                  return (
-                    <Dropdown.Item key={index} eventKey={item}>
-                      {item / 1000} kHz
-                    </Dropdown.Item>
-                  );
-                })
-              }
-            </Dropdown.Menu>
-          </Dropdown>
-          <p>
-            <b>Frequency:</b>{" "}
-            <span className="font-monospace">{frequencies[frequencyButtonIndex] / 1000} kHz</span>
-            {/* <span className="font-monospace">{frequency?.value / 1000} kHz</span> */}
-          </p>
+          <div className="mt-4">
+            <Dropdown onSelect={handleSelectFrequency}>
+              <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
+                Frequency
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {
+                  frequencies.map((item, index) => {
+                    return (
+                      <Dropdown.Item key={index} eventKey={item}>
+                        {item / 1000} kHz
+                      </Dropdown.Item>
+                    );
+                  })
+                }
+              </Dropdown.Menu>
+            </Dropdown>
+            <p>
+              <b>Frequency:</b>{" "}
+              <span className="font-monospace">{frequencies[frequencyButtonIndex] / 1000} kHz</span>
+            </p>
+          </div>
 
-          <br />
-
-          <Dropdown onSelect={handleSelectColorMap}>
-            <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
-              Color Map
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {
-                Object.keys(colorMaps).map((item, index) => {
-                  return (
-                    <Dropdown.Item key={index} eventKey={item}>
-                      {item}
-                    </Dropdown.Item>
-                  );
-                })
-              }
-            </Dropdown.Menu>
-          </Dropdown>
-          <p>
-            <b>Color Map:</b>{" "}
-            <span className="font-monospace">{Object.keys(colorMaps)[colorMapButtonIndex]}</span>
-          </p>
+          <div className="mt-4">
+            <Dropdown onSelect={handleSelectColorMap}>
+              <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
+                Color Map
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {
+                  Object.keys(colorMaps).map((item, index) => {
+                    return (
+                      <Dropdown.Item key={index} eventKey={item}>
+                        {item}
+                      </Dropdown.Item>
+                    );
+                  })
+                }
+              </Dropdown.Menu>
+            </Dropdown>
+            <p>
+              <b>Color Map:</b>{" "}
+              <span className="font-monospace">{Object.keys(colorMaps)[colorMapButtonIndex]}</span>
+            </p>
+          </div>
           
           <br />
           <p>[ Color Palette ]</p>

@@ -16,7 +16,7 @@
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
  - ~~get plot Sv values properly populated -> get num of frequencies~~
  - ~~get time/lat/lon/Sv from click~~
- - format time w GMT/local
+ - ~~format time w GMT/local~~
  - open bottom array w zarr
  - hide layers icon in top-right
  - mask sub-bottom data w checkbox, not linestring
@@ -27,6 +27,7 @@
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
  - update x-axis in query searchParameters w panning
  - don't hard code tile size
+ - add total Level_2 dataset size e.g. 120 GB to info panel
  - print total dimensions of L2 data: depth x time x frequency
  - deploy to domain echo.fish
  - update cfn deployment to s3 copy
@@ -38,5 +39,6 @@
  - restrain boundaries for leaflet, bounce back to data
  - allow clicks in mini-map viewer
  - get zoom working
+ - add toggle from UTC/local-time --> need to get moment library working
  - add bathymetric layer to map viewer
  - slowfly on home map <https://maplibre.org/maplibre-gl-js/docs/examples/flyto-options/>
