@@ -271,10 +271,7 @@ const InformationPanel = () => {
               <span className="font-monospace">{Object.keys(colorMaps)[colorMapButtonIndex]}</span>
             </p>
           </div>
-          
-          <br />
-          <p>[ Color Palette ]</p>
-          <ColorMap min="-80" max="-30" selectedColorPalette="viridis"/>
+          <ColorMap min="-80" max="-30" selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/>
           
           <br />
           

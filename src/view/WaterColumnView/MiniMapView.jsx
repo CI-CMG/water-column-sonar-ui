@@ -124,7 +124,6 @@ export default function MiniMapView() {
         essential: true,
         speed: 0.4,
       });
-
     }
   }, [map, latitude, longitude]);
 
