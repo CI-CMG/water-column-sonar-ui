@@ -11,7 +11,7 @@
  - color palette needs min/max/colorMap/labels
  - get jump to x axis time value working
  - ~~move 'calibration status' higher in the legend~~
- - add ship icon to minimap
+ - add ship icon to minimap X
   - sync up map center with mini-map
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
  - ~~get plot Sv values properly populated -> get num of frequencies~~

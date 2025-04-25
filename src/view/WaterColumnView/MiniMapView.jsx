@@ -2,6 +2,7 @@ import { useRef, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
+import { circle } from "@turf/circle";
 import {
   selectLatitude,
   selectLongitude,
@@ -70,7 +71,7 @@ export default function MiniMapView() {
       map.current = new maplibregl.Map({
         container: miniMapContainer.current,
         style: style,
-        center: [
+        center: [ // just picking random places for now
           -74.5 + (Math.random() - 0.5) * 10,
           40 + (Math.random() - 0.5) * 10
         ],
@@ -78,13 +79,52 @@ export default function MiniMapView() {
         minZoom: 2,
       });
 
+      map.current.on('load', () => {
+        // Generate a polygon using turf.circle
+        // See https://turfjs.org/docs/#circle
+        const radius = 1; // kilometer
+        const options = {
+            steps: 10,
+            units: 'kilometers'
+        };
+        const radiusCenter = [longitude, latitude];
+        const shape = circle(radiusCenter, radius, options);
 
+        // Add the circle as a GeoJSON source
+        map.current.addSource('location-radius', {
+            type: 'geojson',
+            data: shape
+        });
+
+        // Add a fill layer with some transparency
+        map.current.addLayer({
+            id: 'location-radius',
+            type: 'fill',
+            source: 'location-radius',
+            paint: {
+                'fill-color': '#8CCFFF',
+                'fill-opacity': 0.1
+            }
+        });
+
+        // Add a line layer to draw the circle outline
+        map.current.addLayer({
+            id: 'location-radius-outline',
+            type: 'line',
+            source: 'location-radius',
+            paint: {
+                'line-color': '#0094ff',
+                'line-width': 3
+            }
+        });
+      });
 
       map.current.flyTo({
         center: [longitude, latitude],
-        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+        essential: true,
         speed: 0.4,
       });
+
     }
   }, [map, latitude, longitude]);
 
