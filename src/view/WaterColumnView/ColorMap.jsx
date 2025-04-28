@@ -58,6 +58,7 @@ const ColorMap = ({
     const tileWidth = 10; // individual tile widths
     var svg2 = d3.select("#res").append("svg").attr("width", 300).attr("height", 100)
     // data should be the quantized Sv values
+    // data should be the key-value of range within each bar?
     var data = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
     var myColor = d3.scaleOrdinal().domain(data).range([
       "gold", "blue", "green", "yellow",
