@@ -8,6 +8,8 @@ import {
 // import Spinner from 'react-bootstrap/Spinner';
 import PropTypes from "prop-types";
 import * as d3 from 'd3'
+import { range } from 'd3-array';
+import { scaleOrdinal } from 'd3-scale';
 import WaterColumnColors from "./WaterColumnColors.jsx";
 // import {
 //   useSearchParams
@@ -31,8 +33,8 @@ const generateDataset = () => {
 
 //////////////////////////////////////////////////////////////////////////////////
 const ColorMap = ({
-  min,
-  max,
+  minSv,
+  maxSv,
   selectedColorPalette,
 }) => {
   // const [searchParams, setSearchParams] = useSearchParams();
@@ -41,62 +43,51 @@ const ColorMap = ({
   // https://2019.wattenberger.com/blog/react-and-d3
   const ref = useRef();
   const [dataset, setDataset] = useState(generateDataset());
+  // const minSv = -80;
+  // const maxSv = -30;
 
   const width = 350;
   const height = 30;
 
-  useEffect(() => {
-    // const svgElement = d3.select(ref.current)
-    // svgElement.selectAll("rect")
-    //   .data(dataset, d => d)
-    //   .join("rect")
-    //     .attr("width", 5)
-    //     .attr("height", 10)
-    //     .attr("x", d => d)
-    //     .attr("y", 0)
-    //     .attr("fill", function(d, i){return WaterColumnColors['viridis'][i]})
-    const tileWidth = 10; // individual tile widths
-    var svg2 = d3.select("#res").append("svg").attr("width", 300).attr("height", 100)
-    // data should be the quantized Sv values
-    // data should be the key-value of range within each bar?
-    var data = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
-    var myColor = d3.scaleOrdinal().domain(data).range([
-      "gold", "blue", "green", "yellow",
-      "black", "grey", "darkgreen", "pink",
-      "brown", "slateblue", "grey1", "orange",
-    ]);
-    svg2.selectAll(".firstrow")
-      .data(data)
+  // old implementation
+  // https://github.com/CI-CMG/echofish-ui/blob/master/src/main/frontend/src/components/waterColumn/ColorPaletteValues.vue
+
+  useEffect(() => { // https://github.com/CI-CMG/echofish-ui/blob/master/src/main/frontend/src/components/waterColumn/ColorPaletteValues.vue
+    const minSv = -80;
+    const maxSv = -30;
+
+    const palette = WaterColumnColors[selectedColorPalette];
+    console.log(palette);
+
+    const colorValueArray = d3.range(
+      minSv,
+      maxSv,
+      (maxSv - minSv) / palette.length,
+    );
+    const colorScaleFunction = scaleOrdinal().domain(colorValueArray).range(palette);
+
+    d3.select('#colorPalette').selectAll('*').remove();
+
+    const svg = d3.select('#colorPalette')
+      .append('svg')
+      .attr('height', height)
+      .attr('width', width);
+
+    svg.selectAll('.bars')
+      .data(range(palette.length), d => d)
       .enter()
-      .append("rect")
-      .attr("width", tileWidth)
-      .attr("height", tileWidth)
-      .attr("x", function(d, i){return 30 + i*60})
-      .attr("y", 50)
-      .attr("fill", function(d){return myColor(d) })
-  
-    // Option 2: use a palette:
-    // Include <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> in your code!
-    // var myColor = d3.scaleOrdinal().domain(data).range(d3.schemeSet3);
-    // svg2.selectAll(".firstrow").data(data).enter().append("circle").attr("cx", function(d,i){return 30 + i*60}).attr("cy", 150).attr("r", 19).attr("fill", function(d){return myColor(d) })
-  
+      .append('rect')
+      .attr('class', 'bars')
+      .attr('x', i => ((i * width) / palette.length))
+      .attr('y', 0)
+      .attr('width', width / palette.length)
+      .attr('height', height)
+      .style('fill', d => colorScaleFunction(d));
 
-
-    // svg2.append("circle").attr("cx", 50).attr("cy",100).attr("r",20)
-    // .style("fill", "#69b3a2");
-  
-    // // With Hex code
-    // svg2.append("circle").attr("cx",50).attr("cy",100).attr("r",20)
-    //   .style("fill", d3.color("steelblue") );
-    
-    // // With RGBA (last number is the opacity)
-    // svg2.append("circle").attr("cx",150).attr("cy",100).attr("r",20)
-    //   .style("fill", "rgba(198, 45, 205, 0.8)" )
-    
-    // // With RGB
-    // svg2.append("circle").attr("cx",250).attr("cy",100).attr("r",20)
-    //   .style("fill", "rgb(12,240,233)" )
-  }, [dataset]);
+    // svg.selectAll('rect')
+    //   .on('mouseover', this.handleMouseOver)
+    //   .on('mouseout', this.handleMouseOut);
+  }, [dataset, selectedColorPalette]);
 
   // useInterval(() => {
   //   const newDataset = generateDataset()
@@ -110,18 +101,15 @@ const ColorMap = ({
   //     </Spinner>
   //   </>;
   // }
+
   return (
     <div id="colorMap">
-      <p>{selectedColorPalette}</p>
+      <div>
+        <span id="colorPalette"/>
+      </div>
+      {/* <p>{selectedColorPalette}</p>
       <div id="res"></div>
-      <svg height={height} width={width} ref={ref} />
-      {/* <svg height={height} width={width} xmlns="http://www.w3.org/2000/svg">
-        {
-          Array.from({ length: 5 }, (color, index) => (
-            <text x="5" y={15*index} fill="red" key={index}>{color}</text>
-          ))
-        }
-      </svg> */}
+      <svg height={height} width={width} ref={ref} /> */}
     </div>
   );
 };
@@ -129,7 +117,7 @@ const ColorMap = ({
 export default ColorMap;
 
 ColorMap.propTypes = {
-  min: PropTypes.instanceOf(Number),
-  max: PropTypes.instanceOf(Number),
+  // min: PropTypes.instanceOf(Number),
+  // max: PropTypes.instanceOf(Number),
   selectedColorPalette: PropTypes.instanceOf(String),
 };
