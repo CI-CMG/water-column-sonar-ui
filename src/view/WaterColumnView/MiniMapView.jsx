@@ -84,7 +84,7 @@ export default function MiniMapView() {
         // See https://turfjs.org/docs/#circle
         const radius = 1; // kilometer
         const options = {
-            steps: 10,
+            steps: 20,
             units: 'kilometers'
         };
         const radiusCenter = [longitude, latitude];

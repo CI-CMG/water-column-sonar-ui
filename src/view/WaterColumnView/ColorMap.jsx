@@ -1,7 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////////
 import {
-  useRef,
-  useState,
   useEffect,
 } from "react";
 // import { useInterval } from 'usehooks-ts';
@@ -11,24 +9,10 @@ import * as d3 from 'd3'
 import { range } from 'd3-array';
 import { scaleOrdinal } from 'd3-scale';
 import WaterColumnColors from "./WaterColumnColors.jsx";
-// import {
-//   useSearchParams
-// } from 'react-router';
 
-function legendValue(percent, max, min) {
-  const range = Math.abs(max - min);
-  const decimal = percent / 100;
-  const value = min + (range * decimal);
 
-  return `${Number.parseFloat(value).toFixed(2)}`;
-}
-
-const generateDataset = () => {
-  // WaterColumnColors['viridis'].length
-  // Array(WaterColumnColors['viridis'].length).fill(0).map(() => ([
-  //   ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]).map((x) => x*10)
-  // ]))
-  return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => x*20);
+const handleMouseOut = () => {
+  d3.select('#colorPaletteValue').text('...');
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -40,21 +24,26 @@ const ColorMap = ({
   // const [searchParams, setSearchParams] = useSearchParams();
   // const [isLoading, setLoading] = useState(true);
 
-  // https://2019.wattenberger.com/blog/react-and-d3
-  const ref = useRef();
-  const [dataset, setDataset] = useState(generateDataset());
-  // const minSv = -80;
-  // const maxSv = -30;
+  const handleMouseOver = (d) => {
+    // console.log(d.currentTarget.__data__);
+    const miSv = -80;
+    // const miSv = minSv;
+    const maSv = -30;
+    // const maSv = maxSv;
+    const palette = WaterColumnColors[selectedColorPalette]; // this.colorPalettes[this.selectedPalette];
+    const printValLeft = ((maSv - miSv) / palette.length) * d.currentTarget.__data__ + miSv;
+    const printValRight = printValLeft + (maSv - miSv) / palette.length;
+    d3.select('#colorPaletteValue')
+      .html(
+        `Highlighted Sv Range: ${String(printValLeft.toFixed(2))} to ${String(printValRight.toFixed(2))} dB`
+      );
+  }
 
+  // https://2019.wattenberger.com/blog/react-and-d3
   const width = 350;
   const height = 30;
 
-  // old implementation
-  // https://github.com/CI-CMG/echofish-ui/blob/master/src/main/frontend/src/components/waterColumn/ColorPaletteValues.vue
-
   useEffect(() => { // https://github.com/CI-CMG/echofish-ui/blob/master/src/main/frontend/src/components/waterColumn/ColorPaletteValues.vue
-    const minSv = -80;
-    const maxSv = -30;
 
     const palette = WaterColumnColors[selectedColorPalette];
     console.log(palette);
@@ -84,40 +73,35 @@ const ColorMap = ({
       .attr('height', height)
       .style('fill', d => colorScaleFunction(d));
 
-    // svg.selectAll('rect')
-    //   .on('mouseover', this.handleMouseOver)
-    //   .on('mouseout', this.handleMouseOut);
-  }, [dataset, selectedColorPalette]);
+    svg.selectAll('rect')
+      // .on('mouseover', handleMouseOver)
+      .on('mouseover', (d) => handleMouseOver(d)) // TODO: leaving off here with problem getting minSv???
+      .on('mouseout', handleMouseOut);
 
-  // useInterval(() => {
-  //   const newDataset = generateDataset()
-  //   setDataset(newDataset)
-  // }, 2000);
+  }, [selectedColorPalette, minSv, maxSv]);
 
-  // if (isLoading) {
-  //   return <>
-  //     <Spinner animation="border" role="status">
-  //       <span className="visually-hidden">Loading...</span>
-  //     </Spinner>
-  //   </>;
-  // }
+  // TODO: useInterval
 
   return (
     <div id="colorMap">
       <div>
         <span id="colorPalette"/>
       </div>
-      {/* <p>{selectedColorPalette}</p>
-      <div id="res"></div>
-      <svg height={height} width={width} ref={ref} /> */}
+      
+      <span id="colorPaletteValue">...</span>
     </div>
   );
 };
 
 export default ColorMap;
 
+// ColorMap.defaultProps = {
+//   minSv: -80,
+//   maxSv: -30,
+// };
+
 ColorMap.propTypes = {
-  // min: PropTypes.instanceOf(Number),
-  // max: PropTypes.instanceOf(Number),
-  selectedColorPalette: PropTypes.instanceOf(String),
+  minSv: PropTypes.instanceOf(Number),
+  maxSv: PropTypes.instanceOf(Number),
+  selectedColorPalette: PropTypes.instanceOf(String).isRequired,
 };

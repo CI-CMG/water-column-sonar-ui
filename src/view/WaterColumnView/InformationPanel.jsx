@@ -163,7 +163,7 @@ const InformationPanel = () => {
 
           <br />
           <p style={{ color: 'hotpink' }}>
-            <b>Debug:</b>
+            <b>Debugging:</b>
             <span className="font-monospace float-end">[d: { depthIndex }, t: { timeIndex }, f: { frequencyButtonIndex }]</span>
           </p>
           <p>
@@ -271,7 +271,11 @@ const InformationPanel = () => {
               <span className="font-monospace">{Object.keys(colorMaps)[colorMapButtonIndex]}</span>
             </p>
           </div>
-          <ColorMap min="-80" max="-30" selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/>
+
+          <br />
+
+          {/* <ColorMap minSv="-80" maxSv="-30" selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/> */}
+          <ColorMap minSv={svMin} maxSv={svMax} selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/>
           
           <br />
           
@@ -333,7 +337,7 @@ const InformationPanel = () => {
               </a>
             </span>
           </p>
-          <p><i>Add total dimensions of L2 data:<br />depth x time x frequency</i></p>
+          {/* <p><i>Add total dimensions of L2 data:<br />depth x time x frequency</i></p> */}
           
           <br />
           <hr />

@@ -178,8 +178,12 @@ html, body, #root, .AppView, .LayoutView {
 
 // draw box around the colormap
 #colorMap {
-  border: 1px solid blueviolet;
+  //border: 1px solid whitesmoke;
+  text-align: center;
 }
+// #colorPaletteValue {
+//   text-align: center;
+// }
 
 // .SvPlotView {
 //   height: 250px;
