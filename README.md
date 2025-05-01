@@ -7,8 +7,8 @@
  - ~~get nav bar up and running~~
  - ~~update zarrita to newest version~~
  - create threshold from min/max and update when changed in boxes
- - get color palette working <https://2019.wattenberger.com/blog/react-and-d3>
- - color palette needs min/max/colorMap/labels
+ - ~~get color palette working <https://2019.wattenberger.com/blog/react-and-d3>~~
+ - ~~color palette needs min/max/colorMap/labels~~
  - get jump to x axis time value working
  - ~~move 'calibration status' higher in the legend~~
  - ~~add ship icon to minimap~~

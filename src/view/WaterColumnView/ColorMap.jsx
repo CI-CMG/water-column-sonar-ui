@@ -9,6 +9,11 @@ import * as d3 from 'd3'
 import { range } from 'd3-array';
 import { scaleOrdinal } from 'd3-scale';
 import WaterColumnColors from "./WaterColumnColors.jsx";
+import {
+  selectSvMin,
+  selectSvMax,
+} from "../../reducers/store/storeSlice.js";
+import { useAppSelector } from "../../app/hooks.js";
 
 
 const handleMouseOut = () => {
@@ -17,33 +22,39 @@ const handleMouseOut = () => {
 
 //////////////////////////////////////////////////////////////////////////////////
 const ColorMap = ({
-  minSv,
-  maxSv,
+  // minSv,
+  // maxSv,
   selectedColorPalette,
 }) => {
+  // console.log(`ColorMap minSv: ${minSv}, maxSv: ${maxSv}`)
+  const minSv = useAppSelector(selectSvMin);
+  const maxSv = useAppSelector(selectSvMax);
+  // const svMax = useAppSelector(selectSvMax);
+
   // const [searchParams, setSearchParams] = useSearchParams();
   // const [isLoading, setLoading] = useState(true);
-
-  const handleMouseOver = (d) => {
-    // console.log(d.currentTarget.__data__);
-    const miSv = -80;
-    // const miSv = minSv;
-    const maSv = -30;
-    // const maSv = maxSv;
-    const palette = WaterColumnColors[selectedColorPalette]; // this.colorPalettes[this.selectedPalette];
-    const printValLeft = ((maSv - miSv) / palette.length) * d.currentTarget.__data__ + miSv;
-    const printValRight = printValLeft + (maSv - miSv) / palette.length;
-    d3.select('#colorPaletteValue')
-      .html(
-        `Highlighted Sv Range: ${String(printValLeft.toFixed(2))} to ${String(printValRight.toFixed(2))} dB`
-      );
-  }
 
   // https://2019.wattenberger.com/blog/react-and-d3
   const width = 350;
   const height = 30;
 
   useEffect(() => { // https://github.com/CI-CMG/echofish-ui/blob/master/src/main/frontend/src/components/waterColumn/ColorPaletteValues.vue
+    console.log(`ColorMap: minSv: ${minSv}`);
+
+    const handleMouseOver = (d) => {
+      // console.log(d.currentTarget.__data__);
+      const miSv = minSv; // -80;
+      // const miSv = minSv;
+      const maSv = maxSv; // -30;
+      // const maSv = maxSv;
+      const palette = WaterColumnColors[selectedColorPalette]; // this.colorPalettes[this.selectedPalette];
+      const printValLeft = ((maSv - miSv) / palette.length) * d.currentTarget.__data__ + miSv;
+      const printValRight = printValLeft + (maSv - miSv) / palette.length;
+      d3.select('#colorPaletteValue')
+        .html(
+          `Highlighted Sv Range: ${String(printValLeft.toFixed(2))} to ${String(printValRight.toFixed(2))} dB`
+        );
+    }
 
     const palette = WaterColumnColors[selectedColorPalette];
     console.log(palette);
@@ -101,7 +112,7 @@ export default ColorMap;
 // };
 
 ColorMap.propTypes = {
-  minSv: PropTypes.instanceOf(Number),
-  maxSv: PropTypes.instanceOf(Number),
+  // minSv: PropTypes.instanceOf(Number),
+  // maxSv: PropTypes.instanceOf(Number),
   selectedColorPalette: PropTypes.instanceOf(String).isRequired,
 };

@@ -18,6 +18,8 @@ import {
   selectSensor,
   selectSvMin,
   selectSvMax,
+  updateSvMin,
+  updateSvMax,
   //
   selectColorMaps,
   selectColorMapButtonIndex,
@@ -124,7 +126,7 @@ const InformationPanel = () => {
   const depthIndex = useAppSelector(selectDepthIndex);
   const timeIndex = useAppSelector(selectTimeIndex);
   // const frequencyIndex = useAppSelector(selectFrequencyIndex);
-  
+
   if (isLoading) {
     return <div className="App">Loading...</div>;
   }
@@ -275,7 +277,8 @@ const InformationPanel = () => {
           <br />
 
           {/* <ColorMap minSv="-80" maxSv="-30" selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/> */}
-          <ColorMap minSv={svMin} maxSv={svMax} selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/>
+          {/* <ColorMap minSv={svMin} maxSv={svMax} selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/> */}
+          <ColorMap selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/>
           
           <br />
           
@@ -290,7 +293,7 @@ const InformationPanel = () => {
                 type="number"
                 defaultValue={svMin}
                 name="minDB"
-                // onChange={(e) => dispatch(updateSvMin(e.target.value))}
+                onChange={(e) => dispatch(updateSvMin(e.target.value))}
                 className="w-75"
               />
             </Form.Group>
@@ -304,11 +307,12 @@ const InformationPanel = () => {
                 type="number"
                 defaultValue={svMax}
                 name="maxDB"
-                // onChange={(e) => dispatch(updateSvMax(e.target.value))}
+                onChange={(e) => dispatch(updateSvMax(e.target.value))}
                 className="w-75"
               />
             </Form.Group>
           </Row>
+          <p>Min: {svMin}, Max: {svMax}</p>
           <br />
 
           <hr />

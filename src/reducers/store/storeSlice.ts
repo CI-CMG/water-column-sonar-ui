@@ -110,6 +110,7 @@ export const storeSlice = createSlice({
       state.sensor = action.payload
     },
     updateSvMin: (state, action: PayloadAction<number>) => { // button click
+      console.log('updated Sv Min')
       state.svMin = Number(action.payload);
     },
     updateSvMax: (state, action: PayloadAction<number>) => { // button click
