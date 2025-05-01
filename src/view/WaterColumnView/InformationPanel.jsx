@@ -312,7 +312,7 @@ const InformationPanel = () => {
               />
             </Form.Group>
           </Row>
-          <p>Min: {svMin}, Max: {svMax}</p>
+          {/* <p>Min: {svMin}, Max: {svMax}</p> */}
           <br />
 
           <hr />

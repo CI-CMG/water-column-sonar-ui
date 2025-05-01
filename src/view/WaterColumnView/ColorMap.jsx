@@ -2,8 +2,6 @@
 import {
   useEffect,
 } from "react";
-// import { useInterval } from 'usehooks-ts';
-// import Spinner from 'react-bootstrap/Spinner';
 import PropTypes from "prop-types";
 import * as d3 from 'd3'
 import { range } from 'd3-array';
@@ -22,16 +20,11 @@ const handleMouseOut = () => {
 
 //////////////////////////////////////////////////////////////////////////////////
 const ColorMap = ({
-  // minSv,
-  // maxSv,
   selectedColorPalette,
 }) => {
-  // console.log(`ColorMap minSv: ${minSv}, maxSv: ${maxSv}`)
   const minSv = useAppSelector(selectSvMin);
   const maxSv = useAppSelector(selectSvMax);
-  // const svMax = useAppSelector(selectSvMax);
 
-  // const [searchParams, setSearchParams] = useSearchParams();
   // const [isLoading, setLoading] = useState(true);
 
   // https://2019.wattenberger.com/blog/react-and-d3
@@ -39,14 +32,10 @@ const ColorMap = ({
   const height = 30;
 
   useEffect(() => { // https://github.com/CI-CMG/echofish-ui/blob/master/src/main/frontend/src/components/waterColumn/ColorPaletteValues.vue
-    console.log(`ColorMap: minSv: ${minSv}`);
-
     const handleMouseOver = (d) => {
-      // console.log(d.currentTarget.__data__);
-      const miSv = minSv; // -80;
-      // const miSv = minSv;
-      const maSv = maxSv; // -30;
-      // const maSv = maxSv;
+      const miSv = minSv;
+      const maSv = maxSv;
+
       const palette = WaterColumnColors[selectedColorPalette]; // this.colorPalettes[this.selectedPalette];
       const printValLeft = ((maSv - miSv) / palette.length) * d.currentTarget.__data__ + miSv;
       const printValRight = printValLeft + (maSv - miSv) / palette.length;
@@ -85,7 +74,6 @@ const ColorMap = ({
       .style('fill', d => colorScaleFunction(d));
 
     svg.selectAll('rect')
-      // .on('mouseover', handleMouseOver)
       .on('mouseover', (d) => handleMouseOver(d)) // TODO: leaving off here with problem getting minSv???
       .on('mouseout', handleMouseOut);
 
@@ -106,13 +94,6 @@ const ColorMap = ({
 
 export default ColorMap;
 
-// ColorMap.defaultProps = {
-//   minSv: -80,
-//   maxSv: -30,
-// };
-
 ColorMap.propTypes = {
-  // minSv: PropTypes.instanceOf(Number),
-  // maxSv: PropTypes.instanceOf(Number),
   selectedColorPalette: PropTypes.instanceOf(String).isRequired,
 };

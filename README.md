@@ -6,23 +6,25 @@
  - ~~remove material design mui~~
  - ~~get nav bar up and running~~
  - ~~update zarrita to newest version~~
- - create threshold from min/max and update when changed in boxes
  - ~~get color palette working <https://2019.wattenberger.com/blog/react-and-d3>~~
  - ~~color palette needs min/max/colorMap/labels~~
- - get jump to x axis time value working
  - ~~move 'calibration status' higher in the legend~~
  - ~~add ship icon to minimap~~
  - ~~sync up map center with mini-map~~
- - debounce mini map follow wc center
- - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
  - ~~get plot Sv values properly populated -> get num of frequencies~~
  - ~~get time/lat/lon/Sv from click~~
  - ~~format time w GMT/local~~
  - open bottom array w zarr
- - hide layers icon in top-right
+ - get leaflet working again
+ - debounce mini map follow wc center
+ - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
+ - get jump to x axis time value working
+ - add better labels to color palette legend -- [start middle stop]
+ - hide layers icon(s) in top-right
  - mask sub-bottom data w checkbox, not linestring
  - center the water-column view when user first opens the data
  - add graticules -> legend for depth, time
+ - constrain the input Sv Range Minimum dB to be less than Maximum dB
  - regenerate pm-tiles with latest data
  - sync views (leaflet vs maplibre): https://maplibre.org/maplibre-gl-js/docs/examples/sync-move/
  - draw evr polygon on data -> currently circle

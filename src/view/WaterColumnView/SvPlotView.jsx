@@ -36,6 +36,7 @@ const options = {
       text: 'Volume Backscattering Strength, Sv (dB re 1 m-1)',
     },
   },
+  // maintainAspectRatio: false,
 };
 
 /* -------- Line Plot of Sv Data ---------- */
@@ -66,7 +67,7 @@ export default function SvPlotView() {
       {
         chartData ?
         <>
-          <Line options={options} data={chartData} />
+          <Line options={options} data={chartData} height="120px" />
         </>
         :
         <></>
