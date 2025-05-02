@@ -49,7 +49,7 @@ import {
 const mapParameters = {
   crs: CRS.Simple,
   zoom: 0,
-  center: [0, 0],
+  center: [-1 * (window.innerHeight / 2) + 60, (window.innerWidth / 2)], // TODO: needs to accept "center" ping time index
   minZoom: 0,
   maxZoom: 0, // TODO: add two more levels of zoom
   zoomControl: false,

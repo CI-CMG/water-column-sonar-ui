@@ -321,8 +321,18 @@ const InformationPanel = () => {
               />
             </Form.Group>
           </Row>
+
+          <Row className="mb-3">
+            <Form.Group>
+              <Form.Check
+                type="switch"
+                id="custom-switch"
+                label="Mask Subbottom Data"
+                defaultChecked="true"
+              />
+            </Form.Group>
+          </Row>
           {/* <p>Min: {svMin}, Max: {svMax}</p> */}
-          <br />
 
           <hr />
           <p><b>Data Access:</b></p>

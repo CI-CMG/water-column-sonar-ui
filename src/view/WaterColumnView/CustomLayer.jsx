@@ -8,8 +8,6 @@ import { scaleLinear, scaleThreshold } from 'd3-scale';
 import * as d3 from 'd3';
 import { useSearchParams } from 'react-router';
 import { color } from 'd3-color';
-import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
-import { slice } from "zarrita";
 import { WaterColumnColors } from './WaterColumnColors.jsx';
 
 import {
@@ -70,8 +68,6 @@ function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape) {
     ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
     ctx.fillText(`{${indicesLeft}, ${indicesRight}, ${indicesTop}, ${indicesBottom}}`, 20, 60);
 
-    // TODO: make more like get(latitudePromise, [zarr.slice(2, 4)]);
-    // response = await fetchSvTile(ship, cruise, sensor, indexDepth, indexTime, indexFrequency);
     fetchSvTile('Henry_B._Bigelow', 'HB1906', 'EK60', indicesTop, indicesBottom, indicesLeft, indicesRight, 1)
       .then((d1) => {
         const d = d1; // as RawArray;

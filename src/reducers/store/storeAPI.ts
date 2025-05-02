@@ -124,12 +124,7 @@ export const fetchTime = (ship: string, cruise: string, sensor: string, indexTim
 }
 
 /* --- DEPTH --- */
-export const fetchDepth = (
-    ship: string,
-    cruise: string,
-    sensor: string,
-    indexDepth: number,
-): any => {
+export const fetchDepth = ( ship: string, cruise: string, sensor: string, indexDepth: number ): any => {
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))

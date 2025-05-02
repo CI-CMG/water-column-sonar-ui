@@ -16,12 +16,13 @@
  - ~~format time w GMT/local~~
  - ~~don't hard code tile size~~
  - ~~open bottom array w zarr~~
- - get leaflet working again...
- - center the water-column view when user first opens the data
+ - ~~get leaflet working again~~
+ - center the water-column view when user first opens the data...
+ - get rid of zarr package from getZarrGeoSpatialIndex page - replace w zarrita
  - get jump to x axis time value working...
  - debounce mini map follow wc center...
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button...
- - hide layers icon(s) in top-right via css
+ - add code to hide layers icon(s) in top-right via css
  - update x-axis in query searchParameters w panning
  - add better labels to color palette legend -- [start middle stop]
  - allow clicks in mini-map viewer
