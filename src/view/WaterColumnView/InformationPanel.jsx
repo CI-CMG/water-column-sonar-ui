@@ -29,7 +29,7 @@ import {
   selectTimeIndex,
   // selectFrequencyIndex,
   //
-  selectAttributes,
+  selectStoreAttributes,
   selectFrequencies, // all the values
   selectFrequencyButtonIndex,
   updateFrequencyButtonIndex,
@@ -73,7 +73,7 @@ const InformationPanel = () => {
 
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const colorMapButtonIndex = useAppSelector(selectColorMapButtonIndex); // 
-  const attributes = useAppSelector(selectAttributes);
+  const attributes = useAppSelector(selectStoreAttributes);
   const frequencies = useAppSelector(selectFrequencies); // from store
   const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); // 
   const latitude = useAppSelector(selectLatitude); // from store

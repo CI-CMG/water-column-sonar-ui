@@ -4,7 +4,8 @@ import type { RootState } from "../../app/store.ts";
 import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors.jsx';
 
 import {
-  fetchStore,
+  fetchStoreAttributes,
+  fetchStoreShape,
   fetchFrequencies,
   fetchLatitude,
   fetchLongitude,
@@ -31,10 +32,13 @@ export interface StoreState {
   colorMaps: any,
   colorMapButtonIndex: number,
 
-  store: any,
-  storeStatus: "idle" | "loading" | "failed",
-  attributes: any, // metadata of the store
+  storeAttributes: any,
+  storeAttributesStatus: "idle" | "loading" | "failed",
+  // attributes: any, // metadata of the store
   // calibration_status, cruise_name, processing_software_name, processing_software_time, processing_software_version, sensor_name, ship_name, tile_size
+
+  storeShape: any,
+  storeShapeStatus: "idle" | "loading" | "failed",
 
   frequencies: any,
   frequenciesStatus: "idle" | "loading" | "failed",
@@ -74,9 +78,12 @@ const initialState: StoreState = {
   colorMaps: WaterColumnColors,
   colorMapButtonIndex: 0,
 
-  store: null,
-  storeStatus: "idle",
-  attributes: null,
+  storeAttributes: null,
+  storeAttributesStatus: "idle",
+  // attributes: null,
+
+  storeShape: null,
+  storeShapeStatus: "idle",
 
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
@@ -171,18 +178,28 @@ export const storeSlice = createSlice({
 
   extraReducers: builder => {
     builder
-      .addCase(storeAsync.pending, state => {
-        state.storeStatus = "loading";
+      .addCase(storeAttributesAsync.pending, state => {
+        state.storeAttributesStatus = "loading";
       })
-      .addCase(storeAsync.fulfilled, (state, action) => {
-        state.storeStatus = "idle";
-        state.attributes = action.payload.attrs;
-        // state.store = action.payload; // doesn't work :(
+      .addCase(storeAttributesAsync.fulfilled, (state, action) => {
+        state.storeAttributesStatus = "idle";
+        state.storeAttributes = action.payload; // attrs
       })
-      .addCase(storeAsync.rejected, state => {
-        state.storeStatus = "failed";
+      .addCase(storeAttributesAsync.rejected, state => {
+        state.storeAttributesStatus = "failed";
       })
       // ----------------------------------------------- //
+      .addCase(storeShapeAsync.pending, state => {
+        state.storeShapeStatus = "loading";
+      })
+      .addCase(storeShapeAsync.fulfilled, (state, action) => {
+        state.storeShapeStatus = "idle";
+        state.storeShape = action.payload;
+      })
+      .addCase(storeShapeAsync.rejected, state => {
+        state.storeShapeStatus = "failed";
+      })
+      // ----------------------------------------------- //  
       .addCase(frequenciesAsync.pending, state => {
         state.frequenciesStatus = "loading";
       })
@@ -289,6 +306,8 @@ export const {
 
 export default storeSlice.reducer;
 
+export const selectStoreAttributes = (state: RootState) => state.store.storeAttributes;
+export const selectStoreShape = (state: RootState) => state.store.storeShape;
 export const selectShip = (state: RootState) => state.store.ship;
 export const selectCruise = (state: RootState) => state.store.cruise;
 export const selectSensor = (state: RootState) => state.store.sensor;
@@ -303,7 +322,7 @@ export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
 export const selectTimeIndex = (state: RootState) => state.store.timeIndex;
 export const selectFrequencyIndex = (state: RootState) => state.store.frequencyIndex;
 
-export const selectAttributes = (state: RootState) => state.store.attributes;
+// export const selectAttributes = (state: RootState) => state.store.attributes; // TODO: remove
 export const selectFrequencies = (state: RootState) => state.store.frequencies;
 export const selectFrequencyButtonIndex = (state: RootState) => state.store.frequencyButtonIndex;
 export const selectLatitude = (state: RootState) => state.store.latitude;
@@ -314,11 +333,19 @@ export const selectBottom = (state: RootState) => state.store.bottom;
 export const selectSv = (state: RootState) => state.store.sv;
 
 // Just getting metadata from the store
-export const storeAsync = createAsyncThunk(
-  "store/fetchStore",
+export const storeAttributesAsync = createAsyncThunk(
+  "store/fetchStoreAttributes",
   async ({ ship, cruise, sensor }: { ship: string, cruise: string, sensor: string }) => {
-    const response = await fetchStore(ship, cruise, sensor); // how to pass in slice?
-    return response; // This doesn't like passing non serializable data to redux
+    const response = await fetchStoreAttributes(ship, cruise, sensor);
+    return response;
+  },
+)
+
+export const storeShapeAsync = createAsyncThunk( // gets the shape of the overall Sv array
+  "store/fetchStoreShape",
+  async ({ ship, cruise, sensor }: { ship: string, cruise: string, sensor: string }) => {
+    const response = await fetchStoreShape(ship, cruise, sensor);
+    return response;
   },
 )
 

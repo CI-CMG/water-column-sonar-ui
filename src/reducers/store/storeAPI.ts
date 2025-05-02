@@ -7,7 +7,7 @@ const bucketName = "noaa-wcsd-zarr-pds";
 const level = "level_2";
 
 /* --- Zarr Store --- */
-export const fetchStore = (ship: string, cruise: string, sensor: string): Promise<any> => {
+export const fetchStoreAttributes = (ship: string, cruise: string, sensor: string): any => {
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -16,8 +16,29 @@ export const fetchStore = (ship: string, cruise: string, sensor: string): Promis
             return zarrGroup;
         })
         .then((rootPromise) => {
-            return rootPromise;
+            return rootPromise.attrs;
+        });
+}
+
+/* --- Zarr Store --- */
+export const fetchStoreShape = (ship: string, cruise: string, sensor: string): any => {
+    const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
+            return zarrGroup;
         })
+        .then((rootPromise) => {
+            const svArray = zarr.open(rootPromise.resolve("Sv"), { kind: "array" });
+            return svArray;
+        })
+        .then((svArray) => {
+            // Gathers info about the store
+            // svArray.chunks = [512, 512, 1]
+            // svArray.dtype = 'float32'
+            // svArray.shape = [2538, 4_228_924, 4] ==> now write to 
+            return svArray.shape;
+        });
 }
 
 /* --- FREQUENCY --- */
@@ -155,7 +176,7 @@ export const fetchSv = (
     sensor: string,
     indexDepth: number,
     indexTime: number,
-    indexFrequency: number, // TODO: remove
+    indexFrequency: number, // TODO: remove this
 ): any => {
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -171,11 +192,16 @@ export const fetchSv = (
             // returns all the data in a BigUint64Array
             // const sv = get(svArray, [indexDepth, indexTime, indexFrequency]);
             const sv = get(svArray, [indexDepth, indexTime, slice(null)]); // TODO: get index of frequency
+            // TODO: get the following
+            // svArray.chunks = [512, 512, 1]
+            // svArray.dtype = 'float32'
+            // svArray.shape = [2538, 4_228_924, 4] ==> now write to 
+            // return [sv, svArray.chunks, svArray.shape];
             return sv;
         });
 }
 
-/* --- SV — gets data for tiles --- */
+/* --- SV — gets data for drawing tiles --- */
 export const fetchSvTile = (
     ship: string,
     cruise: string,
@@ -197,9 +223,7 @@ export const fetchSvTile = (
             return svArray;
         })
         .then((svArray) => {
-            // TODO: do i just need to get the indices[0] and indices[-1]?
             const sv = get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]);
-            // const sv = get(svArray, [slice(indicesDepth), slice(indicesTime), indexFrequency]);
             return sv;
         });
 }

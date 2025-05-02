@@ -28,8 +28,10 @@ import {
   //
   selectDepthIndex,
   selectTimeIndex,
+  selectStoreAttributes,
   //
-  storeAsync,
+  storeAttributesAsync,
+  storeShapeAsync,
   frequenciesAsync,
   latitudeAsync,
   longitudeAsync,
@@ -62,6 +64,7 @@ export default function WaterColumnView() {
   const ship = useAppSelector(selectShip); //  get from redux
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
+  const attributes = useAppSelector(selectStoreAttributes);
 
   const indexDepth = useAppSelector(selectDepthIndex);
   const indexTime = useAppSelector(selectTimeIndex);
@@ -78,7 +81,8 @@ export default function WaterColumnView() {
     }
 
     if(ship !== null && cruise !== null && sensor !== null) {
-      dispatch(storeAsync({ ship, cruise, sensor })); // don't need to update each time
+      dispatch(storeAttributesAsync({ ship, cruise, sensor })); // don't need to update each time
+      dispatch(storeShapeAsync({ ship, cruise, sensor }));
       dispatch(frequenciesAsync({ ship, cruise, sensor })); // don't need to update each time
     }
   }, [dispatch, searchParams, ship, cruise, sensor]); // TODO: update on click
@@ -96,7 +100,7 @@ export default function WaterColumnView() {
         sensor,
         indexDepth: indexDepth, // TODO: wire this up to mouse click
         indexTime: indexTime,
-        indexFrequency: 0 // fix
+        indexFrequency: 0 // TODO: remove this param
       }));
     }
   }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, indexTime]); // TODO: update on click
@@ -135,7 +139,13 @@ export default function WaterColumnView() {
                 stroke={true}
               />
             </LayerGroup>
-            <CustomLayer  />
+            <>
+              {
+              (attributes !== null)
+              ?
+              <CustomLayer  /> : <></>
+              }
+            </>
             {/* <>
               { // TODO: follow this to refresh the layer:
                 //  https://react-leaflet.js.org/docs/core-architecture/
