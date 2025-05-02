@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
-import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors';
+import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors.jsx';
 
 import {
   fetchStore,
@@ -10,6 +10,7 @@ import {
   fetchLongitude,
   fetchTime,
   fetchDepth,
+  fetchBottom,
   fetchSv,
 } from "./storeAPI.js";
 
@@ -51,6 +52,9 @@ export interface StoreState {
   depth: number | null,
   depthStatus: "idle" | "loading" | "failed",
 
+  bottom: number | null,
+  bottomStatus: "idle" | "loading" | "failed",
+
   sv: any, // BigUInt64? -> Float32Array
   svStatus: "idle" | "loading" | "failed",
 }
@@ -89,6 +93,9 @@ const initialState: StoreState = {
 
   depth: null,
   depthStatus: "idle",
+
+  bottom: null,
+  bottomStatus: "idle",
   
   sv: null,
   svStatus: "idle",
@@ -117,6 +124,7 @@ export const storeSlice = createSlice({
       state.svMax = Number(action.payload);
     },
 
+    // these hold the clicked index position
     updateDepthIndex: (state, action: PayloadAction<number>) => {
       state.depthIndex = action.payload;
     },
@@ -126,7 +134,7 @@ export const storeSlice = createSlice({
     updateFrequencyIndex: (state, action: PayloadAction<number>) => {
       state.frequencyIndex = action.payload;
     },
-    // 
+     
     updateColorMaps: (state, action: PayloadAction<any>) => { // do i need these
       state.colorMaps = action.payload;
     },
@@ -148,10 +156,13 @@ export const storeSlice = createSlice({
       state.longitude = action.payload;
     },
     updateTime: (state, action: PayloadAction<any>) => {
-      state.longitude = action.payload;
+      state.time = action.payload;
     },
     updateDepth: (state, action: PayloadAction<any>) => {
       state.depth = action.payload;
+    },
+    updateBottom: (state, action: PayloadAction<any>) => {
+      state.bottom = action.payload;
     },
     updateSv: (state, action: PayloadAction<any>) => {
       state.sv = action.payload;
@@ -227,6 +238,17 @@ export const storeSlice = createSlice({
         state.depthStatus = "failed";
       })
       // ----------------------------------------------- //
+      .addCase(bottomAsync.pending, state => {
+        state.bottomStatus = "loading";
+      })
+      .addCase(bottomAsync.fulfilled, (state, action) => {
+        state.bottomStatus = "idle";
+        state.bottom = action.payload;
+      })
+      .addCase(bottomAsync.rejected, state => {
+        state.bottomStatus = "failed";
+      })
+      // ----------------------------------------------- //
       .addCase(svAsync.pending, state => {
         state.svStatus = "loading";
       })
@@ -261,6 +283,7 @@ export const {
   updateLongitude,
   updateTime,
   updateDepth,
+  updateBottom,
   updateSv,
 } = storeSlice.actions;
 
@@ -275,6 +298,7 @@ export const selectSvMax = (state: RootState) => state.store.svMax;
 export const selectColorMaps = (state: RootState) => state.store.colorMaps;
 export const selectColorMapButtonIndex = (state: RootState) => state.store.colorMapButtonIndex;
 
+// store the indices of the clicked position
 export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
 export const selectTimeIndex = (state: RootState) => state.store.timeIndex;
 export const selectFrequencyIndex = (state: RootState) => state.store.frequencyIndex;
@@ -286,6 +310,7 @@ export const selectLatitude = (state: RootState) => state.store.latitude;
 export const selectLongitude = (state: RootState) => state.store.longitude;
 export const selectTime = (state: RootState) => state.store.time;
 export const selectDepth = (state: RootState) => state.store.depth;
+export const selectBottom = (state: RootState) => state.store.bottom;
 export const selectSv = (state: RootState) => state.store.sv;
 
 // Just getting metadata from the store
@@ -333,6 +358,14 @@ export const depthAsync = createAsyncThunk(
   "store/fetchDepth",
   async ({ ship, cruise, sensor, indexDepth }: { ship: string, cruise: string, sensor: string, indexDepth: number }) => {
     const response = await fetchDepth(ship, cruise, sensor, indexDepth);
+    return Math.round(response * 1e2) / 1e2;
+  },
+)
+
+export const bottomAsync = createAsyncThunk(
+  "store/fetchBottom",
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    const response = await fetchBottom(ship, cruise, sensor, indexTime);
     return Math.round(response * 1e2) / 1e2;
   },
 )

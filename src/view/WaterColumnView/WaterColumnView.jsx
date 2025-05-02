@@ -37,6 +37,7 @@ import {
   longitudeAsync,
   timeAsync,
   depthAsync,
+  bottomAsync,
   svAsync,
   //
   updateDepthIndex,
@@ -90,6 +91,7 @@ export default function WaterColumnView() {
       dispatch(longitudeAsync({ ship, cruise, sensor, indexTime: indexTime }));
       dispatch(timeAsync({ ship, cruise, sensor, indexTime: indexTime }));
       dispatch(depthAsync({ ship, cruise, sensor, indexDepth: indexDepth }));
+      dispatch(bottomAsync({ ship, cruise, sensor, indexTime: indexTime }));
       dispatch(svAsync({
         ship,
         cruise,

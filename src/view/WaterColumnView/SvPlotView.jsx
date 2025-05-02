@@ -67,7 +67,7 @@ export default function SvPlotView() {
       {
         chartData ?
         <>
-          <Line options={options} data={chartData} height="120px" />
+          <Line options={options} data={chartData} height="125px" />
         </>
         :
         <></>

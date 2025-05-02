@@ -130,6 +130,28 @@ export const fetchDepth = (
         });
 }
 
+/* --- BOTTOM --- */
+export const fetchBottom = (ship: string, cruise: string, sensor: string, indexTime: number ): any => {
+    const bucketName = "noaa-wcsd-zarr-pds";
+    const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
+            return zarrGroup;
+        })
+        .then((rootPromise) => {
+            const bottomArray = zarr.open(rootPromise.resolve("bottom"), { kind: "array" });
+            return bottomArray;
+        })
+        .then((bottomArray) => {
+            // returns all the data in a BigUint64Array
+            const bottom = get(bottomArray, [indexTime]);
+            return bottom;
+        });
+}
+
+
 /* --- SV --- */
 export const fetchSv = (
     ship: string,

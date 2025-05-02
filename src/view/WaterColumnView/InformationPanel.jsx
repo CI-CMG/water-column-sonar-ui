@@ -37,6 +37,7 @@ import {
   selectLongitude,
   selectTime,
   selectDepth,
+  selectBottom,
   selectSv,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -79,6 +80,7 @@ const InformationPanel = () => {
   const longitude = useAppSelector(selectLongitude);
   const time = useAppSelector(selectTime);
   const depth = useAppSelector(selectDepth);
+  const bottom = useAppSelector(selectBottom);
   const sv = useAppSelector(selectSv);
 
   const svMin = useAppSelector(selectSvMin);
@@ -203,6 +205,16 @@ const InformationPanel = () => {
             <p>
               <b>Depth:</b>
               <span className="font-monospace float-end">{ depth } meters</span>
+            </p>
+            :
+            <></>
+          }
+
+          {
+            bottom !== null ?
+            <p>
+              <b>Bottom:</b>
+              <span className="font-monospace float-end">{ bottom } meters</span>
             </p>
             :
             <></>

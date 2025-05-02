@@ -14,35 +14,39 @@
  - ~~get plot Sv values properly populated -> get num of frequencies~~
  - ~~get time/lat/lon/Sv from click~~
  - ~~format time w GMT/local~~
- - open bottom array w zarr
- - get leaflet working again
- - debounce mini map follow wc center
- - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
- - get jump to x axis time value working
- - add better labels to color palette legend -- [start middle stop]
- - hide layers icon(s) in top-right
- - mask sub-bottom data w checkbox, not linestring
+ - ~~don't hard code tile size~~
+ 
+ - open bottom array w zarr...
+
+ - get leaflet working again...
+ - debounce mini map follow wc center...
+ - refresh layer when clicking on frequency/colorMap/minSv/maxSv button...
+ - get jump to x axis time value working...
  - center the water-column view when user first opens the data
+ - hide layers icon(s) in top-right via css
+ - update x-axis in query searchParameters w panning
+ - add better labels to color palette legend -- [start middle stop]
+ - allow clicks in mini-map viewer
+ - mask sub-bottom data w checkbox, not linestring
  - add graticules -> legend for depth, time
  - constrain the input Sv Range Minimum dB to be less than Maximum dB
  - regenerate pm-tiles with latest data
- - sync views (leaflet vs maplibre): https://maplibre.org/maplibre-gl-js/docs/examples/sync-move/
  - draw evr polygon on data -> currently circle
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
- - update x-axis in query searchParameters w panning
- - don't hard code tile size
+ - deploy to domain echo.fisf
+ - add bathymetric layer to map viewer
  - add total Level_2 dataset size e.g. 120 GB to info panel
  - print total dimensions of L2 data: depth x time x frequency
- - deploy to domain echo.fish
- - update cfn deployment to s3 copy
  - prototype knowledge graph query
  - make sure lat/lon are always 5 decimals, sv is always 2, depth is 2
  - add link to echofish tagged releases
  - capture echopype provenance
  - open and add "speed" to zarr --> needs to be manually written to zarr stores
  - restrain boundaries for leaflet, bounce back to data
- - allow clicks in mini-map viewer
+ 
  - get zoom working
  - add toggle from UTC/local-time --> need to get moment library working
- - add bathymetric layer to map viewer
+ 
  - slowfly on home map <https://maplibre.org/maplibre-gl-js/docs/examples/flyto-options/>
+ - sync views (leaflet vs maplibre): https://maplibre.org/maplibre-gl-js/docs/examples/sync-move/
+ - update cfn deployment to s3 copy

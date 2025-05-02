@@ -22,9 +22,9 @@ import { useAppSelector } from "../../app/hooks";
 
 const minDB = -150; // min-db
 const maxDB = 10; // max-db
-const TILE_SIZE = 512; // TODO: need to get from the zarr store attributes!
+// const TILE_SIZE = 512; // TODO: need to get from the zarr store attributes!
 
-function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName) {
+function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName, tileSize) {
     const palette = WaterColumnColors[paletteName]
 
     const parts = coordinateKey.split('_');
@@ -39,19 +39,19 @@ function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName
       const maxBoundsY = Math.abs(dataDimension[0]);
       const maxBoundsX = Math.abs(dataDimension[1]);
 
-      const indicesLeft = TILE_SIZE * x;
-      const indicesRight = Math.min(TILE_SIZE * x + TILE_SIZE, maxBoundsX);
-      const indicesTop = TILE_SIZE * y;
-      const indicesBottom = Math.min(TILE_SIZE * y + TILE_SIZE, maxBoundsY);
+      const indicesLeft = tileSize * x;
+      const indicesRight = Math.min(tileSize * x + tileSize, maxBoundsX);
+      const indicesTop = tileSize * y;
+      const indicesBottom = Math.min(tileSize * y + tileSize, maxBoundsY);
 
       const greyMapFunc = scaleLinear().domain([minDB, maxDB]).range([0, 255]).clamp(true);
       const colorfunc = scaleThreshold()
         .domain(d3.range(0, 255, 255 / palette.length))
         .range(palette);
 
-      const maxBoundsValue = [[-1 * Math.ceil(dataDimension[0] / TILE_SIZE) * TILE_SIZE, 0], [0, Math.ceil(dataDimension[1] / TILE_SIZE) * TILE_SIZE]];
-      const maxTileBoundsX = Math.abs(maxBoundsValue[1][1]) / TILE_SIZE;
-      const maxTileBoundsY = Math.abs(maxBoundsValue[0][0]) / TILE_SIZE;
+      const maxBoundsValue = [[-1 * Math.ceil(dataDimension[0] / tileSize) * tileSize, 0], [0, Math.ceil(dataDimension[1] / tileSize) * tileSize]];
+      const maxTileBoundsX = Math.abs(maxBoundsValue[1][1]) / tileSize;
+      const maxTileBoundsY = Math.abs(maxBoundsValue[0][0]) / tileSize;
 
       // Diagnostic for getting X-Y-Z location of tiles
       if (y >= maxTileBoundsY || y < 0 || x < 0 || x >= maxTileBoundsX) {
@@ -92,6 +92,7 @@ const CustomLayer = ({
   })[searchParams.get('color')]);
 
   const attributes = useAppSelector(selectAttributes);
+  const tileSize = attributes.tile_size; // TODO: allow default value if not in metadata?
   // const [frequencyIndex, setFrequencyIndex] = useState(0);
   // useEffect(() => {
   //   setFrequencyIndex(Number(searchParams.get('frequency')));
@@ -102,7 +103,7 @@ const CustomLayer = ({
   const createLeafletElement = () => {
     const Grid = L.GridLayer.extend({
       getTileSize: function() {
-        return new L.Point(TILE_SIZE, TILE_SIZE);
+        return new L.Point(tileSize, tileSize);
       },
 
       createTile: function (coords) {
@@ -111,7 +112,7 @@ const CustomLayer = ({
           var tileSize = this.getTileSize();
           canvas.setAttribute('width', tileSize.x);
           canvas.setAttribute('height', tileSize.y);
-          drawTile(coordinateKey, canvas, svArray, selectedFrequency, selectedColorMap.value); // TODO: pass in array
+          drawTile(coordinateKey, canvas, svArray, selectedFrequency, selectedColorMap.value, tileSize); // TODO: pass in array
 
           return canvas;
       }
