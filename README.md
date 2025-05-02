@@ -15,18 +15,17 @@
  - ~~get time/lat/lon/Sv from click~~
  - ~~format time w GMT/local~~
  - ~~don't hard code tile size~~
- 
- - open bottom array w zarr...
-
+ - ~~open bottom array w zarr~~
  - get leaflet working again...
+ - center the water-column view when user first opens the data
+ - get jump to x axis time value working...
  - debounce mini map follow wc center...
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button...
- - get jump to x axis time value working...
- - center the water-column view when user first opens the data
  - hide layers icon(s) in top-right via css
  - update x-axis in query searchParameters w panning
  - add better labels to color palette legend -- [start middle stop]
  - allow clicks in mini-map viewer
+ - fix fetchSv to get proper frequency value? --> gets all for the plot right now
  - mask sub-bottom data w checkbox, not linestring
  - add graticules -> legend for depth, time
  - constrain the input Sv Range Minimum dB to be less than Maximum dB

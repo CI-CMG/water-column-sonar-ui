@@ -11,7 +11,7 @@ import { color } from 'd3-color';
 import { get } from "@zarrita/ndarray"; // https://www.npmjs.com/package/zarrita
 import { slice } from "zarrita";
 import { WaterColumnColors } from './WaterColumnColors.jsx';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {
   selectAttributes,
 } from ".././../reducers/store/storeSlice.ts";
@@ -22,8 +22,8 @@ import { useAppSelector } from "../../app/hooks";
 
 const minDB = -150; // min-db
 const maxDB = 10; // max-db
-// const TILE_SIZE = 512; // TODO: need to get from the zarr store attributes!
 
+// function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName, tileSize) {
 function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName, tileSize) {
     const palette = WaterColumnColors[paletteName]
 
@@ -61,43 +61,42 @@ function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName
         return;
       }
 
-      // TODO: make more like get(latitudePromise, [zarr.slice(2, 4)]);
-      get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]) // selectedF is from url
-        .then((d1) => {
-          const d = d1; // as RawArray;
-          const [height, width] = d.shape;
-          const uintc8 = new Uint8ClampedArray(d.data.length * 4).fill(255);
+      ctx.font = '12px serif';
+      ctx.fillStyle = '#00FF00';
+      ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
+      return;
 
-          for (let i = 0; i < d.data.length; i++) {
-            if (!Number.isNaN(d.data[i]) && d.data[i] > minDB && d.data[i] < maxDB) {
-              const pixelColor = color(colorfunc(greyMapFunc(d.data[i])).substring(0, 7));
-              uintc8[i * 4] = pixelColor.r;
-              uintc8[i * 4 + 1] = pixelColor.g;
-              uintc8[i * 4 + 2] = pixelColor.b;
-            }
-          }
-          ctx.putImageData(new ImageData(uintc8, width, height), 0, 0);
-        });
+      // TODO: make more like get(latitudePromise, [zarr.slice(2, 4)]);
+      // response = await fetchSvTile(ship, cruise, sensor, indexDepth, indexTime, indexFrequency);
+      // get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]) // selectedF is from url
+      //   .then((d1) => {
+      //     const d = d1; // as RawArray;
+      //     const [height, width] = d.shape;
+      //     const uintc8 = new Uint8ClampedArray(d.data.length * 4).fill(255);
+
+      //     for (let i = 0; i < d.data.length; i++) {
+      //       if (!Number.isNaN(d.data[i]) && d.data[i] > minDB && d.data[i] < maxDB) {
+      //         const pixelColor = color(colorfunc(greyMapFunc(d.data[i])).substring(0, 7));
+      //         uintc8[i * 4] = pixelColor.r;
+      //         uintc8[i * 4 + 1] = pixelColor.g;
+      //         uintc8[i * 4 + 2] = pixelColor.b;
+      //       }
+      //     }
+      //     ctx.putImageData(new ImageData(uintc8, width, height), 0, 0);
+      //   });
     }
 }
 
 /* -------- Leaflet Layer that Plots Sv Data ---------- */
-const CustomLayer = ({
-  svArray,
-  selectedFrequency, // passed in value is actual frequency value e.g. "18000"
-}) => {
+const CustomLayer = () => {
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
     return {'key': y, 'value': x}; 
   })[searchParams.get('color')]);
 
   const attributes = useAppSelector(selectAttributes);
-  const tileSize = attributes.tile_size; // TODO: allow default value if not in metadata?
-  // const [frequencyIndex, setFrequencyIndex] = useState(0);
-  // useEffect(() => {
-  //   setFrequencyIndex(Number(searchParams.get('frequency')));
-  // }, [searchParams]);
-  // const frequencyIndex = frequencyArray[selectedFrequency]; // 18 kHz to '1'
+  const tileSize = attributes.tile_size;
   const { layerContainer } = useLeafletContext();
 
   const createLeafletElement = () => {
@@ -107,14 +106,18 @@ const CustomLayer = ({
       },
 
       createTile: function (coords) {
-          const coordinateKey = `${coords.x}_${coords.y}_${coords.z}`;
-          const canvas = document.createElement('canvas');
-          var tileSize = this.getTileSize();
-          canvas.setAttribute('width', tileSize.x);
-          canvas.setAttribute('height', tileSize.y);
-          drawTile(coordinateKey, canvas, svArray, selectedFrequency, selectedColorMap.value, tileSize); // TODO: pass in array
+        // for each tile dispatch a request with given x-y-z coordinates
+        const coordinateKey = `${coords.x}_${coords.y}_${coords.z}`;
+        const canvas = document.createElement('canvas');
+        var tileSize = this.getTileSize();
 
-          return canvas;
+        canvas.setAttribute('width', tileSize.x);
+        canvas.setAttribute('height', tileSize.y);
+
+        // TODO: pass in array
+        drawTile(coordinateKey, canvas, svArray, selectedFrequency, selectedColorMap.value, tileSize);
+
+        return canvas;
       }
     });
     return new Grid();
@@ -131,6 +134,6 @@ const CustomLayer = ({
 export default CustomLayer;
 
 CustomLayer.propTypes = {
-    svArray: PropTypes.instanceOf(Object), // Promise
-    selectedFrequency: PropTypes.instanceOf(Number)
+    // svArray: PropTypes.instanceOf(Object), // TODO: dont get from above, get from here...?
+    // selectedFrequency: PropTypes.instanceOf(Number)
 };

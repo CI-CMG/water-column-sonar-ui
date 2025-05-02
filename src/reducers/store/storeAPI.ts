@@ -2,10 +2,12 @@ import * as zarr from "zarrita";
 import { get } from "@zarrita/ndarray";
 import { slice } from "zarrita";
 
+// TODO: move somewhere else?
+const bucketName = "noaa-wcsd-zarr-pds";
+const level = "level_2";
 
 /* --- Zarr Store --- */
 export const fetchStore = (ship: string, cruise: string, sensor: string): Promise<any> => {
-    const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -20,7 +22,6 @@ export const fetchStore = (ship: string, cruise: string, sensor: string): Promis
 
 /* --- FREQUENCY --- */
 export const fetchFrequencies = (ship: string, cruise: string, sensor: string) => {
-    const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -29,7 +30,7 @@ export const fetchFrequencies = (ship: string, cruise: string, sensor: string) =
             return zarrGroup;
         })
         .then((rootPromise) => {
-            // 'rootPromise.attrs' has all the attributes, 
+            // note: 'rootPromise.attrs' has all the attributes, 
             const frequencyArray = zarr.open(rootPromise.resolve("frequency"), { kind: "array" });
             return frequencyArray;
         })
@@ -43,7 +44,6 @@ export const fetchFrequencies = (ship: string, cruise: string, sensor: string) =
 /* --- LATITUDE --- */
 // export const fetchLatitude = (ship: string, cruise: string, sensor: string, index: number ): Promise<number>  => {
 export const fetchLatitude = (ship: string, cruise: string, sensor: string, indexTime: number ): any => {    
-    const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -64,7 +64,6 @@ export const fetchLatitude = (ship: string, cruise: string, sensor: string, inde
 
 /* --- LONGITUDE --- */
 export const fetchLongitude = (ship: string, cruise: string, sensor: string, indexTime: number ): any => {
-    const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -85,7 +84,6 @@ export const fetchLongitude = (ship: string, cruise: string, sensor: string, ind
 
 /* --- TIME --- */
 export const fetchTime = (ship: string, cruise: string, sensor: string, indexTime: number ) => {
-    const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -111,7 +109,6 @@ export const fetchDepth = (
     sensor: string,
     indexDepth: number,
 ): any => {
-    const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -132,7 +129,6 @@ export const fetchDepth = (
 
 /* --- BOTTOM --- */
 export const fetchBottom = (ship: string, cruise: string, sensor: string, indexTime: number ): any => {
-    const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -152,16 +148,15 @@ export const fetchBottom = (ship: string, cruise: string, sensor: string, indexT
 }
 
 
-/* --- SV --- */
+/* --- SV — gets a slice across all frequencies --- */
 export const fetchSv = (
     ship: string,
     cruise: string,
     sensor: string,
     indexDepth: number,
     indexTime: number,
-    indexFrequency: number
+    indexFrequency: number, // TODO: remove
 ): any => {
-    const bucketName = "noaa-wcsd-zarr-pds";
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
     return zarr.withConsolidated(new zarr.FetchStore(url))
         .then((storePromise) => {
@@ -175,7 +170,36 @@ export const fetchSv = (
         .then((svArray) => {
             // returns all the data in a BigUint64Array
             // const sv = get(svArray, [indexDepth, indexTime, indexFrequency]);
-            const sv = get(svArray, [indexDepth, indexTime, slice(null)]);
+            const sv = get(svArray, [indexDepth, indexTime, slice(null)]); // TODO: get index of frequency
+            return sv;
+        });
+}
+
+/* --- SV — gets data for tiles --- */
+export const fetchSvTile = (
+    ship: string,
+    cruise: string,
+    sensor: string,
+    indicesTop: number,
+    indicesBottom: number,
+    indicesLeft: number,
+    indicesRight: number,
+    selectedFrequency: number,
+): any => {
+    const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
+            return zarrGroup;
+        })
+        .then((rootPromise) => {
+            const svArray = zarr.open(rootPromise.resolve("Sv"), { kind: "array" });
+            return svArray;
+        })
+        .then((svArray) => {
+            // TODO: do i just need to get the indices[0] and indices[-1]?
+            const sv = get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]);
+            // const sv = get(svArray, [slice(indicesDepth), slice(indicesTime), indexFrequency]);
             return sv;
         });
 }

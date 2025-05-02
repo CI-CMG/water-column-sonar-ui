@@ -1,6 +1,5 @@
 import {
   useEffect,
-  // useState,
   useRef
 } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -12,12 +11,11 @@ import {
   Circle,
 } from "react-leaflet";
 import {
-  useMap,
   useMapEvents
 } from 'react-leaflet/hooks'
 import { CRS } from "leaflet";
-// import * as zarr from "zarrita";
-// import CustomLayer from "./CustomLayer";
+// import * as zarr from "zarrita"; // Dont open here
+import CustomLayer from "./CustomLayer";
 import InformationPanel from "./InformationPanel";
 
 import {
@@ -53,7 +51,7 @@ const mapParameters = {
   minZoom: 0,
   maxZoom: 0, // TODO: add two more levels of zoom
   zoomControl: false,
-  tileSize: 512, // TODO: get from store?
+  tileSize: 512, // TODO: get from store... see custom layer
 };
 
 /* -------- Main View of Water Column Page ---------- */
@@ -109,10 +107,9 @@ export default function WaterColumnView() {
     // const map = useMap()
     useMapEvents({
       click(e) {
-        // console.log(`y: ${e.latlng.lat}, x: ${e.latlng.lng}`);
         dispatch(updateTimeIndex(parseInt(e.latlng.lng, 10))); // update mouse locations
         dispatch(updateDepthIndex(parseInt(e.latlng.lat * -1.0, 10)));
-        
+
         // const center = map.getCenter();
         // console.log('map x center: ', center.lng); // TODO: write for the mini map viewer
       },
@@ -138,6 +135,7 @@ export default function WaterColumnView() {
                 stroke={true}
               />
             </LayerGroup>
+            <CustomLayer  />
             {/* <>
               { // TODO: follow this to refresh the layer:
                 //  https://react-leaflet.js.org/docs/core-architecture/

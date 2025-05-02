@@ -288,19 +288,16 @@ const InformationPanel = () => {
 
           <br />
 
-          {/* <ColorMap minSv="-80" maxSv="-30" selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/> */}
-          {/* <ColorMap minSv={svMin} maxSv={svMax} selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/> */}
           <ColorMap selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/>
           
           <br />
-          
-          <Form.Label><b>Sv Range</b></Form.Label>
+
           <Row className="mb-3">
             <Form.Group
               as={Col}
               controlId="minDB"
             >
-              <Form.Label>Minimum (dB)</Form.Label>
+              <Form.Label>Sv Minimum (dB)</Form.Label>
               <Form.Control
                 type="number"
                 defaultValue={svMin}
@@ -314,7 +311,7 @@ const InformationPanel = () => {
               as={Col}
               controlId="maxDB"
             >
-              <Form.Label>Maximum (dB)</Form.Label>
+              <Form.Label>Sv Maximum (dB)</Form.Label>
               <Form.Control
                 type="number"
                 defaultValue={svMax}
@@ -378,8 +375,7 @@ const InformationPanel = () => {
             :
             <></>
           }
-          
-          <br />
+
           <p className="text-center"><b>~</b></p>
         </Offcanvas.Body>
       </Offcanvas>
