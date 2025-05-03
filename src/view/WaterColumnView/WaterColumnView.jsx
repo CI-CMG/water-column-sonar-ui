@@ -124,21 +124,29 @@ export default function WaterColumnView() {
     return null;
   }
 
-  const mapParameters = {
-    crs: CRS.Simple,
-    zoom: 0,
-    center: [-1 * (window.innerHeight / 2) + 60, (window.innerWidth / 2) - 20], // TODO: needs to accept "center" ping time index
-    minZoom: 0,
-    maxZoom: 0, // TODO: add two more levels of zoom
-    zoomControl: false,
-    tileSize: 512, // TODO: get from store... see custom layer
-  };
+
+  // const mapParameters = {
+  //   crs: CRS.Simple,
+  //   zoom: 0,
+  //   center: [-1 * (window.innerHeight / 2) + 60, (window.innerWidth / 2) - 20], // TODO: needs to accept "center" ping time index
+  //   minZoom: 0,
+  //   maxZoom: 0, // TODO: add two more levels of zoom
+  //   zoomControl: false,
+  //   tileSize: 512, // TODO: get from store... see custom layer
+  // };
   
 
   return (
     <div className="WaterColumnView">
       <MapContainer
-        {...mapParameters}
+        // {...mapParameters}
+        crs={ CRS.Simple}
+        zoom={0}
+        center={[-1 * (window.innerHeight / 2) + 60, (window.innerWidth / 2) - 20]}
+        minZoom={0}
+        maxZoom={0}
+        zoomControl={false}
+        tileSize={512}
         className="Map"
         ref={mapRef}
       >

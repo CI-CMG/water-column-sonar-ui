@@ -20,9 +20,9 @@ import { fetchSvTile } from "../../reducers/store/storeAPI.ts"
 
 // const palette = WaterColumnColors['viridis'];
 
-const minDB = -150; // min-db
+const minDB = -150; // min-db // TODO: get from buttons
 const maxDB = 10; // max-db
-const tileSize = 512;
+// const tileSize = 512;
 
 // function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName, tileSize) {
 function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape) {
@@ -113,43 +113,47 @@ const CustomLayer = () => {
   const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
     return {'key': y, 'value': x}; 
   })[searchParams.get('color')]);
+  const [initialized, setInitialized] = useState(false);
 
   const attributes = useAppSelector(selectStoreAttributes); // confusing names
   const storeShape = useAppSelector(selectStoreShape);
 
   const { layerContainer } = useLeafletContext();
 
-  const createLeafletElement = () => {
-    const Grid = L.GridLayer.extend({
-      getTileSize: function() {
-        return new L.Point(tileSize, tileSize);
-      },
-
-      createTile: function (coords) {
-        // for each tile dispatch a request with given x-y-z coordinates
-        const coordinateKey = `${coords.x}_${coords.y}_${coords.z}`;
-        
-        var tileSize = this.getTileSize();
-        
-        const canvas = document.createElement('canvas');
-        canvas.setAttribute('width', tileSize.x);
-        canvas.setAttribute('height', tileSize.y);
-        // TODO: would be better to get tileSize from the chunk scheme than from metadata
-        drawTile(coordinateKey, canvas, selectedColorMap.value, attributes.tile_size, storeShape);
-
-        return canvas;
-      }
-    });
-    return new Grid();
-  };
-
   useEffect(() => {
+    const createLeafletElement = () => {
+      const Grid = L.GridLayer.extend({
+        getTileSize: function() {
+          return new L.Point(attributes.tile_size, attributes.tile_size);
+        },
+  
+        createTile: function (coords) {
+          // for each tile dispatch a request with given x-y-z coordinates
+          const coordinateKey = `${coords.x}_${coords.y}_${coords.z}`;
+          
+          var tileSize = this.getTileSize();
+          
+          const canvas = document.createElement('canvas');
+          canvas.setAttribute('width', tileSize.x);
+          canvas.setAttribute('height', tileSize.y);
+          // TODO: would be better to get tileSize from the chunk scheme than from metadata
+          drawTile(coordinateKey, canvas, selectedColorMap.value, attributes.tile_size, storeShape);
+  
+          return canvas;
+        }
+      });
+      return new Grid();
+    };
+    
     // wait to start accessing the store
-    if (attributes !== null && storeShape !== null) {
+    if (attributes !== null && storeShape !== null && !initialized) {
+      setInitialized(true); // this fixes multiple layers, but doesnt allow updates when buttons change
+      console.log('creating new layer');
       layerContainer.addLayer(createLeafletElement());
     }
-  }, [attributes, storeShape, layerContainer]); // frequencyIndex
 
+    return; // layerContainer.addLayer(createLeafletElement());
+  }, [attributes, storeShape, layerContainer, initialized, selectedColorMap.value]); // frequencyIndex
 };
 
 export default CustomLayer;
