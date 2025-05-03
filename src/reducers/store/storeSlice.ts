@@ -26,7 +26,7 @@ export interface StoreState {
   svMax: number,
 
   depthIndex: number,
-  timeIndex: number, // value passed in url to jump to location
+  timeIndex: number, // value passed in via url to jump to location
   frequencyIndex: number,
 
   colorMaps: any,

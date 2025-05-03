@@ -152,7 +152,7 @@ export default function MapView() {
           Ship: ${e.features[0].properties.ship}<br />
           Cruise: ${e.features[0].properties.cruise}<br />
           Sensor: ${e.features[0].properties.sensor}<br />
-          → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&timeIndex=1024">view echogram</a>
+          → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&time=1024">view echogram</a>
           `
         )
         .addTo(map.current);

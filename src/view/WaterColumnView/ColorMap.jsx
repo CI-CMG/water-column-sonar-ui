@@ -46,7 +46,7 @@ const ColorMap = ({
     }
 
     const palette = WaterColumnColors[selectedColorPalette];
-    console.log(palette);
+    // console.log(palette);
 
     const colorValueArray = d3.range(
       minSv,
