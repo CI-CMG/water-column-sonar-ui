@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
-import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors.jsx';
+import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors';
 
 import {
   fetchStoreAttributes,
@@ -26,7 +26,7 @@ export interface StoreState {
   svMax: number,
 
   depthIndex: number,
-  timeIndex: number,
+  timeIndex: number, // value passed in url to jump to location
   frequencyIndex: number,
 
   colorMaps: any,
@@ -319,7 +319,7 @@ export const selectColorMapButtonIndex = (state: RootState) => state.store.color
 
 // store the indices of the clicked position
 export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
-export const selectTimeIndex = (state: RootState) => state.store.timeIndex;
+export const selectTimeIndex = (state: RootState) => state.store.timeIndex; // url timeIndex jump to
 export const selectFrequencyIndex = (state: RootState) => state.store.frequencyIndex;
 
 // export const selectAttributes = (state: RootState) => state.store.attributes; // TODO: remove

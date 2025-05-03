@@ -1,43 +1,39 @@
-// import { useEffect, useState } from "react";
-import { openArray, slice } from "zarr";
-import { point, lineString } from "@turf/helpers";
+import {
+  point,
+  lineString,
+} from "@turf/helpers";
+import { cleanCoords } from "@turf/clean-coords";
 import { nearestPointOnLine } from "@turf/nearest-point-on-line";
+import {
+  fetchLatitudeAll,
+  fetchLongitudeAll
+} from "../../reducers/store/storeAPI.ts";
 
-// const zarrBaseURL="https://noaa-wcsd-zarr-pds.s3.us-east-1.amazonaws.com"
-const bucketName = "noaa-wcsd-zarr-pds";
+// const bucketName = "noaa-wcsd-zarr-pds";
+// const level = "level_2"
+// const zarrStoreUrl = (shipName, cruiseName, sensorName) => {
+//   return `https://${bucketName}.s3.us-east-1.amazonaws.com/${level}/${shipName}/${cruiseName}/${sensorName}/${cruiseName}.zarr`;
+// };
 
-const zarrStoreUrl = (shipName, cruiseName, sensorName) => {
-  return `https://${bucketName}.s3.us-east-1.amazonaws.com/level_2/${shipName}/${cruiseName}/${sensorName}/${cruiseName}.zarr`;
-};
-
-async function latitudeArray(shipName, cruiseName, sensorName) {
-    const z = await openArray({
-      store: zarrStoreUrl(shipName, cruiseName, sensorName),
-      path: "latitude",
-      mode: "r",
-    });
-    return await z.get([slice(null)]).then((d) => {
-      return d.data;
+async function latitudeArray(ship, cruise, sensor) {
+  return fetchLatitudeAll(ship, cruise, sensor)
+    .then((d1) => {
+      return d1.data;
     });
 }
 
-async function longitudeArray(shipName, cruiseName, sensorName) {
-    const z = await openArray({
-      store: zarrStoreUrl(shipName, cruiseName, sensorName),
-      path: "longitude",
-      mode: "r",
-    });
-    // debugger;
-    return await z.get([slice(null)]).then((d) => {
-      return d.data;
+async function longitudeArray(ship, cruise, sensor) {
+  return fetchLongitudeAll(ship, cruise, sensor)
+    .then((d1) => {
+      return d1.data;
     });
 }
 
 // https://github.com/CI-CMG/echofish-aws-ui/blob/master/src/main/frontend/src/views/view/echofish/cruise/Echogram.vue
 const GetZarrGeospatialIndex = function (cruise, lng, lat) {
   const clickedPoint = point([lng, lat]);
-  console.log(`clicked cruise: ${cruise}`);
-  const shipName = "Henry_B._Bigelow";
+  // console.log(`clicked cruise: ${cruise}`);
+  const shipName = "Henry_B._Bigelow"; // TODO: fix this
   const cruiseName = cruise; // HB1304 3,573,052 samples
   const sensorName = "EK60";
 
@@ -49,10 +45,14 @@ const GetZarrGeospatialIndex = function (cruise, lng, lat) {
         let aa = Array.from(latitudeData);
         let bb = Array.from(longitudeData);
 
-        const clickedLinestring = lineString(aa.map((e, i) => [bb[i], e]));
+        const dataJoined = aa.map((e, i) => [bb[i], e])
+        // Note redundant points will cause problems
+        const clickedLinestring = lineString(dataJoined); // 162_727
+        const cleanedClickedLinestring = cleanCoords(clickedLinestring); // 119_280 // TODO: problem w too few coordinates
+        // clickedLinestring
         let snapped = nearestPointOnLine(
-            clickedLinestring, // [longitude, latitude]
-            clickedPoint
+          cleanedClickedLinestring, // [longitude, latitude]
+          clickedPoint
         );
         console.log(
             "closest polyline index: " +

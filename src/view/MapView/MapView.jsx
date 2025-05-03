@@ -5,6 +5,12 @@ import * as pmtiles from "pmtiles";
 
 import { round } from "@turf/helpers";
 import GetZarrGeospatialIndex from "./GetZarrGeospatialIndex";
+import {
+  selectTimeIndex,
+  updateTimeIndex,
+} from ".././../reducers/store/storeSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+
 
 const map_key = import.meta.env.DEV
   ? import.meta.env.VITE_SOME_MAPTILER_API_DEV
@@ -58,6 +64,8 @@ const style = {
 // }
 
 export default function MapView() {
+  const dispatch = useAppDispatch()
+
   const mapContainer = useRef();
   const map = useRef();
   const [mouseCoordinates, setMouseCoordinates] = useState(null);
@@ -65,6 +73,8 @@ export default function MapView() {
   const [selectedCruise, setSelectedCruise] = useState(null);
   const [selectedSensor, setSelectedSensor] = useState(null);
   const [hoveredStateId, setHoveredStateId] = useState(null);
+
+  const timeIndex = useAppSelector(selectTimeIndex);
 
   useEffect(() => {
     document.title = `Map`;
@@ -124,7 +134,6 @@ export default function MapView() {
   }, [map]);
 
   useEffect(() => {
-    // display cruise card info on click
     map.current.on("click", "cruises", (e) => {
       GetZarrGeospatialIndex(
         e.features[0].properties.cruise,
@@ -132,10 +141,10 @@ export default function MapView() {
         e.lngLat["lat"]
       ).then((clickedIndex) => {
         console.log(clickedIndex);
-        // setSelectedIndex(clickedIndex);
+        dispatch(updateTimeIndex(clickedIndex));
       });
 
-      // const placeholder = createPopupContent();
+      // TODO: need to get this to redirect to the correct timeIndex
       new maplibregl.Popup()
         .setLngLat(e.lngLat)
         .setHTML(
@@ -143,20 +152,12 @@ export default function MapView() {
           Ship: ${e.features[0].properties.ship}<br />
           Cruise: ${e.features[0].properties.cruise}<br />
           Sensor: ${e.features[0].properties.sensor}<br />
-          → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=0">view echogram</a>
+          → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&timeIndex=1024">view echogram</a>
           `
         )
-        // .setDOMContent(placeholder)
-        // .setHTML(placeholder)
         .addTo(map.current);
-
-      // const placeholder = <Link to="/about">About</Link>;
-      // const placeholder = <Link to="/about">About</Link>;
-      // const domNode = document.getElementById('PopupContent');
-      // const root = createRoot(domNode);
-      // root.render(placeholder);
     });
-  }, []);
+  }, [dispatch, timeIndex]);
 
   useEffect(() => {
     // selected cruise info

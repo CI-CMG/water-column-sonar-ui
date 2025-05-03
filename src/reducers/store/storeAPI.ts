@@ -103,6 +103,40 @@ export const fetchLongitude = (ship: string, cruise: string, sensor: string, ind
         });
 }
 
+/* --- LATITUDE All — for ping-time lookup --- */
+export const fetchLatitudeAll = (ship: string, cruise: string, sensor: string ): any => {    
+    const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;    
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
+            return zarrGroup;
+        })
+        .then((rootPromise) => {
+            const latitudeArray = zarr.open(rootPromise.resolve("latitude"), { kind: "array" });
+            return latitudeArray;
+        })
+        .then((latitudeArray) => {
+            return get(latitudeArray, [slice(null)]); // returns all the data!
+        });
+}
+
+/* --- LONGITUDE All — for ping-time lookup --- */
+export const fetchLongitudeAll = (ship: string, cruise: string, sensor: string ): any => {
+    const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;    
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
+            return zarrGroup;
+        })
+        .then((rootPromise) => {
+            const longitudeArray = zarr.open(rootPromise.resolve("longitude"), { kind: "array" });
+            return longitudeArray; // TODO: don't need to create consts here...
+        })
+        .then((longitudeArray) => {
+            return get(longitudeArray, [slice(null)]); // returns all the data!
+        });
+}
+
 /* --- TIME --- */
 export const fetchTime = (ship: string, cruise: string, sensor: string, indexTime: number ) => {
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;

@@ -15,7 +15,7 @@ import { useAppSelector } from "../../app/hooks.js";
 
 
 const handleMouseOut = () => {
-  d3.select('#colorPaletteValue').text('...');
+  d3.select('#colorPaletteValue').text('~');
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +87,7 @@ const ColorMap = ({
         <span id="colorPalette"/>
       </div>
       
-      <span id="colorPaletteValue">...</span>
+      <span id="colorPaletteValue">~</span>
     </div>
   );
 };
