@@ -26,7 +26,7 @@ export interface StoreState {
   svMax: number,
 
   depthIndex: number,
-  timeIndex: number, // value passed in via url to jump to location
+  timeIndex: number | null, // value passed in via url to jump to location
   frequencyIndex: number,
 
   colorMaps: any,
@@ -72,11 +72,11 @@ const initialState: StoreState = {
   svMax: -30,
 
   depthIndex: 0, // these will hold mouses click coordinates
-  timeIndex: 0,
+  timeIndex: null,
   frequencyIndex: 0,
 
   colorMaps: WaterColumnColors,
-  colorMapButtonIndex: 0,
+  colorMapButtonIndex: 0, // TODO: should be defined by the url param
 
   storeAttributes: null,
   storeAttributesStatus: "idle",

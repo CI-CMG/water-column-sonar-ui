@@ -42,35 +42,22 @@ import {
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-// import moment from 'moment-timezone';
-// import tzlookup from 'tz-lookup';
-// import debounce from 'lodash.debounce';
-// const getDateTime = (epochSeconds: number, timezone: string) => {
-//   const tempDate = new Date(0);
-//   tempDate.setUTCMilliseconds(epochSeconds * 1000);
-//   const timestamp = tempDate.toISOString().substring(0, 19);
-//   return moment.tz(timestamp, 'Etc/UTC').clone().tz(`${timezone}`);
-// };
-// return getDateTime(props.selectedEchogramPoint.timestamp, 'Etc/UTC');
-
 const getDateTime = function (epochSeconds, timezone) {
   // timezone='Etc/UTC'
   const tempDate = new Date(0);
   tempDate.setUTCMilliseconds(epochSeconds * 1000);
-  // const timestamp = tempDate.toISOString().substring(0, 19);
   return `${tempDate.toISOString().substring(0, 19)}Z`
-  // return moment.tz(timestamp, 'Etc/UTC').clone().tz(`${timezone}`);
 };
 
 
 const InformationPanel = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const dispatch = useAppDispatch()
 
-  // from cruiseSlice
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
-
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const colorMapButtonIndex = useAppSelector(selectColorMapButtonIndex); // 
   const attributes = useAppSelector(selectStoreAttributes);
@@ -82,11 +69,11 @@ const InformationPanel = () => {
   const depth = useAppSelector(selectDepth);
   const bottom = useAppSelector(selectBottom);
   const sv = useAppSelector(selectSv);
-
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
+  const depthIndex = useAppSelector(selectDepthIndex);
+  const timeIndex = useAppSelector(selectTimeIndex);
   
-  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
 
@@ -116,7 +103,7 @@ const InformationPanel = () => {
   };
 
   useEffect(() => {
-    if(frequencies !== null){
+    if(frequencies !== null){ // TODO: add all constraints
       setLoading(false);
     }
   }, [frequencies]);
@@ -124,10 +111,6 @@ const InformationPanel = () => {
   const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${ship}/${cruise}/${sensor}/`;
   const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${ship}/${cruise}/${sensor}/`;
   const url_level_2 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/${ship}/${cruise}/${sensor}/`;
-
-  const depthIndex = useAppSelector(selectDepthIndex);
-  const timeIndex = useAppSelector(selectTimeIndex);
-  // const frequencyIndex = useAppSelector(selectFrequencyIndex);
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -336,6 +319,7 @@ const InformationPanel = () => {
 
           <hr />
           <p><b>Data Access:</b></p>
+          {/* https://echolevels.readthedocs.io/en/latest/levels_proposed.html */}
           <p>
             <b>Level 0:</b>
             <span className="font-monospace float-end">

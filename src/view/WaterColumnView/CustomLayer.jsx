@@ -147,8 +147,8 @@ const CustomLayer = () => {
     
     // wait to start accessing the store
     if (attributes !== null && storeShape !== null && !initialized) {
-      setInitialized(true); // this fixes multiple layers, but doesnt allow updates when buttons change
       console.log('creating new layer');
+      setInitialized(true); // this fixes multiple layers, but doesnt allow updates when buttons change
       layerContainer.addLayer(createLeafletElement());
     }
 

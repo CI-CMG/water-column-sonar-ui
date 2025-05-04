@@ -16,7 +16,6 @@ import {
 import { CRS } from "leaflet";
 import CustomLayer from "./CustomLayer";
 import InformationPanel from "./InformationPanel";
-
 import {
   updateShip,
   updateCruise,
@@ -47,18 +46,18 @@ import {
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
   const dispatch = useAppDispatch();
-  const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
 
-  const ship = useAppSelector(selectShip); //  get from redux
+  const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
+  const initialTimeIndex = Number(searchParams.get('time'));
+
+  const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
   const attributes = useAppSelector(selectStoreAttributes);
-
   const indexDepth = useAppSelector(selectDepthIndex);
-  const timeIndex = useAppSelector(selectTimeIndex);
+  const timeIndex = useAppSelector(selectTimeIndex); // we are opening the page for the first time
 
-  useEffect(() => {
-    // Write out the query parameters:
+  useEffect(() => { // initialize query parameters:
     // /water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=1024
     if(ship === null){
       dispatch(updateShip(searchParams.get('ship'))); // store in redux
@@ -69,18 +68,19 @@ export default function WaterColumnView() {
     if(sensor === null) {
       dispatch(updateSensor(searchParams.get('sensor')));
     }
-    if(timeIndex === 0) { // can this create problems?
-      dispatch(updateTimeIndex(Number(searchParams.get('time'))));
+    if(timeIndex === null) {
+      console.log(`intialTimeIndex: ${initialTimeIndex}`);
+      dispatch(updateTimeIndex(initialTimeIndex));
     }
-
+    
     if(ship !== null && cruise !== null && sensor !== null) {
       dispatch(storeAttributesAsync({ ship, cruise, sensor })); // don't need to update each time
       dispatch(storeShapeAsync({ ship, cruise, sensor }));
       dispatch(frequenciesAsync({ ship, cruise, sensor })); // don't need to update each time
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, timeIndex]); // TODO: update on click
+  }, [dispatch, searchParams, ship, cruise, sensor, timeIndex, initialTimeIndex]);
 
-  useEffect(() => {
+  useEffect(() => { // make async requests for all infomation panel values
     if(ship !== null && cruise !== null && sensor !== null) {
       dispatch(latitudeAsync({ ship, cruise, sensor, indexTime: timeIndex }));
       dispatch(longitudeAsync({ ship, cruise, sensor, indexTime: timeIndex }));
@@ -100,11 +100,15 @@ export default function WaterColumnView() {
 
   const mapRef = useRef(null);
 
-  const MapEvents = () => { // on mouse click print coordinates
+  const MapEvents = () => {
+    // mouse click in water column view updates info panel & url
     useMapEvents({
       click(e) {
         const newTimeIndex = parseInt(e.latlng.lng, 10);
+        
         dispatch(updateTimeIndex(newTimeIndex));
+        dispatch(updateDepthIndex(parseInt(e.latlng.lat * -1.0, 10)));
+
         // And update mouse locations
         setSearchParams(
           (prev) => {
@@ -114,8 +118,7 @@ export default function WaterColumnView() {
           // { preventScrollReset: true }
         );
         //
-        dispatch(updateDepthIndex(parseInt(e.latlng.lat * -1.0, 10)));
-
+        
         // const center = map.getCenter();
         // console.log('map x center: ', center.lng); // TODO: write for the mini map viewer
       },
@@ -124,25 +127,19 @@ export default function WaterColumnView() {
     return null;
   }
 
-
-  // const mapParameters = {
-  //   crs: CRS.Simple,
-  //   zoom: 0,
-  //   center: [-1 * (window.innerHeight / 2) + 60, (window.innerWidth / 2) - 20], // TODO: needs to accept "center" ping time index
-  //   minZoom: 0,
-  //   maxZoom: 0, // TODO: add two more levels of zoom
-  //   zoomControl: false,
-  //   tileSize: 512, // TODO: get from store... see custom layer
-  // };
-  
+  const mapCenterY = -1 * (window.innerHeight / 2) + 60;
+  // conditional center the x
+  // const mapCenterX = (window.innerWidth / 2) - 20;
+  console.log(window.innerWidth);
+  const mapCenterX = initialTimeIndex;
+  const mapCenter = [mapCenterY, mapCenterX];
 
   return (
     <div className="WaterColumnView">
       <MapContainer
-        // {...mapParameters}
         crs={ CRS.Simple}
         zoom={0}
-        center={[-1 * (window.innerHeight / 2) + 60, (window.innerWidth / 2) - 20]}
+        center={mapCenter}
         minZoom={0}
         maxZoom={0}
         zoomControl={false}
@@ -159,28 +156,10 @@ export default function WaterColumnView() {
                 radius={10}
                 stroke={true}
               />
+              <>
+                {(attributes !== null) ? <CustomLayer  /> : <></>}
+              </>
             </LayerGroup>
-            <>
-              {
-              (attributes !== null)
-              ?
-              <CustomLayer  /> : <></>
-              }
-            </>
-            {/* <>
-              { // TODO: follow this to refresh the layer:
-                //  https://react-leaflet.js.org/docs/core-architecture/
-                (depthArray !== null &&
-                timeArray !== null &&
-                frequencyArray !== null &&
-                latitudeArray !== null &&
-                longitudeArray !== null &&
-                svArray !== null)
-                ?
-                <CustomLayer svArray={svArray} selectedFrequency={Number(searchParams.get('frequency'))} /> : <></>
-                // need to pass in the frequencyIndex
-              }
-            </> */}
           </LayersControl.Overlay>
         </LayersControl>
         <MapEvents />
