@@ -286,6 +286,7 @@ const InformationPanel = () => {
                 type="number"
                 size="sm"
                 defaultValue={svMin}
+                max={svMax}
                 name="minDB"
                 onChange={(e) => dispatch(updateSvMin(e.target.value))}
                 className="w-75"
@@ -300,6 +301,7 @@ const InformationPanel = () => {
               <Form.Control
                 type="number"
                 defaultValue={svMax}
+                min={svMin}
                 name="maxDB"
                 onChange={(e) => dispatch(updateSvMax(e.target.value))}
                 className="w-75"

@@ -74,9 +74,9 @@ const ColorMap = ({
       .style('fill', d => colorScaleFunction(d));
     
     const labels = [
-      [0, `${minSv} dB`, 'start'],
+      [0, `[${minSv} dB`, 'start'],
       [palette.length/2, (maxSv + minSv) / 2, 'middle'],
-      [palette.length, `${maxSv} dB`, 'end']
+      [palette.length, `${maxSv} dB]`, 'end']
     ]
     svg.selectAll('text')
       .data(labels, d => d)

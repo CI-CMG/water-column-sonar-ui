@@ -24,7 +24,7 @@
  - ~~make sure lat/lon are always 5 decimals, sv is always 2, depth is 2~~
  - ~~fix fetchSv to get proper frequency value? --> gets all for the plot right now~~
  - ~~add code to hide layers icon(s) in top-right via css [done, keeping for debugging]~~
- - add better labels to color palette legend -- [min, median, max]
+ - ~~add better labels to color palette legend -- [min, median, max]~~
 
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
  - get nav from pmtiles to water column working with ping time index
@@ -34,7 +34,6 @@
  - restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>
  - add graticules -> legend for depth, time
  - constrain the input Sv Range Minimum dB to be less than Maximum dB
- - constrain Sv form input to int, prevent float
  - constrain leaflet universe to just the data
  - regenerate pm-tiles with latest data
  - update cfn deployment to s3 copy
@@ -55,4 +54,4 @@
  - add toggle from UTC/local-time --> need to get moment library working
  - slowfly on home map <https://maplibre.org/maplibre-gl-js/docs/examples/flyto-options/>
  - sync views (leaflet vs maplibre): https://maplibre.org/maplibre-gl-js/docs/examples/sync-move/
- 
+ - constrain Sv form input to int, prevent float --> too hard
