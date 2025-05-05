@@ -177,7 +177,7 @@ const InformationPanel = () => {
             latitude !== null && longitude !== null ?
             <p>
               <b>Lon/Lat:</b>{" "}
-              <span className="font-monospace float-end">{ longitude }° E, { latitude }° N</span>
+              <span className="font-monospace float-end">{ longitude.toFixed(5) }° E, { latitude.toFixed(5) }° N</span>
             </p>
             :
             <></>
@@ -187,7 +187,7 @@ const InformationPanel = () => {
             depth !== null ?
             <p>
               <b>Depth:</b>
-              <span className="font-monospace float-end">{ depth } meters</span>
+              <span className="font-monospace float-end">{ depth.toFixed(1) } meters</span>
             </p>
             :
             <></>
@@ -197,7 +197,7 @@ const InformationPanel = () => {
             bottom !== null ?
             <p>
               <b>Bottom:</b>
-              <span className="font-monospace float-end">{ bottom } meters</span>
+              <span className="font-monospace float-end">{ bottom.toFixed(1) } meters</span>
             </p>
             :
             <></>
@@ -207,7 +207,7 @@ const InformationPanel = () => {
             sv !== null && frequencyButtonIndex !== null ?
             <p>
               <b>Selected Sv:</b>{" "}
-              <span className="font-monospace float-end">{ sv[frequencyButtonIndex] } dB</span>
+              <span className="font-monospace float-end">{ sv[frequencyButtonIndex].toFixed(2) } dB</span>
             </p>
             :
             <></>

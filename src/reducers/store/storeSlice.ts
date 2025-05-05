@@ -76,7 +76,7 @@ const initialState: StoreState = {
   frequencyIndex: 0,
 
   colorMaps: WaterColumnColors,
-  colorMapButtonIndex: 0, // TODO: should be defined by the url param
+  colorMapButtonIndex: 2, // Default is viridis
 
   storeAttributes: null,
   storeAttributesStatus: "idle",

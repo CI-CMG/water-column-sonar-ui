@@ -135,11 +135,13 @@ export default function MapView() {
 
   useEffect(() => {
     map.current.on("click", "cruises", (e) => {
+      console.log('getting geospatial index');
       GetZarrGeospatialIndex(
         e.features[0].properties.cruise,
         e.lngLat["lng"],
         e.lngLat["lat"]
       ).then((clickedIndex) => {
+        console.log('got geospatial index')
         console.log(clickedIndex);
         dispatch(updateTimeIndex(clickedIndex));
       });
@@ -163,8 +165,8 @@ export default function MapView() {
     // selected cruise info
     map.current.on("click", "cruises", (e) => {
       // TODO: after first click the mouse interaction slows down a lot!
-
       setHoveredStateId(null);
+      
       map.current.setFeatureState(
         { source: "cruises", sourceLayer: "cruises", id: hoveredStateId },
         { hover: false }

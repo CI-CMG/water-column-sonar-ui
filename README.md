@@ -34,6 +34,7 @@
  - constrain the input Sv Range Minimum dB to be less than Maximum dB
  - constrain Sv form input to int, prevent float
  - regenerate pm-tiles with latest data
+ - fix navbar button values
  - draw evr polygon on data -> currently circle
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
  - deploy to domain echo.fisf
