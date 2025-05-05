@@ -130,7 +130,7 @@ export default function WaterColumnView() {
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   // conditional center the x
   // const mapCenterX = (window.innerWidth / 2) - 20;
-  console.log(window.innerWidth);
+  // console.log(window.innerWidth);
   const mapCenterX = initialTimeIndex;
   const mapCenter = [mapCenterY, mapCenterX];
 

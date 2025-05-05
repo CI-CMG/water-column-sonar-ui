@@ -9,23 +9,22 @@ import * as d3 from 'd3';
 import { useSearchParams } from 'react-router';
 import { color } from 'd3-color';
 import { WaterColumnColors } from './WaterColumnColors.jsx';
-
 import {
   selectStoreAttributes,
   selectStoreShape,
+  selectSvMin,
+  selectSvMax,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppSelector } from "../../app/hooks";
 import { fetchSvTile } from "../../reducers/store/storeAPI.ts"
 
 
-// const palette = WaterColumnColors['viridis'];
-
-const minDB = -150; // min-db // TODO: get from buttons
-const maxDB = 10; // max-db
-// const tileSize = 512;
+// TODO: REPLACE THIS!
+// const minDB = -150;
+// const maxDB = 10;
 
 // function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName, tileSize) {
-function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape) {
+function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minDB, maxDB) {
   // this guy needs access to the svArray, move into function
   const palette = WaterColumnColors[paletteName]
 
@@ -112,11 +111,15 @@ const CustomLayer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
     return {'key': y, 'value': x}; 
-  })[searchParams.get('color')]);
+  })[searchParams.get('color')]); // getting from url, should get from redux
+
   const [initialized, setInitialized] = useState(false);
 
   const attributes = useAppSelector(selectStoreAttributes); // confusing names
   const storeShape = useAppSelector(selectStoreShape);
+  const svMin = useAppSelector(selectSvMin);
+  const svMax = useAppSelector(selectSvMax);
+  
 
   const { layerContainer } = useLeafletContext();
 
@@ -137,7 +140,15 @@ const CustomLayer = () => {
           canvas.setAttribute('width', tileSize.x);
           canvas.setAttribute('height', tileSize.y);
           // TODO: would be better to get tileSize from the chunk scheme than from metadata
-          drawTile(coordinateKey, canvas, selectedColorMap.value, attributes.tile_size, storeShape);
+          drawTile(
+            coordinateKey,
+            canvas,
+            selectedColorMap.value,
+            attributes.tile_size,
+            storeShape,
+            svMin,
+            svMax,
+          );
   
           return canvas;
         }
@@ -153,7 +164,7 @@ const CustomLayer = () => {
     }
 
     return; // layerContainer.addLayer(createLeafletElement());
-  }, [attributes, storeShape, layerContainer, initialized, selectedColorMap.value]); // frequencyIndex
+  }, [attributes, storeShape, layerContainer, initialized, selectedColorMap.value, svMin, svMax]);
 };
 
 export default CustomLayer;

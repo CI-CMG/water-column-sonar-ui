@@ -42,26 +42,27 @@ const GetZarrGeospatialIndex = function (cruise, lng, lat) {
     longitudeArray(shipName, cruiseName, sensorName),
   ])
     .then(([latitudeData, longitudeData]) => {
-        let aa = Array.from(latitudeData);
-        let bb = Array.from(longitudeData);
+      console.log('got points')
+      let aa = Array.from(latitudeData);
+      let bb = Array.from(longitudeData);
 
-        const dataJoined = aa.map((e, i) => [bb[i], e])
-        // Note redundant points will cause problems
-        const clickedLinestring = lineString(dataJoined); // 162_727
-        const cleanedClickedLinestring = cleanCoords(clickedLinestring); // 119_280 // TODO: problem w too few coordinates
-        // clickedLinestring
-        let snapped = nearestPointOnLine(
-          cleanedClickedLinestring, // [longitude, latitude]
-          clickedPoint
-        );
-        console.log(
-            "closest polyline index: " +
-            snapped.properties.index +
-            " of " +
-            latitudeData.length +
-            " indices."
-        );
-        return snapped.properties.index;
+      const dataJoined = aa.map((e, i) => [bb[i], e])
+      // Note redundant points will cause problems
+      const clickedLinestring = lineString(dataJoined); // 162_727
+      const cleanedClickedLinestring = cleanCoords(clickedLinestring); // 119_280 // TODO: problem w too few coordinates
+      let snapped = nearestPointOnLine(
+        // clickedLinestring,
+        cleanedClickedLinestring, // [longitude, latitude]
+        clickedPoint,
+      );
+      console.log(
+          "closest polyline index: " +
+          snapped.properties.index +
+          " of " +
+          latitudeData.length +
+          " indices."
+      );
+      return snapped.properties.index;
     })
     .catch((e) => {
       console.log(e);
