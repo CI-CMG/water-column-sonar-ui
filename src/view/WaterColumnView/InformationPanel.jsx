@@ -284,6 +284,7 @@ const InformationPanel = () => {
               <Form.Label>Sv Minimum (dB)</Form.Label>
               <Form.Control
                 type="number"
+                size="sm"
                 defaultValue={svMin}
                 name="minDB"
                 onChange={(e) => dispatch(updateSvMin(e.target.value))}
@@ -311,7 +312,7 @@ const InformationPanel = () => {
               <Form.Check
                 type="switch"
                 id="custom-switch"
-                label="Mask Subbottom Data"
+                label="Mask Data Beneath Sea Floor"
                 defaultChecked="true"
               />
             </Form.Group>

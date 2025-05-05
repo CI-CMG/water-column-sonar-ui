@@ -1,7 +1,7 @@
 {
   "name": "water-column-ui",
   "private": true,
-  "version": "25.4.0",
+  "version": "25.5.0",
   "homepage": "https://www.watercolumnproject.org/",
   "repository": {
     "type": "git",
@@ -22,10 +22,10 @@
     "@turf/turf": "^7.2.0",
     "@types/three": "0.147.1",
     "@zarrita/ndarray": "^0.1.0",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.9",
-    "d3": "^7.8.5",
+    "d3": "^7.9.0",
     "d3-color": "^3.1.0",
     "d3-scale": "^4.0.2",
     "leaflet": "^1.9.4",
@@ -41,8 +41,8 @@
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
     "react-redux": "^9.2.0",
-    "react-router": "^7.5.0",
-    "react-router-dom": "^7.5.0",
+    "react-router": "^7.5.3",
+    "react-router-dom": "^7.5.3",
     "sass": "^1.80.4",
     "three": "0.148.0",
     "usehooks-ts": "^3.1.1",
@@ -60,6 +60,6 @@
     "eslint-plugin-react-refresh": "^0.4.13",
     "globals": "^15.11.0",
     "typescript": "^5",
-    "vite": "6.2.6"
+    "vite": "^6.3.5"
   }
 }

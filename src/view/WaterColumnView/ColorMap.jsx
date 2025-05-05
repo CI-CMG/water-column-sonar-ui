@@ -29,7 +29,7 @@ const ColorMap = ({
 
   // https://2019.wattenberger.com/blog/react-and-d3
   const width = 350;
-  const height = 30;
+  const height = 40;
 
   useEffect(() => { // https://github.com/CI-CMG/echofish-ui/blob/master/src/main/frontend/src/components/waterColumn/ColorPaletteValues.vue
     const handleMouseOver = (d) => {
@@ -60,7 +60,7 @@ const ColorMap = ({
     const svg = d3.select('#colorPalette')
       .append('svg')
       .attr('height', height)
-      .attr('width', width);
+      .attr('width', width+5);
 
     svg.selectAll('.bars')
       .data(range(palette.length), d => d)
@@ -68,10 +68,26 @@ const ColorMap = ({
       .append('rect')
       .attr('class', 'bars')
       .attr('x', i => ((i * width) / palette.length))
-      .attr('y', 0)
+      .attr('y', 20)
       .attr('width', width / palette.length)
       .attr('height', height)
       .style('fill', d => colorScaleFunction(d));
+    
+    const labels = [
+      [0, `${minSv} dB`, 'start'],
+      [palette.length/2, (maxSv + minSv) / 2, 'middle'],
+      [palette.length, `${maxSv} dB`, 'end']
+    ]
+    svg.selectAll('text')
+      .data(labels, d => d)
+      .enter()
+      .append('text') // only need to label: first, middle, last
+      .attr("fill", "black")
+      .attr('x', i => ((i[0] * width) / palette.length))
+      .attr('y', 12)
+      .attr('dy', '0.20em')
+      .attr('text-anchor', d => d[2])
+      .text(d => d[1]);
 
     svg.selectAll('rect')
       .on('mouseover', (d) => handleMouseOver(d)) // TODO: leaving off here with problem getting minSv???

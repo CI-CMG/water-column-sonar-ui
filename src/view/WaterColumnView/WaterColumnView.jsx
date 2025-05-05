@@ -28,7 +28,7 @@ import {
   selectDepthIndex,
   selectTimeIndex,
   selectStoreAttributes,
-  selectFrequencyButtonIndex,
+  // selectFrequencyButtonIndex,
   //
   storeAttributesAsync,
   storeShapeAsync,
