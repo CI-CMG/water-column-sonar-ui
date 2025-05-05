@@ -92,6 +92,7 @@ const InformationPanel = () => {
   };
 
   const handleSelectFrequency = (key) => {
+    // console.log(`frequency changed to: ${Number(key)}`)
     dispatch(updateFrequencyButtonIndex(frequencies.findIndex(x => x === Number(key))));
     setSearchParams(
       (prev) => {

@@ -244,15 +244,12 @@ export const fetchSvTile = (
     const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
     return zarr.withConsolidated(new zarr.FetchStore(url))
         .then((storePromise) => {
-            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
-            return zarrGroup;
+            return zarr.open.v2(storePromise, { kind: "group" });
         })
         .then((rootPromise) => {
-            const svArray = zarr.open(rootPromise.resolve("Sv"), { kind: "array" });
-            return svArray;
+            return zarr.open(rootPromise.resolve("Sv"), { kind: "array" });
         })
         .then((svArray) => {
-            const sv = get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]);
-            return sv;
+            return get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]);
         });
 }

@@ -14,17 +14,13 @@ import {
   selectStoreShape,
   selectSvMin,
   selectSvMax,
+  selectFrequencyButtonIndex,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppSelector } from "../../app/hooks";
 import { fetchSvTile } from "../../reducers/store/storeAPI.ts"
 
 
-// TODO: REPLACE THIS!
-// const minDB = -150;
-// const maxDB = 10;
-
-// function drawTile(coordinateKey, canvas, svArray, selectedFrequency, paletteName, tileSize) {
-function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minDB, maxDB) {
+function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minDB, maxDB, selectFrequency) {
   // this guy needs access to the svArray, move into function
   const palette = WaterColumnColors[paletteName]
 
@@ -67,7 +63,7 @@ function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minD
     ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
     ctx.fillText(`{${indicesLeft}, ${indicesRight}, ${indicesTop}, ${indicesBottom}}`, 20, 60);
 
-    fetchSvTile('Henry_B._Bigelow', 'HB1906', 'EK60', indicesTop, indicesBottom, indicesLeft, indicesRight, 1)
+    fetchSvTile('Henry_B._Bigelow', 'HB1906', 'EK60', indicesTop, indicesBottom, indicesLeft, indicesRight, selectFrequency)
       .then((d1) => {
         const d = d1; // as RawArray;
         const [height, width] = d.shape;
@@ -84,23 +80,6 @@ function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minD
         ctx.putImageData(new ImageData(uintc8, width, height), 0, 0);
       });
 
-    // get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]) // selectedF is from url
-    //   .then((d1) => {
-    //     const d = d1; // as RawArray;
-    //     const [height, width] = d.shape;
-    //     const uintc8 = new Uint8ClampedArray(d.data.length * 4).fill(255);
-
-    //     for (let i = 0; i < d.data.length; i++) {
-    //       if (!Number.isNaN(d.data[i]) && d.data[i] > minDB && d.data[i] < maxDB) {
-    //         const pixelColor = color(colorfunc(greyMapFunc(d.data[i])).substring(0, 7));
-    //         uintc8[i * 4] = pixelColor.r;
-    //         uintc8[i * 4 + 1] = pixelColor.g;
-    //         uintc8[i * 4 + 2] = pixelColor.b;
-    //       }
-    //     }
-    //     ctx.putImageData(new ImageData(uintc8, width, height), 0, 0);
-    //   });
-
     return;
   }
 }
@@ -115,11 +94,11 @@ const CustomLayer = () => {
 
   const [initialized, setInitialized] = useState(false);
 
-  const attributes = useAppSelector(selectStoreAttributes); // confusing names
+  const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
-  
+  const selectFrequencyIndex = useAppSelector(selectFrequencyButtonIndex);
 
   const { layerContainer } = useLeafletContext();
 
@@ -148,28 +127,34 @@ const CustomLayer = () => {
             storeShape,
             svMin,
             svMax,
+            selectFrequencyIndex,
           );
   
           return canvas;
         }
       });
+
       return new Grid();
     };
     
     // wait to start accessing the store
-    if (attributes !== null && storeShape !== null && !initialized) {
+    if (attributes !== null && storeShape !== null) { // && !initialized) {
       console.log('creating new layer');
-      setInitialized(true); // this fixes multiple layers, but doesnt allow updates when buttons change
+      // setInitialized(true); // this fixes multiple layers, but doesnt allow updates when buttons change
+      // layerContainer.eachLayer(function (layer) { // removes old layers
+      //   layerContainer.removeLayer(layer);
+      // });
+
       layerContainer.addLayer(createLeafletElement());
     }
 
-    return; // layerContainer.addLayer(createLeafletElement());
-  }, [attributes, storeShape, layerContainer, initialized, selectedColorMap.value, svMin, svMax]);
+    return () => {
+      // setInitialized(false);
+      console.log(`removed custom layer: ${selectFrequencyIndex}`)
+    }; // layerContainer.removeLayer();
+    // return;
+    // return; // layerContainer.addLayer(createLeafletElement());
+  }, [attributes, storeShape, layerContainer, initialized, selectedColorMap.value, svMin, svMax, selectFrequencyIndex]);
 };
 
 export default CustomLayer;
-
-CustomLayer.propTypes = {
-    // svArray: PropTypes.instanceOf(Object), // TODO: dont get from above, get from here...?
-    // selectedFrequency: PropTypes.instanceOf(Number)
-};

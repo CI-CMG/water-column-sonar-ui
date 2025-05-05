@@ -4,6 +4,7 @@ import {
 } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useSearchParams } from 'react-router';
+// import { useLeafletContext } from '@react-leaflet/core';
 import {
   MapContainer,
   LayersControl,
@@ -27,6 +28,7 @@ import {
   selectDepthIndex,
   selectTimeIndex,
   selectStoreAttributes,
+  selectFrequencyButtonIndex,
   //
   storeAttributesAsync,
   storeShapeAsync,
@@ -40,12 +42,17 @@ import {
   //
   updateDepthIndex,
   updateTimeIndex,
+  // selectFrequencies,
 } from "../../reducers/store/storeSlice";
+
 
 
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
   const dispatch = useAppDispatch();
+
+  const mapRef = useRef(null);
+  // const { layerContainer } = useLeafletContext();
 
   const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
   const initialTimeIndex = Number(searchParams.get('time'));
@@ -55,6 +62,7 @@ export default function WaterColumnView() {
   const sensor = useAppSelector(selectSensor);
   const attributes = useAppSelector(selectStoreAttributes);
   const indexDepth = useAppSelector(selectDepthIndex);
+  // const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex)
   const timeIndex = useAppSelector(selectTimeIndex); // we are opening the page for the first time
 
   useEffect(() => { // initialize query parameters:
@@ -98,8 +106,6 @@ export default function WaterColumnView() {
     }
   }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, timeIndex]); // TODO: update on click
 
-  const mapRef = useRef(null);
-
   const MapEvents = () => {
     // mouse click in water column view updates info panel & url
     useMapEvents({
@@ -115,12 +121,7 @@ export default function WaterColumnView() {
             prev.set('time', newTimeIndex);
             return prev;
           },
-          // { preventScrollReset: true }
         );
-        //
-        
-        // const center = map.getCenter();
-        // console.log('map x center: ', center.lng); // TODO: write for the mini map viewer
       },
     });
 
@@ -128,9 +129,6 @@ export default function WaterColumnView() {
   }
 
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
-  // conditional center the x
-  // const mapCenterX = (window.innerWidth / 2) - 20;
-  // console.log(window.innerWidth);
   const mapCenterX = initialTimeIndex;
   const mapCenter = [mapCenterY, mapCenterX];
 
@@ -157,7 +155,7 @@ export default function WaterColumnView() {
                 stroke={true}
               />
               <>
-                {(attributes !== null) ? <CustomLayer  /> : <></>}
+                { attributes ? <CustomLayer  /> : <></> }
               </>
             </LayerGroup>
           </LayersControl.Overlay>
