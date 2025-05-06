@@ -30,6 +30,7 @@ import {
   // selectFrequencyIndex,
   //
   selectStoreAttributes,
+  selectStoreShape,
   selectFrequencies, // all the values
   selectFrequencyButtonIndex,
   updateFrequencyButtonIndex,
@@ -61,6 +62,7 @@ const InformationPanel = () => {
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const colorMapButtonIndex = useAppSelector(selectColorMapButtonIndex); // 
   const attributes = useAppSelector(selectStoreAttributes);
+  const storeShape = useAppSelector(selectStoreShape);
   const frequencies = useAppSelector(selectFrequencies); // from store
   const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); // 
   const latitude = useAppSelector(selectLatitude); // from store
@@ -315,7 +317,8 @@ const InformationPanel = () => {
                 type="switch"
                 id="custom-switch"
                 label="Mask Data Beneath Sea Floor"
-                defaultChecked="true"
+                defaultChecked="false"
+                disabled
               />
             </Form.Group>
           </Row>
@@ -348,7 +351,8 @@ const InformationPanel = () => {
               </a>
             </span>
           </p>
-          {/* <p><i>Add total dimensions of L2 data:<br />depth x time x frequency</i></p> */}
+          <p style={{ textIndent: "10px" }}>Sv dimension:</p>
+          <p style={{ textIndent: "10px" }}>{storeShape[0].toLocaleString()} x {storeShape[1].toLocaleString()} x {storeShape[2].toLocaleString()} = {(storeShape[0]*storeShape[1]*storeShape[2]).toLocaleString()}</p>
           
           <br />
           <hr />

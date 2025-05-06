@@ -75,7 +75,7 @@ export default function MiniMapView() {
           -74.5 + (Math.random() - 0.5) * 10,
           40 + (Math.random() - 0.5) * 10
         ],
-        zoom: 10,
+        zoom: 11,
         minZoom: 2,
       });
 

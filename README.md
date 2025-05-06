@@ -25,17 +25,18 @@
  - ~~fix fetchSv to get proper frequency value? --> gets all for the plot right now~~
  - ~~add code to hide layers icon(s) in top-right via css [done, keeping for debugging]~~
  - ~~add better labels to color palette legend -- [min, median, max]~~
-
+ - ~~get nav from pmtiles to water column working with ping time index ...abandon~~
+ - ~~regenerate pm-tiles with latest data~~
+ 
+ - print dimension to the "Data Acces" info box
+ - restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>
+ 
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
- - get nav from pmtiles to water column working with ping time index
- - debounce mini map follow wc center...
+ - add graticules -> legend for depth, time
+
+ - debounce mini map follow wc center
  - make sure that HB1906 isnt hard coded everywhere
  - mask sub-bottom data w checkbox, not linestring
- - restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>
- - add graticules -> legend for depth, time
- - constrain the input Sv Range Minimum dB to be less than Maximum dB
- - constrain leaflet universe to just the data
- - regenerate pm-tiles with latest data
  - update cfn deployment to s3 copy
  - fix navbar button values
  - draw evr polygon on data -> currently circle
@@ -49,6 +50,7 @@
  - prototype knowledge graph query
  - add link to echofish tagged releases
  - capture echopype provenance
+ - constrain the input Sv Range Minimum dB to be less than Maximum dB
  - open and add "speed" to zarr --> needs to be manually written to zarr stores
  - get zoom working
  - add toggle from UTC/local-time --> need to get moment library working
