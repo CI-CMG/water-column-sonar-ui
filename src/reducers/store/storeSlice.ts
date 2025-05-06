@@ -37,7 +37,7 @@ export interface StoreState {
   // attributes: any, // metadata of the store
   // calibration_status, cruise_name, processing_software_name, processing_software_time, processing_software_version, sensor_name, ship_name, tile_size
 
-  storeShape: any,
+  storeShape: number[] | null,
   storeShapeStatus: "idle" | "loading" | "failed",
 
   frequencies: any,
@@ -68,8 +68,8 @@ const initialState: StoreState = {
   cruise: null, // "HB0707",
   sensor: null, // "EK60",
 
-  svMin: -80, // default values for min & max Sv threshold
-  svMax: -30,
+  svMin: -120, // default values for min & max Sv threshold
+  svMax: 0,
 
   depthIndex: 0, // these will hold mouses click coordinates
   timeIndex: null,

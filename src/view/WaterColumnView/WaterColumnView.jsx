@@ -9,7 +9,7 @@ import {
   MapContainer,
   LayersControl,
   LayerGroup,
-  Circle,
+  // Circle,
 } from "react-leaflet";
 import {
   useMapEvents
@@ -28,7 +28,7 @@ import {
   selectDepthIndex,
   selectTimeIndex,
   selectStoreAttributes,
-  // selectFrequencyButtonIndex,
+  selectStoreShape,
   //
   storeAttributesAsync,
   storeShapeAsync,
@@ -42,10 +42,7 @@ import {
   //
   updateDepthIndex,
   updateTimeIndex,
-  // selectFrequencies,
 } from "../../reducers/store/storeSlice";
-
-
 
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
@@ -61,8 +58,8 @@ export default function WaterColumnView() {
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
   const attributes = useAppSelector(selectStoreAttributes);
+  const storeShape = useAppSelector(selectStoreShape);
   const indexDepth = useAppSelector(selectDepthIndex);
-  // const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex)
   const timeIndex = useAppSelector(selectTimeIndex); // we are opening the page for the first time
 
   useEffect(() => { // initialize query parameters:
@@ -128,41 +125,49 @@ export default function WaterColumnView() {
     return null;
   }
 
-  const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenterX = initialTimeIndex;
+  const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenter = [mapCenterY, mapCenterX];
+
+  const margin = 400; // map maxBounds + margin  
 
   return (
     <div className="WaterColumnView">
-      <MapContainer
-        crs={ CRS.Simple}
-        zoom={0}
-        center={mapCenter}
-        minZoom={0}
-        maxZoom={0}
-        zoomControl={false}
-        tileSize={512}
-        className="Map"
-        ref={mapRef}
-      >
-        <LayersControl>
-          <LayersControl.Overlay checked name="echogram">
-            <LayerGroup>
-              <Circle
-                center={[-1, 1]}
-                pathOptions={{ color: '#D1FFBD', fillColor: 'white' }}
-                radius={10}
-                stroke={true}
-              />
-              <>
-                { attributes ? <CustomLayer  /> : <></> }
-              </>
-            </LayerGroup>
-          </LayersControl.Overlay>
-        </LayersControl>
-        <MapEvents />
-      </MapContainer>
-
+      {
+        (storeShape && attributes && mapCenter) ?
+          <MapContainer
+            crs={ CRS.Simple}
+            zoom={0}
+            center={mapCenter}
+            minZoom={0}
+            maxZoom={0}
+            zoomControl={false}
+            tileSize={512}
+            className="Map"
+            ref={mapRef}
+            maxBounds={[[-1 * Math.ceil(storeShape[0]/512)*512 - margin, 0 - margin], [0 + margin, storeShape[1] + margin]]}
+          >
+            <LayersControl>
+              <LayersControl.Overlay checked name="echogram">
+                <LayerGroup>
+                  {/* <Circle
+                    center={[-1, 1]}
+                    pathOptions={{ color: '#D1FFBD', fillColor: 'white' }}
+                    radius={10}
+                    stroke={true}
+                  /> */}
+                  <>
+                    <CustomLayer  />
+                  </>
+                </LayerGroup>
+              </LayersControl.Overlay>
+            </LayersControl>
+            <MapEvents />
+          </MapContainer>
+        :
+          <></>
+      }
+      
       <InformationPanel />
     </div>
   );
