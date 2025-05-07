@@ -15,7 +15,6 @@ import {
   selectCruise,
   selectSvMin,
   selectSvMax,
-  // selectFrequencyButtonIndex,
   selectFrequencyIndex,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppSelector } from "../../app/hooks";
@@ -102,10 +101,9 @@ const CustomLayer = () => {
   const cruise = useAppSelector(selectCruise);
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
-  // const selectFrequencyIndex = useAppSelector(selectFrequencyButtonIndex);
   const frequencyIndex = useAppSelector(selectFrequencyIndex);
 
-  const { layerContainer } = useLeafletContext();
+  const context = useLeafletContext();
 
   useEffect(() => {
     const createLeafletElement = () => {
@@ -123,12 +121,12 @@ const CustomLayer = () => {
           const canvas = document.createElement('canvas');
           canvas.setAttribute('width', tileSize.x);
           canvas.setAttribute('height', tileSize.y);
-          // TODO: would be better to get tileSize from the chunk scheme than from metadata
+          
           drawTile(
             coordinateKey,
             canvas,
             selectedColorMap.value,
-            attributes.tile_size,
+            attributes.tile_size, // TODO: would be better to get tileSize from the chunk scheme than from metadata
             storeShape,
             svMin,
             svMax,
@@ -150,17 +148,15 @@ const CustomLayer = () => {
       // layerContainer.eachLayer(function (layer) { // removes old layers
       //   layerContainer.removeLayer(layer);
       // });
-
-      layerContainer.addLayer(createLeafletElement());
+      const container = context.layerContainer || context.map;
+      container.addLayer(createLeafletElement());
     }
 
     return () => {
-      // setInitialized(false);
       console.log(`removed custom layer: ${frequencyIndex}`)
-    }; // layerContainer.removeLayer();
-    // return;
-    // return; // layerContainer.addLayer(createLeafletElement());
-  }, [attributes, storeShape, layerContainer, initialized, selectedColorMap.value, svMin, svMax, frequencyIndex]);
+    };
+
+  }, [attributes, storeShape, context, initialized, selectedColorMap.value, svMin, svMax, frequencyIndex, cruise]);
 };
 
 export default CustomLayer;

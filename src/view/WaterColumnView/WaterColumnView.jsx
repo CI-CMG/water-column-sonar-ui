@@ -160,19 +160,21 @@ export default function WaterColumnView() {
           >
             {/* <MyComponent /> */}
 
-            <LayersControl>
+            {/* <LayersControl>
               <LayersControl.Overlay checked name="echogram">
                 <LayerGroup>
-                  {/* <Circle
+                  <Circle
                     center={[-1, 1]}
                     pathOptions={{ color: '#D1FFBD', fillColor: 'white' }}
                     radius={10}
                     stroke={true}
-                  /> */}
+                  />
                   <CustomLayer  />
                 </LayerGroup>
               </LayersControl.Overlay>
-            </LayersControl>
+            </LayersControl> */}
+
+            <CustomLayer  />
 
             <MapEvents />
           </MapContainer>
