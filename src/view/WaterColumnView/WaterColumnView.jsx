@@ -28,6 +28,7 @@ import {
   //
   selectDepthIndex,
   selectTimeIndex,
+  selectFrequencyIndex,
   selectStoreAttributes,
   selectStoreShape,
   //
@@ -43,6 +44,7 @@ import {
   //
   updateDepthIndex,
   updateTimeIndex,
+  updateFrequencyIndex,
 } from "../../reducers/store/storeSlice";
 
 /* -------- Main View of Water Column Page ---------- */
@@ -54,6 +56,7 @@ export default function WaterColumnView() {
 
   const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
   const initialTimeIndex = Number(searchParams.get('time'));
+  const initialFrequencyIndex = Number(searchParams.get('frequency'));
 
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
@@ -62,6 +65,7 @@ export default function WaterColumnView() {
   const storeShape = useAppSelector(selectStoreShape);
   const indexDepth = useAppSelector(selectDepthIndex);
   const timeIndex = useAppSelector(selectTimeIndex); // we are opening the page for the first time
+  const frequencyIndex = useAppSelector(selectFrequencyIndex);
 
   useEffect(() => { // initialize query parameters:
     // /water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=1024
@@ -75,8 +79,11 @@ export default function WaterColumnView() {
       dispatch(updateSensor(searchParams.get('sensor')));
     }
     if(timeIndex === null) {
-      console.log(`intialTimeIndex: ${initialTimeIndex}`);
+      // console.log(`intialTimeIndex: ${initialTimeIndex}`);
       dispatch(updateTimeIndex(initialTimeIndex));
+    }
+    if(frequencyIndex === null) {
+      dispatch(updateFrequencyIndex(initialFrequencyIndex));
     }
     
     if(ship !== null && cruise !== null && sensor !== null) {
@@ -84,10 +91,10 @@ export default function WaterColumnView() {
       dispatch(storeShapeAsync({ ship, cruise, sensor }));
       dispatch(frequenciesAsync({ ship, cruise, sensor })); // don't need to update each time
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, timeIndex, initialTimeIndex]);
+  }, [dispatch, searchParams, ship, cruise, sensor, timeIndex, initialTimeIndex, initialFrequencyIndex, frequencyIndex]);
 
   useEffect(() => { // make async requests for all infomation panel values
-    if(ship !== null && cruise !== null && sensor !== null) {
+    if(ship && cruise && sensor && frequencyIndex !== null) {
       dispatch(latitudeAsync({ ship, cruise, sensor, indexTime: timeIndex }));
       dispatch(longitudeAsync({ ship, cruise, sensor, indexTime: timeIndex }));
       dispatch(timeAsync({ ship, cruise, sensor, indexTime: timeIndex }));
@@ -99,10 +106,10 @@ export default function WaterColumnView() {
         sensor,
         indexDepth: indexDepth, // TODO: wire this up to mouse click
         indexTime: timeIndex,
-        indexFrequency: 0 // TODO: remove this param
+        indexFrequency: frequencyIndex,
       }));
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, timeIndex]); // TODO: update on click
+  }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, timeIndex, frequencyIndex]); // TODO: update on click
 
   const MapEvents = () => { // TODO: move this into the component?
     // mouse click in water column view updates info panel & url
@@ -135,7 +142,7 @@ export default function WaterColumnView() {
   return (
     <div className="WaterColumnView">
       {
-        (storeShape && attributes && mapCenter) ?
+        (storeShape && attributes && mapCenter && frequencyIndex !== null) ?
           <MapContainer
             crs={ CRS.Simple}
             zoom={0}

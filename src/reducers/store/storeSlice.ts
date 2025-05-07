@@ -27,7 +27,7 @@ export interface StoreState {
 
   depthIndex: number,
   timeIndex: number | null, // value passed in via url to jump to location
-  frequencyIndex: number,
+  frequencyIndex: number | null,
 
   colorMaps: any,
   colorMapButtonIndex: number,
@@ -42,7 +42,7 @@ export interface StoreState {
 
   frequencies: any,
   frequenciesStatus: "idle" | "loading" | "failed",
-  frequencyButtonIndex: number,
+  frequencyButtonIndex: number | null, // dangerous
   
   latitude: number | null,
   latitudeStatus: "idle" | "loading" | "failed",
@@ -73,7 +73,7 @@ const initialState: StoreState = {
 
   depthIndex: 0, // these will hold mouses click coordinates
   timeIndex: null,
-  frequencyIndex: 0,
+  frequencyIndex: null,
 
   colorMaps: WaterColumnColors,
   colorMapButtonIndex: 2, // Default is viridis
@@ -87,7 +87,7 @@ const initialState: StoreState = {
 
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
-  frequencyButtonIndex: 0, // start with first frequency selected
+  frequencyButtonIndex: null, // start with first frequency selected
   
   latitude: null,
   latitudeStatus: "idle",
@@ -324,7 +324,7 @@ export const selectFrequencyIndex = (state: RootState) => state.store.frequencyI
 
 // export const selectAttributes = (state: RootState) => state.store.attributes; // TODO: remove
 export const selectFrequencies = (state: RootState) => state.store.frequencies;
-export const selectFrequencyButtonIndex = (state: RootState) => state.store.frequencyButtonIndex;
+// export const selectFrequencyButtonIndex = (state: RootState) => state.store.frequencyButtonIndex;
 export const selectLatitude = (state: RootState) => state.store.latitude;
 export const selectLongitude = (state: RootState) => state.store.longitude;
 export const selectTime = (state: RootState) => state.store.time;

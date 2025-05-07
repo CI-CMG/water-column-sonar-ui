@@ -15,7 +15,8 @@ import {
   selectCruise,
   selectSvMin,
   selectSvMax,
-  selectFrequencyButtonIndex,
+  // selectFrequencyButtonIndex,
+  selectFrequencyIndex,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppSelector } from "../../app/hooks";
 import { fetchSvTile } from "../../reducers/store/storeAPI.ts"
@@ -101,7 +102,8 @@ const CustomLayer = () => {
   const cruise = useAppSelector(selectCruise);
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
-  const selectFrequencyIndex = useAppSelector(selectFrequencyButtonIndex);
+  // const selectFrequencyIndex = useAppSelector(selectFrequencyButtonIndex);
+  const frequencyIndex = useAppSelector(selectFrequencyIndex);
 
   const { layerContainer } = useLeafletContext();
 
@@ -130,7 +132,7 @@ const CustomLayer = () => {
             storeShape,
             svMin,
             svMax,
-            selectFrequencyIndex,
+            frequencyIndex,
             cruise
           );
   
@@ -154,11 +156,11 @@ const CustomLayer = () => {
 
     return () => {
       // setInitialized(false);
-      console.log(`removed custom layer: ${selectFrequencyIndex}`)
+      console.log(`removed custom layer: ${frequencyIndex}`)
     }; // layerContainer.removeLayer();
     // return;
     // return; // layerContainer.addLayer(createLeafletElement());
-  }, [attributes, storeShape, layerContainer, initialized, selectedColorMap.value, svMin, svMax, selectFrequencyIndex]);
+  }, [attributes, storeShape, layerContainer, initialized, selectedColorMap.value, svMin, svMax, frequencyIndex]);
 };
 
 export default CustomLayer;

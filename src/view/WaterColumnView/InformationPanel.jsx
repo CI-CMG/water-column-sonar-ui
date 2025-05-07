@@ -32,8 +32,10 @@ import {
   selectStoreAttributes,
   selectStoreShape,
   selectFrequencies, // all the values
-  selectFrequencyButtonIndex,
-  updateFrequencyButtonIndex,
+  // selectFrequencyButtonIndex,
+  selectFrequencyIndex,
+  // updateFrequencyButtonIndex,
+  updateFrequencyIndex,
   selectLatitude, // uses clicked index
   selectLongitude,
   selectTime,
@@ -64,7 +66,8 @@ const InformationPanel = () => {
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
   const frequencies = useAppSelector(selectFrequencies); // from store
-  const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); // 
+  const frequencyIndex = useAppSelector(selectFrequencyIndex); // 
+  // const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); // 
   const latitude = useAppSelector(selectLatitude); // from store
   const longitude = useAppSelector(selectLongitude);
   const time = useAppSelector(selectTime);
@@ -95,7 +98,7 @@ const InformationPanel = () => {
 
   const handleSelectFrequency = (key) => {
     // console.log(`frequency changed to: ${Number(key)}`)
-    dispatch(updateFrequencyButtonIndex(frequencies.findIndex(x => x === Number(key))));
+    dispatch(updateFrequencyIndex(frequencies.findIndex(x => x === Number(key))));
     setSearchParams(
       (prev) => {
         prev.set('frequency', frequencies.findIndex(x => x === Number(key)));
@@ -154,7 +157,7 @@ const InformationPanel = () => {
           <br />
           <p style={{ color: 'hotpink' }}>
             <b>Debugging:</b>
-            <span className="font-monospace float-end">[d: { depthIndex }, t: { timeIndex }, f: { frequencyButtonIndex }]</span>
+            <span className="font-monospace float-end">[d: { depthIndex }, t: { timeIndex }, f: { frequencyIndex }]</span>
           </p>
           <p>
             <b>Ship:</b>
@@ -207,10 +210,10 @@ const InformationPanel = () => {
           }
 
           {
-            sv !== null && frequencyButtonIndex !== null ?
+            sv !== null && frequencyIndex !== null ?
             <p>
               <b>Selected Sv:</b>{" "}
-              <span className="font-monospace float-end">{ sv[frequencyButtonIndex].toFixed(2) } dB</span>
+              <span className="font-monospace float-end">{ sv[frequencyIndex].toFixed(2) } dB</span>
             </p>
             :
             <></>
@@ -245,7 +248,7 @@ const InformationPanel = () => {
             </Dropdown>
             <p>
               <b>Frequency:</b>{" "}
-              <span className="font-monospace">{frequencies[frequencyButtonIndex] / 1000} kHz</span>
+              <span className="font-monospace">{frequencies[frequencyIndex] / 1000} kHz</span>
             </p>
           </div>
 
