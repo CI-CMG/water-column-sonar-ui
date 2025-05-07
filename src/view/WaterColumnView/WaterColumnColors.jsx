@@ -1,7 +1,6 @@
 // https://support.echoview.com/WebHelp/Using_Echoview/Echogram/About_color_schemes.htm#Overview
 
 /* -------- Color Maps for Plotting ---------- */
-// eslint-disable-next-line react-refresh/only-export-components
 export const WaterColumnColors = {
     ek80: [
       '#9b070b', '#9a0f16', '#991721', '#971f2d',
@@ -39,6 +38,6 @@ export const WaterColumnColors = {
     ],
   };
 
-export const defaultColorPalette = 'virids';
+// export const defaultColorPalette = 'virids';
 
 export default WaterColumnColors;

@@ -59,10 +59,10 @@ function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minD
       return;
     }
 
-    ctx.font = '12px serif';
-    ctx.fillStyle = '#0000FF';
-    ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
-    ctx.fillText(`{${indicesLeft}, ${indicesRight}, ${indicesTop}, ${indicesBottom}}`, 20, 60);
+    // ctx.font = '12px serif';
+    // ctx.fillStyle = '#0000FF';
+    // ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
+    // ctx.fillText(`{${indicesLeft}, ${indicesRight}, ${indicesTop}, ${indicesBottom}}`, 20, 60);
 
     // TODO: get the cruise
     fetchSvTile('Henry_B._Bigelow', cruise, 'EK60', indicesTop, indicesBottom, indicesLeft, indicesRight, selectFrequency)
@@ -80,10 +80,10 @@ function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minD
           }
         }
         ctx.putImageData(new ImageData(uintc8, width, height), 0, 0);
+        return; // This sped things up a lot!
       });
-
-    return;
   }
+  return;
 }
 
 /* -------- Leaflet Layer that Plots Sv Data ---------- */
@@ -94,7 +94,7 @@ const CustomLayer = () => {
     return {'key': y, 'value': x}; 
   })[searchParams.get('color')]); // getting from url, should get from redux
 
-  const [initialized, setInitialized] = useState(false);
+  // const [initialized, setInitialized] = useState(false);
 
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
@@ -156,7 +156,7 @@ const CustomLayer = () => {
       console.log(`removed custom layer: ${frequencyIndex}`)
     };
 
-  }, [attributes, storeShape, context, initialized, selectedColorMap.value, svMin, svMax, frequencyIndex, cruise]);
+  }, [attributes, storeShape, context, selectedColorMap.value, svMin, svMax, frequencyIndex, cruise]);
 };
 
 export default CustomLayer;

@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
 // @ts-ignore
-import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors.jsx';
+import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors';
 
 import {
   fetchStoreAttributes,
