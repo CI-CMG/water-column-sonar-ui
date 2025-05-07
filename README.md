@@ -29,6 +29,7 @@
  - ~~regenerate pm-tiles with latest data~~
  - ~~print dimension to the "Data Acces" info box~~
  - ~~restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>~~
+ - read the documentation
 
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
  - add graticules -> legend for depth, time

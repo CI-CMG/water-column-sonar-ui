@@ -12,7 +12,8 @@ import {
   // Circle,
 } from "react-leaflet";
 import {
-  useMapEvents
+  useMapEvents,
+  useMap,
 } from 'react-leaflet/hooks'
 import { CRS } from "leaflet";
 import CustomLayer from "./CustomLayer";
@@ -103,9 +104,9 @@ export default function WaterColumnView() {
     }
   }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, timeIndex]); // TODO: update on click
 
-  const MapEvents = () => {
+  const MapEvents = () => { // TODO: move this into the component?
     // mouse click in water column view updates info panel & url
-    useMapEvents({
+    const map = useMapEvents({
       click(e) {
         const newTimeIndex = parseInt(e.latlng.lng, 10);
         
@@ -145,8 +146,13 @@ export default function WaterColumnView() {
             tileSize={512}
             className="Map"
             ref={mapRef}
-            maxBounds={[[-1 * Math.ceil(storeShape[0]/512)*512 - margin, 0 - margin], [0 + margin, storeShape[1] + margin]]}
+            maxBounds={[
+              [-1 * Math.ceil(storeShape[0]/512)*512 - margin, 0 - margin], // bottomRight
+              [0 + margin, storeShape[1] + margin] // topLeft
+            ]}
           >
+            {/* <MyComponent /> */}
+
             <LayersControl>
               <LayersControl.Overlay checked name="echogram">
                 <LayerGroup>
@@ -156,12 +162,11 @@ export default function WaterColumnView() {
                     radius={10}
                     stroke={true}
                   /> */}
-                  <>
-                    <CustomLayer  />
-                  </>
+                  <CustomLayer  />
                 </LayerGroup>
               </LayersControl.Overlay>
             </LayersControl>
+
             <MapEvents />
           </MapContainer>
         :

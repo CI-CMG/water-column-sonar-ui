@@ -12,6 +12,7 @@ import { WaterColumnColors } from './WaterColumnColors.jsx';
 import {
   selectStoreAttributes,
   selectStoreShape,
+  selectCruise,
   selectSvMin,
   selectSvMax,
   selectFrequencyButtonIndex,
@@ -20,7 +21,7 @@ import { useAppSelector } from "../../app/hooks";
 import { fetchSvTile } from "../../reducers/store/storeAPI.ts"
 
 
-function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minDB, maxDB, selectFrequency) {
+function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minDB, maxDB, selectFrequency, cruise) {
   // this guy needs access to the svArray, move into function
   const palette = WaterColumnColors[paletteName]
 
@@ -63,7 +64,8 @@ function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minD
     ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
     ctx.fillText(`{${indicesLeft}, ${indicesRight}, ${indicesTop}, ${indicesBottom}}`, 20, 60);
 
-    fetchSvTile('Henry_B._Bigelow', 'HB1906', 'EK60', indicesTop, indicesBottom, indicesLeft, indicesRight, selectFrequency)
+    // TODO: get the cruise
+    fetchSvTile('Henry_B._Bigelow', cruise, 'EK60', indicesTop, indicesBottom, indicesLeft, indicesRight, selectFrequency)
       .then((d1) => {
         const d = d1; // as RawArray;
         const [height, width] = d.shape;
@@ -96,6 +98,7 @@ const CustomLayer = () => {
 
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
+  const cruise = useAppSelector(selectCruise);
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
   const selectFrequencyIndex = useAppSelector(selectFrequencyButtonIndex);
@@ -128,6 +131,7 @@ const CustomLayer = () => {
             svMin,
             svMax,
             selectFrequencyIndex,
+            cruise
           );
   
           return canvas;
@@ -138,7 +142,7 @@ const CustomLayer = () => {
     };
     
     // wait to start accessing the store
-    if (attributes !== null && storeShape !== null) { // && !initialized) {
+    if (attributes && storeShape) { // && !initialized) {
       console.log('creating new layer');
       // setInitialized(true); // this fixes multiple layers, but doesnt allow updates when buttons change
       // layerContainer.eachLayer(function (layer) { // removes old layers
