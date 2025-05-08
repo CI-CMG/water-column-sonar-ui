@@ -1,6 +1,7 @@
 import {
   useEffect,
-  useRef
+  // useRef,
+  // useState,
 } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useSearchParams } from 'react-router';
@@ -10,6 +11,8 @@ import {
   // LayersControl,
   // LayerGroup,
   // Circle,
+  // Marker,
+  // Popup,
 } from "react-leaflet";
 import {
   useMapEvents,
@@ -47,14 +50,38 @@ import {
   updateFrequencyIndex,
 } from "../../reducers/store/storeSlice";
 
+
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
   const dispatch = useAppDispatch();
-
-  const mapRef = useRef(null);
-  // const { layerContainer } = useLeafletContext();
-
   const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
+  // const { layerContainer } = useLeafletContext();
+  
+  function LocationMarker() {
+    const dispatch = useAppDispatch();
+  
+    useMapEvents({
+      click(e) {
+        const newTimeIndex = parseInt(e.latlng.lng, 10);
+        const newDepthIndex = parseInt(e.latlng.lat * -1.0, 10);
+        console.log(`newTimeIndex: ${newTimeIndex}, newDepthIndex: ${newDepthIndex}`);
+        dispatch(updateTimeIndex(newTimeIndex));
+        dispatch(updateDepthIndex(newDepthIndex));
+
+        // And update mouse locations
+        setSearchParams(
+          (prev) => {
+            prev.set('time', newTimeIndex);
+            return prev;
+          },
+        );
+      },
+    })
+
+    return null;
+  }
+
+
   const initialTimeIndex = Number(searchParams.get('time'));
   const initialFrequencyIndex = Number(searchParams.get('frequency'));
 
@@ -109,42 +136,19 @@ export default function WaterColumnView() {
         indexFrequency: frequencyIndex,
       }));
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, timeIndex, frequencyIndex]); // TODO: update on click
-
-  const MapEvents = () => { // TODO: move this into the component?
-    // mouse click in water column view updates info panel & url
-    useMapEvents({
-      click(e) {
-        const newTimeIndex = parseInt(e.latlng.lng, 10);
-        
-        dispatch(updateTimeIndex(newTimeIndex));
-        dispatch(updateDepthIndex(parseInt(e.latlng.lat * -1.0, 10)));
-
-        // And update mouse locations
-        setSearchParams(
-          (prev) => {
-            prev.set('time', newTimeIndex);
-            return prev;
-          },
-        );
-      },
-    });
-
-    return null;
-  }
+  }, [dispatch, searchParams, ship, cruise, sensor, frequencyIndex]);
 
   const mapCenterX = initialTimeIndex;
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenter = [mapCenterY, mapCenterX];
-
-  const margin = 400; // map maxBounds + margin  
+  const margin = 400; // map maxBounds + margin
 
   return (
     <div className="WaterColumnView">
       {
-        (storeShape && attributes && frequencyIndex !== null) ?
+        (storeShape !== null && attributes !== null && frequencyIndex !== null) ?
           <MapContainer
-            crs={ CRS.Simple}
+            crs={CRS.Simple}
             zoom={0}
             center={mapCenter}
             minZoom={0}
@@ -152,16 +156,14 @@ export default function WaterColumnView() {
             zoomControl={false}
             tileSize={attributes.tile_size}
             className="Map"
-            ref={mapRef}
             maxBounds={[
-              [-1 * Math.ceil(storeShape[0]/attributes.tile_size)*attributes.tile_size - margin, 0 - margin], // bottomRight
-              [0 + margin, storeShape[1] + margin] // topLeft TODO: needs to also be rounded to nearest tilSize
+              [-1 * Math.ceil(storeShape[0]/attributes.tile_size)*attributes.tile_size - margin, 0 - margin], // bottomLeft?
+              [0 + margin, storeShape[1] + margin], // topRight?
             ]}
           >
-            {/* needs attributes and storeShape */}
             <CustomLayer  />
 
-            <MapEvents />
+            <LocationMarker />
           </MapContainer>
         :
           <></>

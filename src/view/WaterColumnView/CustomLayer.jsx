@@ -118,12 +118,9 @@ const CustomLayer = () => {
           let error;
           let tile = L.DomUtil.create('canvas', 'leaflet-tile');
           tile.setAttribute('width', container.options.tileSize);
-          tile.setAttribute('height', container.options.tileSize);
-          
+          tile.setAttribute('height', container.options.tileSize);          
           drawTile(coords, tile, selectedColorMap.value, attributes.tile_size, storeShape, svMin, svMax, frequencyIndex, cruise);
-
           setTimeout(() => { done(error, tile) }, 10);
-  
           return tile;
         },
 
