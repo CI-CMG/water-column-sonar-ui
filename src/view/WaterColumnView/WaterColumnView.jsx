@@ -7,13 +7,13 @@ import { useSearchParams } from 'react-router';
 // import { useLeafletContext } from '@react-leaflet/core';
 import {
   MapContainer,
-  LayersControl,
-  LayerGroup,
+  // LayersControl,
+  // LayerGroup,
   // Circle,
 } from "react-leaflet";
 import {
   useMapEvents,
-  useMap,
+  // useMap,
 } from 'react-leaflet/hooks'
 import { CRS } from "leaflet";
 import CustomLayer from "./CustomLayer";
@@ -113,7 +113,7 @@ export default function WaterColumnView() {
 
   const MapEvents = () => { // TODO: move this into the component?
     // mouse click in water column view updates info panel & url
-    const map = useMapEvents({
+    useMapEvents({
       click(e) {
         const newTimeIndex = parseInt(e.latlng.lng, 10);
         
@@ -142,7 +142,7 @@ export default function WaterColumnView() {
   return (
     <div className="WaterColumnView">
       {
-        (storeShape && attributes && mapCenter && frequencyIndex !== null) ?
+        (storeShape && attributes && frequencyIndex !== null) ?
           <MapContainer
             crs={ CRS.Simple}
             zoom={0}
@@ -150,30 +150,14 @@ export default function WaterColumnView() {
             minZoom={0}
             maxZoom={0}
             zoomControl={false}
-            tileSize={512}
+            tileSize={attributes.tile_size}
             className="Map"
             ref={mapRef}
             maxBounds={[
-              [-1 * Math.ceil(storeShape[0]/512)*512 - margin, 0 - margin], // bottomRight
-              [0 + margin, storeShape[1] + margin] // topLeft
+              [-1 * Math.ceil(storeShape[0]/attributes.tile_size)*attributes.tile_size - margin, 0 - margin], // bottomRight
+              [0 + margin, storeShape[1] + margin] // topLeft TODO: needs to also be rounded to nearest tilSize
             ]}
           >
-            {/* <MyComponent /> */}
-
-            {/* <LayersControl>
-              <LayersControl.Overlay checked name="echogram">
-                <LayerGroup>
-                  <Circle
-                    center={[-1, 1]}
-                    pathOptions={{ color: '#D1FFBD', fillColor: 'white' }}
-                    radius={10}
-                    stroke={true}
-                  />
-                  <CustomLayer  />
-                </LayerGroup>
-              </LayersControl.Overlay>
-            </LayersControl> */}
-
             <CustomLayer  />
 
             <MapEvents />

@@ -3,7 +3,12 @@ import {
   useState,
 } from 'react';
 import L from 'leaflet';
-import { useLeafletContext } from '@react-leaflet/core';
+import {
+  // createElementHook,
+  // createElementObject,
+  // useLayerLifecycle,
+  useLeafletContext,
+} from '@react-leaflet/core';
 import { scaleLinear, scaleThreshold } from 'd3-scale';
 import * as d3 from 'd3';
 import { useSearchParams } from 'react-router';
@@ -21,15 +26,9 @@ import { useAppSelector } from "../../app/hooks";
 import { fetchSvTile } from "../../reducers/store/storeAPI.ts"
 
 
-function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minDB, maxDB, selectFrequency, cruise) {
+function drawTile(coords, canvas, paletteName, tileSize, storeShape, minDB, maxDB, selectFrequency, cruise) {
   // this guy needs access to the svArray, move into function
   const palette = WaterColumnColors[paletteName]
-
-  const parts = coordinateKey.split('_');
-  const x = Number.parseInt(parts[0], 10);
-  const y = Number.parseInt(parts[1], 10);
-  const z = Number.parseInt(parts[2], 10);
-
   const ctx = canvas.getContext('2d');
 
   if (ctx) {
@@ -37,25 +36,28 @@ function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minD
     const maxBoundsY = Math.abs(dataDimension[0]);
     const maxBoundsX = Math.abs(dataDimension[1]);
 
-    const indicesLeft = tileSize * x;
-    const indicesRight = Math.min(tileSize * x + tileSize, maxBoundsX);
-    const indicesTop = tileSize * y;
-    const indicesBottom = Math.min(tileSize * y + tileSize, maxBoundsY);
+    const indicesLeft = tileSize * coords.x;
+    const indicesRight = Math.min(tileSize * coords.x + tileSize, maxBoundsX);
+    const indicesTop = tileSize * coords.y;
+    const indicesBottom = Math.min(tileSize * coords.y + tileSize, maxBoundsY);
 
-    const greyMapFunc = scaleLinear().domain([minDB, maxDB]).range([0, 255]).clamp(true);
+    const greyMapFunc = scaleLinear()
+      .domain([minDB, maxDB])
+      .range([0, 255])
+      .clamp(true);
     const colorfunc = scaleThreshold()
       .domain(d3.range(0, 255, 255 / palette.length))
-      .range(palette);
+      .range(palette)
 
     const maxBoundsValue = [[-1 * Math.ceil(dataDimension[0] / tileSize) * tileSize, 0], [0, Math.ceil(dataDimension[1] / tileSize) * tileSize]];
     const maxTileBoundsX = Math.abs(maxBoundsValue[1][1]) / tileSize;
     const maxTileBoundsY = Math.abs(maxBoundsValue[0][0]) / tileSize;
 
     // Diagnostic for getting X-Y-Z location of tiles
-    if (y >= maxTileBoundsY || y < 0 || x < 0 || x >= maxTileBoundsX) {
+    if (coords.y >= maxTileBoundsY || coords.y < 0 || coords.x < 0 || coords.x >= maxTileBoundsX) {
       ctx.font = '12px serif';
       ctx.fillStyle = '#BEBEBE';
-      ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
+      ctx.fillText(`{${coords.x}, ${coords.y}, ${coords.z}}`, 20, 40);
       return;
     }
 
@@ -86,15 +88,13 @@ function drawTile(coordinateKey, canvas, paletteName, tileSize, storeShape, minD
   return;
 }
 
-/* -------- Leaflet Layer that Plots Sv Data ---------- */
 const CustomLayer = () => {
+  const context = useLeafletContext();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
     return {'key': y, 'value': x}; 
-  })[searchParams.get('color')]); // getting from url, should get from redux
-
-  // const [initialized, setInitialized] = useState(false);
+  })[searchParams.get('color')]); // getting from url, TODO: should get from redux
 
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
@@ -103,60 +103,53 @@ const CustomLayer = () => {
   const svMax = useAppSelector(selectSvMax);
   const frequencyIndex = useAppSelector(selectFrequencyIndex);
 
-  const context = useLeafletContext();
-
   useEffect(() => {
-    const createLeafletElement = () => {
-      const Grid = L.GridLayer.extend({
+    const container = context.layerContainer || context.map;
+
+    const createDataLayer = () => {
+      const GridLayerExtended = L.GridLayer.extend({
         getTileSize: function() {
-          return new L.Point(attributes.tile_size, attributes.tile_size);
+           return new L.Point(attributes.tile_size, attributes.tile_size);
         },
   
-        createTile: function (coords) {
-          // for each tile dispatch a request with given x-y-z coordinates
-          const coordinateKey = `${coords.x}_${coords.y}_${coords.z}`;
+        createTile: (coords, done) => {
+          let error;
+ 
+          let tile = L.DomUtil.create('canvas', 'leaflet-tile');
+          tile.setAttribute('width', container.options.tileSize);
+          tile.setAttribute('height', container.options.tileSize);
           
-          var tileSize = this.getTileSize();
-          
-          const canvas = document.createElement('canvas');
-          canvas.setAttribute('width', tileSize.x);
-          canvas.setAttribute('height', tileSize.y);
-          
-          drawTile(
-            coordinateKey,
-            canvas,
-            selectedColorMap.value,
-            attributes.tile_size, // TODO: would be better to get tileSize from the chunk scheme than from metadata
-            storeShape,
-            svMin,
-            svMax,
-            frequencyIndex,
-            cruise
-          );
+          drawTile(coords, tile, selectedColorMap.value, attributes.tile_size, storeShape, svMin, svMax, frequencyIndex, cruise);
+
+          setTimeout(() => { done(error, tile) }, 10);
   
-          return canvas;
-        }
+          return tile;
+        },
+
+        // redraw(): () => { // where does this go?!
       });
 
-      return new Grid();
+      return new GridLayerExtended({
+        opacity: 0.95, // Opacity of the tiles. Can be used in the createTile() function.
+        updateInterval: 25, // Tiles will not update more than once every updateInterval milliseconds when panning
+        className: "echoFishGridLayer",
+      });
     };
     
     // wait to start accessing the store
-    if (attributes && storeShape) { // && !initialized) {
+    if (attributes && storeShape) {
       console.log('creating new layer');
-      // setInitialized(true); // this fixes multiple layers, but doesnt allow updates when buttons change
-      // layerContainer.eachLayer(function (layer) { // removes old layers
-      //   layerContainer.removeLayer(layer);
-      // });
-      const container = context.layerContainer || context.map;
-      container.addLayer(createLeafletElement());
+      container.addLayer(createDataLayer());
     }
 
     return () => {
       console.log(`removed custom layer: ${frequencyIndex}`)
+      container.removeLayer(createDataLayer());
     };
 
   }, [attributes, storeShape, context, selectedColorMap.value, svMin, svMax, frequencyIndex, cruise]);
+
+  return null;
 };
 
 export default CustomLayer;
