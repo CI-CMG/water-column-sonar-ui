@@ -31,31 +31,29 @@
  - ~~restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>~~
  - ~~make sure that HB1906 isnt hard coded everywhere~~
  - ~~add total Level_2 dataset size e.g. 120 GB to info panel~~
- - fix navbar button values
- - add link to echofish tagged releases
-
- - read the documentation
+ - ~~fix navbar button values; added reload of the document~~
+ - ~~add link to echofish tagged releases~~
+ - ~~read the documentation~~
 
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
+ Gameplan:
+    need to 
+
+
  - add graticules -> legend for depth, time
  - debounce mini map follow wc center
  - mask sub-bottom data w checkbox, not linestring
- 
  - draw evr polygon on data -> currently circle
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
  - deploy to domain echo.fish
- 
  - add bathymetric layer to map viewer
- 
  - allow clicks in mini-map viewer
  - print total dimensions of L2 data: depth x time x frequency
- 
- 
- - capture echopype provenance
+ - capture echopype provenance --> need to do in water-column-sonar-processing Zarr store metadata
  - constrain the input Sv Range Minimum dB to be less than Maximum dB
  - open and add "speed" to zarr --> needs to be manually written to zarr stores
  - get zoom working
- - add toggle from UTC/local-time --> need to get moment library working
+ - add toggle from UTC/local-time --> need to get moment library working again
  - add celestial information for sunrise/sunset
  - add celestial information for moon phase
  - slowfly on home map <https://maplibre.org/maplibre-gl-js/docs/examples/flyto-options/>

@@ -9,6 +9,7 @@ import {
   // useLayerLifecycle,
   useLeafletContext,
 } from '@react-leaflet/core';
+import { useMap } from 'react-leaflet/hooks'
 import { scaleLinear, scaleThreshold } from 'd3-scale';
 import * as d3 from 'd3';
 import { useSearchParams } from 'react-router';
@@ -104,6 +105,7 @@ const CustomLayer = () => {
   const frequencyIndex = useAppSelector(selectFrequencyIndex);
 
   useEffect(() => {
+    // const map = useMap();
     const container = context.layerContainer || context.map;
 
     const createDataLayer = () => {
@@ -134,16 +136,15 @@ const CustomLayer = () => {
         className: "echoFishGridLayer",
       });
     };
-    
-    // wait to start accessing the store
-    if (attributes && storeShape) {
-      console.log('creating new layer');
-      container.addLayer(createDataLayer());
-    }
+
+    const dataLayer = createDataLayer();
+
+    console.log('creating new layer');
+    container.addLayer(dataLayer);
 
     return () => {
-      console.log(`removed custom layer: ${frequencyIndex}`)
-      container.removeLayer(createDataLayer());
+      console.log(`removing dataLayer: ${frequencyIndex}`)
+      container.removeLayer(dataLayer);
     };
 
   }, [attributes, storeShape, context, selectedColorMap.value, svMin, svMax, frequencyIndex, cruise]);

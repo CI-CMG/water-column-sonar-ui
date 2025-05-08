@@ -158,6 +158,7 @@ export default function WaterColumnView() {
               [0 + margin, storeShape[1] + margin] // topLeft TODO: needs to also be rounded to nearest tilSize
             ]}
           >
+            {/* needs attributes and storeShape */}
             <CustomLayer  />
 
             <MapEvents />

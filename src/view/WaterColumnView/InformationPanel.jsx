@@ -356,8 +356,8 @@ const InformationPanel = () => {
               </a>
             </span>
           </p>
-          <p style={{ textIndent: "10px" }}>Sv dimension:</p>
-          <p style={{ textIndent: "10px" }}>{storeShape[0].toLocaleString()} x {storeShape[1].toLocaleString()} x {storeShape[2].toLocaleString()} = {(storeShape[0]*storeShape[1]*storeShape[2]).toLocaleString()}</p>
+          <p style={{ textIndent: "6px" }}>Total Sv dimension:</p>
+          <p style={{ textIndent: "6px", fontFamily: "monospace", fontSize: "14px" }}>{storeShape[0].toLocaleString()} x {storeShape[1].toLocaleString()} x {storeShape[2].toLocaleString()} = {(storeShape[0]*storeShape[1]*storeShape[2]).toLocaleString()}</p>
           
           <br />
           <hr />
@@ -376,7 +376,12 @@ const InformationPanel = () => {
               </p>
               <p>
                 <b>Version:</b>
-                <span className="font-monospace float-end">v{attributes.processing_software_version}</span>
+                {/* https://pypi.org/project/water_column_sonar_processing/#history */}
+                <span className="font-monospace float-end">
+                  <a href="https://pypi.org/project/water_column_sonar_processing/#history" target="_blank" rel="noopener noreferrer">
+                    v{attributes.processing_software_version}
+                  </a>
+                </span>
               </p>
             </>
             :
