@@ -43,7 +43,7 @@
  - add graticules -> legend for depth, time
  - debounce mini map follow wc center
  - mask sub-bottom data w checkbox, not linestring
- - draw evr polygon on data -> currently circle
+ - draw evr polygon on data -> currently circle --> toggle switch in the info panel
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
  - deploy to domain echo.fish
  - add bathymetric layer to map viewer

@@ -1,26 +1,10 @@
 import {
   useEffect,
-  // useRef,
-  // useState,
 } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useSearchParams } from 'react-router';
-// import { useLeafletContext } from '@react-leaflet/core';
-import {
-  MapContainer,
-  // LayersControl,
-  // LayerGroup,
-  // Circle,
-  // Marker,
-  // Popup,
-} from "react-leaflet";
-import {
-  useMapEvents,
-  // useMap,
-} from 'react-leaflet/hooks'
-import { CRS } from "leaflet";
-import CustomLayer from "./CustomLayer";
-import InformationPanel from "./InformationPanel";
+import WaterColumnInformationPanel from "./WaterColumnInformationPanel";
+import WaterColumnVisualization from "./WaterColumnVisualization";
 import {
   updateShip,
   updateCruise,
@@ -45,42 +29,15 @@ import {
   bottomAsync,
   svAsync,
   ////
-  updateDepthIndex,
+  // updateDepthIndex,
   updateTimeIndex,
   updateFrequencyIndex,
 } from "../../reducers/store/storeSlice";
 
-
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
   const dispatch = useAppDispatch();
-  const [searchParams, setSearchParams] = useSearchParams(); // from searchparams update redux
-  // const { layerContainer } = useLeafletContext();
-  
-  function LocationMarker() {
-    const dispatch = useAppDispatch();
-  
-    useMapEvents({
-      click(e) {
-        const newTimeIndex = parseInt(e.latlng.lng, 10);
-        const newDepthIndex = parseInt(e.latlng.lat * -1.0, 10);
-        console.log(`newTimeIndex: ${newTimeIndex}, newDepthIndex: ${newDepthIndex}`);
-        dispatch(updateTimeIndex(newTimeIndex));
-        dispatch(updateDepthIndex(newDepthIndex));
-
-        // And update mouse locations
-        setSearchParams(
-          (prev) => {
-            prev.set('time', newTimeIndex);
-            return prev;
-          },
-        );
-      },
-    })
-
-    return null;
-  }
-
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const initialTimeIndex = Number(searchParams.get('time'));
   const initialFrequencyIndex = Number(searchParams.get('frequency'));
@@ -136,40 +93,24 @@ export default function WaterColumnView() {
         indexFrequency: frequencyIndex,
       }));
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, frequencyIndex]);
-
-  const mapCenterX = initialTimeIndex;
-  const mapCenterY = -1 * (window.innerHeight / 2) + 60;
-  const mapCenter = [mapCenterY, mapCenterX];
-  const margin = 400; // map maxBounds + margin
+  }, [dispatch, searchParams, ship, cruise, sensor, frequencyIndex, timeIndex, indexDepth]);
 
   return (
     <div className="WaterColumnView">
       {
-        (storeShape !== null && attributes !== null && frequencyIndex !== null) ?
-          <MapContainer
-            crs={CRS.Simple}
-            zoom={0}
-            center={mapCenter}
-            minZoom={0}
-            maxZoom={0}
-            zoomControl={false}
-            tileSize={attributes.tile_size}
-            className="Map"
-            maxBounds={[
-              [-1 * Math.ceil(storeShape[0]/attributes.tile_size)*attributes.tile_size - margin, 0 - margin], // bottomLeft?
-              [0 + margin, storeShape[1] + margin], // topRight?
-            ]}
-          >
-            <CustomLayer  />
-
-            <LocationMarker />
-          </MapContainer>
+        (storeShape !== null && attributes !== null && frequencyIndex !== null)
+        ?
+          <>
+            <WaterColumnVisualization
+              tileSize={attributes.tile_size}
+              storeShape={storeShape}
+              initialTimeIndex={initialTimeIndex}
+            />
+            <WaterColumnInformationPanel />
+          </>
         :
           <></>
       }
-      
-      <InformationPanel />
     </div>
   );
 }

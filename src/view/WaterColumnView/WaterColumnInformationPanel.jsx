@@ -9,9 +9,9 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
 import Row from 'react-bootstrap/Row';
 import Form from "react-bootstrap/Form";
-import MiniMapView from "./MiniMapView";
-import ColorMap from "./ColorMap";
-import SvPlotView from "./SvPlotView";
+import MiniMapView from "./MiniMapView.jsx";
+import ColorMap from "./ColorMap.jsx";
+import SvPlotView from "./SvPlotView.jsx";
 import {
   selectShip,
   selectCruise,
@@ -42,8 +42,8 @@ import {
   selectDepth,
   selectBottom,
   selectSv,
-} from ".././../reducers/store/storeSlice.ts";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+} from "../../reducers/store/storeSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
 
 const getDateTime = function (epochSeconds, timezone) {
   // timezone='Etc/UTC'
@@ -53,7 +53,7 @@ const getDateTime = function (epochSeconds, timezone) {
 };
 
 
-const InformationPanel = () => {
+const WaterColumnInformationPanel = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const dispatch = useAppDispatch()
@@ -395,7 +395,7 @@ const InformationPanel = () => {
   );
 };
 
-export default InformationPanel;
+export default WaterColumnInformationPanel;
 
-InformationPanel.propTypes = {
+WaterColumnInformationPanel.propTypes = {
 };

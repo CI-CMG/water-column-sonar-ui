@@ -9,7 +9,7 @@ import {
   // useLayerLifecycle,
   useLeafletContext,
 } from '@react-leaflet/core';
-import { useMap } from 'react-leaflet/hooks'
+// import { useMap } from 'react-leaflet/hooks'
 import { scaleLinear, scaleThreshold } from 'd3-scale';
 import * as d3 from 'd3';
 import { useSearchParams } from 'react-router';
@@ -123,24 +123,22 @@ const CustomLayer = () => {
           setTimeout(() => { done(error, tile) }, 10);
           return tile;
         },
-
-        // redraw(): () => { // where does this go?!
+        // redraw(): () => { // use this?!
       });
 
       return new GridLayerExtended({
-        opacity: 0.95, // Opacity of the tiles. Can be used in the createTile() function.
+        // opacity: 0.75, // Opacity of the tiles. Can be used in the createTile() function.
         updateInterval: 25, // Tiles will not update more than once every updateInterval milliseconds when panning
         className: "echoFishGridLayer",
       });
     };
 
     const dataLayer = createDataLayer();
-
     console.log('creating new layer');
     container.addLayer(dataLayer);
 
     return () => {
-      console.log(`removing dataLayer: ${frequencyIndex}`)
+      console.log(`removing dataLayer, freq: ${frequencyIndex}`)
       container.removeLayer(dataLayer);
     };
 
