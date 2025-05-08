@@ -111,10 +111,9 @@ const CustomLayer = () => {
         getTileSize: function() {
            return new L.Point(attributes.tile_size, attributes.tile_size);
         },
-  
+
         createTile: (coords, done) => {
           let error;
- 
           let tile = L.DomUtil.create('canvas', 'leaflet-tile');
           tile.setAttribute('width', container.options.tileSize);
           tile.setAttribute('height', container.options.tileSize);

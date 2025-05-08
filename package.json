@@ -1,11 +1,11 @@
 {
-  "name": "water-column-ui",
+  "name": "water-column-sonar-ui",
   "private": true,
-  "version": "25.5.0",
+  "version": "25.5.1",
   "homepage": "https://www.watercolumnproject.org/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/oftfrfbf/water-column-ui"
+    "url": "https://github.com/CI-CMG/water-column-sonar-ui"
   },
   "license": "MIT License",
   "type": "module",

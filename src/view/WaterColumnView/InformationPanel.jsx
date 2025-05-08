@@ -155,10 +155,12 @@ const InformationPanel = () => {
           {/* frequencyButtonIndex replaces frequencyIndex */}
 
           <br />
-          <p style={{ color: 'hotpink' }}>
+
+          {/* <p style={{ color: 'hotpink' }}>
             <b>Debugging:</b>
             <span className="font-monospace float-end">[d: { depthIndex }, t: { timeIndex }, f: { frequencyIndex }]</span>
-          </p>
+          </p> */}
+
           <p>
             <b>Ship:</b>
             <span className="font-monospace float-end">{ ship }</span>

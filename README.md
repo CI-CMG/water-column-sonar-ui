@@ -29,31 +29,38 @@
  - ~~regenerate pm-tiles with latest data~~
  - ~~print dimension to the "Data Acces" info box~~
  - ~~restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>~~
+ - ~~make sure that HB1906 isnt hard coded everywhere~~
+ - ~~add total Level_2 dataset size e.g. 120 GB to info panel~~
+ - fix navbar button values
+ - add link to echofish tagged releases
+
  - read the documentation
 
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
  - add graticules -> legend for depth, time
-
  - debounce mini map follow wc center
- - make sure that HB1906 isnt hard coded everywhere
  - mask sub-bottom data w checkbox, not linestring
- - update cfn deployment to s3 copy
- - fix navbar button values
+ 
  - draw evr polygon on data -> currently circle
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
  - deploy to domain echo.fish
- - create process for gitlab action to tag and create releases automatically
+ 
  - add bathymetric layer to map viewer
- - add total Level_2 dataset size e.g. 120 GB to info panel
+ 
  - allow clicks in mini-map viewer
  - print total dimensions of L2 data: depth x time x frequency
- - prototype knowledge graph query
- - add link to echofish tagged releases
+ 
+ 
  - capture echopype provenance
  - constrain the input Sv Range Minimum dB to be less than Maximum dB
  - open and add "speed" to zarr --> needs to be manually written to zarr stores
  - get zoom working
  - add toggle from UTC/local-time --> need to get moment library working
+ - add celestial information for sunrise/sunset
+ - add celestial information for moon phase
  - slowfly on home map <https://maplibre.org/maplibre-gl-js/docs/examples/flyto-options/>
  - sync views (leaflet vs maplibre): https://maplibre.org/maplibre-gl-js/docs/examples/sync-move/
  - constrain Sv form input to int, prevent float --> too hard
+ - update cfn deployment to s3 copy
+ - create process for gitlab action to tag and create releases automatically
+ - prototype knowledge graph query

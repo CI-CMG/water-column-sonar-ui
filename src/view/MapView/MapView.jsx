@@ -78,11 +78,10 @@ export default function MapView() {
 
   useEffect(() => {
     document.title = `Map`;
-    console.log(
-      `★ ${import.meta.env.VITE_REACT_APP_NAME} — v${
-        import.meta.env.VITE_REACT_APP_VERSION
-      } — ${import.meta.env.DEV} ★`
-    );
+    if(import.meta.env.DEV){
+      console.log(`★ ${import.meta.env.VITE_REACT_APP_NAME} — v${import.meta.env.VITE_REACT_APP_VERSION} ★`);
+    }
+    
   }, []);
 
   useEffect(() => {
