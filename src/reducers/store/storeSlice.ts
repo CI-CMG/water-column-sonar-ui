@@ -34,6 +34,8 @@ export interface StoreState {
   colorMaps: any,
   colorMapButtonIndex: number,
 
+  annotation: boolean, // highlights polygon annotations on the leaflet layer
+
   storeAttributes: any,
   storeAttributesStatus: "idle" | "loading" | "failed",
   // attributes: any, // metadata of the store
@@ -79,6 +81,8 @@ const initialState: StoreState = {
 
   colorMaps: WaterColumnColors,
   colorMapButtonIndex: 2, // Default is viridis
+
+  annotation: false,
 
   storeAttributes: null,
   storeAttributesStatus: "idle",
@@ -150,7 +154,11 @@ export const storeSlice = createSlice({
     updateColorMapButtonIndex: (state, action: PayloadAction<any>) => {
       state.colorMapButtonIndex = action.payload;
     },
-    //
+
+    updateAnnotation: (state, action: PayloadAction<any>) => {
+      state.annotation = action.payload;
+    },
+
     updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
       state.frequencies = action.payload;
     },
@@ -295,6 +303,7 @@ export const {
   //
   updateColorMaps,
   updateColorMapButtonIndex,
+  updateAnnotation,
   // TODO: colorMap
   updateFrequencies,
   updateFrequencyButtonIndex, // holds button select index
@@ -318,6 +327,7 @@ export const selectSvMax = (state: RootState) => state.store.svMax;
 
 export const selectColorMaps = (state: RootState) => state.store.colorMaps;
 export const selectColorMapButtonIndex = (state: RootState) => state.store.colorMapButtonIndex;
+export const selectAnnotation = (state: RootState) => state.store.annotation;
 
 // store the indices of the clicked position
 export const selectDepthIndex = (state: RootState) => state.store.depthIndex;

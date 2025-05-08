@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import {
   MapContainer,
+  Polygon,
+  Popup,
 } from "react-leaflet";
+// import L from "leaflet";
 import {
   useMapEvents,
 } from 'react-leaflet/hooks'
@@ -14,8 +17,9 @@ import CustomLayer from "./CustomLayer";
 import {
   updateDepthIndex,
   updateTimeIndex,
+  selectAnnotation,
 } from "../../reducers/store/storeSlice";
-
+import { useAppSelector } from "../../app/hooks.ts";
 
 // function Square(props) {
 //   const context = useLeafletContext()
@@ -65,10 +69,28 @@ const WaterColumnVisualization = ({
   storeShape,
   initialTimeIndex,
 }) => {
+  const annotation = useAppSelector(selectAnnotation);
+
   const mapCenterX = initialTimeIndex;
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenter = [mapCenterY, mapCenterX];
   const margin = 400; // map maxBounds + margin
+
+  const polygon1 = [ // CTD sidescan example polygon for HB1906
+    [-274, 434959],
+    [-632, 435066],
+    [-636, 435081],
+    [-262, 435197],
+    [-262, 435182],
+    [-615, 435078],
+    [-615, 435070],
+    [-278, 434970],
+    [-274, 434959],
+  ];
+  const positions = [polygon1];
+  // const context = useLeafletContext();
+  // const mapContainer = context.map;
+  // mapContainer.addLayer()
 
   return (
     <div className="WaterColumnVisualization">
@@ -87,8 +109,18 @@ const WaterColumnVisualization = ({
         ]}
       >
         <CustomLayer  />
-
+        
         <LocationMarker />
+        
+        {
+          (annotation)
+          ?
+            <Polygon color={'white'} positions={positions} title="asf">
+              <Popup>CTD (Conductivity, Temperature, Depth) side-scan sonar signal.</Popup>
+            </Polygon>
+          :
+            <></>          
+        }
       </MapContainer>
     </div>
   );

@@ -25,6 +25,9 @@ import {
   selectColorMapButtonIndex,
   updateColorMapButtonIndex,
   //
+  selectAnnotation,
+  updateAnnotation,
+  //
   selectDepthIndex,
   selectTimeIndex,
   // selectFrequencyIndex,
@@ -62,6 +65,7 @@ const WaterColumnInformationPanel = () => {
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
   const colorMaps = useAppSelector(selectColorMaps); // from store
+  const annotation = useAppSelector(selectAnnotation);
   const colorMapButtonIndex = useAppSelector(selectColorMapButtonIndex); // 
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
@@ -106,6 +110,10 @@ const WaterColumnInformationPanel = () => {
       },
       { preventScrollReset: true }
     );
+  };
+
+  const handleSelectAnnotation = () => {
+    dispatch(updateAnnotation(!annotation));
   };
 
   useEffect(() => {
@@ -156,10 +164,10 @@ const WaterColumnInformationPanel = () => {
 
           <br />
 
-          {/* <p style={{ color: 'hotpink' }}>
+          <p style={{ color: 'hotpink' }}>
             <b>Debugging:</b>
             <span className="font-monospace float-end">[d: { depthIndex }, t: { timeIndex }, f: { frequencyIndex }]</span>
-          </p> */}
+          </p>
 
           <p>
             <b>Ship:</b>
@@ -319,14 +327,25 @@ const WaterColumnInformationPanel = () => {
           <Row className="mb-3">
             <Form.Group>
               <Form.Check
-                type="switch"
-                id="custom-switch"
-                label="Mask Data Beneath Sea Floor"
-                defaultChecked="false"
                 disabled
+                type="switch"
+                id="mask-switch"
+                label="Mask Data Beneath Sea Floor"
               />
             </Form.Group>
           </Row>
+
+          <Row className="mb-3">
+            <Form.Group>
+              <Form.Check
+                type="switch"
+                id="annotate-switch"
+                label="Show Annotations"
+                onChange={() => handleSelectAnnotation()}
+              />
+            </Form.Group>
+          </Row>
+
           {/* <p>Min: {svMin}, Max: {svMax}</p> */}
 
           <hr />
