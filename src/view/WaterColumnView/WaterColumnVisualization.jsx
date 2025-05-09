@@ -56,6 +56,7 @@ const WaterColumnVisualization = ({
   tileSize,
   storeShape,
   initialTimeIndex,
+  // initialFrequencyIndex,
 }) => {
   const annotation = useAppSelector(selectAnnotation);
 
@@ -90,7 +91,7 @@ const WaterColumnVisualization = ({
         tileSize={tileSize}
         className="Map"
         maxBounds={[
-          [-1 * Math.ceil(storeShape[0]/tileSize)*tileSize - margin, 0 - margin],
+          [-1 * Math.ceil(storeShape[0]/tileSize) * tileSize - margin, 0 - margin],
           [0 + margin, storeShape[1] + margin],
         ]}
       >
@@ -121,4 +122,5 @@ WaterColumnVisualization.propTypes = {
   tileSize: PropTypes.string.isRequired,
   storeShape: PropTypes.array.isRequired,
   initialTimeIndex: PropTypes.number.isRequired,
+  // initialFrequencyIndex: PropTypes.number.isRequired,
 };

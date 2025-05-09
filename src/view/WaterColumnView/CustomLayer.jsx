@@ -1,18 +1,12 @@
 import {
   useEffect,
-  useState,
 } from 'react';
 import L from 'leaflet';
 import {
-  // createElementHook,
-  // createElementObject,
-  // useLayerLifecycle,
   useLeafletContext,
 } from '@react-leaflet/core';
-// import { useMap } from 'react-leaflet/hooks'
 import { scaleLinear, scaleThreshold } from 'd3-scale';
 import * as d3 from 'd3';
-import { useSearchParams } from 'react-router';
 import { color } from 'd3-color';
 import { WaterColumnColors } from './WaterColumnColors.jsx';
 import {
@@ -22,14 +16,14 @@ import {
   selectSvMin,
   selectSvMax,
   selectFrequencyIndex,
+  selectColorIndex,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppSelector } from "../../app/hooks";
 import { fetchSvTile } from "../../reducers/store/storeAPI.ts"
 
 
-function drawTile(coords, canvas, paletteName, tileSize, storeShape, minDB, maxDB, selectFrequency, cruise) {
-  // this guy needs access to the svArray, move into function
-  const palette = WaterColumnColors[paletteName]
+function drawTile(coords, canvas, colorIndex, tileSize, storeShape, minDB, maxDB, selectFrequency, cruise) {
+  const palette = WaterColumnColors[Object.keys(WaterColumnColors)[colorIndex]];
   const ctx = canvas.getContext('2d');
 
   if (ctx) {
@@ -62,12 +56,6 @@ function drawTile(coords, canvas, paletteName, tileSize, storeShape, minDB, maxD
       return;
     }
 
-    // ctx.font = '12px serif';
-    // ctx.fillStyle = '#0000FF';
-    // ctx.fillText(`{${x}, ${y}, ${z}}`, 20, 40);
-    // ctx.fillText(`{${indicesLeft}, ${indicesRight}, ${indicesTop}, ${indicesBottom}}`, 20, 60);
-
-    // TODO: get the cruise
     fetchSvTile('Henry_B._Bigelow', cruise, 'EK60', indicesTop, indicesBottom, indicesLeft, indicesRight, selectFrequency)
       .then((d1) => {
         const d = d1; // as RawArray;
@@ -92,20 +80,15 @@ function drawTile(coords, canvas, paletteName, tileSize, storeShape, minDB, maxD
 const CustomLayer = () => {
   const context = useLeafletContext();
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedColorMap, setSelectedColorMap] = useState(Object.keys(WaterColumnColors).map((x, y) => {
-    return {'key': y, 'value': x}; 
-  })[searchParams.get('color')]); // getting from url, TODO: should get from redux
-
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
   const cruise = useAppSelector(selectCruise);
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
   const frequencyIndex = useAppSelector(selectFrequencyIndex);
+  const colorIndex = useAppSelector(selectColorIndex);
 
   useEffect(() => {
-    // const map = useMap();
     const container = context.layerContainer || context.map;
 
     const createDataLayer = () => {
@@ -119,11 +102,10 @@ const CustomLayer = () => {
           let tile = L.DomUtil.create('canvas', 'leaflet-tile');
           tile.setAttribute('width', container.options.tileSize);
           tile.setAttribute('height', container.options.tileSize);          
-          drawTile(coords, tile, selectedColorMap.value, attributes.tile_size, storeShape, svMin, svMax, frequencyIndex, cruise);
+          drawTile(coords, tile, colorIndex, attributes.tile_size, storeShape, svMin, svMax, frequencyIndex, cruise);
           setTimeout(() => { done(error, tile) }, 10);
           return tile;
         },
-        // redraw(): () => { // use this?!
       });
 
       return new GridLayerExtended({
@@ -134,15 +116,15 @@ const CustomLayer = () => {
     };
 
     const dataLayer = createDataLayer();
-    console.log('creating new layer');
+    // console.log('creating new layer');
     container.addLayer(dataLayer);
 
     return () => {
-      console.log(`removing dataLayer, freq: ${frequencyIndex}`)
+      // console.log(`removing dataLayer, freq: ${frequencyIndex}`)
       container.removeLayer(dataLayer);
     };
 
-  }, [attributes, storeShape, context, selectedColorMap.value, svMin, svMax, frequencyIndex, cruise]);
+  }, [attributes, storeShape, context, colorIndex, svMin, svMax, frequencyIndex, cruise]);
 
   return null;
 };

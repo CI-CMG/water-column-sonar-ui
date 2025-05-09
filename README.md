@@ -37,17 +37,17 @@
  - ~~print total dimensions of L2 data: depth x time x frequency~~
  - ~~refresh layer when clicking on frequency/colorMap/minSv/maxSv button~~
  - ~~add citation for ospool~~
+ - ~~disable click ping time index for main map view --> take users to beginning of cruise~~
+ - ~~remove debugging info~~
 
- - disable click ping time index for main map view --> take users to beginning of cruise
  - frequency button works, "color map" does not cause refresh of map -> fix
+
  - debounce mini map to relocate to last click
  - add graticule legend for: depth axis & time axis
  - deploy to domain echo.fish
- - remove debugging info
+
  - create visualization layer of all EVR annotation time/lat/lon as points in PMTiles
-
  - mask sub-bottom data w checkbox, not linestring
-
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
  - add bathymetric layer to map viewer
  - allow clicking on linestring in mini-map viewer & redirect to new cruise

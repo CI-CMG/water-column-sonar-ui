@@ -22,8 +22,8 @@ import {
   updateSvMax,
   //
   selectColorMaps,
-  selectColorMapButtonIndex,
-  updateColorMapButtonIndex,
+  selectColorIndex,
+  updateColorIndex,
   //
   selectAnnotation,
   updateAnnotation,
@@ -66,7 +66,7 @@ const WaterColumnInformationPanel = () => {
   const sensor = useAppSelector(selectSensor);
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const annotation = useAppSelector(selectAnnotation);
-  const colorMapButtonIndex = useAppSelector(selectColorMapButtonIndex); // 
+  const colorIndex = useAppSelector(selectColorIndex); // 
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
   const frequencies = useAppSelector(selectFrequencies); // from store
@@ -90,7 +90,7 @@ const WaterColumnInformationPanel = () => {
   const handleShow = () => setShow(true);
 
   const handleSelectColorMap = (key) => {
-    dispatch(updateColorMapButtonIndex(Object.keys(colorMaps).findIndex(x => x === key)));
+    dispatch(updateColorIndex(Object.keys(colorMaps).findIndex(x => x === key)));
     setSearchParams(
       (prev) => {
         prev.set('color', Object.keys(colorMaps).findIndex(x => x === key));
@@ -284,11 +284,11 @@ const WaterColumnInformationPanel = () => {
             </Dropdown>
             <p>
               <b>Color Map:</b>{" "}
-              <span className="font-monospace">{Object.keys(colorMaps)[colorMapButtonIndex]}</span>
+              <span className="font-monospace">{Object.keys(colorMaps)[colorIndex]}</span>
             </p>
           </div>
 
-          <ColorMap selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/>
+          <ColorMap selectedColorPalette={Object.keys(colorMaps)[colorIndex]}/>
           
           <br />
 

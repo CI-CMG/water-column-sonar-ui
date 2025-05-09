@@ -30,9 +30,10 @@ export interface StoreState {
   depthIndex: number,
   timeIndex: number | null, // value passed in via url to jump to location
   frequencyIndex: number | null,
+  colorIndex: number | null,
 
-  colorMaps: any,
-  colorMapButtonIndex: number,
+
+  colorMaps: any, // TODO: get rid of this?
 
   annotation: boolean, // highlights polygon annotations on the leaflet layer
 
@@ -46,7 +47,6 @@ export interface StoreState {
 
   frequencies: any,
   frequenciesStatus: "idle" | "loading" | "failed",
-  frequencyButtonIndex: number | null, // dangerous
   
   latitude: number | null,
   latitudeStatus: "idle" | "loading" | "failed",
@@ -75,12 +75,12 @@ const initialState: StoreState = {
   svMin: -100, // default values for min & max Sv threshold
   svMax: -10,
 
-  depthIndex: 0, // these will hold mouses click coordinates
+  depthIndex: 0, // these will hold mouse click coordinates
   timeIndex: null,
   frequencyIndex: null,
 
-  colorMaps: WaterColumnColors,
-  colorMapButtonIndex: 2, // Default is viridis
+  colorIndex: null,
+  colorMaps: WaterColumnColors, // get rid of
 
   annotation: false,
 
@@ -93,7 +93,7 @@ const initialState: StoreState = {
 
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
-  frequencyButtonIndex: null, // start with first frequency selected
+  // frequencyButtonIndex: null, // start with first frequency selected
   
   latitude: null,
   latitudeStatus: "idle",
@@ -147,13 +147,17 @@ export const storeSlice = createSlice({
     updateFrequencyIndex: (state, action: PayloadAction<number>) => {
       state.frequencyIndex = action.payload;
     },
+
+    updateColorIndex: (state, action: PayloadAction<number>) => {
+      state.colorIndex = action.payload;
+    },
      
     updateColorMaps: (state, action: PayloadAction<any>) => { // do i need these
       state.colorMaps = action.payload;
     },
-    updateColorMapButtonIndex: (state, action: PayloadAction<any>) => {
-      state.colorMapButtonIndex = action.payload;
-    },
+    // updateColorIndex: (state, action: PayloadAction<any>) => {
+    //   state.colorMapIndex = action.payload;
+    // },
 
     updateAnnotation: (state, action: PayloadAction<any>) => {
       state.annotation = action.payload;
@@ -162,9 +166,9 @@ export const storeSlice = createSlice({
     updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
       state.frequencies = action.payload;
     },
-    updateFrequencyButtonIndex: (state, action: PayloadAction<any>) => {
-      state.frequencyButtonIndex = action.payload;
-    },
+    // updateFrequencyButtonIndex: (state, action: PayloadAction<any>) => {
+    //   state.frequencyButtonIndex = action.payload;
+    // },
     //
     updateLatitude: (state, action: PayloadAction<any>) => {
       state.latitude = action.payload;
@@ -301,12 +305,13 @@ export const {
   updateTimeIndex,
   updateFrequencyIndex, // <- derive from button?
   //
+  updateColorIndex,
+  //
   updateColorMaps,
-  updateColorMapButtonIndex,
+  // updateColorMapButtonIndex, // TODO: get rid of
   updateAnnotation,
   // TODO: colorMap
   updateFrequencies,
-  updateFrequencyButtonIndex, // holds button select index
   updateLatitude,
   updateLongitude,
   updateTime,
@@ -326,13 +331,15 @@ export const selectSvMin = (state: RootState) => state.store.svMin;
 export const selectSvMax = (state: RootState) => state.store.svMax;
 
 export const selectColorMaps = (state: RootState) => state.store.colorMaps;
-export const selectColorMapButtonIndex = (state: RootState) => state.store.colorMapButtonIndex;
+// export const selectColorMapButtonIndex = (state: RootState) => state.store.colorMapButtonIndex;
 export const selectAnnotation = (state: RootState) => state.store.annotation;
 
 // store the indices of the clicked position
 export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
 export const selectTimeIndex = (state: RootState) => state.store.timeIndex; // url timeIndex jump to
 export const selectFrequencyIndex = (state: RootState) => state.store.frequencyIndex;
+
+export const selectColorIndex = (state: RootState) => state.store.colorIndex;
 
 // export const selectAttributes = (state: RootState) => state.store.attributes; // TODO: remove
 export const selectFrequencies = (state: RootState) => state.store.frequencies;
