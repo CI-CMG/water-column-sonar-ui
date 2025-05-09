@@ -30,25 +30,27 @@
  - ~~print dimension to the "Data Acces" info box~~
  - ~~restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>~~
  - ~~make sure that HB1906 isnt hard coded everywhere~~
- - ~~add total Level_2 dataset size e.g. 120 GB to info panel~~
+ 
  - ~~fix navbar button values; added reload of the document~~
  - ~~add link to echofish tagged releases~~
  - ~~read the documentation~~
+ - ~~draw evr polygon on data -> currently circle --> toggle switch in the info panel~~
+ - ~~print total dimensions of L2 data: depth x time x frequency~~
 
  - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
  Gameplan:
-    need to 
-
+    moved the map into child component to get it away from effects
 
  - add graticules -> legend for depth, time
- - debounce mini map follow wc center
- - mask sub-bottom data w checkbox, not linestring
- - draw evr polygon on data -> currently circle --> toggle switch in the info panel
- - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
+ - debounce mini map follow wc center -> hack, only on clicks
  - deploy to domain echo.fish
+
+
+ - mask sub-bottom data w checkbox, not linestring
+ - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
  - add bathymetric layer to map viewer
- - allow clicks in mini-map viewer
- - print total dimensions of L2 data: depth x time x frequency
+ - allow clicking on linestring in mini-map viewer & redirect to new cruise
+ - add total Level_2 dataset size e.g. 120 GB to info panel
  - capture echopype provenance --> need to do in water-column-sonar-processing Zarr store metadata
  - constrain the input Sv Range Minimum dB to be less than Maximum dB
  - open and add "speed" to zarr --> needs to be manually written to zarr stores
@@ -62,3 +64,4 @@
  - update cfn deployment to s3 copy
  - create process for gitlab action to tag and create releases automatically
  - prototype knowledge graph query
+ - create visualization layer of all EVR annotation time/lat/lon as points in PMTiles
