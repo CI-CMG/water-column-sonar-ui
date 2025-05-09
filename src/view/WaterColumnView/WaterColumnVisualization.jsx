@@ -62,7 +62,7 @@ const WaterColumnVisualization = ({
   const mapCenterX = initialTimeIndex;
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenter = [mapCenterY, mapCenterX];
-  const margin = 400; // map maxBounds + margin
+  const margin = 300; // map maxBounds + margin
 
   const polygon1 = [ // CTD sidescan example polygon for HB1906
     [-274, 434959],

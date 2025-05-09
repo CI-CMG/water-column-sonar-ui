@@ -134,16 +134,20 @@ export default function MapView() {
 
   useEffect(() => {
     map.current.on("click", "cruises", (e) => {
-      console.log('getting geospatial index');
-      GetZarrGeospatialIndex(
-        e.features[0].properties.cruise,
-        e.lngLat["lng"],
-        e.lngLat["lat"]
-      ).then((clickedIndex) => {
-        console.log('got geospatial index')
-        console.log(clickedIndex);
-        dispatch(updateTimeIndex(clickedIndex));
-      });
+      
+      // console.log('getting geospatial index');
+
+      // GetZarrGeospatialIndex(
+      //   e.features[0].properties.cruise,
+      //   e.lngLat["lng"],
+      //   e.lngLat["lat"]
+      // ).then((clickedIndex) => {
+      //   console.log('got geospatial index')
+      //   console.log(clickedIndex);
+      //   dispatch(updateTimeIndex(clickedIndex));
+      // });
+      // TODO: reenable this
+      dispatch(updateTimeIndex(1024));
 
       // TODO: need to get this to redirect to the correct timeIndex
       new maplibregl.Popup()
