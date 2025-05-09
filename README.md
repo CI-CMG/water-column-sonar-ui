@@ -39,10 +39,10 @@
  - ~~add citation for ospool~~
  - ~~disable click ping time index for main map view --> take users to beginning of cruise~~
  - ~~remove debugging info~~
-
- - frequency button works, "color map" does not cause refresh of map -> fix
+ - ~~frequency button works, "color map" does not cause refresh of map~~
 
  - debounce mini map to relocate to last click
+
  - add graticule legend for: depth axis & time axis
  - deploy to domain echo.fish
 

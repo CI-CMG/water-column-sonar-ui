@@ -80,8 +80,8 @@ const WaterColumnInformationPanel = () => {
   const sv = useAppSelector(selectSv);
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
-  const depthIndex = useAppSelector(selectDepthIndex);
-  const timeIndex = useAppSelector(selectTimeIndex);
+  // const depthIndex = useAppSelector(selectDepthIndex);
+  // const timeIndex = useAppSelector(selectTimeIndex);
   
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
@@ -228,7 +228,7 @@ const WaterColumnInformationPanel = () => {
             :
             <p>
               <b>Selected Sv:</b>{" "}
-              <span className="font-monospace float-end" style={{ fontSize: "14px" }}><i>click to see</i></span>
+              <span className="font-monospace float-end" style={{ fontSize: "14px" }}><i>click to compute</i></span>
             </p>
           }
 

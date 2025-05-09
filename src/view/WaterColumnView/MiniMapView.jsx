@@ -1,4 +1,8 @@
-import { useRef, useEffect } from "react";
+import {
+  useRef,
+  useEffect,
+  useState,
+} from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
@@ -56,6 +60,8 @@ const style = {
 };
 
 export default function MiniMapView() {
+  const [loadedMap, setLoadedMap] = useState(false);
+
   const latitude = useAppSelector(selectLatitude);
   const longitude = useAppSelector(selectLongitude);
 
@@ -75,49 +81,66 @@ export default function MiniMapView() {
           -74.5 + (Math.random() - 0.5) * 10,
           40 + (Math.random() - 0.5) * 10
         ],
-        zoom: 11,
+        zoom: 12,
         minZoom: 2,
       });
 
       map.current.on('load', () => {
-        // Generate a polygon using turf.circle
-        // See https://turfjs.org/docs/#circle
-        const radius = 1; // kilometer
-        const options = {
-            steps: 20,
-            units: 'kilometers'
+        let geojson = {
+          'type': 'FeatureCollection',
+          'features': [
+              {
+                  'type': 'Feature',
+                  'geometry': {
+                      'type': 'Point',
+                      'coordinates': [0, 0]
+                  }
+              }
+          ]
         };
-        const radiusCenter = [longitude, latitude];
-        const shape = circle(radiusCenter, radius, options);
+        geojson.features[0].geometry.coordinates = [longitude, latitude];
 
-        // Add the circle as a GeoJSON source
-        map.current.addSource('location-radius', {
-            type: 'geojson',
-            data: shape
+        map.current.addSource('point', {
+          'type': 'geojson',
+          'data': geojson
         });
-
-        // Add a fill layer with some transparency
         map.current.addLayer({
-            id: 'location-radius',
-            type: 'fill',
-            source: 'location-radius',
-            paint: {
-                'fill-color': '#8CCFFF',
-                'fill-opacity': 0.1
-            }
-        });
-
-        // Add a line layer to draw the circle outline
-        map.current.addLayer({
-            id: 'location-radius-outline',
-            type: 'line',
-            source: 'location-radius',
-            paint: {
-                'line-color': '#0094ff',
-                'line-width': 3
-            }
+          'id': 'point',
+          'type': 'circle',
+          'source': 'point',
+          'paint': {
+            'circle-radius': 5,
+            'circle-color': '#c3daeb'
+          }
         });
       });
+
+      map.current.flyTo({
+        center: [longitude, latitude],
+        essential: true,
+        speed: 0.9,
+      });
+
+      setLoadedMap(true);
+    }
+  }, [map, latitude, longitude]);
+
+  useEffect(() => {
+    if(loadedMap) {
+      let geojson = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [longitude, latitude]
+                }
+            }
+        ]
+      };
+      geojson.features[0].geometry.coordinates = [longitude, latitude];
+      // map.current.getSource('point').setData(geojson);
 
       map.current.flyTo({
         center: [longitude, latitude],
@@ -125,7 +148,7 @@ export default function MiniMapView() {
         speed: 0.4,
       });
     }
-  }, [map, latitude, longitude]);
+  },[latitude, longitude, loadedMap]);
 
   return (
     <div className="MiniMapView">
