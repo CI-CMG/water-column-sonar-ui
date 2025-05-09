@@ -1,6 +1,3 @@
-import {
-  useState,
-} from "react";
 import PropTypes from 'prop-types';
 import {
   MapContainer,
@@ -9,11 +6,6 @@ import {
   Tooltip,
   TileLayer,
 } from "react-leaflet";
-import {
-  createElementObject,
-  createPathComponent,
-  extendContext,
-} from '@react-leaflet/core';
 import L from "leaflet";
 import {
   useMapEvents,
@@ -23,65 +15,41 @@ import {
   useAppDispatch,
 } from "../../app/hooks";
 import CustomLayer from "./CustomLayer";
+import { useSearchParams } from 'react-router';
 import {
   updateDepthIndex,
   updateTimeIndex,
   selectAnnotation,
 } from "../../reducers/store/storeSlice";
 import { useAppSelector } from "../../app/hooks.ts";
+// Using this to figure out most of the solution:
+// https://stackblitz.com/edit/react-leaflet-square?file=src%2FApp.js
 
 
-// function LocationMarker() {
-//   const dispatch = useAppDispatch();
-//   // const [searchParams, setSearchParams] = useSearchParams();
-//   // const context = useLeafletContext();
-//   // const container = context.map;
+function LocationMarker() {
+  const dispatch = useAppDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-//   useMapEvents({
-//     click(e) {
-//       const newTimeIndex = parseInt(e.latlng.lng, 10);
-//       const newDepthIndex = parseInt(e.latlng.lat * -1.0, 10);
-//       console.log(`newTimeIndex: ${newTimeIndex}, newDepthIndex: ${newDepthIndex}`);
-//       dispatch(updateTimeIndex(newTimeIndex));
-//       dispatch(updateDepthIndex(newDepthIndex));
+  useMapEvents({
+    click(e) {
+      const newTimeIndex = parseInt(e.latlng.lng, 10);
+      const newDepthIndex = parseInt(e.latlng.lat * -1.0, 10);
+      
+      // console.log(`newTimeIndex: ${newTimeIndex}, newDepthIndex: ${newDepthIndex}`);
+      
+      dispatch(updateTimeIndex(newTimeIndex));
+      dispatch(updateDepthIndex(newDepthIndex));
 
-//       // setSearchParams( // Update time url param
-//       //   (prev) => {
-//       //     prev.set('time', newTimeIndex);
-//       //     return prev;
-//       //   },
-//       // );
-//     },
-//   });
+      setSearchParams( // Update time url param
+        (prev) => {
+          prev.set('time', newTimeIndex);
+          return prev;
+        },
+      );
+    },
+  });
 
-//   return null;
-// }
-
-const options = {
-  preferCanvas: true,
-  contextmenu: true,
-  doubleClickZoom: false,
-  center: [55.754368, 37.616974],
-  zoom: 9,
-  maxZoom: 18,
-  zoomControl: false
-};
-
-const INIT_SQUARE = { center: [55.754368, 37.616974], size: 1000 };
-
-function getBounds(props) {
-  return L.latLng(props.center).toBounds(props.size);
-}
-
-function createSquare(props, context) {
-  const instance = new L.Rectangle(getBounds(props));
-  return { instance, context: { ...context, overlayContainer: instance } };
-}
-
-function updateSquare(instance, props, prevProps) {
-  if (props.center !== prevProps.center || props.size !== prevProps.size) {
-    instance.setBounds(getBounds(props));
-  }
+  return null;
 }
 
 const WaterColumnVisualization = ({
@@ -89,59 +57,59 @@ const WaterColumnVisualization = ({
   storeShape,
   initialTimeIndex,
 }) => {
-  const [squareProps, setSquareProps] = useState(INIT_SQUARE);
-  const Square = createPathComponent(createSquare, updateSquare);
-
   const annotation = useAppSelector(selectAnnotation);
+
   const mapCenterX = initialTimeIndex;
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenter = [mapCenterY, mapCenterX];
   const margin = 400; // map maxBounds + margin
 
+  const polygon1 = [ // CTD sidescan example polygon for HB1906
+    [-274, 434959],
+    [-632, 435066],
+    [-636, 435081],
+    [-262, 435197],
+    [-262, 435182],
+    [-615, 435078],
+    [-615, 435070],
+    [-278, 434970],
+    [-274, 434959],
+  ];
+  const positions = [polygon1];
+
   // Working Example: https://stackblitz.com/edit/react-leaflet-square?file=src%2FApp.js
   return (
-    <>
-      <div className="WaterColumnVisualization">
-        <MapContainer
-          crs={CRS.Simple}
-          zoom={0}
-          center={mapCenter}
-          minZoom={0}
-          maxZoom={0}
-          zoomControl={false}
-          tileSize={tileSize}
-          className="Map"
-          maxBounds={[
-            [-1 * Math.ceil(storeShape[0]/tileSize)*tileSize - margin, 0 - margin],
-            [0 + margin, storeShape[1] + margin],
-          ]}
-          // whenCreated={map => map.invalidateSize()}
-        >
-          <CustomLayer  />
-        </MapContainer>
-      </div>
-      <button
-        onClick={() => {
-          setSquareProps({ center: [55.754368, 37.616974], size: 2000 });
-        }}
+    <div className="WaterColumnVisualization">
+      <MapContainer
+        crs={CRS.Simple}
+        zoom={0}
+        center={mapCenter}
+        minZoom={0}
+        maxZoom={0}
+        zoomControl={false}
+        tileSize={tileSize}
+        className="Map"
+        maxBounds={[
+          [-1 * Math.ceil(storeShape[0]/tileSize)*tileSize - margin, 0 - margin],
+          [0 + margin, storeShape[1] + margin],
+        ]}
       >
-        select 1
-      </button>
-      <button
-        onClick={() => {
-          setSquareProps({ center: [55.754368, 37.616974], size: 100 });
-        }}
-      >
-        select 2
-      </button>
-      <button
-        onClick={() => {
-          setSquareProps(INIT_SQUARE);
-        }}
-      >
-        reset
-      </button>
-    </>
+        <CustomLayer  />
+
+        <LocationMarker />
+
+        {
+          (annotation)
+          ?
+            <Polygon color={'white'} positions={positions} title="Annotation">
+              {/* <Popup>CTD signal (Conductivity, Temperature, Depth)</Popup> */}
+              <Tooltip>CTD signal (Conductivity, Temperature, Depth)</Tooltip>
+            </Polygon>
+          :
+            <></>          
+        }
+      </MapContainer>
+    </div>
   );
 }
 

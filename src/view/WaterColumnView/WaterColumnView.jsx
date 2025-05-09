@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useState,
 } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useSearchParams } from 'react-router';
@@ -36,6 +37,7 @@ import {
 
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
+  const [loadedCruiseInfo, setLoadedCruiseInfo] = useState(false);
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -48,8 +50,8 @@ export default function WaterColumnView() {
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
   const indexDepth = useAppSelector(selectDepthIndex);
-  const timeIndex = useAppSelector(selectTimeIndex); // we are opening the page for the first time
-  const frequencyIndex = useAppSelector(selectFrequencyIndex);
+  const indexTime = useAppSelector(selectTimeIndex); // we are opening the page for the first time
+  const indexFrequency = useAppSelector(selectFrequencyIndex);
 
   useEffect(() => { // initialize query parameters:
     // /water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=1024
@@ -62,43 +64,45 @@ export default function WaterColumnView() {
     if(sensor === null) {
       dispatch(updateSensor(searchParams.get('sensor')));
     }
-    if(timeIndex === null) {
+    if(indexTime === null) {
       // console.log(`intialTimeIndex: ${initialTimeIndex}`);
       dispatch(updateTimeIndex(initialTimeIndex));
     }
-    if(frequencyIndex === null) {
+    if(indexFrequency === null) {
       dispatch(updateFrequencyIndex(initialFrequencyIndex));
     }
     
-    if(ship !== null && cruise !== null && sensor !== null) {
-      dispatch(storeAttributesAsync({ ship, cruise, sensor })); // don't need to update each time
+    if(!loadedCruiseInfo && ship !== null && cruise !== null && sensor !== null) { // only need to call once per cruise
+      setLoadedCruiseInfo(true); // only call once
+      dispatch(storeAttributesAsync({ ship, cruise, sensor }));
       dispatch(storeShapeAsync({ ship, cruise, sensor }));
-      dispatch(frequenciesAsync({ ship, cruise, sensor })); // don't need to update each time
+      dispatch(frequenciesAsync({ ship, cruise, sensor }));
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, timeIndex, initialTimeIndex, initialFrequencyIndex, frequencyIndex]);
+  }, [dispatch, searchParams, ship, cruise, sensor, indexTime, initialTimeIndex, initialFrequencyIndex, indexFrequency]);
+  // }, []);
 
   useEffect(() => { // make async requests for all infomation panel values
-    if(ship && cruise && sensor && frequencyIndex !== null) {
-      dispatch(latitudeAsync({ ship, cruise, sensor, indexTime: timeIndex }));
-      dispatch(longitudeAsync({ ship, cruise, sensor, indexTime: timeIndex }));
-      dispatch(timeAsync({ ship, cruise, sensor, indexTime: timeIndex }));
-      dispatch(depthAsync({ ship, cruise, sensor, indexDepth: indexDepth }));
-      dispatch(bottomAsync({ ship, cruise, sensor, indexTime: timeIndex }));
+    if(ship && cruise && sensor && indexFrequency !== null) {
+      dispatch(latitudeAsync({ ship, cruise, sensor, indexTime }));
+      dispatch(longitudeAsync({ ship, cruise, sensor, indexTime }));
+      dispatch(timeAsync({ ship, cruise, sensor, indexTime }));
+      dispatch(depthAsync({ ship, cruise, sensor, indexDepth }));
+      dispatch(bottomAsync({ ship, cruise, sensor, indexTime }));
       dispatch(svAsync({
         ship,
         cruise,
         sensor,
-        indexDepth: indexDepth, // TODO: wire this up to mouse click
-        indexTime: timeIndex,
-        indexFrequency: frequencyIndex,
+        indexDepth,
+        indexTime,
+        indexFrequency,
       }));
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, frequencyIndex, timeIndex, indexDepth]);
+  }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, indexTime, indexFrequency]);
 
   return (
     <div className="WaterColumnView">
       {
-        (storeShape !== null && attributes !== null && frequencyIndex !== null)
+        (storeShape !== null && attributes !== null && indexFrequency !== null)
         ?
           <>
             <WaterColumnVisualization
@@ -106,6 +110,7 @@ export default function WaterColumnView() {
               storeShape={storeShape}
               initialTimeIndex={initialTimeIndex}
             />
+
             <WaterColumnInformationPanel />
           </>
         :
