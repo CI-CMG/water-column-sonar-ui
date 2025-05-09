@@ -78,8 +78,7 @@ export default function WaterColumnView() {
       dispatch(storeShapeAsync({ ship, cruise, sensor }));
       dispatch(frequenciesAsync({ ship, cruise, sensor }));
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, indexTime, initialTimeIndex, initialFrequencyIndex, indexFrequency]);
-  // }, []);
+  }, [dispatch, searchParams, ship, cruise, sensor, indexTime, initialTimeIndex, initialFrequencyIndex, indexFrequency, loadedCruiseInfo]);
 
   useEffect(() => { // make async requests for all infomation panel values
     if(ship && cruise && sensor && indexFrequency !== null) {

@@ -220,13 +220,16 @@ const WaterColumnInformationPanel = () => {
           }
 
           {
-            sv !== null && frequencyIndex !== null ?
+            sv !== null && frequencyIndex !== null && !isNaN(sv[frequencyIndex]) ?
             <p>
               <b>Selected Sv:</b>{" "}
               <span className="font-monospace float-end">{ sv[frequencyIndex].toFixed(2) } dB</span>
             </p>
             :
-            <></>
+            <p>
+              <b>Selected Sv:</b>{" "}
+              <span className="font-monospace float-end" style={{ fontSize: "14px" }}><i>click to see</i></span>
+            </p>
           }
 
           {
@@ -285,8 +288,6 @@ const WaterColumnInformationPanel = () => {
             </p>
           </div>
 
-          <br />
-
           <ColorMap selectedColorPalette={Object.keys(colorMaps)[colorMapButtonIndex]}/>
           
           <br />
@@ -327,10 +328,10 @@ const WaterColumnInformationPanel = () => {
           <Row className="mb-3">
             <Form.Group>
               <Form.Check
-                disabled
                 type="switch"
-                id="mask-switch"
-                label="Mask Data Beneath Sea Floor"
+                id="annotate-switch"
+                label="Show Annotations"
+                onChange={() => handleSelectAnnotation()}
               />
             </Form.Group>
           </Row>
@@ -338,10 +339,10 @@ const WaterColumnInformationPanel = () => {
           <Row className="mb-3">
             <Form.Group>
               <Form.Check
+                disabled
                 type="switch"
-                id="annotate-switch"
-                label="Show Annotations"
-                onChange={() => handleSelectAnnotation()}
+                id="mask-switch"
+                label="Mask Data Beneath Sea Floor"
               />
             </Form.Group>
           </Row>
@@ -381,7 +382,7 @@ const WaterColumnInformationPanel = () => {
           <br />
           <hr />
           
-          <p><b>Processing Software:</b></p>
+          <p><b>Provenance:</b></p>
           {attributes ?
             <>
               <p>

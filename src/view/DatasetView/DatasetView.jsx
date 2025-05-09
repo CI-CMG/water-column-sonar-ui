@@ -241,6 +241,7 @@ export default function DatasetView() {
             <h2>References</h2>
             <br />
             <ul>
+              {/* TODO: add hyperlinks here... */}
               <li>De Robertis, A., & Higginbottom, I. (2007). A post-processing technique to estimate the signal-to-noise ratio and remove echosounder background noise. ICES Journal of Marine Science, 64(6): 1282-1291.</li>
               <br />
               <li>Ryan, T.E., Downie, R.A., Kloser, R.J., and Keith, G. (2015). Reducing bias due to noise and attenuation in open-ocean echo integration data. ICES Journal of Marine Science, 72(8): 2482-2493.</li>
@@ -250,6 +251,23 @@ export default function DatasetView() {
               <li>Wall, C.C. (2016), Building an accessible archive for water column sonar data, Eos, 97, https://doi.org/10.1029/2016EO057595. Published on 15 August 2016.</li>
               <br />
               <li>Wall, C.C., Jech, J.M. and. McLean, S.J. (2016) Increasing the accessibility of acoustic data through global access and imagery, ICES Journal of Marine Science, 73(8): 2093–2103, DOI: https://doi.org/10.1093/icesjms/fsw014.</li>
+              <br />
+              <li>Pordes, R., Petravick, D., Kramer, B., Olson, D., Livny, M., Roy, A., Avery, P., Blackburn, K., Wenaus, T., Würthwein, F., Foster, I., Gardner, R., Wilde, M., Blatecky, A., McGee, J., & Quick, R. (2007). The open science grid. J. Phys. Conf. Ser., 78, 012057. https://doi.org/10.1088/1742-6596/78/1/012057.</li>
+              <br />
+              <li>Sfiligoi, I., Bradley, D. C., Holzman, B., Mhashilkar, P., Padhi, S., & Wurthwein, F. (2009). The pilot way to grid resources using glideinWMS. 2009 WRI World Congress on Computer Science and Information Engineering, 2, 428–432. https://doi.org/10.1109/CSIE.2009.950.</li>
+              <br />
+              <li>OSG. (2006). OSPool. OSG. https://doi.org/10.21231/906P-4D78.</li>
+              <br />
+              <li>OSG. (2015). Open Science Data Federation. OSG. https://doi.org/10.21231/0KVZ-VE57.</li>
+            </ul>
+
+            <br />
+            <hr />
+            <br />
+            <h2>Acknowledgment</h2>
+            <br />
+            <ul>
+              <li>This research was done using services provided by the OSG Consortium, which is supported by the National Science Foundation awards #2030508 and #2323298.</li>
             </ul>
 
             <br />

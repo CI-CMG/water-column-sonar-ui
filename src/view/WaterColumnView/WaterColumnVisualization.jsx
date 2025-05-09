@@ -103,7 +103,9 @@ const WaterColumnVisualization = ({
           ?
             <Polygon color={'white'} positions={positions} title="Annotation">
               {/* <Popup>CTD signal (Conductivity, Temperature, Depth)</Popup> */}
-              <Tooltip>CTD signal (Conductivity, Temperature, Depth)</Tooltip>
+              <Tooltip>
+                CTD stands for conductivity, temperature, and depth,<br />and refers to a package of electronic instruments<br />that measure these properties.
+              </Tooltip>
             </Polygon>
           :
             <></>          

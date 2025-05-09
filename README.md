@@ -30,23 +30,25 @@
  - ~~print dimension to the "Data Acces" info box~~
  - ~~restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>~~
  - ~~make sure that HB1906 isnt hard coded everywhere~~
- 
  - ~~fix navbar button values; added reload of the document~~
  - ~~add link to echofish tagged releases~~
  - ~~read the documentation~~
  - ~~draw evr polygon on data -> currently circle --> toggle switch in the info panel~~
  - ~~print total dimensions of L2 data: depth x time x frequency~~
+ - ~~refresh layer when clicking on frequency/colorMap/minSv/maxSv button~~
 
- - refresh layer when clicking on frequency/colorMap/minSv/maxSv button
- Gameplan:
-    moved the map into child component to get it away from effects
-
- - add graticules -> legend for depth, time
- - debounce mini map follow wc center -> hack, only on clicks
+Reevaluate what to do:
+ - add citation for ospool...
+ - disable click ping time index for main map view --> take users to beginning of cruise
+ - frequency button works, "color map" does not cause refresh of map -> fix
+ - debounce mini map to relocate to last click
+ - add graticule legend for: depth axis & time axis
  - deploy to domain echo.fish
-
+ - remove debugging info
+ - create visualization layer of all EVR annotation time/lat/lon as points in PMTiles
 
  - mask sub-bottom data w checkbox, not linestring
+ 
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
  - add bathymetric layer to map viewer
  - allow clicking on linestring in mini-map viewer & redirect to new cruise
@@ -64,4 +66,4 @@
  - update cfn deployment to s3 copy
  - create process for gitlab action to tag and create releases automatically
  - prototype knowledge graph query
- - create visualization layer of all EVR annotation time/lat/lon as points in PMTiles
+
