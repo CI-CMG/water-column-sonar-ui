@@ -14,6 +14,12 @@ import { PiMapTrifoldThin } from "react-icons/pi";
 
 // https://react-icons.github.io/react-icons/search/#q=fish
 export default function LayoutView() {
+  let title = 'echofish';
+  if (window.location.href.includes("test")) { // for test tier print different title
+    console.log(`dev: ${window.location.href}`);
+    title = "echofish-test"
+  }
+
   return (
     <div className="LayoutView">
       {/* <header role="banner" id="HeaderContent"></header> */}
@@ -21,7 +27,7 @@ export default function LayoutView() {
         <Navbar bg="dark" data-bs-theme="dark">
           <Container>
             <Navbar.Brand as={Link} to="/" className="font-weight-bold">
-            <i className="bi bi-intersect"></i>&nbsp; echofish
+            <i className="bi bi-intersect"></i>&nbsp; {title}
             </Navbar.Brand>
 
             <Nav className="ms-auto">

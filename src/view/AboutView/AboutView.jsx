@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  // useState,
+} from "react";
 // import { useGetSatellitesQuery } from "../../services/api.js";
 import NOAALogo from "../../../src/assets/images/noaa/noaa.png";
 import XarrayLogo from "../../../src/assets/images/xarray/xarray.png";

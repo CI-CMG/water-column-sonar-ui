@@ -6,7 +6,7 @@ import {
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
-import { circle } from "@turf/circle";
+// import { circle } from "@turf/circle";
 import {
   selectLatitude,
   selectLongitude,
@@ -82,7 +82,7 @@ export default function MiniMapView() {
           40 + (Math.random() - 0.5) * 10
         ],
         zoom: 12,
-        minZoom: 2,
+        minZoom: 4,
       });
 
       map.current.on('load', () => {
@@ -140,7 +140,8 @@ export default function MiniMapView() {
         ]
       };
       geojson.features[0].geometry.coordinates = [longitude, latitude];
-      // map.current.getSource('point').setData(geojson);
+      // const source = map.current.getSource('point');
+      // source.setData({});
 
       map.current.flyTo({
         center: [longitude, latitude],
@@ -148,7 +149,7 @@ export default function MiniMapView() {
         speed: 0.4,
       });
     }
-  },[latitude, longitude, loadedMap]);
+  },[map, latitude, longitude, loadedMap]);
 
   return (
     <div className="MiniMapView">

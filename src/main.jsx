@@ -12,6 +12,10 @@ import './assets/css/Main.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+if (window.location.href.includes("localhost")) {
+  console.log(`dev: ${window.location.href}`);
+}
+
 /* developer branding */
 window.console.log.apply(
   console,
