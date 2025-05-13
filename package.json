@@ -15,8 +15,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "aws s3 cp --recursive ./dist/ s3://watercolumnproject.org/; aws cloudfront create-invalidation --distribution-id E38IRRAY5TY4MK --paths '/*' >/dev/null",
-    "deploy-test": "aws --profile=echofish s3 cp --recursive ./dist/ s3://test.echo.fish/; aws cloudfront create-invalidation --distribution-id E1N2M68LC9M3JY --paths '/*' >/dev/null",
-    "deploy-prod": "aws --profile=echofish s3 cp --recursive ./dist/ s3://echo.fish/; aws cloudfront create-invalidation --distribution-id E3NV8I4HB1BPJV --paths '/*' >/dev/null",
+    "deploy-test": "aws --profile=echofish s3 cp --recursive ./dist/ s3://test.echo.fish/; aws --profile=echofish cloudfront create-invalidation --distribution-id E1N2M68LC9M3JY --paths '/*' >/dev/null",
+    "deploy-prod": "aws --profile=echofish s3 cp --recursive ./dist/ s3://echo.fish/; aws --profile=echofish cloudfront create-invalidation --distribution-id E3NV8I4HB1BPJV --paths '/*' >/dev/null",
     "delete-me-invalidate-cache": "aws cloudfront create-invalidation --distribution-id E38IRRAY5TY4MK --paths '/*'"
   },
   "dependencies": {
