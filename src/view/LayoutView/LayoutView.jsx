@@ -18,6 +18,8 @@ export default function LayoutView() {
   if (window.location.href.includes("test")) { // for test tier print different title
     console.log(`dev: ${window.location.href}`);
     title = "echofish-test"
+  } else if (window.location.href.includes("localhost")) {
+    title = "echofish-dev"
   }
 
   return (

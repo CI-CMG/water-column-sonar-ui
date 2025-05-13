@@ -1,17 +1,15 @@
-import {
-  useState,
-  useEffect,
-} from "react";
-import { useSearchParams } from 'react-router';
-import Col from 'react-bootstrap/Col';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router";
+import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
-import Row from 'react-bootstrap/Row';
+import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import MiniMapView from "./MiniMapView.jsx";
 import ColorMap from "./ColorMap.jsx";
 import SvPlotView from "./SvPlotView.jsx";
+import { HuePicker } from 'react-color';
 import {
   selectShip,
   selectCruise,
@@ -52,26 +50,26 @@ const getDateTime = function (epochSeconds, timezone) {
   // timezone='Etc/UTC'
   const tempDate = new Date(0);
   tempDate.setUTCMilliseconds(epochSeconds * 1000);
-  return `${tempDate.toISOString().substring(0, 19)}Z`
+  return `${tempDate.toISOString().substring(0, 19)}Z`;
 };
 
-
 const WaterColumnInformationPanel = () => {
+
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const annotation = useAppSelector(selectAnnotation);
-  const colorIndex = useAppSelector(selectColorIndex); // 
+  const colorIndex = useAppSelector(selectColorIndex); //
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
   const frequencies = useAppSelector(selectFrequencies); // from store
-  const frequencyIndex = useAppSelector(selectFrequencyIndex); // 
-  // const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); // 
+  const frequencyIndex = useAppSelector(selectFrequencyIndex); //
+  // const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); //
   const latitude = useAppSelector(selectLatitude); // from store
   const longitude = useAppSelector(selectLongitude);
   const time = useAppSelector(selectTime);
@@ -82,7 +80,7 @@ const WaterColumnInformationPanel = () => {
   const svMax = useAppSelector(selectSvMax);
   // const depthIndex = useAppSelector(selectDepthIndex);
   // const timeIndex = useAppSelector(selectTimeIndex);
-  
+
   const [isLoading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
 
@@ -90,10 +88,15 @@ const WaterColumnInformationPanel = () => {
   const handleShow = () => setShow(true);
 
   const handleSelectColorMap = (key) => {
-    dispatch(updateColorIndex(Object.keys(colorMaps).findIndex(x => x === key)));
+    dispatch(
+      updateColorIndex(Object.keys(colorMaps).findIndex((x) => x === key))
+    );
     setSearchParams(
       (prev) => {
-        prev.set('color', Object.keys(colorMaps).findIndex(x => x === key));
+        prev.set(
+          "color",
+          Object.keys(colorMaps).findIndex((x) => x === key)
+        );
         return prev;
       },
       { preventScrollReset: true }
@@ -102,10 +105,15 @@ const WaterColumnInformationPanel = () => {
 
   const handleSelectFrequency = (key) => {
     // console.log(`frequency changed to: ${Number(key)}`)
-    dispatch(updateFrequencyIndex(frequencies.findIndex(x => x === Number(key))));
+    dispatch(
+      updateFrequencyIndex(frequencies.findIndex((x) => x === Number(key)))
+    );
     setSearchParams(
       (prev) => {
-        prev.set('frequency', frequencies.findIndex(x => x === Number(key)));
+        prev.set(
+          "frequency",
+          frequencies.findIndex((x) => x === Number(key))
+        );
         return prev;
       },
       { preventScrollReset: true }
@@ -117,7 +125,8 @@ const WaterColumnInformationPanel = () => {
   };
 
   useEffect(() => {
-    if(frequencies !== null){ // TODO: add all constraints
+    if (frequencies !== null) {
+      // TODO: add all constraints
       setLoading(false);
     }
   }, [frequencies]);
@@ -150,9 +159,8 @@ const WaterColumnInformationPanel = () => {
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            {ship} <font color="#00CC33">/</font>{" "}
-            {cruise} <font color="#00CC33">/</font>{" "}
-            {sensor}
+            {ship} <font color="#00CC33">/</font> {cruise}{" "}
+            <font color="#00CC33">/</font> {sensor}
           </Offcanvas.Title>
         </Offcanvas.Header>
 
@@ -171,132 +179,156 @@ const WaterColumnInformationPanel = () => {
 
           <p>
             <b>Ship:</b>
-            <span className="font-monospace float-end">{ ship }</span>
+            <span className="font-monospace float-end">{ship}</span>
           </p>
 
           <p>
             <b>Cruise:</b>
-            <span className="font-monospace float-end">{ cruise }</span>
+            <span className="font-monospace float-end">{cruise}</span>
           </p>
 
           <p>
             <b>Sensor:</b>
-            <span className="font-monospace float-end">{ sensor }</span>
+            <span className="font-monospace float-end">{sensor}</span>
           </p>
 
           <p>
             <b>Time:</b>{" "}
-            <span className="font-monospace float-end">{ getDateTime(time, 'Etc/UTC') } <span style={{color: '#9933CC'}}>UTC</span></span>
+            <span className="font-monospace float-end">
+              {getDateTime(time, "Etc/UTC")}{" "}
+              <span style={{ color: "#9933CC" }}>UTC</span>
+            </span>
           </p>
 
-          {
-            latitude !== null && longitude !== null ?
+          {latitude !== null && longitude !== null ? (
             <p>
               <b>Lon/Lat:</b>{" "}
-              <span className="font-monospace float-end">{ longitude.toFixed(5) }° E, { latitude.toFixed(5) }° N</span>
+              <span className="font-monospace float-end">
+                {longitude.toFixed(5)}° E, {latitude.toFixed(5)}° N
+              </span>
             </p>
-            :
+          ) : (
             <></>
-          }
+          )}
 
-          {
-            depth !== null ?
+          {depth !== null ? (
             <p>
               <b>Depth:</b>
-              <span className="font-monospace float-end">{ depth.toFixed(1) } meters</span>
+              <span className="font-monospace float-end">
+                {depth.toFixed(1)} meters
+              </span>
             </p>
-            :
+          ) : (
             <></>
-          }
+          )}
 
-          {
-            bottom !== null ?
+          {bottom !== null ? (
             <p>
               <b>Bottom:</b>
-              <span className="font-monospace float-end">{ bottom.toFixed(1) } meters</span>
+              <span className="font-monospace float-end">
+                {bottom.toFixed(1)} meters
+              </span>
             </p>
-            :
+          ) : (
             <></>
-          }
+          )}
 
-          {
-            sv !== null && frequencyIndex !== null && !isNaN(sv[frequencyIndex]) ?
+          {sv !== null &&
+          frequencyIndex !== null &&
+          !isNaN(sv[frequencyIndex]) ? (
             <p>
               <b>Selected Sv:</b>{" "}
-              <span className="font-monospace float-end">{ sv[frequencyIndex].toFixed(2) } dB</span>
+              <span className="font-monospace float-end">
+                {sv[frequencyIndex].toFixed(2)} dB
+              </span>
             </p>
-            :
+          ) : (
             <p>
               <b>Selected Sv:</b>{" "}
-              <span className="font-monospace float-end" style={{ fontSize: "14px" }}><i>click to compute</i></span>
+              <span
+                className="font-monospace float-end"
+                style={{ fontSize: "14px" }}
+              >
+                <i>click to compute</i>
+              </span>
             </p>
-          }
+          )}
 
-          {
-            attributes !== null ?
+          {attributes !== null ? (
             <p>
               <b>Calibration Status:</b>
-              <span className="font-monospace float-end"><i>{attributes.calibration_status ? "calibrated" : "not calibrated"}</i></span>
+              <span className="font-monospace float-end">
+                <i>
+                  {attributes.calibration_status
+                    ? "calibrated"
+                    : "not calibrated"}
+                </i>
+              </span>
             </p>
-            :
+          ) : (
             <></>
-          }
+          )}
 
           <div className="mt-4">
             <Dropdown onSelect={handleSelectFrequency}>
-              <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
+              <Dropdown.Toggle
+                variant="dark"
+                id="dropdown-basic"
+                className="btn-sm float-end"
+              >
                 Frequency
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                {
-                  frequencies.map((item, index) => {
-                    return (
-                      <Dropdown.Item key={index} eventKey={item}>
-                        {item / 1000} kHz
-                      </Dropdown.Item>
-                    );
-                  })
-                }
+                {frequencies.map((item, index) => {
+                  return (
+                    <Dropdown.Item key={index} eventKey={item}>
+                      {item / 1000} kHz
+                    </Dropdown.Item>
+                  );
+                })}
               </Dropdown.Menu>
             </Dropdown>
             <p>
               <b>Frequency:</b>{" "}
-              <span className="font-monospace">{frequencies[frequencyIndex] / 1000} kHz</span>
+              <span className="font-monospace">
+                {frequencies[frequencyIndex] / 1000} kHz
+              </span>
             </p>
           </div>
 
           <div className="mt-4">
             <Dropdown onSelect={handleSelectColorMap}>
-              <Dropdown.Toggle variant="dark" id="dropdown-basic" className="btn-sm float-end">
+              <Dropdown.Toggle
+                variant="dark"
+                id="dropdown-basic"
+                className="btn-sm float-end"
+              >
                 Color Map
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                {
-                  Object.keys(colorMaps).map((item, index) => {
-                    return (
-                      <Dropdown.Item key={index} eventKey={item}>
-                        {item}
-                      </Dropdown.Item>
-                    );
-                  })
-                }
+                {Object.keys(colorMaps).map((item, index) => {
+                  return (
+                    <Dropdown.Item key={index} eventKey={item}>
+                      {item}
+                    </Dropdown.Item>
+                  );
+                })}
               </Dropdown.Menu>
             </Dropdown>
             <p>
               <b>Color Map:</b>{" "}
-              <span className="font-monospace">{Object.keys(colorMaps)[colorIndex]}</span>
+              <span className="font-monospace">
+                {Object.keys(colorMaps)[colorIndex]}
+              </span>
             </p>
           </div>
 
-          <ColorMap selectedColorPalette={Object.keys(colorMaps)[colorIndex]}/>
-          
+          <ColorMap selectedColorPalette={Object.keys(colorMaps)[colorIndex]} />
+
           <br />
 
           <Row className="mb-3">
-            <Form.Group
-              as={Col}
-              controlId="minDB"
-            >
+            <Form.Group as={Col} controlId="minDB">
               <Form.Label>Sv Minimum (dB)</Form.Label>
               <Form.Control
                 type="number"
@@ -309,10 +341,7 @@ const WaterColumnInformationPanel = () => {
               />
             </Form.Group>
 
-            <Form.Group
-              as={Col}
-              controlId="maxDB"
-            >
+            <Form.Group as={Col} controlId="maxDB">
               <Form.Label>Sv Maximum (dB)</Form.Label>
               <Form.Control
                 type="number"
@@ -336,6 +365,10 @@ const WaterColumnInformationPanel = () => {
             </Form.Group>
           </Row>
 
+          <HuePicker width={360} />
+
+          <br />
+
           <Row className="mb-3">
             <Form.Group>
               <Form.Check
@@ -350,7 +383,9 @@ const WaterColumnInformationPanel = () => {
           {/* <p>Min: {svMin}, Max: {svMax}</p> */}
 
           <hr />
-          <p><b>Data Access:</b></p>
+          <p>
+            <b>Data Access:</b>
+          </p>
           {/* https://echolevels.readthedocs.io/en/latest/levels_proposed.html */}
           <p>
             <b>Level 0:</b>
@@ -377,38 +412,60 @@ const WaterColumnInformationPanel = () => {
             </span>
           </p>
           <p style={{ textIndent: "6px" }}>Total Sv dimension:</p>
-          <p style={{ textIndent: "6px", fontFamily: "monospace", fontSize: "14px" }}>{storeShape[0].toLocaleString()} x {storeShape[1].toLocaleString()} x {storeShape[2].toLocaleString()} = {(storeShape[0]*storeShape[1]*storeShape[2]).toLocaleString()}</p>
-          
+          <p
+            style={{
+              textIndent: "6px",
+              fontFamily: "monospace",
+              fontSize: "14px",
+            }}
+          >
+            {storeShape[0].toLocaleString()} x {storeShape[1].toLocaleString()}{" "}
+            x {storeShape[2].toLocaleString()} ={" "}
+            {(storeShape[0] * storeShape[1] * storeShape[2]).toLocaleString()}
+          </p>
+
           <br />
           <hr />
-          
-          <p><b>Provenance:</b></p>
-          {attributes ?
+
+          <p>
+            <b>Provenance:</b>
+          </p>
+          {attributes ? (
             <>
               <p>
                 <b>name:</b>
                 {/* <span className="float-end softwareName">{processingSoftwareName}</span> */}
-                <span className="font-monospace float-end">{attributes.processing_software_name}</span>
+                <span className="font-monospace float-end">
+                  {attributes.processing_software_name}
+                </span>
               </p>
               <p>
                 <b>Date:</b>
-                <span className="font-monospace float-end">{attributes.processing_software_time}</span>
+                <span className="font-monospace float-end">
+                  {attributes.processing_software_time}
+                </span>
               </p>
               <p>
                 <b>Version:</b>
                 {/* https://pypi.org/project/water_column_sonar_processing/#history */}
                 <span className="font-monospace float-end">
-                  <a href="https://pypi.org/project/water_column_sonar_processing/#history" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="https://pypi.org/project/water_column_sonar_processing/#history"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     v{attributes.processing_software_version}
                   </a>
                 </span>
               </p>
             </>
-            :
+          ) : (
             <></>
-          }
+          )}
 
-          <p className="text-center"><b>~</b></p>
+          <p className="text-center">
+            <b>~</b>
+          </p>
         </Offcanvas.Body>
       </Offcanvas>
     </>
@@ -417,5 +474,4 @@ const WaterColumnInformationPanel = () => {
 
 export default WaterColumnInformationPanel;
 
-WaterColumnInformationPanel.propTypes = {
-};
+WaterColumnInformationPanel.propTypes = {};
