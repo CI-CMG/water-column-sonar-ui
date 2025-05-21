@@ -24,20 +24,33 @@ const style = {
   name: "Water Column Project",
   glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   sources: {
-    satellite: {
-      url: `https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=${map_key}`,
+    // satellite: {
+    //   url: `https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=${map_key}`,
+    //   type: "raster",
+    // },
+    ocean: {
+      url: `https://api.maptiler.com/maps/ocean/tiles.json?key=${map_key}`,
       type: "raster",
     },
     cruises: {
       url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar-id.pmtiles",
       type: "vector",
     },
+    // annotations: {
+    //   url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar-annotations.pmtiles",
+    //   type: "vector",
+    // },
   },
   layers: [
+    // {
+    //   id: "Satellite",
+    //   type: "raster",
+    //   source: "satellite",
+    // },
     {
-      id: "Satellite",
+      id: "Ocean",
       type: "raster",
-      source: "satellite",
+      source: "ocean",
     },
     {
       id: "cruises",
@@ -54,14 +67,99 @@ const style = {
       },
       "source-layer": "cruises",
     },
+    // {
+    //   id: "AH_School",
+    //   type: "circle",
+    //   source: "annotations",
+    //   paint: {
+    //     "circle-blur": 0,
+    //     "circle-color": "grey",
+    //     // "circle-opacity": 0.4,
+    //     "circle-radius": 4,
+    //     "circle-stroke-color": "grey",
+    //     // "circle-stroke-opacity": 0.9,
+    //     // "circle-stroke-width": 2,
+    //   },
+    //   "source-layer": "AH_School",
+    // },
+    // {
+    //   id: "Atlantic_Herring",
+    //   type: "circle",
+    //   source: "annotations",
+    //   paint: {
+    //     "circle-blur": 0,
+    //     "circle-color": "white",
+    //     "circle-opacity": 0.4,
+    //     "circle-radius": 4,
+    //     "circle-stroke-color": "white",
+    //     "circle-stroke-opacity": 0.9,
+    //     // "circle-stroke-width": 2,
+    //   },
+    //   "source-layer": "Atlantic_Herring",
+    // },
+    // {
+    //   id: "Fish_School",
+    //   type: "circle",
+    //   source: "annotations",
+    //   paint: {
+    //     "circle-blur": 0,
+    //     "circle-color": "yellow",
+    //     "circle-opacity": 0.4,
+    //     "circle-radius": 4,
+    //     "circle-stroke-color": "yellow",
+    //     "circle-stroke-opacity": 0.9,
+    //     // "circle-stroke-width": 2,
+    //   },
+    //   "source-layer": "Fish_School",
+    // },
+    // // {
+    // //   id: "Krill_Schools",
+    // //   type: "circle",
+    // //   source: "annotations",
+    // //   paint: {
+    // //     "circle-blur": 0,
+    // //     "circle-color": "pink",
+    // //     "circle-opacity": 0.4,
+    // //     "circle-radius": 2,
+    // //     "circle-stroke-color": "pink",
+    // //     "circle-stroke-opacity": 0.9,
+    // //     // "circle-stroke-width": 2,
+    // //   },
+    // //   "source-layer": "Krill_Schools",
+    // // },
+    // {
+    //   id: "Possible_Herring",
+    //   type: "circle",
+    //   source: "annotations",
+    //   paint: {
+    //     "circle-blur": 0,
+    //     "circle-color": "cyan",
+    //     "circle-opacity": 0.4,
+    //     "circle-radius": 4,
+    //     "circle-stroke-color": "cyan",
+    //     "circle-stroke-opacity": 0.9,
+    //     // "circle-stroke-width": 2,
+    //   },
+    //   "source-layer": "Possible_Herring",
+    // },
+    // {
+    //   id: "Unclassified_regions",
+    //   type: "circle",
+    //   source: "annotations",
+    //   paint: {
+    //     "circle-blur": 0,
+    //     "circle-color": "red",
+    //     "circle-opacity": 0.4,
+    //     "circle-radius": 2,
+    //     "circle-stroke-color": "red",
+    //     "circle-stroke-opacity": 0.9,
+    //     // "circle-stroke-width": 2,
+    //   },
+    //   "source-layer": "Unclassified_regions",
+    // },
   ],
   // TODO: add atmosphere
 };
-
-// function createPopupContent() {
-//   // const asdf = "asdf123"
-//   return <Link to="/about">About</Link>;
-// }
 
 export default function MapView() {
   const dispatch = useAppDispatch()
