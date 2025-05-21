@@ -26,8 +26,12 @@ const style = {
   name: "Mini Map Viewer",
   glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   sources: {
-    satellite: {
-      url: `https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=${map_key}`,
+    // satellite: {
+    //   url: `https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=${map_key}`,
+    //   type: "raster",
+    // },
+    ocean: {
+      url: `https://api.maptiler.com/maps/ocean/tiles.json?key=${map_key}`,
       type: "raster",
     },
     cruises: {
@@ -36,10 +40,15 @@ const style = {
     },
   },
   layers: [
+    // {
+    //   id: "Satellite",
+    //   type: "raster",
+    //   source: "satellite",
+    // },
     {
-      id: "Satellite",
+      id: "Ocean",
       type: "raster",
-      source: "satellite",
+      source: "ocean",
     },
     {
       id: "cruises",
@@ -60,7 +69,7 @@ const style = {
 };
 
 export default function MiniMapView() {
-  const zoomFeature = 10;
+  // const zoomFeature = 10;
   const [loadedMap, setLoadedMap] = useState(false);
 
   const latitude = useAppSelector(selectLatitude);
@@ -80,8 +89,10 @@ export default function MiniMapView() {
         style: style,
         center: [0, 0],
         zoom: 1,
+        minZoom: 0,
       });
 
+      // move all this somewhere else
       map.current.on('load', () => {
         let geojson = {
           'type': 'FeatureCollection',
@@ -90,13 +101,11 @@ export default function MiniMapView() {
                   'type': 'Feature',
                   'geometry': {
                       'type': 'Point',
-                      'coordinates': [0, 0]
+                      'coordinates': [longitude, latitude]
                   }
               }
           ]
         };
-        geojson.features[0].geometry.coordinates = [longitude, latitude];
-
         map.current.addSource('point', {
           'type': 'geojson',
           'data': geojson
@@ -107,19 +116,19 @@ export default function MiniMapView() {
           'source': 'point',
           'paint': {
             'circle-radius': 5,
-            'circle-color': '#c3daeb'
+            'circle-color': '#34a2eb'
           }
         });
+
+        setLoadedMap(true);
       });
 
       map.current.flyTo({
         center: [longitude, latitude],
         essential: true,
-        speed: 0.9,
-        zoom: zoomFeature,
+        speed: 0.7,
+        zoom: 12,
       });
-
-      setLoadedMap(true);
     }
   }, [map, latitude, longitude]);
 
@@ -137,15 +146,12 @@ export default function MiniMapView() {
             }
         ]
       };
-      geojson.features[0].geometry.coordinates = [longitude, latitude];
-      // const source = map.current.getSource('point');
-      // source.setData({});
-
+      map.current.getSource('point').setData(geojson);
       map.current.flyTo({
-        center: [longitude, latitude],
+        center: geojson.features[0].geometry.coordinates, // [longitude, latitude],
         essential: true,
-        speed: 0.4,
-        zoom: zoomFeature,
+        speed: 0.75,
+        zoom: 12,
       });
     }
   },[map, latitude, longitude, loadedMap]);

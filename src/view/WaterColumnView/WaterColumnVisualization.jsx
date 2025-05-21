@@ -63,7 +63,8 @@ const WaterColumnVisualization = ({
   const mapCenterX = initialTimeIndex;
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenter = [mapCenterY, mapCenterX];
-  const margin = 300; // map maxBounds + margin
+  const marginX = 30; // map maxBounds + margin
+  const marginY = 30;
 
   const polygon1 = [ // CTD sidescan example polygon for HB1906
     [-274, 434959],
@@ -91,8 +92,8 @@ const WaterColumnVisualization = ({
         tileSize={tileSize}
         className="Map"
         maxBounds={[
-          [-1 * Math.ceil(storeShape[0]/tileSize) * tileSize - margin, 0 - margin],
-          [0 + margin, storeShape[1] + margin],
+          [-1 * Math.ceil(storeShape[0]/tileSize) * tileSize - marginX, 0 - marginX],
+          [0 + marginY, storeShape[1] + marginY],
         ]}
       >
         <CustomLayer  />

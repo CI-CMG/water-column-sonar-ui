@@ -191,9 +191,16 @@ export default function MapView() {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: style,
-        center: [-95, 35],
+        center: [0, 0],
         zoom: 1,
-        minZoom: 2,
+        minZoom: 1,
+      });
+
+      map.current.flyTo({
+        center: [-75, 35],
+        essential: true,
+        speed: 0.1,
+        zoom: 3,
       });
 
       // styling for the mouse cursor
