@@ -60,6 +60,7 @@ const style = {
 };
 
 export default function MiniMapView() {
+  const zoomFeature = 10;
   const [loadedMap, setLoadedMap] = useState(false);
 
   const latitude = useAppSelector(selectLatitude);
@@ -77,12 +78,8 @@ export default function MiniMapView() {
       map.current = new maplibregl.Map({
         container: miniMapContainer.current,
         style: style,
-        center: [ // just picking random places for now
-          -74.5 + (Math.random() - 0.5) * 10,
-          40 + (Math.random() - 0.5) * 10
-        ],
-        zoom: 12,
-        minZoom: 4,
+        center: [0, 0],
+        zoom: 1,
       });
 
       map.current.on('load', () => {
@@ -119,6 +116,7 @@ export default function MiniMapView() {
         center: [longitude, latitude],
         essential: true,
         speed: 0.9,
+        zoom: zoomFeature,
       });
 
       setLoadedMap(true);
@@ -147,6 +145,7 @@ export default function MiniMapView() {
         center: [longitude, latitude],
         essential: true,
         speed: 0.4,
+        zoom: zoomFeature,
       });
     }
   },[map, latitude, longitude, loadedMap]);
