@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import MiniMapView from "./MiniMapView.jsx";
 import ColorMap from "./ColorMap.jsx";
+import TimeAxis from "./Axes/TimeAxis.jsx";
 import SvPlotView from "./SvPlotView.jsx";
 // import { HuePicker } from 'react-color';
 import AnnotationColors from "./InformationPanel/AnnotationColors.jsx"
@@ -190,6 +191,10 @@ const WaterColumnInformationPanel = () => {
         </Offcanvas.Header>
 
         <Offcanvas.Body>
+          
+          {/* TODO: move me to the main water column view and float to the bottom */}
+          <TimeAxis />
+
           <MiniMapView />
 
           <SvPlotView />
@@ -224,7 +229,8 @@ const WaterColumnInformationPanel = () => {
               <span style={{ color: "#9933CC" }}>UTC</span>
             </span>
           </p>
-          <p className="text-end"><i>view: [ min: {timeMinIndex}, max: {timeMaxIndex} ]</i></p>
+          <p className="text-end"><i>[ min: {timeMinIndex}, max: {timeMaxIndex} ]</i></p>
+          <p className="text-end"><i>[ min: {timeMinIndex}, max: {timeMaxIndex} ]</i></p>
 
           {latitude !== null && longitude !== null ? (
             <p>
@@ -245,7 +251,8 @@ const WaterColumnInformationPanel = () => {
                   {depth.toFixed(1)} meters
                 </span>
               </p>
-              <p className="text-end"><i>view: [ min: {depthMinIndex}, max: {depthMaxIndex} ]</i></p>
+              <p className="text-end"><i>[ min: {depthMinIndex}, max: {depthMaxIndex} ]</i></p>
+              <p className="text-end"><i>[ min: {depthMinIndex}, max: {depthMaxIndex} ]</i></p>
             </>
           ) : (
             <></>

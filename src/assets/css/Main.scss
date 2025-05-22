@@ -201,3 +201,10 @@ html, body, #root, .AppView, .LayoutView {
 // .leaflet-control-layers {
 //   display: none;
 // }
+
+#timeAxisLabel {
+  color: grey;
+  text {
+    font-size: 6px;
+  }
+}
