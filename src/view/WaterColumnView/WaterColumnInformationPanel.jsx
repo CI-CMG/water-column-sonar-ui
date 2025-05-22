@@ -9,7 +9,8 @@ import Form from "react-bootstrap/Form";
 import MiniMapView from "./MiniMapView.jsx";
 import ColorMap from "./ColorMap.jsx";
 import SvPlotView from "./SvPlotView.jsx";
-import { HuePicker } from 'react-color';
+// import { HuePicker } from 'react-color';
+import AnnotationColors from "./InformationPanel/AnnotationColors.jsx"
 import {
   selectShip,
   selectCruise,
@@ -25,9 +26,11 @@ import {
   //
   selectAnnotation,
   updateAnnotation,
+  // selectAnnotationColor,
+  // updateAnnotationColor,
   //
-  selectDepthIndex,
-  selectTimeIndex,
+  // selectDepthIndex,
+  // selectTimeIndex,
   // selectFrequencyIndex,
   //
   selectStoreAttributes,
@@ -39,8 +42,15 @@ import {
   updateFrequencyIndex,
   selectLatitude, // uses clicked index
   selectLongitude,
+  //
   selectTime,
   selectDepth,
+  //
+  selectDepthMinIndex,
+  selectDepthMaxIndex,
+  selectTimeMinIndex,
+  selectTimeMaxIndex,
+  //
   selectBottom,
   selectSv,
 } from "../../reducers/store/storeSlice.ts";
@@ -64,6 +74,7 @@ const WaterColumnInformationPanel = () => {
   const sensor = useAppSelector(selectSensor);
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const annotation = useAppSelector(selectAnnotation);
+  // const annotationColor = useAppSelector(selectAnnotationColor);
   const colorIndex = useAppSelector(selectColorIndex); //
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
@@ -72,8 +83,15 @@ const WaterColumnInformationPanel = () => {
   // const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); //
   const latitude = useAppSelector(selectLatitude); // from store
   const longitude = useAppSelector(selectLongitude);
+  //
   const time = useAppSelector(selectTime);
   const depth = useAppSelector(selectDepth);
+  //
+  const depthMinIndex = useAppSelector(selectDepthMinIndex);
+  const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
+  const timeMinIndex = useAppSelector(selectTimeMinIndex);
+  const timeMaxIndex = useAppSelector(selectTimeMaxIndex);
+  //
   const bottom = useAppSelector(selectBottom);
   const sv = useAppSelector(selectSv);
   const svMin = useAppSelector(selectSvMin);
@@ -123,6 +141,13 @@ const WaterColumnInformationPanel = () => {
   const handleSelectAnnotation = () => {
     dispatch(updateAnnotation(!annotation));
   };
+  // Color of the annotation layers outline
+  // const [annotationColor, setAnnotationColor] = useState('#fff');
+  // const handleChangeAnnotationColorComplete = (color) => {
+  //   dispatch(updateAnnotationColor(color.hex ));
+  //   // console.log(`new color: ${annotationColor}`)
+  // };
+
 
   useEffect(() => {
     if (frequencies !== null) {
@@ -188,7 +213,7 @@ const WaterColumnInformationPanel = () => {
           </p>
 
           <p>
-            <b>Sensor:</b>
+            <b>Instrument:</b>
             <span className="font-monospace float-end">{sensor}</span>
           </p>
 
@@ -199,6 +224,7 @@ const WaterColumnInformationPanel = () => {
               <span style={{ color: "#9933CC" }}>UTC</span>
             </span>
           </p>
+          <p className="text-end"><i>view: [ min: {timeMinIndex}, max: {timeMaxIndex} ]</i></p>
 
           {latitude !== null && longitude !== null ? (
             <p>
@@ -212,12 +238,15 @@ const WaterColumnInformationPanel = () => {
           )}
 
           {depth !== null ? (
-            <p>
-              <b>Depth:</b>
-              <span className="font-monospace float-end">
-                {depth.toFixed(1)} meters
-              </span>
-            </p>
+            <>
+              <p>
+                <b>Depth:</b>
+                <span className="font-monospace float-end">
+                  {depth.toFixed(1)} meters
+                </span>
+              </p>
+              <p className="text-end"><i>view: [ min: {depthMinIndex}, max: {depthMaxIndex} ]</i></p>
+            </>
           ) : (
             <></>
           )}
@@ -322,6 +351,7 @@ const WaterColumnInformationPanel = () => {
               </span>
             </p>
           </div>
+          <br />
 
           <ColorMap selectedColorPalette={Object.keys(colorMaps)[colorIndex]} />
 
@@ -365,7 +395,7 @@ const WaterColumnInformationPanel = () => {
             </Form.Group>
           </Row>
 
-          <HuePicker width={360} />
+          <AnnotationColors />
 
           <br />
 
@@ -383,9 +413,17 @@ const WaterColumnInformationPanel = () => {
           {/* <p>Min: {svMin}, Max: {svMax}</p> */}
 
           <hr />
+          <p><b>Data Access</b></p>
+
           <p>
-            <b>Data Access:</b>
+            <small>
+            (see{' '}
+            <a href="https://echolevels.readthedocs.io/en/latest/levels_proposed.html" target="_blank" rel="noopener noreferrer">
+              processing levels
+            </a>)
+            </small>
           </p>
+
           {/* https://echolevels.readthedocs.io/en/latest/levels_proposed.html */}
           <p>
             <b>Level 0:</b>
@@ -396,7 +434,7 @@ const WaterColumnInformationPanel = () => {
             </span>
           </p>
           <p>
-            <b>Level 1:</b>
+            <b>Level 2A:</b>
             <span className="font-monospace float-end">
               <a href={url_level_1} target="_blank" rel="noopener noreferrer">
                 File-level Zarr stores
@@ -404,7 +442,7 @@ const WaterColumnInformationPanel = () => {
             </span>
           </p>
           <p>
-            <b>Level 2:</b>
+            <b>Level 3A:</b>
             <span className="font-monospace float-end">
               <a href={url_level_2} target="_blank" rel="noopener noreferrer">
                 Cruise-level Zarr store
@@ -428,12 +466,12 @@ const WaterColumnInformationPanel = () => {
           <hr />
 
           <p>
-            <b>Provenance:</b>
+            <b>Provenance</b>
           </p>
           {attributes ? (
             <>
               <p>
-                <b>name:</b>
+                <b>Processing:</b>
                 {/* <span className="float-end softwareName">{processingSoftwareName}</span> */}
                 <span className="font-monospace float-end">
                   {attributes.processing_software_name}

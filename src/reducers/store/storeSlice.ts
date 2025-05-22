@@ -32,10 +32,16 @@ export interface StoreState {
   frequencyIndex: number | null,
   colorIndex: number | null,
 
+  depthMinIndex: number | null, // leaflet minY for axes
+  depthMaxIndex: number | null, // leaflet maxY for axes
+  timeMinIndex: number | null, // leaflet minX for axes
+  timeMaxIndex: number | null, // leaflet maxX for axes
+
 
   colorMaps: any, // TODO: get rid of this?
 
   annotation: boolean, // highlights polygon annotations on the leaflet layer
+  annotationColor: string, // color of polygon for annotations --> should be string
 
   storeAttributes: any,
   storeAttributesStatus: "idle" | "loading" | "failed",
@@ -79,10 +85,16 @@ const initialState: StoreState = {
   timeIndex: null,
   frequencyIndex: null,
 
+  depthMinIndex: null,
+  depthMaxIndex: null,
+  timeMinIndex: null,
+  timeMaxIndex: null,
+
   colorIndex: null,
   colorMaps: WaterColumnColors, // get rid of
 
   annotation: false,
+  annotationColor: "#fff",
 
   storeAttributes: null,
   storeAttributesStatus: "idle",
@@ -148,6 +160,19 @@ export const storeSlice = createSlice({
       state.frequencyIndex = action.payload;
     },
 
+    updateDepthMinIndex: (state, action: PayloadAction<number>) => {
+      state.depthMinIndex = action.payload; // TODO: wrap with Math.round()
+    },
+    updateDepthMaxIndex: (state, action: PayloadAction<number>) => {
+      state.depthMaxIndex = action.payload;
+    },
+    updateTimeMinIndex: (state, action: PayloadAction<number>) => {
+      state.timeMinIndex = action.payload;
+    },
+    updateTimeMaxIndex: (state, action: PayloadAction<number>) => {
+      state.timeMaxIndex = action.payload;
+    },
+
     updateColorIndex: (state, action: PayloadAction<number>) => {
       state.colorIndex = action.payload;
     },
@@ -161,6 +186,9 @@ export const storeSlice = createSlice({
 
     updateAnnotation: (state, action: PayloadAction<any>) => {
       state.annotation = action.payload;
+    },
+    updateAnnotationColor: (state, action: PayloadAction<any>) => {
+      state.annotationColor = action.payload;
     },
 
     updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
@@ -305,11 +333,17 @@ export const {
   updateTimeIndex,
   updateFrequencyIndex, // <- derive from button?
   //
+  updateDepthMinIndex, // indices determining the indices of view bounds for leaflet
+  updateDepthMaxIndex,
+  updateTimeMinIndex,
+  updateTimeMaxIndex,
+  //
   updateColorIndex,
   //
   updateColorMaps,
   // updateColorMapButtonIndex, // TODO: get rid of
   updateAnnotation,
+  updateAnnotationColor,
   // TODO: colorMap
   updateFrequencies,
   updateLatitude,
@@ -333,11 +367,17 @@ export const selectSvMax = (state: RootState) => state.store.svMax;
 export const selectColorMaps = (state: RootState) => state.store.colorMaps;
 // export const selectColorMapButtonIndex = (state: RootState) => state.store.colorMapButtonIndex;
 export const selectAnnotation = (state: RootState) => state.store.annotation;
+export const selectAnnotationColor = (state: RootState) => state.store.annotationColor;
 
 // store the indices of the clicked position
 export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
 export const selectTimeIndex = (state: RootState) => state.store.timeIndex; // url timeIndex jump to
 export const selectFrequencyIndex = (state: RootState) => state.store.frequencyIndex;
+
+export const selectDepthMinIndex = (state: RootState) => state.store.depthMinIndex;
+export const selectDepthMaxIndex = (state: RootState) => state.store.depthMaxIndex;
+export const selectTimeMinIndex = (state: RootState) => state.store.timeMinIndex;
+export const selectTimeMaxIndex = (state: RootState) => state.store.timeMaxIndex;
 
 export const selectColorIndex = (state: RootState) => state.store.colorIndex;
 
