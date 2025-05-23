@@ -56,6 +56,18 @@ import {
   selectSv,
 } from "../../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
+import { TbLocation } from "react-icons/tb";
+import { TbClockHour9 } from "react-icons/tb";
+import { MdOutlineAnchor } from "react-icons/md";
+import { TbCrosshair } from "react-icons/tb";
+import { TfiRuler } from "react-icons/tfi";
+import { RiCompasses2Line } from "react-icons/ri";
+import { LuAudioWaveform } from "react-icons/lu";
+import { IoIosColorFilter } from "react-icons/io";
+import { PiSailboat } from "react-icons/pi";
+import { TbRoute } from "react-icons/tb";
+import { MdLeakAdd } from "react-icons/md";
+
 
 const getDateTime = function (epochSeconds, timezone) {
   // timezone='Etc/UTC'
@@ -208,33 +220,33 @@ const WaterColumnInformationPanel = () => {
           </p> */}
 
           <p>
-            <b>Ship:</b>
+            {/* TODO: change to platform? */}
+            <b><PiSailboat /> Ship:</b>
             <span className="font-monospace float-end">{ship}</span>
           </p>
 
           <p>
-            <b>Cruise:</b>
+            <b><TbRoute /> Cruise:</b>
             <span className="font-monospace float-end">{cruise}</span>
           </p>
 
           <p>
-            <b>Instrument:</b>
+            <b><MdLeakAdd /> Instrument:</b>
             <span className="font-monospace float-end">{sensor}</span>
           </p>
 
           <p>
-            <b>Time:</b>{" "}
+            <b><TbClockHour9 /> Time:</b>{" "}
             <span className="font-monospace float-end">
               {getDateTime(time, "Etc/UTC")}{" "}
               <span style={{ color: "#9933CC" }}>UTC</span>
             </span>
           </p>
           <p className="text-end"><i>[ min: {timeMinIndex}, max: {timeMaxIndex} ]</i></p>
-          <p className="text-end"><i>[ min: {timeMinIndex}, max: {timeMaxIndex} ]</i></p>
 
           {latitude !== null && longitude !== null ? (
             <p>
-              <b>Lon/Lat:</b>{" "}
+              <b><TbLocation /> Lon/Lat:</b>{" "}
               <span className="font-monospace float-end">
                 {longitude.toFixed(5)}° E, {latitude.toFixed(5)}° N
               </span>
@@ -246,12 +258,11 @@ const WaterColumnInformationPanel = () => {
           {depth !== null ? (
             <>
               <p>
-                <b>Depth:</b>
+                <b><TfiRuler /> Depth:</b>
                 <span className="font-monospace float-end">
                   {depth.toFixed(1)} meters
                 </span>
               </p>
-              <p className="text-end"><i>[ min: {depthMinIndex}, max: {depthMaxIndex} ]</i></p>
               <p className="text-end"><i>[ min: {depthMinIndex}, max: {depthMaxIndex} ]</i></p>
             </>
           ) : (
@@ -260,7 +271,7 @@ const WaterColumnInformationPanel = () => {
 
           {bottom !== null ? (
             <p>
-              <b>Bottom:</b>
+              <b><MdOutlineAnchor /> Bottom:</b>
               <span className="font-monospace float-end">
                 {bottom.toFixed(1)} meters
               </span>
@@ -273,14 +284,14 @@ const WaterColumnInformationPanel = () => {
           frequencyIndex !== null &&
           !isNaN(sv[frequencyIndex]) ? (
             <p>
-              <b>Selected Sv:</b>{" "}
+              <b><TbCrosshair /> Selected Sv:</b>{" "}
               <span className="font-monospace float-end">
                 {sv[frequencyIndex].toFixed(2)} dB
               </span>
             </p>
           ) : (
             <p>
-              <b>Selected Sv:</b>{" "}
+              <b><TbCrosshair /> Selected Sv:</b>{" "}
               <span
                 className="font-monospace float-end"
                 style={{ fontSize: "14px" }}
@@ -292,7 +303,7 @@ const WaterColumnInformationPanel = () => {
 
           {attributes !== null ? (
             <p>
-              <b>Calibration Status:</b>
+              <b><RiCompasses2Line /> Calibration:</b>
               <span className="font-monospace float-end">
                 <i>
                   {attributes.calibration_status
@@ -325,7 +336,7 @@ const WaterColumnInformationPanel = () => {
               </Dropdown.Menu>
             </Dropdown>
             <p>
-              <b>Frequency:</b>{" "}
+              <b><LuAudioWaveform /> Frequency:</b>{" "}
               <span className="font-monospace">
                 {frequencies[frequencyIndex] / 1000} kHz
               </span>
@@ -352,7 +363,7 @@ const WaterColumnInformationPanel = () => {
               </Dropdown.Menu>
             </Dropdown>
             <p>
-              <b>Color Map:</b>{" "}
+              <b><IoIosColorFilter /> Color Map:</b>{" "}
               <span className="font-monospace">
                 {Object.keys(colorMaps)[colorIndex]}
               </span>

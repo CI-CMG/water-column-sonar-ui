@@ -56,7 +56,7 @@ const TimeAxis = () => {
     //   .duration(750)
     //   .call(d3.axisBottom(x));
     
-  }, [timeMinIndex, timeMaxIndex]);
+  }, [timeMinIndex, timeMaxIndex, margin.left, margin.right, margin.bottom, margin.top, depthMaxIndex, depthMinIndex]);
 
   return (
     <div id="timeAxis">

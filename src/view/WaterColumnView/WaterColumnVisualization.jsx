@@ -79,11 +79,15 @@ const WaterColumnVisualization = ({
     const map = useMap();
 
     useMapEvents({
-      // only fires on the mouseup event ...needs to fire for first load of map viewer
-      mouseup(e) {
-        console.log(e);
-      },
+      // only fires on the mouse* event ...needs to fire for first load of map viewer
+      // mouseup(e) {
+      //   console.log(`mouseup: ${e}`);
+      // },
+      // move() {
+      //   console.log(`moving`);
+      // },
       moveend() {
+        console.log(`moveend`);
         const bounds = map.getBounds();
         // TODO: set upper and lower limits to these values
         dispatch(updateDepthMinIndex(Math.round(bounds.getNorthEast().lat * -1)));
