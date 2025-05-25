@@ -79,13 +79,6 @@ const WaterColumnVisualization = ({
     const map = useMap();
 
     useMapEvents({
-      // only fires on the mouse* event ...needs to fire for first load of map viewer
-      // mouseup(e) {
-      //   console.log(`mouseup: ${e}`);
-      // },
-      // move() {
-      //   console.log(`moving`);
-      // },
       moveend() {
         console.log(`moveend`);
         const bounds = map.getBounds();
