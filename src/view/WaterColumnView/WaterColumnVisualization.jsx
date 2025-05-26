@@ -84,9 +84,9 @@ const WaterColumnVisualization = ({
         const bounds = map.getBounds();
         // TODO: set upper and lower limits to these values
         dispatch(updateDepthMinIndex(Math.round(bounds.getNorthEast().lat * -1)));
-        dispatch(updateDepthMaxIndex(Math.round(bounds._southWest.lat * -1)));
-        dispatch(updateTimeMinIndex(Math.round(bounds._southWest.lng)));
-        dispatch(updateTimeMaxIndex(Math.round(bounds._northEast.lng)));
+        dispatch(updateDepthMaxIndex(Math.round(bounds.getSouthWest().lat * -1)));
+        dispatch(updateTimeMinIndex(Math.round(bounds.getSouthWest().lng)));
+        dispatch(updateTimeMaxIndex(Math.round(bounds.getNorthEast().lng)));
       }
     });
     
