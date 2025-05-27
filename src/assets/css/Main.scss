@@ -149,6 +149,21 @@ html, body, #root, .AppView, .LayoutView {
       }
   
       .leaflet-control-attribution { display: none; }
+
+      // for the display of d3 axes
+      .bottom-center {
+        position: relative;
+      }
+      .center-display {
+        position: absolute;
+        bottom: 0;
+        left: 25px;
+        padding: 5px;
+        background-color: rgba(0, 0, 0, 0.25);
+        color: white;
+        font-family: "Courier New", Courier, monospace;
+        font-weight: 700;
+      }
     }
   }
 }
