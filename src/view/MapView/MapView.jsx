@@ -61,7 +61,7 @@ const style = {
           "case",
           ["boolean", ["feature-state", "hover"], false],
           "rgba(255, 255, 255, 0.95)", // white
-          "rgba(255, 105, 180, 0.25)", // pink
+          "rgba(155, 32, 238, 0.25)",
         ],
         "line-width": 2,
       },
@@ -191,8 +191,8 @@ export default function MapView() {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: style,
-        center: [0, 0],
-        zoom: 1,
+        center: [20, -20],
+        zoom: 3,
         minZoom: 1,
       });
 
