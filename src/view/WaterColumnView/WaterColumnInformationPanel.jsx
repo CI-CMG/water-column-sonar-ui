@@ -409,6 +409,7 @@ const WaterColumnInformationPanel = () => {
                 id="annotate-switch"
                 label="Show Annotations"
                 onChange={() => handleSelectAnnotation()}
+                checked={annotation}
               />
             </Form.Group>
           </Row>

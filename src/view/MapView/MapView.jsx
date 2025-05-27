@@ -199,7 +199,7 @@ export default function MapView() {
       map.current.flyTo({
         center: [-75, 35],
         essential: true,
-        speed: 0.1,
+        speed: 0.2,
         zoom: 3,
       });
 
