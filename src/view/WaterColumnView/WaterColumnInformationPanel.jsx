@@ -154,13 +154,6 @@ const WaterColumnInformationPanel = () => {
   const handleSelectAnnotation = () => {
     dispatch(updateAnnotation(!annotation));
   };
-  // Color of the annotation layers outline
-  // const [annotationColor, setAnnotationColor] = useState('#fff');
-  // const handleChangeAnnotationColorComplete = (color) => {
-  //   dispatch(updateAnnotationColor(color.hex ));
-  //   // console.log(`new color: ${annotationColor}`)
-  // };
-
 
   useEffect(() => {
     if (frequencies !== null) {

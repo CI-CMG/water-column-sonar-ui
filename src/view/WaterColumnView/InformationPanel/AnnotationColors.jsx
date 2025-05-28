@@ -16,19 +16,16 @@ export default function AnnotationColors() {
 
   const handleChangeAnnotationColorComplete = (color) => {
     dispatch(updateAnnotationColor(color.hex ));
-    // console.log(`new color: ${annotationColor}`)
   };
 
   return (
     <>
       <HuePicker
         width={360}
-        // height={10}
+        height={8}
         color={ annotationColor }
         onChange={(color) => handleChangeAnnotationColorComplete(color)}
       />
     </>
   );
 };
-
-// export default AnnotationColors;

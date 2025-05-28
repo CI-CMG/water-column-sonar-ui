@@ -98,6 +98,8 @@ const WaterColumnVisualization = ({
   const annotation = useAppSelector(selectAnnotation);
   const annotationColor = useAppSelector(selectAnnotationColor);
 
+  const [annotationColorHook, setAnnotationColorHook] = useState(annotationColor);
+
   const mapCenterX = initialTimeIndex;
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenter = [mapCenterY, mapCenterX];
@@ -118,18 +120,21 @@ const WaterColumnVisualization = ({
   const positions = [polygon1];
 
   useEffect(() => {
-    console.log(`annotation color changed: ${annotationColor}`);
+    // console.log(`annotation color changed: ${annotationColor}`);
     if (map) {
       // console.log(`map: ${map}`);
       map.eachLayer(x => {
-        console.log(x);
+        // console.log(x);
         if (x.options.className === 'Annotation'){
-          x.options.color = "#aaa";
+          // x.options.color = annotationColor; // "#aaa";
+          x.setStyle({
+            color: annotationColor
+          });
         }
       })
     }
     // console.log(map.getSource('Annotation'));
-  }, [annotationColor]);
+  }, [annotationColor, map]);
 
   useEffect(() => {
       if(map) { // not sure if I need to just limit this to first load of map?
@@ -141,8 +146,15 @@ const WaterColumnVisualization = ({
       }
   }, [dispatch, map]);
 
-  const displayMap = useMemo(
-    () => (
+  // useEffect(() => {
+  //   if(annotationColor !== annotationColorHook) { // rerender layer when color changes
+  //     console.log(`updating annotatino color: ${annotationColor}`);
+  //     setAnnotationColorHook(annotationColor);
+  //   }
+  // }, [annotationColor, annotationColorHook])
+
+  return (
+    <div className="WaterColumnVisualization">
       <MapContainer
         crs={CRS.Simple}
         zoom={0}
@@ -165,7 +177,7 @@ const WaterColumnVisualization = ({
         {
           (annotation)
           ?
-            <Polygon color={annotationColor} positions={positions} title="Annotation" className="Annotation">
+            <Polygon color={annotationColorHook} positions={positions} title="Annotation" className="Annotation">
               {/* <Popup>CTD signal (Conductivity, Temperature, Depth)</Popup> */}
               <Tooltip>
                 CTD stands for conductivity, temperature, and depth,<br />and refers to a package of electronic instruments<br />that measure these properties.
@@ -177,14 +189,6 @@ const WaterColumnVisualization = ({
 
         <GetMapBounds />
       </MapContainer>
-
-    ), [annotation, annotationColor, mapCenter, positions, storeShape, tileSize],
-  );
-
-  // Working Example: https://stackblitz.com/edit/react-leaflet-square?file=src%2FApp.js
-  return (
-    <div className="WaterColumnVisualization">
-      {displayMap}
     </div>
   );
 }
