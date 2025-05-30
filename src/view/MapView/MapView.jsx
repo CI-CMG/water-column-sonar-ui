@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
-
 import { round } from "@turf/helpers";
 import GetZarrGeospatialIndex from "./GetZarrGeospatialIndex";
 import {
@@ -10,6 +9,8 @@ import {
   updateTimeIndex,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import MapInformationPanel from "./MapInformationPanel.jsx";
+
 
 
 const map_key = import.meta.env.DEV
@@ -194,6 +195,10 @@ const style = {
 export default function MapView() {
   const dispatch = useAppDispatch()
 
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const mapContainer = useRef();
   const map = useRef();
   const [mouseCoordinates, setMouseCoordinates] = useState(null);
@@ -353,6 +358,12 @@ export default function MapView() {
           </div>
         )}
       </div>
+
+      <MapInformationPanel
+        ship={selectedShip}
+        cruise={selectedCruise}
+        sensor={selectedSensor}
+      />
     </div>
   );
 }

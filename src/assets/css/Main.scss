@@ -60,6 +60,12 @@ background: linear-gradient(to right, #fff, #076585); /* W3C, IE 10+/ Edge, Fire
     display: flex;
     flex-direction: column;
 
+    .legend {
+      position: absolute;
+      top: 75px;
+      right: 15px;
+    }
+
     /////////////////////////////////////////////////////////////////
     .Map { // for the main view on the home page
       flex: 1;
@@ -246,3 +252,12 @@ background: linear-gradient(to right, #fff, #076585); /* W3C, IE 10+/ Edge, Fire
     transition: opacity 2s;
   }
 }
+
+// .MapInformationPanelOffcanvas {
+//   // background-color: red;
+//   form {
+//     display: flex;
+//     flex-grow: "row";
+//     align-items: center;
+//   }
+// }
