@@ -1,9 +1,86 @@
-import { useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { useInView } from "react-intersection-observer";
+
+import { useFrame } from "@react-three/fiber";
+import { RoundedBox } from "@react-three/drei";
+// import { a, config, useSpring } from "@react-spring/three";
+import { useSpring, animated } from "@react-spring/web";
+// import {
+//   GlobalCanvas,
+//   UseCanvas,
+//   SmoothScrollbar,
+// } from "@14islands/r3f-scroll-rig";
+// import { StickyScrollScene } from "@14islands/r3f-scroll-rig/powerups";
+
+// prototyping with this: https://codesandbox.io/p/sandbox/r3f-scroll-rig-sticky-box-w5v4u7?file=%2Fsrc%2FApp.jsx%3A6%2C36-6%2C70
+// const AnimatedRoundedBox = a(RoundedBox);
+// function SpinningBox({ scale, scrollState, inViewport }) {
+//   const box = useRef();
+//   const size = scale.xy.min() * 0.5;
+
+//   useFrame(() => {
+//     box.current.rotation.y = scrollState.progress * Math.PI * 2;
+//   });
+
+//   const spring = useSpring({
+//     scale: inViewport ? size : size * 0.0,
+//     config: inViewport ? config.wobbly : config.stiff,
+//     delay: inViewport ? 100 : 0,
+//   });
+
+//   return (
+//     <AnimatedRoundedBox ref={box} {...spring}>
+//       <meshNormalMaterial />
+//     </AnimatedRoundedBox>
+//   );
+// }
+
+// function StickySection() {
+//   const el = useRef();
+//   return (
+//     <section>
+//       <div className="StickyContainer">
+//         <div ref={el} className="SomeStickyContent Debug">
+//           <p>This element is position:sticky and will be tracked.</p>
+//         </div>
+//       </div>
+//       <UseCanvas>
+//         <StickyScrollScene track={el}>
+//           {(props) => (
+//             <>
+//               <SpinningBox {...props} />
+//             </>
+//           )}
+//         </StickyScrollScene>
+//       </UseCanvas>
+//     </section>
+//   );
+// }
 
 export default function DatasetView() {
+  const springs = useSpring({
+    from: { background: "#ff6d6d", y: -40, x: -20 },
+    to: [
+      { x: 20, background: "#fff59a" },
+      { y: 40, background: "#88DFAB" },
+      { x: -20, background: "#569AFF" },
+      { y: -40, background: "#ff6d6d" },
+    ],
+    loop: true,
+  });
+
+  // const [isTouch, setTouch] = useState(false);
+  // useEffect(() => {
+  //   const isTouch =
+  //     "ontouchstart" in window ||
+  //     navigator.maxTouchPoints > 0 ||
+  //     navigator.msMaxTouchPoints > 0;
+  //   setTouch(isTouch);
+  // }, []);
+
   useEffect(() => {
     document.title = `Map`;
 
@@ -14,6 +91,11 @@ export default function DatasetView() {
     );
   }, []);
 
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    rootMargin: "-200px 0px",
+  });
+
   return (
     <div className="DatasetView">
       <Container>
@@ -22,7 +104,22 @@ export default function DatasetView() {
             <br />
             <br />
             {/* <h1 style={{ backgroundColor: "lightblue" }}> */}
-            <h1>NOAA — NCEI Water Column Sonar Dataset</h1>
+            <h1 className="text-center">NOAA NCEI's<br />Water Column Sonar Dataset</h1>
+            <br />
+            <br />
+            <br />
+
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <animated.div
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 10,
+                  ...springs,
+                }}
+              />
+            </div>
+            <br />
             <br />
 
             <br />
@@ -172,10 +269,18 @@ export default function DatasetView() {
             <ul>
               <li>Match ping times</li>
               <li>Seafloor detection</li>
-              <li>Noise removal including impulse, attenuation, transient, and background noise</li>
+              <li>
+                Noise removal including impulse, attenuation, transient, and
+                background noise
+              </li>
               <li>Re-sample by pings</li>
               <li>Removal of top 10 m of data due to bubble interference</li>
-              <li>If EK60 data contain multiple frequencies, preprocess with a 3x3 median convolution filter and apply multi-frequency single-beam imaging index outlined in Wall et al. (2016) using a threshold of -66 dB</li>
+              <li>
+                If EK60 data contain multiple frequencies, preprocess with a 3x3
+                median convolution filter and apply multi-frequency single-beam
+                imaging index outlined in Wall et al. (2016) using a threshold
+                of -66 dB
+              </li>
             </ul>
 
             <br />
@@ -183,56 +288,126 @@ export default function DatasetView() {
             <br />
             <h2>Structure</h2>
             <br />
-            <p>Data are archived in an Amazon S3 bucket with access to the general public. The folder structure is outlined as follows:</p>
+            <p>
+              Data are archived in an Amazon S3 bucket with access to the
+              general public. The folder structure is outlined as follows:
+            </p>
 
             <br />
             <ul>
-              <li>For processed data: cruise → transducer frequency/bottom/multi-frequency single-beam imaging index → file</li>
+              <li>
+                For processed data: cruise → transducer
+                frequency/bottom/multi-frequency single-beam imaging index →
+                file
+              </li>
               <li>For raw data: ship → cruise → instrument → file</li>
             </ul>
 
             <br />
-            <p>To download a 18 kHz frequency file from the SH1305 cruise such as "SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv" you can read directly from the URL as follows:</p>
+            <p>
+              To download a 18 kHz frequency file from the SH1305 cruise such as
+              "SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv" you
+              can read directly from the URL as follows:
+            </p>
             <br />
-            <p><a href="https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv">https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv</a></p>
+            <p>
+              <a href="https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv">
+                https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv
+              </a>
+            </p>
 
             <br />
             <h3>Citation</h3>
             <br />
-            <p>If the archived data are used in a future publication, please cite all used data sets to document and provide credit back to the data creators. Cruises have unique citations. See individual cruises for details. Citation information can be found at the NCEI water-column sonar data archive.</p>
+            <p>
+              If the archived data are used in a future publication, please cite
+              all used data sets to document and provide credit back to the data
+              creators. Cruises have unique citations. See individual cruises
+              for details. Citation information can be found at the NCEI
+              water-column sonar data archive.
+            </p>
 
             <br />
             <hr />
             <br />
             <h2>Access</h2>
             <br />
-            <p>Raw and processed data are stored in the cloud on an Amazon Web Services S3 bucket and accessible for download using a variety of tools.</p>
+            <p>
+              Raw and processed data are stored in the cloud on an Amazon Web
+              Services S3 bucket and accessible for download using a variety of
+              tools.
+            </p>
             <br />
-            <p>The library boto3 provides an object-oriented and well documented interface to the data set. We can configure the boto3 resource to access our bucket, "noaa-wcsd-pds" as an anonymous user using low-level functions from botocore.</p>
+            <p>
+              The library boto3 provides an object-oriented and well documented
+              interface to the data set. We can configure the boto3 resource to
+              access our bucket, "noaa-wcsd-pds" as an anonymous user using
+              low-level functions from botocore.
+            </p>
 
             <br />
             <hr />
             <br />
             <h2>Tutorials</h2>
+            <div
+              ref={ref}
+              className={`ordinary ${inView ? "itemShown" : "itemHidden"}`}
+            >
+              <span aria-label="Wave">🐍</span>
+            </div>
             <br />
-            <p>There are several tutorials that will help you download the data and begin analysis. They utilize both raw and processed data.</p>
+            <p>
+              There are several tutorials that will help you download the data
+              and begin analysis. They utilize both raw and processed data.
+            </p>
 
             <br />
             <ul>
-              <li><a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Plotting_Raw_EK60_Data.ipynb">Plotting Raw EK60 Data</a></li>
-              <li><a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Frequency_Differencing_With_Raw_Data.ipynb">Frequency Differencing with Raw Data</a></li>
-              <li><a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Processed_CSV_Data.ipynb">Reading and Plotting Processed CSV Data</a></li>
-              <li><a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Bottom_Data.ipynb">Reading and Plotting Raw Bottom Data</a></li>
+              <li>
+                <a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Plotting_Raw_EK60_Data.ipynb">
+                  Plotting Raw EK60 Data
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Frequency_Differencing_With_Raw_Data.ipynb">
+                  Frequency Differencing with Raw Data
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Processed_CSV_Data.ipynb">
+                  Reading and Plotting Processed CSV Data
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Bottom_Data.ipynb">
+                  Reading and Plotting Raw Bottom Data
+                </a>
+              </li>
             </ul>
 
             <br />
-            <p>Updated tutorials utilizing cloud-native Zarr data from NOAA's Open Data Dissemination can be found here:</p>
+            <p>
+              Updated tutorials utilizing cloud-native Zarr data from NOAA's
+              Open Data Dissemination can be found here:
+            </p>
 
             <br />
             <ul>
-              <li><a href="https://colab.research.google.com/drive/14VVFf9KRlaFyr5T-dwkM0bytDl1QChAi?usp=sharing">Echopype EK60 Cloud Processing</a></li>
-              <li><a href="https://colab.research.google.com/drive/1-I56QOIftj9sewlbyzTzncdRt54Fh51d?usp=sharing">Frequency Differencing with L2 EK60 Data</a></li>
-              <li><a href="https://colab.research.google.com/drive/12hf-1gV6QyrR9pLPfsjYIQyzleTCp-Uz?usp=sharing">Geospatial Indexing</a></li>
+              <li>
+                <a href="https://colab.research.google.com/drive/14VVFf9KRlaFyr5T-dwkM0bytDl1QChAi?usp=sharing">
+                  Echopype EK60 Cloud Processing
+                </a>
+              </li>
+              <li>
+                <a href="https://colab.research.google.com/drive/1-I56QOIftj9sewlbyzTzncdRt54Fh51d?usp=sharing">
+                  Frequency Differencing with L2 EK60 Data
+                </a>
+              </li>
+              <li>
+                <a href="https://colab.research.google.com/drive/12hf-1gV6QyrR9pLPfsjYIQyzleTCp-Uz?usp=sharing">
+                  Geospatial Indexing
+                </a>
+              </li>
             </ul>
 
             <br />
@@ -242,23 +417,63 @@ export default function DatasetView() {
             <br />
             <ul>
               {/* TODO: add hyperlinks here... */}
-              <li>De Robertis, A., & Higginbottom, I. (2007). A post-processing technique to estimate the signal-to-noise ratio and remove echosounder background noise. ICES Journal of Marine Science, 64(6): 1282-1291.</li>
+              <li>
+                De Robertis, A., & Higginbottom, I. (2007). A post-processing
+                technique to estimate the signal-to-noise ratio and remove
+                echosounder background noise. ICES Journal of Marine Science,
+                64(6): 1282-1291.
+              </li>
               <br />
-              <li>Ryan, T.E., Downie, R.A., Kloser, R.J., and Keith, G. (2015). Reducing bias due to noise and attenuation in open-ocean echo integration data. ICES Journal of Marine Science, 72(8): 2482-2493.</li>
+              <li>
+                Ryan, T.E., Downie, R.A., Kloser, R.J., and Keith, G. (2015).
+                Reducing bias due to noise and attenuation in open-ocean echo
+                integration data. ICES Journal of Marine Science, 72(8):
+                2482-2493.
+              </li>
               <br />
-              <li>Simmonds, E.J. and MacLennan, D.N. 2005. Fisheries Acoustics: Theory and practice. Blackwell Science, Oxford. 456pp.</li>
+              <li>
+                Simmonds, E.J. and MacLennan, D.N. 2005. Fisheries Acoustics:
+                Theory and practice. Blackwell Science, Oxford. 456pp.
+              </li>
               <br />
-              <li>Wall, C.C. (2016), Building an accessible archive for water column sonar data, Eos, 97, https://doi.org/10.1029/2016EO057595. Published on 15 August 2016.</li>
+              <li>
+                Wall, C.C. (2016), Building an accessible archive for water
+                column sonar data, Eos, 97,
+                https://doi.org/10.1029/2016EO057595. Published on 15 August
+                2016.
+              </li>
               <br />
-              <li>Wall, C.C., Jech, J.M. and. McLean, S.J. (2016) Increasing the accessibility of acoustic data through global access and imagery, ICES Journal of Marine Science, 73(8): 2093–2103, DOI: https://doi.org/10.1093/icesjms/fsw014.</li>
+              <li>
+                Wall, C.C., Jech, J.M. and. McLean, S.J. (2016) Increasing the
+                accessibility of acoustic data through global access and
+                imagery, ICES Journal of Marine Science, 73(8): 2093–2103, DOI:
+                https://doi.org/10.1093/icesjms/fsw014.
+              </li>
               <br />
-              <li>Pordes, R., Petravick, D., Kramer, B., Olson, D., Livny, M., Roy, A., Avery, P., Blackburn, K., Wenaus, T., Würthwein, F., Foster, I., Gardner, R., Wilde, M., Blatecky, A., McGee, J., & Quick, R. (2007). The open science grid. J. Phys. Conf. Ser., 78, 012057. https://doi.org/10.1088/1742-6596/78/1/012057.</li>
+              <li>
+                Pordes, R., Petravick, D., Kramer, B., Olson, D., Livny, M.,
+                Roy, A., Avery, P., Blackburn, K., Wenaus, T., Würthwein, F.,
+                Foster, I., Gardner, R., Wilde, M., Blatecky, A., McGee, J., &
+                Quick, R. (2007). The open science grid. J. Phys. Conf. Ser.,
+                78, 012057. https://doi.org/10.1088/1742-6596/78/1/012057.
+              </li>
               <br />
-              <li>Sfiligoi, I., Bradley, D. C., Holzman, B., Mhashilkar, P., Padhi, S., & Wurthwein, F. (2009). The pilot way to grid resources using glideinWMS. 2009 WRI World Congress on Computer Science and Information Engineering, 2, 428–432. https://doi.org/10.1109/CSIE.2009.950.</li>
+              <li>
+                Sfiligoi, I., Bradley, D. C., Holzman, B., Mhashilkar, P.,
+                Padhi, S., & Wurthwein, F. (2009). The pilot way to grid
+                resources using glideinWMS. 2009 WRI World Congress on Computer
+                Science and Information Engineering, 2, 428–432.
+                https://doi.org/10.1109/CSIE.2009.950.
+              </li>
               <br />
-              <li>OSG. (2006). OSPool. OSG. https://doi.org/10.21231/906P-4D78.</li>
+              <li>
+                OSG. (2006). OSPool. OSG. https://doi.org/10.21231/906P-4D78.
+              </li>
               <br />
-              <li>OSG. (2015). Open Science Data Federation. OSG. https://doi.org/10.21231/0KVZ-VE57.</li>
+              <li>
+                OSG. (2015). Open Science Data Federation. OSG.
+                https://doi.org/10.21231/0KVZ-VE57.
+              </li>
             </ul>
 
             <br />
@@ -267,13 +482,20 @@ export default function DatasetView() {
             <h2>Acknowledgment</h2>
             <br />
             <ul>
-              <li>This research was done using services provided by the OSG Consortium, which is supported by the National Science Foundation awards #2030508 and #2323298.</li>
+              <li>
+                This research was done using services provided by the OSG
+                Consortium, which is supported by the National Science
+                Foundation awards #2030508 and #2323298.
+              </li>
             </ul>
 
             <br />
             <br />
             <br />
-            <p className="text-end">Contact <i className="bi bi-person-arms-up"></i><b>wcd.info@noaa.gov</b> for support with the data set</p>
+            <p className="text-end">
+              Contact <i className="bi bi-person-arms-up"></i>
+              <b>wcd.info@noaa.gov</b> for support with the data set
+            </p>
             <hr />
             <br />
           </Col>

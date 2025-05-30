@@ -40,16 +40,15 @@
  - ~~disable click ping time index for main map view --> take users to beginning of cruise~~
  - ~~remove debugging info~~
  - ~~frequency button works, "color map" does not cause refresh of map~~
-
- - debounce mini map to relocate to last click
+ - ~~deploy to domain echo.fish~~
+ - ~~debounce mini map to relocate to last click~~
+ - ~~create visualization layer of all EVR annotation time/lat/lon as points in PMTiles~~
+ - ~~add bathymetric layer to map viewer~~
 
  - add graticule legend for: depth axis & time axis
- - deploy to domain echo.fish
-
- - create visualization layer of all EVR annotation time/lat/lon as points in PMTiles
+  
  - mask sub-bottom data w checkbox, not linestring
  - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
- - add bathymetric layer to map viewer
  - allow clicking on linestring in mini-map viewer & redirect to new cruise
  - add total Level_2 dataset size e.g. 120 GB to info panel
  - capture echopype provenance --> need to do in water-column-sonar-processing Zarr store metadata

@@ -27,6 +27,7 @@ const style = {
     // satellite: {
     //   url: `https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=${map_key}`,
     //   type: "raster",
+    //   maxZoom: 7,
     // },
     ocean: {
       url: `https://api.maptiler.com/maps/ocean/tiles.json?key=${map_key}`,
@@ -42,16 +43,20 @@ const style = {
     // },
   },
   layers: [
-    // {
-    //   id: "Satellite",
-    //   type: "raster",
-    //   source: "satellite",
-    // },
     {
       id: "Ocean",
       type: "raster",
       source: "ocean",
+      // minZoom: 5,
+      // maxZoom: 15,
     },
+    // {
+    //   id: "Satellite",
+    //   type: "raster",
+    //   source: "satellite",
+    //   minZoom: 0,
+    //   maxZoom: 5,
+    // },
     {
       id: "cruises",
       type: "line",
@@ -66,6 +71,7 @@ const style = {
         "line-width": 2,
       },
       "source-layer": "cruises",
+      // "minzoom": 5,
     },
     // {
     //   id: "AH_School",
@@ -158,7 +164,31 @@ const style = {
     //   "source-layer": "Unclassified_regions",
     // },
   ],
-  // TODO: add atmosphere
+  sky: {
+    "sky-color": "#5a19f3",
+    "sky-horizon-blend": 0.75,
+    "horizon-color": "purple",
+    "horizon-fog-blend": 0.75,
+    "fog-color": "#ff0000",
+    "fog-ground-blend": 0.75,
+    "atmosphere-blend": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        0,
+        1,
+        10,
+        1,
+        12,
+        0
+    ]
+  },
+  light: {
+    "anchor": "viewport", // or 'map'
+    "color": "purple",
+    "intensity": 0.2,
+    // 'position': [2.5, 90, 80],
+  },
 };
 
 export default function MapView() {
@@ -193,7 +223,7 @@ export default function MapView() {
         style: style,
         center: [20, -20],
         zoom: 3,
-        minZoom: 1,
+        minZoom: 2,
       });
 
       map.current.flyTo({

@@ -98,8 +98,6 @@ const WaterColumnVisualization = ({
   const annotation = useAppSelector(selectAnnotation);
   const annotationColor = useAppSelector(selectAnnotationColor);
 
-  const [annotationColorHook, setAnnotationColorHook] = useState(annotationColor);
-
   const mapCenterX = initialTimeIndex;
   const mapCenterY = -1 * (window.innerHeight / 2) + 60;
   const mapCenter = [mapCenterY, mapCenterX];
@@ -120,20 +118,15 @@ const WaterColumnVisualization = ({
   const positions = [polygon1];
 
   useEffect(() => {
-    // console.log(`annotation color changed: ${annotationColor}`);
     if (map) {
-      // console.log(`map: ${map}`);
       map.eachLayer(x => {
-        // console.log(x);
         if (x.options.className === 'Annotation'){
-          // x.options.color = annotationColor; // "#aaa";
           x.setStyle({
             color: annotationColor
           });
         }
       })
     }
-    // console.log(map.getSource('Annotation'));
   }, [annotationColor, map]);
 
   useEffect(() => {
@@ -146,49 +139,53 @@ const WaterColumnVisualization = ({
       }
   }, [dispatch, map]);
 
-  // useEffect(() => {
-  //   if(annotationColor !== annotationColorHook) { // rerender layer when color changes
-  //     console.log(`updating annotatino color: ${annotationColor}`);
-  //     setAnnotationColorHook(annotationColor);
-  //   }
-  // }, [annotationColor, annotationColorHook])
-
   return (
     <div className="WaterColumnVisualization">
-      <MapContainer
-        crs={CRS.Simple}
-        zoom={0}
-        center={mapCenter}
-        minZoom={0}
-        maxZoom={0}
-        zoomControl={false}
-        tileSize={tileSize}
-        className="Map"
-        ref={setMap}
-        maxBounds={[
-          [-1 * Math.ceil(storeShape[0]/tileSize) * tileSize - marginX, 0 - marginX],
-          [0 + marginY, storeShape[1] + marginY],
-        ]}
-      >
-        <CustomLayer  />
+      <div className="mapColumn">
+        <div className="mapRow">
+          <MapContainer
+            crs={CRS.Simple}
+            zoom={0}
+            center={mapCenter}
+            minZoom={0}
+            maxZoom={0}
+            zoomControl={false}
+            tileSize={tileSize}
+            className="Map"
+            ref={setMap}
+            maxBounds={[
+              [-1 * Math.ceil(storeShape[0]/tileSize) * tileSize - marginX, 0 - marginX],
+              [0 + marginY, storeShape[1] + marginY],
+            ]}
+          >
+            <CustomLayer  />
 
-        <LocationMarker />
+            <LocationMarker />
 
-        {
-          (annotation)
-          ?
-            <Polygon color={annotationColorHook} positions={positions} title="Annotation" className="Annotation">
-              {/* <Popup>CTD signal (Conductivity, Temperature, Depth)</Popup> */}
-              <Tooltip>
-                CTD stands for conductivity, temperature, and depth,<br />and refers to a package of electronic instruments<br />that measure these properties.
-              </Tooltip>
-            </Polygon>
-          :
-            <></>          
-        }
+            {
+              (annotation)
+              ?
+                <Polygon color={annotationColor} positions={positions} title="Annotation" className="Annotation">
+                  {/* <Popup>CTD signal (Conductivity, Temperature, Depth)</Popup> */}
+                  <Tooltip>
+                    CTD stands for conductivity, temperature, and depth,<br />and refers to a package of electronic instruments<br />that measure these properties.
+                  </Tooltip>
+                </Polygon>
+              :
+                <></>          
+            }
 
-        <GetMapBounds />
-      </MapContainer>
+            <GetMapBounds />
+          </MapContainer>
+          <div className="depthAxis">
+            <p className="waterColumnDepth">depth →</p>
+          </div>
+        </div>
+
+        <div className="timeAxis">
+          <p className="waterColumnTime">time →</p>
+        </div>
+      </div>
     </div>
   );
 }

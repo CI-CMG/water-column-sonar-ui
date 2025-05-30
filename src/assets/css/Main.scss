@@ -13,8 +13,22 @@ html, body, #root, .AppView, .LayoutView {
   -moz-osx-font-smoothing: grayscale;
 
   //background-image: linear-gradient(270deg, #ffdee9 0%, #b5fffc 100%);
-  background: #82deff;
-  background: linear-gradient(90deg,rgba(130, 222, 255, 1) 0%, rgba(173, 201, 255, 1) 47%, rgba(252, 235, 255, 1) 100%);
+  // background: #82deff;
+  // background: linear-gradient(90deg,rgba(130, 222, 255, 1) 0%, rgba(173, 201, 255, 1) 47%, rgba(252, 235, 255, 1) 100%);
+background: #076585;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #fff, #076585);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #fff, #076585); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+//   background: #232526;  /* fallback for old browsers */
+// background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+// background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+// background: #ECE9E6;  /* fallback for old browsers */
+// background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+// background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
   // patterns: https://www.gradientmagic.com/collection/lightbg
 
   // .Main {
@@ -114,58 +128,51 @@ html, body, #root, .AppView, .LayoutView {
       display: flex;
       flex-direction: column;
 
-
-      .Map { // For the Main Map View on home page
+      .mapColumn {
         flex: 1;
-      }
-  
-      .bottom-left {
-        position: relative;
-      }
-  
-      .left-display {
-        position: absolute;
-        bottom: 0;
-        left: 25px;
-        padding: 5px;
-        background-color: rgba(0, 0, 0, 0.25);
-        color: white;
-        font-family: "Courier New", Courier, monospace;
-        font-weight: 700;
-      }
-  
-      .bottom-right {
-        position: relative;
-      }
-  
-      .right-display {
-        display: none;
-        position: absolute;
-        bottom: 0px;
-        right: 25px;
-        padding: 5px;
-        background-color: rgba(0, 0, 0, 0.25);
-        color: white;
-        font-family: "Courier New", Courier, monospace;
-        font-weight: 700;
+        display: flex;
+        flex-direction: column;
+        
+        .mapRow {
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+
+          .Map {
+            flex: 1;
+          }
+
+          .depthAxis {
+            // display: flex;
+            // flex-direction: row;
+            width: 25px;
+
+            .waterColumnDepth {
+              writing-mode: vertical-rl;
+              text-orientation: mixed;
+              margin: 0;
+              padding-top: 20px;
+            }
+          }
+        }
+
+        .timeAxis {
+          display: flex;
+          flex-direction: column;
+          height: 25px;
+          padding-left: 20px;
+
+          .waterColumnTime {
+            margin: 0;
+          }
+          .timeAxisVoid {
+            border: 1px solid red;
+          }
+
+        }
       }
   
       .leaflet-control-attribution { display: none; }
-
-      // for the display of d3 axes
-      .bottom-center {
-        position: relative;
-      }
-      .center-display {
-        position: absolute;
-        bottom: 0;
-        left: 25px;
-        padding: 5px;
-        background-color: rgba(0, 0, 0, 0.25);
-        color: white;
-        font-family: "Courier New", Courier, monospace;
-        font-weight: 700;
-      }
     }
   }
 }
@@ -223,5 +230,19 @@ html, body, #root, .AppView, .LayoutView {
   color: grey;
   text {
     font-size: 6px;
+  }
+}
+
+.DatasetView {
+  background-color: aliceblue;
+
+  // just playing with the opacity and intersection observer
+  .itemHidden {
+    opacity: 0;
+    transition: opacity 2s;
+  }
+  .itemShown {
+    opacity: 1;
+    transition: opacity 2s;
   }
 }
