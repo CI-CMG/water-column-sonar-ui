@@ -10,8 +10,8 @@ import {
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import MapInformationPanel from "./MapInformationPanel.jsx";
-
-
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 const map_key = import.meta.env.DEV
   ? import.meta.env.VITE_SOME_MAPTILER_API_DEV
@@ -173,27 +173,27 @@ const style = {
     "fog-color": "#ff0000",
     "fog-ground-blend": 0.75,
     "atmosphere-blend": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        0,
-        1,
-        10,
-        1,
-        12,
-        0
-    ]
+      "interpolate",
+      ["linear"],
+      ["zoom"],
+      0,
+      1,
+      10,
+      1,
+      12,
+      0,
+    ],
   },
   light: {
-    "anchor": "viewport", // or 'map'
-    "color": "purple",
-    "intensity": 0.2,
+    anchor: "viewport", // or 'map'
+    color: "purple",
+    intensity: 0.2,
     // 'position': [2.5, 90, 80],
   },
 };
 
 export default function MapView() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -211,10 +211,13 @@ export default function MapView() {
 
   useEffect(() => {
     document.title = `Map`;
-    if(import.meta.env.DEV){
-      console.log(`★ ${import.meta.env.VITE_REACT_APP_NAME} — v${import.meta.env.VITE_REACT_APP_VERSION} ★`);
+    if (import.meta.env.DEV) {
+      console.log(
+        `★ ${import.meta.env.VITE_REACT_APP_NAME} — v${
+          import.meta.env.VITE_REACT_APP_VERSION
+        } ★`
+      );
     }
-    
   }, []);
 
   useEffect(() => {
@@ -274,7 +277,6 @@ export default function MapView() {
 
   useEffect(() => {
     map.current.on("click", "cruises", (e) => {
-      
       // console.log('getting geospatial index');
 
       // GetZarrGeospatialIndex(
@@ -309,7 +311,7 @@ export default function MapView() {
     map.current.on("click", "cruises", (e) => {
       // TODO: after first click the mouse interaction slows down a lot!
       setHoveredStateId(null);
-      
+
       map.current.setFeatureState(
         { source: "cruises", sourceLayer: "cruises", id: hoveredStateId },
         { hover: false }

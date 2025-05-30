@@ -89,6 +89,7 @@ const MapInformationPanel = ({
         onClick={handleShow}
         className="legend"
         style={{ zIndex: 999 }}
+        size="sm"
       >
         Cruise Information
       </Button>
@@ -100,11 +101,12 @@ const MapInformationPanel = ({
         placement="end"
         className="MapInformationPanelOffcanvas"
       >
-        <Offcanvas.Header closeButton>
+        {/* <Offcanvas.Header closeButton>
           <Offcanvas.Title>Cruise Information</Offcanvas.Title>
-        </Offcanvas.Header>
+        </Offcanvas.Header> */}
 
         <Offcanvas.Body>
+          <h1>Water Column Sonar Data</h1>
           <p>
             <b>Selected Ship:</b>
             <span className="font-monospace float-end">{ship}</span>
