@@ -37,6 +37,7 @@ import {
 import { useAppSelector } from "../../app/hooks.ts";
 // Using this to figure out most of the solution:
 // https://stackblitz.com/edit/react-leaflet-square?file=src%2FApp.js
+import TimeAxis from "../WaterColumnView/Axes/TimeAxis.jsx";
 
 
 function LocationMarker() {
@@ -183,7 +184,8 @@ const WaterColumnVisualization = ({
         </div>
 
         <div className="timeAxis">
-          <p className="waterColumnTime">time →</p>
+          {/* <p className="waterColumnTime">time →</p> */}
+          <TimeAxis />
         </div>
       </div>
     </div>

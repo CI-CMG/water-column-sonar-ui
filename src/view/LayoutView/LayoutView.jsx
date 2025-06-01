@@ -24,7 +24,7 @@ export default function LayoutView() {
         <Navbar bg="dark" data-bs-theme="dark">
           <Container>
             <Navbar.Brand as={Link} to="/" className="font-weight-bold">
-            <h1 className="fs-4"><i className="bi bi-intersect"></i>&nbsp; {title}</h1>
+            <h1 className="fs-4 m-0"><i className="bi bi-intersect"></i>&nbsp; {title}</h1>
             </Navbar.Brand>
 
             <Nav className="ms-auto">

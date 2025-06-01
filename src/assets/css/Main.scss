@@ -162,11 +162,19 @@ background: linear-gradient(to right, #fff, #076585); /* W3C, IE 10+/ Edge, Fire
           }
         }
 
+        #timeAxisLabel {
+          // color: grey;
+          text {
+            font-size: 12px;
+          }
+        }
+
         .timeAxis {
+          // font-size: 30px;
           display: flex;
           flex-direction: column;
-          height: 25px;
-          padding-left: 20px;
+          // height: 25px;
+          // padding-left: 20px;
 
           .waterColumnTime {
             margin: 0;
@@ -231,13 +239,6 @@ background: linear-gradient(to right, #fff, #076585); /* W3C, IE 10+/ Edge, Fire
 // .leaflet-control-layers {
 //   display: none;
 // }
-
-#timeAxisLabel {
-  color: grey;
-  text {
-    font-size: 6px;
-  }
-}
 
 .DatasetView {
   background-color: aliceblue;
