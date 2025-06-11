@@ -1,28 +1,26 @@
 /// Layout View ///
 
 .LayoutView {
-  border: 1px solid red;
-  background: red;
+  flex: 0 0 100%;
+
+  // background: red;
+
   display: flex;
   flex-direction: column;
 
   // navbar at the head of the page
   .NavBarView {
     // border: 1px solid yellow;
-    background: yellow;
+    // background: yellow;
+    flex: 1;
   }
 
   // the main portion of the page holding content
   .MainView {
     // border: 1px solid green;
-    background: greenyellow;
-
-    flex: 1;
+    // background: chartreuse;
+    flex: 1 1 100%;
     display: flex;
-    // flex-direction: column;
-    align-items: stretch;
-    // height: 300px;
-    // margin-bottom: auto;
   }
 }
 

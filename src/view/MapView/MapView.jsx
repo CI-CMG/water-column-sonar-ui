@@ -10,8 +10,8 @@ import {
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import MapInformationPanel from "./MapInformationPanel.jsx";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 const map_key = import.meta.env.DEV
   ? import.meta.env.VITE_SOME_MAPTILER_API_DEV
@@ -338,34 +338,40 @@ export default function MapView() {
   }, [hoveredStateId]);
 
   return (
-    <div className="MapView">
-      <div ref={mapContainer} className="Map" />
+    <>
+      <div className="MapView">
+        {/* this div gets populated by maplibre */}
+        <div ref={mapContainer} className="Map" />
 
-      <div>
-        {selectedCruise && (
-          <div className="bottom-left">
-            <p className="cruise-display">
-              Ship: {selectedShip} | Cruise: {selectedCruise} | Sensor:{" "}
-              {selectedSensor}
-            </p>
-          </div>
-        )}
+        <div>
+          {/* {selectedCruise && (
+            <div className="bottom-left">
+              <p className="cruise-display">
+                Ship: {selectedShip} | Cruise: {selectedCruise} | Sensor:{" "}
+                {selectedSensor}
+              </p>
+            </div>
+          )} */}
 
-        {mouseCoordinates && (
-          <div className="bottom-right">
-            <p className="coordinate-display">
-              {round(mouseCoordinates.lat, 5)}° N,{" "}
-              {round(mouseCoordinates.lng, 5)}° E
-            </p>
-          </div>
-        )}
+          {/* {mouseCoordinates && (
+            <div className="bottom-right">
+              <p className="coordinate-display">
+                {round(mouseCoordinates.lat, 5)}° N,{" "}
+                {round(mouseCoordinates.lng, 5)}° E
+              </p>
+            </div>
+          )} */}
+        </div>
+
+        <MapInformationPanel
+          ship={selectedShip}
+          cruise={selectedCruise}
+          sensor={selectedSensor}
+          // Cannot read properties of null (reading 'lat')
+          // latitude={mouseCoordinates.lat}
+          // longitude={mouseCoordinates.lng}
+        />
       </div>
-
-      <MapInformationPanel
-        ship={selectedShip}
-        cruise={selectedCruise}
-        sensor={selectedSensor}
-      />
-    </div>
+    </>
   );
 }

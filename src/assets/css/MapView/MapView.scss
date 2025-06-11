@@ -1,13 +1,9 @@
 /// Map View ///
 
 .MapView {
-  // align-items: stretch;
-  border: 1px solid blue;
-  background-color: blue;
-  flex: 1;
-  // display: flex;
-  // flex-direction: column;
-  height: 300px;
+  // background-color: blue;
+  flex: 0 0 100%;
+  display: flex;
 
   .legend {
     position: absolute;
@@ -16,27 +12,27 @@
   }
 
   /////////////////////////////////////////////////////////////////
-  // .MapView { // for the main view on the home page
-  //   flex: 1;
-  //   // margin-bottom: auto;
-  //   // height: 100%;
-  // }
+  .Map { // the map div populated by maplibre
+    flex: 0 0 100%;
+
+    // background: red;
+  }
 
   /////////////////////////////////////////////////////////////////
   .bottom-left {
     position: relative;
   }
 
-  .cruise-display {
-    position: absolute;
-    bottom: 0;
-    left: 25px;
-    padding: 5px;
-    background-color: rgba(0, 0, 0, 0.75);
-    color: white;
-    font-family: "Courier New", Courier, monospace;
-    font-weight: 700;
-  }
+  // .cruise-display {
+  //   position: absolute;
+  //   bottom: 0;
+  //   left: 25px;
+  //   padding: 5px;
+  //   background-color: rgba(0, 0, 0, 0.75);
+  //   color: white;
+  //   font-family: "Courier New", Courier, monospace;
+  //   font-weight: 700;
+  // }
 
   .bottom-right {
     position: relative;

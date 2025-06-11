@@ -4,8 +4,9 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
+import { round } from "@turf/helpers";
 // import Card from "react-bootstrap/Card";
-import Badge from "react-bootstrap/Badge";
+// import Badge from "react-bootstrap/Badge";
 
 const all_cruises = [
   "HB0706",
@@ -107,24 +108,45 @@ const MapInformationPanel = ({
         </Offcanvas.Header>
 
         <Offcanvas.Body>
+          {/* { (latitude && longitude) (
+              <>
+                <p>
+                  <b>Latitude:</b>
+                  <span className="font-monospace float-end">
+                    {round(latitude, 5)}° N,{" "}
+                    {round(longitude, 5)}° E
+                  </span>
+                </p>
+              </>
+            )
+          } */}
+          
           <p>
-            <b>Selected Ship:</b>
-            <span className="font-monospace float-end">{ship}</span>
+            <b>Ship:</b>
+            { (ship) ? (
+              <>
+                <span className="font-monospace float-end">{ship}</span>
+              </>
+            ) : (
+              <span className="font-monospace float-end">...</span>
+            )}
           </p>
+
           <p>
-            <b>Selected Cruise:</b>
+            <b>Cruise:</b>
             <span className="font-monospace float-end">{cruise}</span>
           </p>
+          
           <p>
-            <b>Selected Sensor:</b>
+            <b>Sensor:</b>
             <span className="font-monospace float-end">{sensor}</span>
           </p>
 
           <hr />
 
-          <Stack direction="horizontal" gap={2}>
+          {/* <Stack direction="horizontal" gap={2}>
             <Badge bg="dark">Henry_B._Bigelow</Badge>
-          </Stack>
+          </Stack> */}
 
           <hr />
 
@@ -176,6 +198,6 @@ MapInformationPanel.propTypes = {
   ship: PropTypes.instanceOf(String).isRequired,
   cruise: PropTypes.instanceOf(String).isRequired,
   sensor: PropTypes.string.isRequired,
-  // latitude: PropTypes.instanceOf(Number),
-  // longitude: PropTypes.instanceOf(Number),
+  // latitude: PropTypes.number,
+  // longitude: PropTypes.number,
 };
