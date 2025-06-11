@@ -11,6 +11,11 @@
   font-style: normal;
 }
 
+.MiniMapView { // Mini map viewer embedded in the water-column view
+  width: 100%;
+  max-height: 200px;
+}
+
 #colorMap {
   //border: 1px solid whitesmoke;
   text-align: center;

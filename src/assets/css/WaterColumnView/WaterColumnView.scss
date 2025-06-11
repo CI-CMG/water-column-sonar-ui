@@ -3,15 +3,10 @@
 
 .WaterColumnView {
   // border: 1px solid brown;
-  // background-color: brown;
-  // flex: 1;
-  // display: flex;
-  // flex-direction: column;
+  background-color: brown;
 
-  .MiniMapView { // Mini map viewer embedded in the water-column view
-    width: 100%;
-    max-height: 200px;
-  }
+  flex: 1 1 100%;
+  display: flex;
 
   .Map {
     .maplibregl-control-container { display: none; }
@@ -29,60 +24,36 @@
 
   /////////////////////////////////////////////////////////////////
   .WaterColumnVisualization {
-    flex: 1;
+    flex: 1 1 100%;
     display: flex;
-    flex-direction: column;
+    
+    // background-color: pink;
 
-    .mapColumn {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      
-      .mapRow {
-        flex: 1;
-        display: flex;
-        flex-direction: row;
+    // this outlines the grid for the axes and data visualization part of the water column
+    $margin-value: 50px;
+    .topLeft {}
+    .topRight {
+      max-width: $margin-value;
+    }
+    .bottomLeft {
+      max-height: $margin-value;
+    }
+    .bottomRight {
+      max-width: $margin-value;
+      min-height: $margin-value;
+    }
 
-        .Map {
-          flex: 1;
-        }
+    .Map {
+      width: 100%;
+      height: 100%;
+    }
 
-        .depthAxis {
-          // display: flex;
-          // flex-direction: row;
-          width: 25px;
+    .depthAxis {
 
-          .waterColumnDepth {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            margin: 0;
-            padding-top: 20px;
-          }
-        }
-      }
-
-      #timeAxisLabel {
-        // color: grey;
-        text {
-          font-size: 12px;
-        }
-      }
-
-      .timeAxis {
-        // font-size: 30px;
-        display: flex;
-        flex-direction: column;
-        // height: 25px;
-        // padding-left: 20px;
-
-        .waterColumnTime {
-          margin: 0;
-        }
-        // .timeAxisVoid {
-        //   border: 1px solid red;
-        // }
-
-      }
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      // margin: 0;
+      padding-top: 12px;
     }
 
     .leaflet-control-attribution { display: none; }

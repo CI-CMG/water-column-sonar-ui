@@ -13,6 +13,9 @@ import {
   // TileLayer,
 } from "react-leaflet";
 // import L from "leaflet";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import {
   useMapEvents,
   useMap,
@@ -142,7 +145,52 @@ const WaterColumnVisualization = ({
 
   return (
     <div className="WaterColumnVisualization">
-      <div className="mapColumn">
+      <Container fluid className="h-100 d-flex flex-column">
+        <Row className="h-100">
+          <Col className="topLeft p-0" style={{ backgroundColor: "beige"}}>
+            <MapContainer
+              crs={CRS.Simple}
+              zoom={0}
+              center={mapCenter}
+              minZoom={0}
+              maxZoom={0}
+              zoomControl={false}
+              tileSize={tileSize}
+              className="Map"
+              ref={setMap}
+              maxBounds={[
+                [-1 * Math.ceil(storeShape[0]/tileSize) * tileSize - marginX, 0 - marginX],
+                [0 + marginY, storeShape[1] + marginY],
+              ]}
+            >
+              <CustomLayer  />
+
+              <LocationMarker />
+
+              {
+                (annotation)
+                ?
+                  <Polygon color={annotationColor} positions={positions} title="Annotation" className="Annotation">
+                    <Tooltip>
+                      CTD stands for conductivity, temperature, and depth,<br />and refers to a package of electronic instruments<br />that measure these properties.
+                    </Tooltip>
+                  </Polygon>
+                :
+                  <></>          
+              }
+
+              <GetMapBounds />
+            </MapContainer>
+          </Col>
+          <Col className="topRight depthAxis" style={{ backgroundColor: "orange"}}>d →</Col>
+        </Row>
+        <Row>
+          <Col className="bottomLeft timeAxis" style={{ backgroundColor: "aquamarine"}}>t →</Col>
+          <Col className="bottomRight" style={{ backgroundColor: "yellow"}}>👾</Col>
+        </Row>
+      </Container>
+      
+      {/* <div className="mapColumn">
         <div className="mapRow">
           <MapContainer
             crs={CRS.Simple}
@@ -167,7 +215,6 @@ const WaterColumnVisualization = ({
               (annotation)
               ?
                 <Polygon color={annotationColor} positions={positions} title="Annotation" className="Annotation">
-                  {/* <Popup>CTD signal (Conductivity, Temperature, Depth)</Popup> */}
                   <Tooltip>
                     CTD stands for conductivity, temperature, and depth,<br />and refers to a package of electronic instruments<br />that measure these properties.
                   </Tooltip>
@@ -184,10 +231,9 @@ const WaterColumnVisualization = ({
         </div>
 
         <div className="timeAxis">
-          {/* <p className="waterColumnTime">time →</p> */}
           <TimeAxis />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
