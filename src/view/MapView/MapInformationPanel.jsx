@@ -4,7 +4,8 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
-import Card from "react-bootstrap/Card";
+// import Card from "react-bootstrap/Card";
+import Badge from "react-bootstrap/Badge";
 
 const all_cruises = [
   "HB0706",
@@ -118,6 +119,12 @@ const MapInformationPanel = ({
             <b>Selected Sensor:</b>
             <span className="font-monospace float-end">{sensor}</span>
           </p>
+
+          <hr />
+
+          <Stack direction="horizontal" gap={2}>
+            <Badge bg="dark">Henry_B._Bigelow</Badge>
+          </Stack>
 
           <hr />
 

@@ -1,0 +1,20 @@
+/// Dataset View ///
+
+.DatasetView {
+  border: 1px solid orchid;
+
+  background-color: aliceblue;
+
+  // just playing with the opacity and intersection observer
+  .itemHidden {
+    opacity: 0;
+    transition: opacity 2s;
+  }
+  .itemShown {
+    opacity: 1;
+    transition: opacity 2s;
+  }
+}
+
+
+

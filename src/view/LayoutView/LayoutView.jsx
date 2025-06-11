@@ -20,7 +20,7 @@ export default function LayoutView() {
   return (
     <div className="LayoutView">
       {/* <header role="banner" id="HeaderContent"></header> */}
-      <div>
+      <div className="NavBar">
         <Navbar bg="dark" data-bs-theme="dark">
           <Container>
             <Navbar.Brand as={Link} to="/" className="font-weight-bold">

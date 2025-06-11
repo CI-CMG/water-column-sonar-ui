@@ -1,0 +1,56 @@
+/// Map View ///
+
+.MapView {
+  // align-items: stretch;
+  border: 1px solid blue;
+  background-color: aqua;
+  height: 60px;
+  // flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .legend {
+    position: absolute;
+    top: 75px;
+    right: 15px;
+  }
+
+  /////////////////////////////////////////////////////////////////
+  // .Map { // for the main view on the home page
+  //   flex: 1;
+  // }
+
+  /////////////////////////////////////////////////////////////////
+  .bottom-left {
+    position: relative;
+  }
+
+  .cruise-display {
+    position: absolute;
+    bottom: 0;
+    left: 25px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 700;
+  }
+
+  .bottom-right {
+    position: relative;
+  }
+
+  .coordinate-display {
+    position: absolute;
+    bottom: 0px;
+    right: 25px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 700;
+  }
+
+  /////////////////////////////////////////////////////////////////
+  .maplibregl-ctrl-bottom-right { display: none; }
+}

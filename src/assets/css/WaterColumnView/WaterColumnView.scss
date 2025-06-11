@@ -1,0 +1,94 @@
+/// Water Column View ///
+@use './InformationPanelView.scss';
+
+.WaterColumnView {
+  border: 1px solid brown;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .MiniMapView { // Mini map viewer embedded in the water-column view
+    width: 100%;
+    height: 200px;
+
+    .Map {
+      width: 100%;
+      height: 200px;
+      .maplibregl-control-container { display: none; }
+    }
+  }
+
+  .leaflet-container {
+    cursor: crosshair;
+  }
+  // .leaflet-control-layers {
+  //   display: none;
+  // }
+
+  .legend {
+    position: absolute;
+    top: 75px;
+    left: 15px;
+  }
+
+  /////////////////////////////////////////////////////////////////
+  .WaterColumnVisualization {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .mapColumn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      
+      .mapRow {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+
+        .Map {
+          flex: 1;
+        }
+
+        .depthAxis {
+          // display: flex;
+          // flex-direction: row;
+          width: 25px;
+
+          .waterColumnDepth {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            margin: 0;
+            padding-top: 20px;
+          }
+        }
+      }
+
+      #timeAxisLabel {
+        // color: grey;
+        text {
+          font-size: 12px;
+        }
+      }
+
+      .timeAxis {
+        // font-size: 30px;
+        display: flex;
+        flex-direction: column;
+        // height: 25px;
+        // padding-left: 20px;
+
+        .waterColumnTime {
+          margin: 0;
+        }
+        .timeAxisVoid {
+          border: 1px solid red;
+        }
+
+      }
+    }
+
+    .leaflet-control-attribution { display: none; }
+  }
+  }
