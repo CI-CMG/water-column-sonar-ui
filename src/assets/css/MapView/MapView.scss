@@ -3,11 +3,11 @@
 .MapView {
   // align-items: stretch;
   border: 1px solid blue;
-  background-color: aqua;
-  height: 60px;
-  // flex: 1;
-  display: flex;
-  flex-direction: column;
+  background-color: blue;
+  flex: 1;
+  // display: flex;
+  // flex-direction: column;
+  height: 300px;
 
   .legend {
     position: absolute;
@@ -16,8 +16,10 @@
   }
 
   /////////////////////////////////////////////////////////////////
-  // .Map { // for the main view on the home page
+  // .MapView { // for the main view on the home page
   //   flex: 1;
+  //   // margin-bottom: auto;
+  //   // height: 100%;
   // }
 
   /////////////////////////////////////////////////////////////////
