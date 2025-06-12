@@ -18,7 +18,6 @@ Note: there is a problem when the page loads where the component changes sizes
 on reload and the ref returns the wrong dimension. Maybe solved.
 */
 const TimeAxis = () => {
-  const numTicks = 10;
   const ref = useRef(null);
   const timeMinIndex = useAppSelector(selectTimeMinIndex);
   const timeMaxIndex = useAppSelector(selectTimeMaxIndex);
@@ -30,9 +29,7 @@ const TimeAxis = () => {
       setSize([window.innerWidth, window.innerHeight]);
     }
     window.addEventListener('resize', updateSize);
-
     updateSize();
-
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
@@ -41,8 +38,6 @@ const TimeAxis = () => {
 
     const width = ref.current ? ref.current.offsetWidth : 0;
     const height = ref.current ? ref.current.offsetHeight : 0;
-    // console.log(`widthW: ${width}, heightH: ${height}`)
-    // console.log(`time: width: ${width}, height: ${height}`);
 
     const x = d3
       .scaleLinear()
@@ -50,12 +45,10 @@ const TimeAxis = () => {
       .range([0, width]);
 
     d3.select("#timeAxisLabel")
-      .attr("width", width)
+      .attr("width", width - 1)
       .attr("height", height)
-      .attr("viewBox", [0, 0, width, height])
       .append("g")
-      .style("font-size", "12px")
-      .call(d3.axisBottom(x).ticks(numTicks));
+      .call(d3.axisBottom(x));
   }, []);
 
   useEffect(() => {
@@ -66,19 +59,17 @@ const TimeAxis = () => {
     const x = d3
       .scaleLinear()
       .domain([timeMinIndex, timeMaxIndex])
-      // .range([margin.left, width - margin.right]);
-      .range([0, width]);
+      .range([0, width - 1]);
 
     d3.select("#timeAxisLabel")
       .transition()
       .duration(500)
-      .style("font-size", "12px")
-      .call(d3.axisBottom(x).ticks(numTicks));
+      .call(d3.axisBottom(x));
 
     // const width2 = ref.current ? ref.current.offsetWidth : 0;
     // const height2 = ref.current ? ref.current.offsetHeight : 0;
     // console.log(`width2: ${width2}, height™: ${height2}`)
-  }, [timeMinIndex, timeMaxIndex, ref]);
+  }, [timeMinIndex, timeMaxIndex, ref, size]);
 
   return (
     <div ref={ref} className="timeAxis">

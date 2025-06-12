@@ -85,7 +85,7 @@ const WaterColumnVisualization = ({
 
     useMapEvents({
       moveend() {
-        console.log(`moveend`);
+        // console.log(`moveend`);
         const bounds = map.getBounds();
         // TODO: set upper and lower limits to these values
         dispatch(updateDepthMinIndex(Math.round(bounds.getNorthEast().lat * -1)));
@@ -191,9 +191,7 @@ const WaterColumnVisualization = ({
           <Col className="bottomLeft timeAxis" style={{ backgroundColor: "#dddddd"}}>
             <TimeAxis />
           </Col>
-          <Col className="bottomRight" style={{ backgroundColor: "#dddddd"}}>
-            ...
-          </Col>
+          <Col className="bottomRight" style={{ backgroundColor: "#dddddd"}}></Col>
         </Row>
       </Container>
     </div>
