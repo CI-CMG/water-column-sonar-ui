@@ -1,9 +1,6 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useSearchParams } from 'react-router';
+import { useSearchParams } from "react-router";
 import WaterColumnInformationPanel from "./WaterColumnInformationPanel";
 import WaterColumnVisualization from "./WaterColumnVisualization";
 import {
@@ -41,13 +38,13 @@ import {
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
   const [loadedCruiseInfo, setLoadedCruiseInfo] = useState(false);
-  
+
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const initialTimeIndex = Number(searchParams.get('time'));
-  const initialFrequencyIndex = Number(searchParams.get('frequency'));
-  const initialColorIndex = Number(searchParams.get('color'));
+  const initialTimeIndex = Number(searchParams.get("time"));
+  const initialFrequencyIndex = Number(searchParams.get("frequency"));
+  const initialColorIndex = Number(searchParams.get("color"));
 
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
@@ -59,29 +56,36 @@ export default function WaterColumnView() {
   const indexFrequency = useAppSelector(selectFrequencyIndex);
   const indexColor = useAppSelector(selectColorIndex);
 
-  useEffect(() => { // initialize query parameters:
+  useEffect(() => {
+    // initialize query parameters:
     // /water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=1024
-    if(ship === null){
-      dispatch(updateShip(searchParams.get('ship'))); // store in redux
+    if (ship === null) {
+      dispatch(updateShip(searchParams.get("ship"))); // store in redux
     }
-    if(cruise === null){
-      dispatch(updateCruise(searchParams.get('cruise')));
+    if (cruise === null) {
+      dispatch(updateCruise(searchParams.get("cruise")));
     }
-    if(sensor === null) {
-      dispatch(updateSensor(searchParams.get('sensor')));
+    if (sensor === null) {
+      dispatch(updateSensor(searchParams.get("sensor")));
     }
-    if(indexTime === null) {
+    if (indexTime === null) {
       // console.log(`intialTimeIndex: ${initialTimeIndex}`);
       dispatch(updateTimeIndex(initialTimeIndex));
     }
-    if(indexFrequency === null) {
+    if (indexFrequency === null) {
       dispatch(updateFrequencyIndex(initialFrequencyIndex));
     }
-    if(indexColor === null) {
+    if (indexColor === null) {
       dispatch(updateColorIndex(initialColorIndex));
     }
-    
-    if(!loadedCruiseInfo && ship !== null && cruise !== null && sensor !== null) { // only need to call once per cruise
+
+    if (
+      !loadedCruiseInfo &&
+      ship !== null &&
+      cruise !== null &&
+      sensor !== null
+    ) {
+      // only need to call once per cruise
       setLoadedCruiseInfo(true); // only call once
       dispatch(storeAttributesAsync({ ship, cruise, sensor }));
       dispatch(storeShapeAsync({ ship, cruise, sensor }));
@@ -102,42 +106,53 @@ export default function WaterColumnView() {
     loadedCruiseInfo,
   ]);
 
-  useEffect(() => { // make async requests for all infomation panel values
-    if(ship && cruise && sensor && indexFrequency !== null) {
+  useEffect(() => {
+    // make async requests for all infomation panel values
+    if (ship && cruise && sensor && indexFrequency !== null) {
       dispatch(latitudeAsync({ ship, cruise, sensor, indexTime }));
       dispatch(longitudeAsync({ ship, cruise, sensor, indexTime }));
       dispatch(timeAsync({ ship, cruise, sensor, indexTime }));
       dispatch(depthAsync({ ship, cruise, sensor, indexDepth }));
       dispatch(bottomAsync({ ship, cruise, sensor, indexTime }));
-      dispatch(svAsync({
-        ship,
-        cruise,
-        sensor,
-        indexDepth,
-        indexTime,
-        indexFrequency,
-      }));
+      dispatch(
+        svAsync({
+          ship,
+          cruise,
+          sensor,
+          indexDepth,
+          indexTime,
+          indexFrequency,
+        })
+      );
     }
-  }, [dispatch, searchParams, ship, cruise, sensor, indexDepth, indexTime, indexFrequency, indexColor]);
+  }, [
+    dispatch,
+    searchParams,
+    ship,
+    cruise,
+    sensor,
+    indexDepth,
+    indexTime,
+    indexFrequency,
+    indexColor,
+  ]);
 
   return (
     <div className="WaterColumnView">
-      {
-        (storeShape !== null && attributes !== null && indexFrequency !== null)
-        ?
-          <>
-            <WaterColumnVisualization
-              tileSize={attributes.tile_size}
-              storeShape={storeShape}
-              initialTimeIndex={initialTimeIndex} // can i pass this through redux?
-              // initialFrequencyIndex={initialFrequencyIndex}
-            />
+      {storeShape !== null && attributes !== null && indexFrequency !== null ? (
+        <>
+          <WaterColumnVisualization
+            tileSize={attributes.tile_size}
+            storeShape={storeShape}
+            initialTimeIndex={initialTimeIndex} // can i pass this through redux?
+            // initialFrequencyIndex={initialFrequencyIndex}
+          />
 
-            <WaterColumnInformationPanel />
-          </>
-        :
-          <></>
-      }
+          <WaterColumnInformationPanel />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

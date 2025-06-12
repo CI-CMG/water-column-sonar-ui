@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import MiniMapView from "./MiniMapView.jsx";
 import ColorMap from "./ColorMap.jsx";
-import TimeAxis from "./Axes/TimeAxis.jsx";
+// import TimeAxis from "./Axes/TimeAxis.jsx";
 import SvPlotView from "./SvPlotView.jsx";
 // import { HuePicker } from 'react-color';
 import AnnotationColors from "./InformationPanel/AnnotationColors.jsx"
@@ -67,6 +67,7 @@ import { IoIosColorFilter } from "react-icons/io";
 import { PiSailboat } from "react-icons/pi";
 import { TbRoute } from "react-icons/tb";
 import { MdLeakAdd } from "react-icons/md";
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const getDateTime = function (epochSeconds, timezone) {
@@ -167,7 +168,13 @@ const WaterColumnInformationPanel = () => {
   const url_level_2 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/${ship}/${cruise}/${sensor}/`;
 
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return (
+      <div className="WaterColumnInformationPanelLoading">
+        <div className="overlay">
+          <Spinner animation="grow" />
+        </div>
+      </div>
+    );
   }
   return (
     <>
