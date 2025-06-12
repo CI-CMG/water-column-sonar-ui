@@ -1,12 +1,19 @@
 /// App View ///
 
-html, body {
-  // zero out the page 
+html,
+body {
+  // zero out the page
   margin: 0px;
   padding: 0px;
   border: 0px;
 
-  // background: grey;
+  min-height: 100vh !important;
+
+  // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  //   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  //   sans-serif;
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
 
   width: 100%;
   height: 100%;
@@ -14,10 +21,18 @@ html, body {
   display: flex;
 
   // background gradient for all pages
-  background: #076585;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #fff, #076585);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #fff, #076585); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  
+  background: #076585; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #fff,
+    #076585
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #fff,
+    #076585
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   #root {
     flex-basis: 100%;
     display: flex;
@@ -28,4 +43,3 @@ html, body {
     }
   }
 }
-

@@ -12,12 +12,13 @@ import { useAppSelector } from "../../../app/hooks.ts";
 
 //////////////////////////////////////////////////////////////////////////////////
 const DepthAxis = () => {
+  const ref = useRef(null);
   const depthMinIndex = useAppSelector(selectDepthMinIndex);
   const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
 
-  const margin = ({top: 10, right: 30, bottom: 25, left: 10})
-  const height = 100
-  const width = 200
+  // const margin = ({top: 10, right: 30, bottom: 25, left: 10})
+  // const height = 100
+  // const width = 200
 
   useEffect(() => {
     d3.select('#depthAxisLabel').selectAll('*').remove();
@@ -37,14 +38,10 @@ const DepthAxis = () => {
     svg.append("g")
       .call(yAxis);
 
-    // gx.transition()
-    //   .duration(750)
-    //   .call(d3.axisBottom(x));
-    
-  }, [margin.left, margin.right, margin.bottom, margin.top, depthMaxIndex, depthMinIndex]);
+  }, [depthMaxIndex, depthMinIndex, ref]);
 
   return (
-    <div id="depthAxis">
+    <div ref={ref} className="depthAxis">
       <span id="depthAxisLabel"/>
     </div>
   );

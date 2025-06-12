@@ -1,15 +1,17 @@
 /// Water Column View ///
-@use './InformationPanelView.scss';
+@use "./InformationPanelView.scss";
 
 .WaterColumnView {
   // border: 1px solid brown;
-  background-color: brown;
+  // background-color: brown;
 
   flex: 1 1 100%;
   display: flex;
 
   .Map {
-    .maplibregl-control-container { display: none; }
+    .maplibregl-control-container {
+      display: none;
+    }
   }
 
   .leaflet-container {
@@ -23,22 +25,27 @@
   }
 
   /////////////////////////////////////////////////////////////////
+  // This is the leaflet water column HTML5 canvas tiles rendering
   .WaterColumnVisualization {
     flex: 1 1 100%;
     display: flex;
-    
+
     // background-color: pink;
 
-    // this outlines the grid for the axes and data visualization part of the water column
-    $margin-value: 50px;
-    .topLeft {}
+    // These outline the grid for the axes and data visualization part of the water column
+    $margin-value: 40px; // for both time & depth axes
+    .topLeft {
+    } // Water Column Visualization
     .topRight {
+      // Depth Axis
       max-width: $margin-value;
     }
     .bottomLeft {
+      // Time Axis
       max-height: $margin-value;
     }
     .bottomRight {
+      // Empty
       max-width: $margin-value;
       min-height: $margin-value;
     }
@@ -48,14 +55,21 @@
       height: 100%;
     }
 
+    .timeAxis {
+      // border: 1px solid hotpink;
+      margin: 0;
+      padding: 0;
+    }
     .depthAxis {
-
+      // border: 1px solid blueviolet;
       writing-mode: vertical-rl;
       text-orientation: mixed;
-      // margin: 0;
-      padding-top: 12px;
+      margin: 0;
+      padding: 0;
     }
 
-    .leaflet-control-attribution { display: none; }
+    .leaflet-control-attribution {
+      display: none;
+    }
   }
-  }
+}

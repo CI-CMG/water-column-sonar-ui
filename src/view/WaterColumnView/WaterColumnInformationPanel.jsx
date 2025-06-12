@@ -198,7 +198,7 @@ const WaterColumnInformationPanel = () => {
         <Offcanvas.Body>
           
           {/* TODO: move me to the main water column view and float to the bottom */}
-          <TimeAxis />
+          {/* <TimeAxis /> */}
 
           <MiniMapView />
 

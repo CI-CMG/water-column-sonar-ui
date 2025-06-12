@@ -41,6 +41,7 @@ import { useAppSelector } from "../../app/hooks.ts";
 // Using this to figure out most of the solution:
 // https://stackblitz.com/edit/react-leaflet-square?file=src%2FApp.js
 import TimeAxis from "../WaterColumnView/Axes/TimeAxis.jsx";
+import DepthAxis from "../WaterColumnView/Axes/DepthAxis.jsx";
 
 
 function LocationMarker() {
@@ -147,7 +148,7 @@ const WaterColumnVisualization = ({
     <div className="WaterColumnVisualization">
       <Container fluid className="h-100 d-flex flex-column">
         <Row className="h-100">
-          <Col className="topLeft p-0" style={{ backgroundColor: "beige"}}>
+          <Col className="topLeft p-0" style={{ backgroundColor: "#dddddd"}}>
             <MapContainer
               crs={CRS.Simple}
               zoom={0}
@@ -182,58 +183,19 @@ const WaterColumnVisualization = ({
               <GetMapBounds />
             </MapContainer>
           </Col>
-          <Col className="topRight depthAxis" style={{ backgroundColor: "orange"}}>d →</Col>
+          <Col className="topRight depthAxis" style={{ backgroundColor: "#dddddd"}}>
+              <DepthAxis />
+          </Col>
         </Row>
         <Row>
-          <Col className="bottomLeft timeAxis" style={{ backgroundColor: "aquamarine"}}>t →</Col>
-          <Col className="bottomRight" style={{ backgroundColor: "yellow"}}>👾</Col>
+          <Col className="bottomLeft timeAxis" style={{ backgroundColor: "#dddddd"}}>
+            <TimeAxis />
+          </Col>
+          <Col className="bottomRight" style={{ backgroundColor: "#dddddd"}}>
+            ...
+          </Col>
         </Row>
       </Container>
-      
-      {/* <div className="mapColumn">
-        <div className="mapRow">
-          <MapContainer
-            crs={CRS.Simple}
-            zoom={0}
-            center={mapCenter}
-            minZoom={0}
-            maxZoom={0}
-            zoomControl={false}
-            tileSize={tileSize}
-            className="Map"
-            ref={setMap}
-            maxBounds={[
-              [-1 * Math.ceil(storeShape[0]/tileSize) * tileSize - marginX, 0 - marginX],
-              [0 + marginY, storeShape[1] + marginY],
-            ]}
-          >
-            <CustomLayer  />
-
-            <LocationMarker />
-
-            {
-              (annotation)
-              ?
-                <Polygon color={annotationColor} positions={positions} title="Annotation" className="Annotation">
-                  <Tooltip>
-                    CTD stands for conductivity, temperature, and depth,<br />and refers to a package of electronic instruments<br />that measure these properties.
-                  </Tooltip>
-                </Polygon>
-              :
-                <></>          
-            }
-
-            <GetMapBounds />
-          </MapContainer>
-          <div className="depthAxis">
-            <p className="waterColumnDepth">depth →</p>
-          </div>
-        </div>
-
-        <div className="timeAxis">
-          <TimeAxis />
-        </div>
-      </div> */}
     </div>
   );
 }
