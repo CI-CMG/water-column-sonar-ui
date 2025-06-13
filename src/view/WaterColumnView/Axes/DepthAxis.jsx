@@ -1,10 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////////
-import {
-  useLayoutEffect,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useLayoutEffect, useEffect, useRef, useState, useMemo } from "react";
 import * as d3 from "d3";
 import {
   selectDepthMinIndex,
@@ -15,64 +10,54 @@ import { useAppSelector } from "../../../app/hooks.ts";
 //////////////////////////////////////////////////////////////////////////////////
 const DepthAxis = () => {
   const ref = useRef(null);
+  const [size, setSize] = useState([0, 0]);
   const depthMinIndex = useAppSelector(selectDepthMinIndex);
   const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
-  const [size, setSize] = useState([0, 0]);
+  const height = ref.current ? ref.current.offsetHeight : 0;
+  const width = ref.current ? ref.current.offsetWidth : 0;
 
-  useLayoutEffect(() => { // update on window resize
-    function updateSize() {
-      console.info('updating size');
-      setSize([window.innerWidth, window.innerHeight]);
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
+  const domain = useMemo(() => {
+    return [depthMinIndex, depthMaxIndex]
+  }, [depthMinIndex, depthMaxIndex]);
+
+  const range = useMemo(() => {
+    return [0, height - 1]
+  }, [height]);
 
   const selected = d3.select("#depthAxisLabel");
 
+  useLayoutEffect(() => {
+    // updates component on window resize
+    const updateSize = () => {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  const y = d3
+    .scaleLinear()
+    .domain(domain)
+    .range(range)
+    .unknown(null);
+
   useEffect(() => {
     selected.selectAll("*").remove();
-
-    const width = ref.current ? ref.current.offsetWidth : 0;
-    const height = ref.current ? ref.current.offsetHeight : 0;
-    // console.log(`depth: width: ${width}, height: ${height}`);
-
-    const y = d3
-      .scaleLinear()
-      .domain([depthMinIndex, depthMaxIndex])
-      .range([0, height]);
 
     selected
       .attr("width", width)
       .attr("height", height - 1)
       .append("g")
-      // .attr("transform", `translate(1, 0)`)
       .call(d3.axisRight(y));
   }, []);
 
   useEffect(() => {
-    // const width = ref.current ? ref.current.offsetWidth : 0;
-    const height = ref.current ? ref.current.offsetHeight : 0;
-    // console.log(`depth: width: ${width}, height: ${height}`);
-    const selected = d3.select("#depthAxisLabel");
-
-    const y = d3
-      .scaleLinear()
-      .domain([depthMinIndex, depthMaxIndex])
-      .range([0, height - 1]);
-
-    if(selected.empty()) {
-      console.log('nothing selected depth');
-    } else {
-      selected
-        .transition()
-        .duration(500)
-        // .attr("transform", `translate(1, 0)`)
-        .call(d3.axisRight(y));
-    }
-    
-  }, [depthMinIndex, depthMaxIndex, ref, size]);
+    selected
+      .transition()
+      .duration(500)
+      .call(d3.axisRight(y));
+  }, [domain, height, ref, selected, size, y]);
 
   return (
     <div ref={ref} className="depthAxis">
