@@ -23,7 +23,8 @@ const TimeAxis = () => {
   const timeMaxIndex = useAppSelector(selectTimeMaxIndex);
   const [size, setSize] = useState([0, 0]);
   
-  useLayoutEffect(() => { // update on window resize
+  useLayoutEffect(() => { // update when the window resizes
+    console.log('start uselayouteffect')
     function updateSize() {
       console.info('updating size');
       setSize([window.innerWidth, window.innerHeight]);
@@ -33,8 +34,11 @@ const TimeAxis = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
+  const selected = d3.select("#timeAxisLabel");
+
   useEffect(() => {
-    d3.select("#timeAxisLabel").selectAll("*").remove();
+    console.log('initialize before')  
+    selected.selectAll("*").remove();
 
     const width = ref.current ? ref.current.offsetWidth : 0;
     const height = ref.current ? ref.current.offsetHeight : 0;
@@ -44,31 +48,38 @@ const TimeAxis = () => {
       .domain([timeMinIndex, timeMaxIndex])
       .range([0, width]);
 
-    d3.select("#timeAxisLabel")
+    selected
       .attr("width", width - 1)
       .attr("height", height)
       .append("g")
+      // .attr("transform", `translate(0, 1)`)
       .call(d3.axisBottom(x));
+    
+    console.log('initialize after');
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { // handles the refresh of the axis
+    console.log('refresh before');
+    console.log(ref);
     const width = ref.current ? ref.current.offsetWidth : 0;
-    const height = ref.current ? ref.current.offsetHeight : 0;
-    console.log(`time: width: ${width}, height: ${height}`);
+    // const height = ref.current ? ref.current.offsetHeight : 0;
+    // console.log(`time: width: ${width}, height: ${height}`);
 
+    console.log('refresh before1');
     const x = d3
       .scaleLinear()
       .domain([timeMinIndex, timeMaxIndex])
       .range([0, width - 1]);
 
-    d3.select("#timeAxisLabel")
+    console.log('refresh before2');
+    selected
       .transition()
       .duration(500)
+      // .attr("transform", `translate(0, 1)`)
       .call(d3.axisBottom(x));
+    
+    console.log('refresh after');
 
-    // const width2 = ref.current ? ref.current.offsetWidth : 0;
-    // const height2 = ref.current ? ref.current.offsetHeight : 0;
-    // console.log(`width2: ${width2}, height™: ${height2}`)
   }, [timeMinIndex, timeMaxIndex, ref, size]);
 
   return (

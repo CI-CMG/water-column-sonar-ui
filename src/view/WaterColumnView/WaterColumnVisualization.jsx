@@ -104,10 +104,11 @@ const WaterColumnVisualization = ({
   const annotationColor = useAppSelector(selectAnnotationColor);
 
   const mapCenterX = initialTimeIndex;
-  const mapCenterY = -1 * (window.innerHeight / 2) + 60;
+  // TODO: this will create a problem when page is resized
+  const mapCenterY = -1 * (window.innerHeight / 2) + 100; // where does 60 come from?
   const mapCenter = [mapCenterY, mapCenterX];
-  const marginX = 30; // map maxBounds + margin
-  const marginY = 30;
+  const marginX = 100; // map maxBounds + margin
+  const marginY = 100;
 
   const polygon1 = [ // CTD sidescan example polygon for HB1906
     [-274, 434959],
@@ -148,7 +149,7 @@ const WaterColumnVisualization = ({
     <div className="WaterColumnVisualization">
       <Container fluid className="h-100 d-flex flex-column">
         <Row className="h-100">
-          <Col className="topLeft p-0" style={{ backgroundColor: "#dddddd"}}>
+          <Col className="topLeft p-0 m-0" style={{ backgroundColor: "#ddd"}}>
             <MapContainer
               crs={CRS.Simple}
               zoom={0}
@@ -184,7 +185,7 @@ const WaterColumnVisualization = ({
             </MapContainer>
           </Col>
           <Col className="topRight depthAxis" style={{ backgroundColor: "#dddddd"}}>
-              <DepthAxis />
+            <DepthAxis />
           </Col>
         </Row>
         <Row>

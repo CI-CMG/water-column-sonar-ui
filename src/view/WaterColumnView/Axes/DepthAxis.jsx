@@ -29,47 +29,54 @@ const DepthAxis = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
+  const selected = d3.select("#depthAxisLabel");
+
   useEffect(() => {
-    d3.select("#depthAxisLabel").selectAll("*").remove();
+    selected.selectAll("*").remove();
 
     const width = ref.current ? ref.current.offsetWidth : 0;
     const height = ref.current ? ref.current.offsetHeight : 0;
-    console.log(`depth: width: ${width}, height: ${height}`);
+    // console.log(`depth: width: ${width}, height: ${height}`);
 
     const y = d3
       .scaleLinear()
       .domain([depthMinIndex, depthMaxIndex])
       .range([0, height]);
 
-    d3.select("#depthAxisLabel")
+    selected
       .attr("width", width)
       .attr("height", height - 1)
-      // .attr("viewBox", [0, 0, width, height])
       .append("g")
-      // .attr("transform", `translate(0, 0)`)
+      // .attr("transform", `translate(1, 0)`)
       .call(d3.axisRight(y));
   }, []);
 
   useEffect(() => {
-    const width = ref.current ? ref.current.offsetWidth : 0;
+    // const width = ref.current ? ref.current.offsetWidth : 0;
     const height = ref.current ? ref.current.offsetHeight : 0;
-    console.log(`depth: width: ${width}, height: ${height}`);
+    // console.log(`depth: width: ${width}, height: ${height}`);
+    const selected = d3.select("#depthAxisLabel");
 
     const y = d3
       .scaleLinear()
       .domain([depthMinIndex, depthMaxIndex])
       .range([0, height - 1]);
 
-    d3.select("#depthAxisLabel")
-      .transition()
-      .duration(500)
-      // .attr("transform", `translate(0, 0)`)
-      .call(d3.axisRight(y));
+    if(selected.empty()) {
+      console.log('nothing selected depth');
+    } else {
+      selected
+        .transition()
+        .duration(500)
+        // .attr("transform", `translate(1, 0)`)
+        .call(d3.axisRight(y));
+    }
+    
   }, [depthMinIndex, depthMaxIndex, ref, size]);
 
   return (
     <div ref={ref} className="depthAxis">
-      <svg id="depthAxisLabel"></svg>
+      <svg id="depthAxisLabel" />
     </div>
   );
 };
