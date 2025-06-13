@@ -265,7 +265,7 @@ const WaterColumnInformationPanel = () => {
           {/* <TbLocation /> */}
           {latitude !== null && longitude !== null ? (
             <p>
-              <b>Lon/Lat:</b>{" "}
+              <b>Lon / Lat:</b>{" "}
               <span className="font-monospace float-end">
                 {longitude.toFixed(5)}° E, {latitude.toFixed(5)}° N
               </span>

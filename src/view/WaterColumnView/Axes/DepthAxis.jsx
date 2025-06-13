@@ -19,11 +19,10 @@ const DepthAxis = () => {
   const domain = useMemo(() => {
     return [depthMinIndex, depthMaxIndex]
   }, [depthMinIndex, depthMaxIndex]);
-
+  
   const range = useMemo(() => {
     return [0, height - 1]
   }, [height]);
-
   const selected = d3.select("#depthAxisLabel");
 
   useLayoutEffect(() => {
@@ -57,7 +56,7 @@ const DepthAxis = () => {
       .transition()
       .duration(500)
       .call(d3.axisRight(y));
-  }, [domain, height, ref, selected, size, y]);
+  }, [domain, ref, selected, size, y]);
 
   return (
     <div ref={ref} className="depthAxis">
