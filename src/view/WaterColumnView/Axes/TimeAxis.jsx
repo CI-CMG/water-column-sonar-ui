@@ -1,11 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////////
-import {
-  useLayoutEffect,
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-} from "react";
+import { useLayoutEffect, useEffect, useRef, useState, useMemo } from "react";
 import * as d3 from "d3";
 import {
   selectTimeMinIndex,
@@ -27,7 +21,7 @@ const TimeAxis = () => {
   }, [timeMinIndex, timeMaxIndex]);
 
   const range = useMemo(() => {
-    return [0, width - 1]
+    return [0, width - 1];
   }, [width]);
 
   const selected = d3.select("#timeAxisLabel");
@@ -36,18 +30,16 @@ const TimeAxis = () => {
     // updates component on window resize
     const updateSize = () => {
       setSize([window.innerWidth, window.innerHeight]);
-    }
-    window.addEventListener('resize', updateSize);
+    };
+    window.addEventListener("resize", updateSize);
     updateSize();
-    return () => window.removeEventListener('resize', updateSize);
+    return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-  const x = d3
-      .scaleLinear()
-      .domain(domain)
-      .range(range)
-      .unknown(null);
-  
+  const x = d3.scaleLinear().domain(domain).range(range).unknown(null);
+  // const formatMeters = (f => d => `${f(d)} m`)(d3.format("d"));
+  const xAxis = d3.axisBottom(x); // .tickFormat(formatMeters);
+
   useEffect(() => {
     selected.selectAll("*").remove();
 
@@ -55,14 +47,11 @@ const TimeAxis = () => {
       .attr("width", width - 1)
       .attr("height", height)
       .append("g")
-      .call(d3.axisBottom(x));
+      .call(xAxis);
   }, []);
 
   useEffect(() => {
-    selected
-      .transition()
-      .duration(500)
-      .call(d3.axisBottom(x));
+    selected.transition().duration(500).call(xAxis);
   }, [domain, ref, selected, size, x]);
 
   return (

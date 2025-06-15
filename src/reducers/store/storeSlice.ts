@@ -13,6 +13,7 @@ import {
   fetchLongitude,
   fetchTime,
   fetchDepth,
+  fetchDepthArray,
   fetchBottom,
   fetchSv,
 } from "./storeAPI.js";
@@ -34,6 +35,8 @@ export interface StoreState {
 
   depthMinIndex: number | null, // leaflet minY for axes
   depthMaxIndex: number | null, // leaflet maxY for axes
+  depthArray: Array<number> | null,
+  depthArrayStatus: "idle" | "loading" | "failed",
   timeMinIndex: number | null, // leaflet minX for axes
   timeMaxIndex: number | null, // leaflet maxX for axes
 
@@ -87,6 +90,7 @@ const initialState: StoreState = {
 
   depthMinIndex: null,
   depthMaxIndex: null,
+  depthArray: null, // will hold result of query
   timeMinIndex: null,
   timeMaxIndex: null,
 
@@ -165,6 +169,9 @@ export const storeSlice = createSlice({
     },
     updateDepthMaxIndex: (state, action: PayloadAction<number>) => {
       state.depthMaxIndex = action.payload;
+    },
+    updateDepthArray: (state, action: PayloadAction<any>) => { // TODO: Fix this type!!!
+      state.depthArray = action.payload;
     },
     updateTimeMinIndex: (state, action: PayloadAction<number>) => {
       state.timeMinIndex = action.payload;
@@ -297,6 +304,17 @@ export const storeSlice = createSlice({
         state.depthStatus = "failed";
       })
       // ----------------------------------------------- //
+      .addCase(depthArrayAsync.pending, state => {
+        state.depthArrayStatus = "loading";
+      })
+      .addCase(depthArrayAsync.fulfilled, (state, action) => {
+        state.depthArrayStatus = "idle";
+        state.depthArray = action.payload;
+      })
+      .addCase(depthArrayAsync.rejected, state => {
+        state.depthArrayStatus = "failed";
+      })
+      // ----------------------------------------------- //
       .addCase(bottomAsync.pending, state => {
         state.bottomStatus = "loading";
       })
@@ -335,6 +353,7 @@ export const {
   //
   updateDepthMinIndex, // indices determining the indices of view bounds for leaflet
   updateDepthMaxIndex,
+  updateDepthArray,
   updateTimeMinIndex,
   updateTimeMaxIndex,
   //
@@ -374,8 +393,9 @@ export const selectDepthIndex = (state: RootState) => state.store.depthIndex;
 export const selectTimeIndex = (state: RootState) => state.store.timeIndex; // url timeIndex jump to
 export const selectFrequencyIndex = (state: RootState) => state.store.frequencyIndex;
 
-export const selectDepthMinIndex = (state: RootState) => state.store.depthMinIndex;
+export const selectDepthMinIndex = (state: RootState) => state.store.depthMinIndex; // use to query depth array
 export const selectDepthMaxIndex = (state: RootState) => state.store.depthMaxIndex;
+export const selectDepthArray = (state: RootState) => state.store.depthArray; // wip
 export const selectTimeMinIndex = (state: RootState) => state.store.timeMinIndex;
 export const selectTimeMaxIndex = (state: RootState) => state.store.timeMaxIndex;
 
@@ -445,6 +465,15 @@ export const depthAsync = createAsyncThunk(
   async ({ ship, cruise, sensor, indexDepth }: { ship: string, cruise: string, sensor: string, indexDepth: number }) => {
     const response = await fetchDepth(ship, cruise, sensor, indexDepth);
     return Math.round(response * 1e2) / 1e2;
+  },
+)
+
+export const depthArrayAsync = createAsyncThunk(
+  "store/fetchDepthArray",
+  async ({ ship, cruise, sensor, indexStart, indexEnd }: { ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number }) => {
+    const response = await fetchDepthArray(ship, cruise, sensor, indexStart, indexEnd);
+    // debugger;
+    return response.data; // Float32Array
   },
 )
 

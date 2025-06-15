@@ -33,21 +33,23 @@
     // background-color: pink;
 
     // These outline the grid for the axes and data visualization part of the water column
-    $margin-value: 40px; // for both time & depth axes
+    $depth-margin-value: 50px; // for depth axis
+    $time-margin-value: 30px; // for time axis
     .topLeft {
+      display: flex;
     } // Water Column Visualization
     .topRight {
       // Depth Axis
-      max-width: $margin-value;
+      max-width: $depth-margin-value;
     }
     .bottomLeft {
       // Time Axis
-      max-height: $margin-value;
+      max-height: $time-margin-value;
     }
     .bottomRight {
       // Empty
-      max-width: $margin-value;
-      min-height: $margin-value;
+      max-width: $depth-margin-value;
+      min-height: $time-margin-value;
     }
 
     .Map {

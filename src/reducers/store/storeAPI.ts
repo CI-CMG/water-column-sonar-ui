@@ -177,6 +177,29 @@ export const fetchDepth = ( ship: string, cruise: string, sensor: string, indexD
         });
 }
 
+/* --- DEPTH ARRAY --- */
+export const fetchDepthArray = (
+    ship: string,
+    cruise: string,
+    sensor: string,
+    indexStart: number,
+    indexEnd: number,
+): any => {
+    const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            return zarr.open.v2(storePromise, { kind: "group" });
+        })
+        .then((rootPromise) => {
+            return zarr.open(rootPromise.resolve("depth"), { kind: "array" });
+        })
+        .then((depthArray) => {
+            // returns all the data in a BigUint64Array
+            return get(depthArray, [slice(indexStart, indexEnd)]);
+        });
+}
+
 /* --- BOTTOM --- */
 export const fetchBottom = (ship: string, cruise: string, sensor: string, indexTime: number ): any => {
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
@@ -230,7 +253,7 @@ export const fetchSv = (
         });
 }
 
-/* --- SV — gets data for drawing tiles --- */
+/* --- SV TILE — gets data for drawing tiles --- */
 export const fetchSvTile = (
     ship: string,
     cruise: string,
