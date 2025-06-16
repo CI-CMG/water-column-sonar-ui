@@ -65,3 +65,9 @@
  - create process for gitlab action to tag and create releases automatically
  - prototype knowledge graph query
 
+# Tag a Release
+Step 1 --> increment the semantic version in the "package.json" under the "version" field.
+```commandline
+git tag -a v25.6.0 -m "Releasing v25.6.0"
+git push origin --tags
+```

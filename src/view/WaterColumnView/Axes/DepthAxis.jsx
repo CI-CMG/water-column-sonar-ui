@@ -56,16 +56,17 @@ const DepthAxis = () => {
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-  const y = d3.scaleLinear().domain(domain).range(range).unknown(null);
+  const y = d3.scaleLinear().domain(domain).range(range); //.unknown(null);
   // https://observablehq.com/@d3/axis-ticks
   // For ordinal scales, such as band and point scales, the scale does not implement scale.ticks because an ordinal scale has no way of knowing which ordinal values from the scale’s domain to prioritize. For an ordinal axis, use axis.tickValues to instead specify which tick values you want.
   // TODO: 
   // const y = d3.scalePoint().domain(domain).range(range).unknown(null);
   // const formatMeters = (f => d => `${f(d)} m`)(d3.format("d"));
-  const yAxis = d3.axisRight(y).ticks(4); // .tickFormat(formatMeters);
+  const yAxis = d3.axisRight(y); //.ticks(4); // .tickFormat(formatMeters);
 
   useEffect(() => {
     selected.selectAll("*").remove();
+
     selected
       .attr("width", width)
       .attr("height", height - 1)
@@ -73,17 +74,24 @@ const DepthAxis = () => {
       .call(yAxis);
   }, []);
 
+  // useEffect(() => {
+  //   // console.log(depthArray);
+  //   // console.log(depthArray.length);
+  //   if(depthArray !== null) {
+  //     console.log(depthArray.length);
+  //     // const y2 = d3.scalePoint().domain(depthArray).range(range);
+  //     // const y2 = d3.scalePoint().domain(Array.from([1,2,3,4,5,6,7,8,9,10])).range(range);
+  //     // const yAxis2 = d3.axisRight(y2);
+  //     selected.transition().duration(500).call(y);
+  //   }
+  // }, [domain, ref, selected, size, yAxis, depthArray]);
+
   useEffect(() => {
-    // console.log(depthArray);
-    // console.log(depthArray.length);
-    if(depthArray !== null) {
-      console.log(depthArray.length);
-      // const y2 = d3.scalePoint().domain(depthArray).range(range);
-      const y2 = d3.scalePoint().domain(Array.from([1,2,3,4,5,6,7,8,9,10])).range(range);
-      const yAxis2 = d3.axisRight(y2);
-      selected.transition().duration(500).call(yAxis2);
-    }
-  }, [domain, ref, selected, size, yAxis, depthArray]);
+    selected
+      .transition()
+      .duration(500)
+      .call(d3.axisRight(y));
+  }, [domain, ref, selected, size, y]);
 
   return (
     <div ref={ref} className="depthAxis">
