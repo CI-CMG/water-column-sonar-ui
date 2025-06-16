@@ -10,10 +10,11 @@ import { PiMapTrifoldThin } from "react-icons/pi";
 // https://react-icons.github.io/react-icons/search/#q=fish
 export default function LayoutView() {
   let title = 'echofish';
+
   if (window.location.href.includes("test")) { // for test tier print different title
     console.log(`dev: ${window.location.href}`);
     title = "echofish-test"
-  } else if (window.location.href.includes("localhost")) {
+  } else if (window.location.href.includes("dev") || window.location.href.includes("localhost")) {
     title = "echofish-dev"
   }
 
