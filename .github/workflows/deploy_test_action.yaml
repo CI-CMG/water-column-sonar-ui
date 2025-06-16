@@ -1,16 +1,15 @@
 # https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 
-name: Publish water-column-sonar-ui to Prod
+name: Deploy test.echo.fish
 
 on:
   push:
-    # calendar versioning
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build:
-    name: Build React Project
+    name: Build Echofish UI for TEST
 
     runs-on: ubuntu-latest
 

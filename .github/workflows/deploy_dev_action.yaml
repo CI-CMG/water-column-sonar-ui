@@ -1,6 +1,6 @@
 # https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 
-name: Publish water-column-sonar-ui to Test
+name: Deploy dev.echo.fish
 
 on:
   push:
