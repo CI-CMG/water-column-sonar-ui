@@ -1,7 +1,7 @@
 {
   "name": "water-column-sonar-ui",
   "private": true,
-  "version": "25.6.2",
+  "version": "25.6.3",
   "homepage": "https://www.watercolumnproject.org/",
   "repository": {
     "type": "git",
