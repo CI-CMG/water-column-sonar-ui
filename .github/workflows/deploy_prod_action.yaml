@@ -2,6 +2,10 @@
 
 name: Deploy PROD to echo.fish
 
+on:
+  repository_dispatch:
+    types: [deploy-production]
+
 jobs:
   build:
     name: Build Echofish UI for PROD
