@@ -68,6 +68,6 @@
 # Tag a Release
 Step 1 --> increment the semantic version in the "package.json" under the "version" field.
 ```commandline
-git tag -a v25.6.8 -m "Releasing v25.6.8"
+git tag -a v25.6.10 -m "Releasing v25.6.10"
 git push origin --tags
 ```

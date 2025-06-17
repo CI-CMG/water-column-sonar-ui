@@ -13,9 +13,6 @@ import MapInformationPanel from "./MapInformationPanel.jsx";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-// const map_key = import.meta.env.DEV
-//   ? import.meta.env.VITE_SOME_MAPTILER_API_DEV
-//   : import.meta.env.VITE_SOME_MAPTILER_API_PROD;
 
 const map_key = import.meta.env.VITE_MAPTILER_API;
 
