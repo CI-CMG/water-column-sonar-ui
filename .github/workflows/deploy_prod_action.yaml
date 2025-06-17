@@ -5,11 +5,8 @@ name: Deploy PROD to echo.fish
 on:
   workflow_dispatch:
     inputs:
-      app:
-        description: "The app to release."
-        required: true
       version:
-        description: "The version to release."
+        description: "The tagged version to release."
         required: true
 
 jobs:
