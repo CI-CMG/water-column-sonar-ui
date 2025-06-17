@@ -1,5 +1,6 @@
-<h1 href="https://git.io/typing-svg">
-<img src="https://readme-typing-svg.herokuapp.com/?lines=EchoFish&size=24" />
+## Echofish
+
+[![Deploy DEV to dev.echo.fish](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml/badge.svg)](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml)
 
 # TODO:
  - ~~install bootstrap~~
@@ -71,3 +72,8 @@ Step 1 --> increment the semantic version in the "package.json" under the "versi
 git tag -a v25.6.10 -m "Releasing v25.6.10"
 git push origin --tags
 ```
+
+# Releasing to Test/Prod
+Test will be automatically released anytime a tagged release is created and the project can be built automatically.
+
+Prod will only release manually. If you navigate to https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_prod_action.yaml and select 'Run workflow'. You can specify the specific tagged version of the project to release, e.g. "v25.6.10".
