@@ -1,0 +1,43 @@
+# https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
+
+name: Deploy PROD to echo.fish
+
+jobs:
+  build:
+    name: Build Echofish UI for PROD
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    environment: echofish
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - run: npm ci
+        env:
+          VITE_MAPTILER_API: ${{ secrets.VITE_MAPTILER_API }}
+
+      - run: npm run build
+        env:
+          VITE_MAPTILER_API: ${{ secrets.VITE_MAPTILER_API }}
+
+      - run: aws s3 cp --recursive ./dist/ s3://prod.echo.fish/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - run: aws cloudfront create-invalidation --distribution-id E3NV8I4HB1BPJV --paths '/*'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
