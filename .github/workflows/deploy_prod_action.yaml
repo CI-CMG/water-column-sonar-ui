@@ -2,10 +2,15 @@
 
 name: Deploy PROD to echo.fish
 
-# on:
-#   repository_dispatch:
-#     types: [deploy-production]
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "The app to release."
+        required: true
+      version:
+        description: "The version to release."
+        required: true
 
 jobs:
   build:
@@ -20,7 +25,10 @@ jobs:
     environment: echofish
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          ref: ref/tags/${{ inputs.version }}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
