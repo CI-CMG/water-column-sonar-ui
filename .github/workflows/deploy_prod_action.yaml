@@ -19,7 +19,7 @@ jobs:
       matrix:
         node-version: [20.x]
 
-    environment: echofish
+    environment: prod
 
     steps:
       - name: Checkout Repo
