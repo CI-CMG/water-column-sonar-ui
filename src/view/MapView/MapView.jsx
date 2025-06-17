@@ -13,9 +13,11 @@ import MapInformationPanel from "./MapInformationPanel.jsx";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-const map_key = import.meta.env.DEV
-  ? import.meta.env.VITE_SOME_MAPTILER_API_DEV
-  : import.meta.env.VITE_SOME_MAPTILER_API_PROD;
+// const map_key = import.meta.env.DEV
+//   ? import.meta.env.VITE_SOME_MAPTILER_API_DEV
+//   : import.meta.env.VITE_SOME_MAPTILER_API_PROD;
+
+const map_key = import.meta.env.VITE_MAPTILER_API;
 
 const style = {
   version: 8,
@@ -212,9 +214,9 @@ export default function MapView() {
   useEffect(() => {
     document.title = `Map`;
     console.log(
-      `★ ${import.meta.env.VITE_REACT_APP_NAME} — v${
+      `♠ ${import.meta.env.VITE_REACT_APP_NAME} — v${
         import.meta.env.VITE_REACT_APP_VERSION
-      } ★`
+      } ♣`
     );
   }, []);
 
