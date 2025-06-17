@@ -212,12 +212,7 @@ export default function MapView() {
   const timeIndex = useAppSelector(selectTimeIndex);
 
   useEffect(() => {
-    document.title = `Map`;
-    console.log(
-      `♠ ${import.meta.env.VITE_REACT_APP_NAME} — v${
-        import.meta.env.VITE_REACT_APP_VERSION
-      } ♣`
-    );
+    document.title = `Map123`;
   }, []);
 
   useEffect(() => {
