@@ -212,7 +212,7 @@ export default function MapView() {
   const timeIndex = useAppSelector(selectTimeIndex);
 
   useEffect(() => {
-    document.title = `Map123`;
+    document.title = `Map`;
   }, []);
 
   useEffect(() => {
