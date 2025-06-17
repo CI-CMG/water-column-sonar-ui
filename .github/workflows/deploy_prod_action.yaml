@@ -2,9 +2,10 @@
 
 name: Deploy PROD to echo.fish
 
-on:
-  repository_dispatch:
-    types: [deploy-production]
+# on:
+#   repository_dispatch:
+#     types: [deploy-production]
+on: workflow_dispatch
 
 jobs:
   build:
