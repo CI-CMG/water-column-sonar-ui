@@ -82,13 +82,7 @@ export default function DatasetView() {
   // }, []);
 
   useEffect(() => {
-    document.title = `Map`;
-
-    console.log(
-      `★ ${import.meta.env.VITE_REACT_APP_NAME} — v${
-        import.meta.env.VITE_REACT_APP_VERSION
-      } — ${import.meta.env.DEV} ★`
-    );
+    document.title = `Dataset`;
   }, []);
 
   const { ref, inView } = useInView({
@@ -98,9 +92,11 @@ export default function DatasetView() {
 
   return (
     <div className="DatasetView">
-      <Container>
+      <Container fluid>
         <Row>
-          <Col md={{ span: 8, offset: 2 }}>
+          <Col sm={3} />
+          
+          <Col sm={6}>
             <br />
             <br />
             {/* <h1 style={{ backgroundColor: "lightblue" }}> */}
@@ -499,6 +495,8 @@ export default function DatasetView() {
             <hr />
             <br />
           </Col>
+
+          <Col sm={3} />
         </Row>
       </Container>
     </div>

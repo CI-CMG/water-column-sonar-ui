@@ -209,7 +209,7 @@ export default function MapView() {
   const timeIndex = useAppSelector(selectTimeIndex);
 
   useEffect(() => {
-    document.title = `Map`;
+    document.title = `echofish`;
   }, []);
 
   useEffect(() => {

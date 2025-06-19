@@ -1,50 +1,42 @@
 //////////////////////////////////////////////////////////////////////////////////
 import { useLayoutEffect, useEffect, useRef, useState, useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
+import {
+  // useAppDispatch,
+  useAppSelector,
+} from "../../../app/hooks.ts";
 import * as d3 from "d3";
 import {
-  selectShip,
-  selectCruise,
-  selectSensor,
+  // selectShip,
+  // selectCruise,
+  // selectSensor,
   //
   selectDepthMinIndex,
   selectDepthMaxIndex,
   selectDepthArray,
   //
   // timeAsync,
-  depthArrayAsync,
+  // depthArrayAsync,
 } from "../../../reducers/store/storeSlice.ts";
-// import { useAppSelector } from "../../../app/hooks.ts";
-// import { fetchDepthArray } from "../../../reducers/store/storeAPI.ts"
 
 //////////////////////////////////////////////////////////////////////////////////
 const DepthAxis = () => {
-  const dispatch = useAppDispatch();
-  const ship = useAppSelector(selectShip);
-  const cruise = useAppSelector(selectCruise);
-  const sensor = useAppSelector(selectSensor);
   const depthArray = useAppSelector(selectDepthArray);
 
   const ref = useRef(null);
   const [size, setSize] = useState([0, 0]);
-  const depthMinIndex = useAppSelector(selectDepthMinIndex);
+  const depthMinIndex = useAppSelector(selectDepthMinIndex); // TODO: min/max will be replaced by the array
   const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
-  // const depthArray = useAppSelector(selectDepthArray);
   const height = ref.current ? ref.current.offsetHeight : 0;
   const width = ref.current ? ref.current.offsetWidth : 0;
 
   const domain = useMemo(() => {
-    return [depthMinIndex, depthMaxIndex];
-  }, [depthMinIndex, depthMaxIndex]);
+    return [depthMinIndex, depthMaxIndex]; // read all depths once and then format from 
+  }, [depthMinIndex, depthMaxIndex]);      // that 
 
   const range = useMemo(() => {
     return [0, height - 1];
   }, [height]);
   const selected = d3.select("#depthAxisLabel");
-
-  useEffect(() => { // TODO: this might be better elsewhere?
-      dispatch(depthArrayAsync({ ship, cruise, sensor, indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
-  }, [dispatch, ship, cruise, sensor, depthMinIndex, depthMaxIndex]);
 
   useLayoutEffect(() => {
     // updates component on window resize
@@ -56,15 +48,12 @@ const DepthAxis = () => {
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
+  // Array.from({length: 101 - 10 + 1}, (_, a) => a + 10)
+  // domain=[-53, 560], range=[0, 612]
   const y = d3.scaleLinear().domain(domain).range(range); //.unknown(null);
-  // https://observablehq.com/@d3/axis-ticks
-  // For ordinal scales, such as band and point scales, the scale does not implement scale.ticks because an ordinal scale has no way of knowing which ordinal values from the scale’s domain to prioritize. For an ordinal axis, use axis.tickValues to instead specify which tick values you want.
-  // TODO: 
-  // const y = d3.scalePoint().domain(domain).range(range).unknown(null);
-  // const formatMeters = (f => d => `${f(d)} m`)(d3.format("d"));
   const yAxis = d3.axisRight(y); //.ticks(4); // .tickFormat(formatMeters);
 
-  useEffect(() => {
+  useEffect(() => { // on updates to the axes
     selected.selectAll("*").remove();
 
     selected
@@ -74,24 +63,19 @@ const DepthAxis = () => {
       .call(yAxis);
   }, []);
 
-  // useEffect(() => {
-  //   // console.log(depthArray);
-  //   // console.log(depthArray.length);
-  //   if(depthArray !== null) {
-  //     console.log(depthArray.length);
-  //     // const y2 = d3.scalePoint().domain(depthArray).range(range);
-  //     // const y2 = d3.scalePoint().domain(Array.from([1,2,3,4,5,6,7,8,9,10])).range(range);
-  //     // const yAxis2 = d3.axisRight(y2);
-  //     selected.transition().duration(500).call(y);
-  //   }
-  // }, [domain, ref, selected, size, yAxis, depthArray]);
-
   useEffect(() => {
+    // console.log(depthArray.length);
+    // const foo = ['a', 'b', 'c' , 'd'];
     selected
       .transition()
       .duration(500)
-      .call(d3.axisRight(y));
-  }, [domain, ref, selected, size, y]);
+      .call(
+        yAxis
+          // .tickFormat(function(d, i) {
+          //   return d + ": " + depthArray[i] + ' m';
+          // })
+      );
+  }, [domain, ref, selected, size, y, depthArray, yAxis]);
 
   return (
     <div ref={ref} className="depthAxis">

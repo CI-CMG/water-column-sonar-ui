@@ -182,8 +182,8 @@ export const fetchDepthArray = (
     ship: string,
     cruise: string,
     sensor: string,
-    indexStart: number,
-    indexEnd: number,
+    // indexStart: number,
+    // indexEnd: number,
 ): any => {
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
@@ -196,7 +196,7 @@ export const fetchDepthArray = (
         })
         .then((depthArray) => {
             // returns all the data in a BigUint64Array
-            return get(depthArray, [slice(indexStart, indexEnd)]);
+            return get(depthArray, [slice(null)]); // , [slice(indexStart, indexEnd)]);
         });
 }
 

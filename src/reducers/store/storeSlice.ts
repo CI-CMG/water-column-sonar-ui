@@ -468,10 +468,18 @@ export const depthAsync = createAsyncThunk(
   },
 )
 
+// export const depthArrayAsync = createAsyncThunk(
+//   "store/fetchDepthArray",
+//   async ({ ship, cruise, sensor, indexStart, indexEnd }: { ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number }) => {
+//     const response = await fetchDepthArray(ship, cruise, sensor, indexStart, indexEnd);
+//     // debugger;
+//     return response.data; // Float32Array
+//   },
+// )
 export const depthArrayAsync = createAsyncThunk(
   "store/fetchDepthArray",
-  async ({ ship, cruise, sensor, indexStart, indexEnd }: { ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number }) => {
-    const response = await fetchDepthArray(ship, cruise, sensor, indexStart, indexEnd);
+  async ({ ship, cruise, sensor }: { ship: string, cruise: string, sensor: string }) => {
+    const response = await fetchDepthArray(ship, cruise, sensor);
     // debugger;
     return response.data; // Float32Array
   },
