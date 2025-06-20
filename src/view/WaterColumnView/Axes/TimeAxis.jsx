@@ -52,7 +52,7 @@ const TimeAxis = () => {
 
   useEffect(() => {
     selected.transition().duration(500).call(xAxis);
-  }, [domain, ref, selected, size, x]);
+  }, [domain, ref, selected, size, x, xAxis]);
 
   return (
     <div ref={ref} className="timeAxis">

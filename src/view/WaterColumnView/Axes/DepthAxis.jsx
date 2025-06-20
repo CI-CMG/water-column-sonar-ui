@@ -18,6 +18,13 @@ import {
   // depthArrayAsync,
 } from "../../../reducers/store/storeSlice.ts";
 
+const fetchCount = (amount = 101) =>
+    new Promise(resolve =>
+      setTimeout(() => {
+        resolve({ data: amount })
+      }, 2000),
+    );
+
 //////////////////////////////////////////////////////////////////////////////////
 const DepthAxis = () => {
   const depthArray = useAppSelector(selectDepthArray);
@@ -51,7 +58,7 @@ const DepthAxis = () => {
   // Array.from({length: 101 - 10 + 1}, (_, a) => a + 10)
   // domain=[-53, 560], range=[0, 612]
   const y = d3.scaleLinear().domain(domain).range(range); //.unknown(null);
-  const yAxis = d3.axisRight(y); //.ticks(4); // .tickFormat(formatMeters);
+  const yAxis = d3.axisRight(y).ticks(10); //.ticks(4); // .tickFormat(formatMeters);
 
   useEffect(() => { // on updates to the axes
     selected.selectAll("*").remove();
@@ -71,9 +78,13 @@ const DepthAxis = () => {
       .duration(500)
       .call(
         yAxis
-          // .tickFormat(function(d, i) {
-          //   return d + ": " + depthArray[i] + ' m';
-          // })
+          .tickFormat((d) => {
+            if(d >= 0 && d < depthArray.length) {
+              return depthArray[d] + ' m';
+            } else {
+              return '';
+            }
+          })
       );
   }, [domain, ref, selected, size, y, depthArray, yAxis]);
 
