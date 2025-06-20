@@ -193,6 +193,10 @@ const WaterColumnVisualization = ({
               {annotation ? (
                 <Polygon
                   color={annotationColor}
+                  opacity={0.75}
+                  fillColor="white"
+                  fillOpacity={0}
+                  weight={1}
                   positions={positions}
                   title="Annotation"
                   className="Annotation"
