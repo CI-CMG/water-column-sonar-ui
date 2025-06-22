@@ -4,11 +4,14 @@ import * as d3 from "d3";
 import {
   selectTimeMinIndex,
   selectTimeMaxIndex,
+  selectTimeArray,
 } from "../../../reducers/store/storeSlice.ts";
 import { useAppSelector } from "../../../app/hooks.ts";
 
 //////////////////////////////////////////////////////////////////////////////////
 const TimeAxis = () => {
+  const timeArray = useAppSelector(selectTimeArray);
+
   const ref = useRef(null);
   const [size, setSize] = useState([0, 0]);
   const timeMinIndex = useAppSelector(selectTimeMinIndex);
@@ -37,8 +40,7 @@ const TimeAxis = () => {
   }, []);
 
   const x = d3.scaleLinear().domain(domain).range(range).unknown(null);
-  // const formatMeters = (f => d => `${f(d)} m`)(d3.format("d"));
-  const xAxis = d3.axisBottom(x); // .tickFormat(formatMeters);
+  const xAxis = d3.axisBottom(x).ticks(10);
 
   useEffect(() => {
     selected.selectAll("*").remove();
@@ -51,8 +53,21 @@ const TimeAxis = () => {
   }, []);
 
   useEffect(() => {
-    selected.transition().duration(500).call(xAxis);
-  }, [domain, ref, selected, size, x, xAxis]);
+    selected
+      .transition()
+      .duration(500)
+      .call(
+        xAxis
+          .tickFormat((d) => {
+            const asdf = d - timeMinIndex;
+            if(timeArray !== null) {
+              return d3.format(".1f")(timeArray[asdf]) + ' sec';
+            } else {
+              return '';
+            }
+          })
+      );
+  }, [domain, ref, selected, size, timeArray, timeMinIndex, x, xAxis]);
 
   return (
     <div ref={ref} className="timeAxis">

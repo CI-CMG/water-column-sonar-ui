@@ -12,6 +12,7 @@ import {
   fetchLatitude,
   fetchLongitude,
   fetchTime,
+  fetchTimeArray,
   fetchDepth,
   fetchDepthArray,
   fetchBottom,
@@ -35,10 +36,15 @@ export interface StoreState {
 
   depthMinIndex: number | null, // leaflet minY for axes
   depthMaxIndex: number | null, // leaflet maxY for axes
+  
   depthArray: Array<number> | null,
   depthArrayStatus: "idle" | "loading" | "failed",
+
   timeMinIndex: number | null, // leaflet minX for axes
   timeMaxIndex: number | null, // leaflet maxX for axes
+  
+  timeArray: Array<number> | null,
+  timeArrayStatus: "idle" | "loading" | "failed",
 
 
   colorMaps: any, // TODO: get rid of this?
@@ -90,9 +96,15 @@ const initialState: StoreState = {
 
   depthMinIndex: null,
   depthMaxIndex: null,
+  
   depthArray: null, // will hold result of query
+  depthArrayStatus: "idle",
+  
   timeMinIndex: null,
   timeMaxIndex: null,
+  
+  timeArray: null,
+  timeArrayStatus: "idle",
 
   colorIndex: null,
   colorMaps: WaterColumnColors, // get rid of
@@ -170,7 +182,7 @@ export const storeSlice = createSlice({
     updateDepthMaxIndex: (state, action: PayloadAction<number>) => {
       state.depthMaxIndex = action.payload;
     },
-    updateDepthArray: (state, action: PayloadAction<any>) => { // TODO: Fix this type!!!
+    updateDepthArray: (state, action: PayloadAction<Array<number>>) => { // TODO: Fix this type!!!
       state.depthArray = action.payload;
     },
     updateTimeMinIndex: (state, action: PayloadAction<number>) => {
@@ -178,6 +190,9 @@ export const storeSlice = createSlice({
     },
     updateTimeMaxIndex: (state, action: PayloadAction<number>) => {
       state.timeMaxIndex = action.payload;
+    },
+    updateTimeArray: (state, action: PayloadAction<Array<number>>) => {
+      state.timeArray = action.payload;
     },
 
     updateColorIndex: (state, action: PayloadAction<number>) => {
@@ -293,6 +308,17 @@ export const storeSlice = createSlice({
         state.timeStatus = "failed";
       })
       // ----------------------------------------------- //
+      .addCase(timeArrayAsync.pending, state => {
+        state.timeArrayStatus = "loading";
+      })
+      .addCase(timeArrayAsync.fulfilled, (state, action) => {
+        state.timeArrayStatus = "idle";
+        state.timeArray = action.payload;
+      })
+      .addCase(timeArrayAsync.rejected, state => {
+        state.timeArrayStatus = "failed";
+      })
+      // ----------------------------------------------- //
       .addCase(depthAsync.pending, state => {
         state.depthStatus = "loading";
       })
@@ -356,6 +382,7 @@ export const {
   updateDepthArray,
   updateTimeMinIndex,
   updateTimeMaxIndex,
+  updateTimeArray,
   //
   updateColorIndex,
   //
@@ -398,6 +425,7 @@ export const selectDepthMaxIndex = (state: RootState) => state.store.depthMaxInd
 export const selectDepthArray = (state: RootState) => state.store.depthArray; // wip
 export const selectTimeMinIndex = (state: RootState) => state.store.timeMinIndex;
 export const selectTimeMaxIndex = (state: RootState) => state.store.timeMaxIndex;
+export const selectTimeArray = (state: RootState) => state.store.timeArray;
 
 export const selectColorIndex = (state: RootState) => state.store.colorIndex;
 
@@ -457,6 +485,14 @@ export const timeAsync = createAsyncThunk(
   async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
     const response = await fetchTime(ship, cruise, sensor, indexTime);
     return response;
+  },
+)
+
+export const timeArrayAsync = createAsyncThunk( // Fetches the full time array
+  "store/fetchTimeArray",
+  async ({ ship, cruise, sensor, indexStart, indexEnd }: { ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number }) => {
+    const response = await fetchTimeArray(ship, cruise, sensor, indexStart, indexEnd);
+    return response.data;
   },
 )
 

@@ -57,8 +57,7 @@ export const fetchFrequencies = (ship: string, cruise: string, sensor: string) =
         })
         .then((frequencyArray) => {
             // returns all the data in a BigUint64Array
-            const frequencies = get(frequencyArray, [slice(null)]); // TODO: specify "slice(null)" as param
-            return frequencies;
+            return get(frequencyArray, [slice(null)]); // TODO: specify "slice(null)" as param
         });
 }
 
@@ -78,8 +77,7 @@ export const fetchLatitude = (ship: string, cruise: string, sensor: string, inde
         })
         .then((latitudeArray) => {
             // returns all the data in a BigUint64Array
-            const latitude = get(latitudeArray, [indexTime]);
-            return latitude;
+            return get(latitudeArray, [indexTime]);
         });
 }
 
@@ -98,8 +96,7 @@ export const fetchLongitude = (ship: string, cruise: string, sensor: string, ind
         })
         .then((longitudeArray) => {
             // returns all the data in a BigUint64Array
-            const longitude = get(longitudeArray, [indexTime]);
-            return longitude;
+            return get(longitudeArray, [indexTime]);
         });
 }
 
@@ -152,8 +149,25 @@ export const fetchTime = (ship: string, cruise: string, sensor: string, indexTim
         })
         .then((timeArray) => {
             // returns all the data in a BigUint64Array
-            const time = get(timeArray, [indexTime]);
-            return time;
+            return get(timeArray, [indexTime]);
+        });
+}
+
+/* --- TIME ARRAY --- */
+export const fetchTimeArray = (ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number ): any => {
+    const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
+            return zarrGroup;
+        })
+        .then((rootPromise) => {
+            const timeArray = zarr.open(rootPromise.resolve("time"), { kind: "array" });
+            return timeArray;
+        })
+        .then((timeArray) => {
+            return get(timeArray, [slice(indexStart, indexEnd)]); // ~1428 values
         });
 }
 
@@ -172,8 +186,7 @@ export const fetchDepth = ( ship: string, cruise: string, sensor: string, indexD
         })
         .then((depthArray) => {
             // returns all the data in a BigUint64Array
-            const depth = get(depthArray, [indexDepth]);
-            return depth;
+            return get(depthArray, [indexDepth]);
         });
 }
 
@@ -215,8 +228,7 @@ export const fetchBottom = (ship: string, cruise: string, sensor: string, indexT
         })
         .then((bottomArray) => {
             // returns all the data in a BigUint64Array
-            const bottom = get(bottomArray, [indexTime]);
-            return bottom;
+            return get(bottomArray, [indexTime]);
         });
 }
 
@@ -243,13 +255,12 @@ export const fetchSv = (
         .then((svArray) => {
             // returns all the data in a BigUint64Array
             // const sv = get(svArray, [indexDepth, indexTime, indexFrequency]);
-            const sv = get(svArray, [indexDepth, indexTime, slice(null)]); // TODO: get index of frequency
+            return get(svArray, [indexDepth, indexTime, slice(null)]); // TODO: get index of frequency
             // TODO: get the following
             // svArray.chunks = [512, 512, 1]
             // svArray.dtype = 'float32'
             // svArray.shape = [2538, 4_228_924, 4] ==> now write to 
             // return [sv, svArray.chunks, svArray.shape];
-            return sv;
         });
 }
 

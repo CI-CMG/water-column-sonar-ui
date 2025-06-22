@@ -29,9 +29,12 @@ import {
   updateTimeMinIndex,
   updateTimeMaxIndex,
   //
-  selectDepthMinIndex,
-  selectDepthMaxIndex,
+  // selectDepthMinIndex,
+  // selectDepthMaxIndex,
   depthArrayAsync,
+  selectTimeMinIndex,
+  selectTimeMaxIndex,
+  timeArrayAsync,
 } from "../../reducers/store/storeSlice";
 import { useAppSelector } from "../../app/hooks.ts";
 // Using this to figure out most of the solution:
@@ -78,6 +81,8 @@ const WaterColumnVisualization = ({
   const sensor = useAppSelector(selectSensor);
   // const depthMinIndex = useAppSelector(selectDepthMinIndex);
   // const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
+  const timeMinIndex = useAppSelector(selectTimeMinIndex);
+  const timeMaxIndex = useAppSelector(selectTimeMaxIndex);
 
   // const domain = useMemo(() => {
   //     return [depthMinIndex, depthMaxIndex];
@@ -102,9 +107,15 @@ const WaterColumnVisualization = ({
         dispatch(
           updateDepthMaxIndex(Math.round(bounds.getSouthWest().lat * -1))
         );
-        dispatch(updateTimeMinIndex(Math.round(bounds.getSouthWest().lng)));
-        dispatch(updateTimeMaxIndex(Math.round(bounds.getNorthEast().lng)));
+        dispatch(
+          updateTimeMinIndex(Math.round(bounds.getSouthWest().lng))
+        );
+        dispatch(
+          updateTimeMaxIndex(Math.round(bounds.getNorthEast().lng))
+        );
+        
         dispatch(depthArrayAsync({ ship, cruise, sensor })); // , indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
+        dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
       },
     });
 
@@ -153,13 +164,17 @@ const WaterColumnVisualization = ({
     if (map) {
       // not sure if I need to just limit this to first load of map?
       const bounds = map.getBounds();
+      
       dispatch(updateDepthMinIndex(Math.round(bounds._northEast.lat * -1)));
       dispatch(updateDepthMaxIndex(Math.round(bounds._southWest.lat * -1)));
+
       dispatch(updateTimeMinIndex(Math.round(bounds._southWest.lng)));
       dispatch(updateTimeMaxIndex(Math.round(bounds._northEast.lng)));
       // dispatch(depthArrayAsync({ ship, cruise, sensor })); // , indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
+      
+      dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
     }
-  }, [cruise, dispatch, map, sensor, ship]);
+  }, [cruise, dispatch, map, sensor, ship, timeMaxIndex, timeMinIndex]);
 
   return (
     <div className="WaterColumnVisualization">
@@ -185,7 +200,10 @@ const WaterColumnVisualization = ({
               ]}
               whenReady={() => {
                 console.log("The map is created");
+                // loading all the depth data is fine:
                 dispatch(depthArrayAsync({ ship, cruise, sensor }));
+                // loading all the time data is a problem:
+                dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
               }}
             >
               <CustomLayer />

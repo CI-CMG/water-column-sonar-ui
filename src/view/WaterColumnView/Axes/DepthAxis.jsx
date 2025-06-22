@@ -6,24 +6,11 @@ import {
 } from "../../../app/hooks.ts";
 import * as d3 from "d3";
 import {
-  // selectShip,
-  // selectCruise,
-  // selectSensor,
-  //
   selectDepthMinIndex,
   selectDepthMaxIndex,
   selectDepthArray,
-  //
-  // timeAsync,
-  // depthArrayAsync,
 } from "../../../reducers/store/storeSlice.ts";
 
-const fetchCount = (amount = 101) =>
-    new Promise(resolve =>
-      setTimeout(() => {
-        resolve({ data: amount })
-      }, 2000),
-    );
 
 //////////////////////////////////////////////////////////////////////////////////
 const DepthAxis = () => {
@@ -57,8 +44,8 @@ const DepthAxis = () => {
 
   // Array.from({length: 101 - 10 + 1}, (_, a) => a + 10)
   // domain=[-53, 560], range=[0, 612]
-  const y = d3.scaleLinear().domain(domain).range(range); //.unknown(null);
-  const yAxis = d3.axisRight(y).ticks(10); //.ticks(4); // .tickFormat(formatMeters);
+  const y = d3.scaleLinear().domain(domain).range(range).unknown(null); //.unknown(null);
+  const yAxis = d3.axisRight(y).ticks(10);
 
   useEffect(() => { // on updates to the axes
     selected.selectAll("*").remove();
@@ -71,16 +58,14 @@ const DepthAxis = () => {
   }, []);
 
   useEffect(() => {
-    // console.log(depthArray.length);
-    // const foo = ['a', 'b', 'c' , 'd'];
     selected
       .transition()
       .duration(500)
-      .call(
+      .call( // Note: this can render before depthArray is loaded
         yAxis
           .tickFormat((d) => {
-            if(d >= 0 && d < depthArray.length) {
-              return depthArray[d] + ' m';
+            if(depthArray !== null && d >= 0 && d < depthArray.length) {
+              return d3.format(".1f")(depthArray[d]) + ' m';
             } else {
               return '';
             }
