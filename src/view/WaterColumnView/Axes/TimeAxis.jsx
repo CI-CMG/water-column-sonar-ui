@@ -58,14 +58,14 @@ const TimeAxis = () => {
       .duration(500)
       .call(
         xAxis
-          .tickFormat((d) => {
-            const asdf = d - timeMinIndex;
-            if(timeArray !== null) {
-              return d3.format(".1f")(timeArray[asdf]) + ' sec';
-            } else {
-              return '';
-            }
-          })
+          // .tickFormat((d) => {
+          //   const asdf = d - timeMinIndex;
+          //   if(timeArray !== null) {
+          //     return d3.format(".1f")(timeArray[asdf]) + ' sec';
+          //   } else {
+          //     return '';
+          //   }
+          // })
       );
   }, [domain, ref, selected, size, timeArray, timeMinIndex, x, xAxis]);
 

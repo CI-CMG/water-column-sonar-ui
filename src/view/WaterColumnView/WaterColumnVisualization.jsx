@@ -115,7 +115,7 @@ const WaterColumnVisualization = ({
         );
         
         dispatch(depthArrayAsync({ ship, cruise, sensor })); // , indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
-        dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
+        // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
       },
     });
 
@@ -172,7 +172,7 @@ const WaterColumnVisualization = ({
       dispatch(updateTimeMaxIndex(Math.round(bounds._northEast.lng)));
       // dispatch(depthArrayAsync({ ship, cruise, sensor })); // , indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
       
-      dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
+      // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
     }
   }, [cruise, dispatch, map, sensor, ship, timeMaxIndex, timeMinIndex]);
 
@@ -203,7 +203,7 @@ const WaterColumnVisualization = ({
                 // loading all the depth data is fine:
                 dispatch(depthArrayAsync({ ship, cruise, sensor }));
                 // loading all the time data is a problem:
-                dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
+                // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
               }}
             >
               <CustomLayer />
