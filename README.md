@@ -1,5 +1,7 @@
 ## Echofish
 
+https://echo.fish
+
 [![Deploy DEV to dev.echo.fish](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml/badge.svg)](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml)
 
 # TODO:
@@ -69,7 +71,7 @@
 # Tag a Release
 Step 1 --> increment the semantic version in the "package.json" under the "version" field.
 ```commandline
-git tag -a v25.6.11 -m "Releasing v25.6.11"
+git tag -a v25.6.12 -m "Releasing v25.6.12"
 git push origin --tags
 ```
 
