@@ -9,6 +9,15 @@ import {
 import { useAppSelector } from "../../../app/hooks.ts";
 
 //////////////////////////////////////////////////////////////////////////////////
+
+// const fetchFoo = (amount) => {
+//   return new Promise(resolve =>
+//       setTimeout(() => {
+//         resolve({ data: amount })
+//       }, 1000),
+//     );
+// }
+
 const TimeAxis = () => {
   const timeArray = useAppSelector(selectTimeArray);
 
@@ -58,14 +67,19 @@ const TimeAxis = () => {
       .duration(500)
       .call(
         xAxis
-          // .tickFormat((d) => {
-          //   const asdf = d - timeMinIndex;
-          //   if(timeArray !== null) {
-          //     return d3.format(".1f")(timeArray[asdf]) + ' sec';
-          //   } else {
-          //     return '';
-          //   }
-          // })
+          .tickFormat((d) => {
+            // return `${d} sec`;
+            
+            if(timeArray !== null && d !== null) {
+              const asdf = d - timeMinIndex;
+              if(asdf < 0) {
+                return ''; // d3.isoFormat(new Date())
+              }
+              return d3.isoFormat(new Date(timeArray[asdf]*1000));
+            } else {
+              return '';
+            }
+          })
       );
   }, [domain, ref, selected, size, timeArray, timeMinIndex, x, xAxis]);
 

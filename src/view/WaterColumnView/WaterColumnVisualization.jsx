@@ -115,7 +115,7 @@ const WaterColumnVisualization = ({
         );
         
         dispatch(depthArrayAsync({ ship, cruise, sensor })); // , indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
-        // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
+        dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
       },
     });
 
