@@ -49,7 +49,7 @@ const TimeAxis = () => {
   }, []);
 
   const x = d3.scaleLinear().domain(domain).range(range).unknown(null);
-  const xAxis = d3.axisBottom(x).ticks(10);
+  const xAxis = d3.axisBottom(x).ticks(4);
 
   useEffect(() => {
     selected.selectAll("*").remove();
@@ -58,7 +58,21 @@ const TimeAxis = () => {
       .attr("width", width - 1)
       .attr("height", height)
       .append("g")
-      .call(xAxis);
+      .call(xAxis
+        .tickFormat((d) => {
+            // return `${d} sec`;
+            
+            if(timeArray !== null && d !== null) {
+              const asdf = timeMinIndex + d; // d is the offset from left side
+              if(asdf < 0) {
+                return ''; // d3.isoFormat(new Date())
+              }
+              return d3.isoFormat(new Date(timeArray[asdf]*1000));
+            } else {
+              return '';
+            }
+          })
+      );
   }, []);
 
   useEffect(() => {

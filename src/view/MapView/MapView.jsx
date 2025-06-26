@@ -226,6 +226,13 @@ export default function MapView() {
         minZoom: 2,
       });
 
+      map.current.addControl(new maplibregl.NavigationControl({
+        visualizePitch: true,
+        visualizeRoll: true,
+        showZoom: true,
+        showCompass: true,
+    }), "bottom-left");
+
       map.current.flyTo({
         center: [-75, 35],
         essential: true,

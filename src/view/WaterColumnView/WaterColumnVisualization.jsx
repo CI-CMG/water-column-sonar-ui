@@ -97,7 +97,7 @@ const WaterColumnVisualization = ({
         // console.log('move use map events.');
       },
       load: () => {
-        console.log("why doesnt this run?");
+        console.log("this doesnt run?");
       },
       moveend: () => {
         const bounds = map.getBounds();
@@ -131,7 +131,7 @@ const WaterColumnVisualization = ({
   // TODO: this will create a problem when page is resized
   const mapCenterY = -1 * (window.innerHeight / 2) + 100; // where does 60 come from?
   const mapCenter = [mapCenterY, mapCenterX];
-  const marginX = 100; // map maxBounds + margin
+  const marginX = 500; // map maxBounds + margin
   const marginY = 100;
 
   const polygon1 = [
