@@ -210,11 +210,9 @@ export default function MapView() {
   const [selectedShip, setSelectedShip] = useState(null);
   const [selectedCruise, setSelectedCruise] = useState(null);
   const [selectedSensor, setSelectedSensor] = useState(null);
-  const [hoveredStateId, setHoveredStateId] = useState(null);
+  // const [hoveredStateId, setHoveredStateId] = useState(null);
 
   const timeIndex = useAppSelector(selectTimeIndex);
-
-  let popup = new maplibregl.Popup();
 
   useEffect(() => {
     document.title = `echofish`;
@@ -261,6 +259,8 @@ export default function MapView() {
         });
 
         map.current.on("click", "cruises", (e) => {
+          let popup = new maplibregl.Popup();
+          
           const allFeatureIds = map.current
             .queryRenderedFeatures()
             .map((x) => x.id);
@@ -271,6 +271,7 @@ export default function MapView() {
               { hover: false }
             );
           });
+          popup.remove();
 
           const id = e.features[0]["id"];
 
@@ -289,7 +290,7 @@ export default function MapView() {
             )
             .addTo(map.current);
 
-          setHoveredStateId(id); // TODO:
+          // setHoveredStateId(id); // TODO:
 
           map.current.setFeatureState(
             { source: "cruises", sourceLayer: "cruises", id: id },
