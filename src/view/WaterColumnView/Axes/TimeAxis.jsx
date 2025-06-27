@@ -10,13 +10,6 @@ import { useAppSelector } from "../../../app/hooks.ts";
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// const fetchFoo = (amount) => {
-//   return new Promise(resolve =>
-//       setTimeout(() => {
-//         resolve({ data: amount })
-//       }, 1000),
-//     );
-// }
 
 const TimeAxis = () => {
   const timeArray = useAppSelector(selectTimeArray);
@@ -60,8 +53,6 @@ const TimeAxis = () => {
       .append("g")
       .call(xAxis
         .tickFormat((d) => {
-            // return `${d} sec`;
-            
             if(timeArray !== null && d !== null) {
               const asdf = timeMinIndex + d; // d is the offset from left side
               if(asdf < 0) {
@@ -82,8 +73,6 @@ const TimeAxis = () => {
       .call(
         xAxis
           .tickFormat((d) => {
-            // return `${d} sec`;
-            
             if(timeArray !== null && d !== null) {
               const asdf = d - timeMinIndex;
               if(asdf < 0) {

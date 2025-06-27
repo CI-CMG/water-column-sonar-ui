@@ -10,9 +10,18 @@ import {
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import MapInformationPanel from "./MapInformationPanel.jsx";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+// import Button from "react-bootstrap/Button";
+// import Modal from "react-bootstrap/Modal";
 
+// const GetZarrGeospatialIndex = (cruise, longitude, latitude) => {
+//   e.features[0].properties.cruise,
+//     e.lngLat["lng"],
+//     e.lngLat["lat"]
+//   ).then((clickedIndex) => {
+//     console.log(`got geospatial index: ${clickedIndex}`)
+//     dispatch(updateTimeIndex(clickedIndex));
+//   });
+// }
 
 const map_key = import.meta.env.VITE_MAPTILER_API;
 
@@ -194,19 +203,18 @@ const style = {
 export default function MapView() {
   const dispatch = useAppDispatch();
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const mapContainer = useRef();
+  const mapContainerRef = useRef();
   const map = useRef();
-  const [mouseCoordinates, setMouseCoordinates] = useState(null);
+
+  // const [mouseCoordinates, setMouseCoordinates] = useState(null);
   const [selectedShip, setSelectedShip] = useState(null);
   const [selectedCruise, setSelectedCruise] = useState(null);
   const [selectedSensor, setSelectedSensor] = useState(null);
   const [hoveredStateId, setHoveredStateId] = useState(null);
 
   const timeIndex = useAppSelector(selectTimeIndex);
+
+  let popup = new maplibregl.Popup();
 
   useEffect(() => {
     document.title = `echofish`;
@@ -219,19 +227,22 @@ export default function MapView() {
       maplibregl.addProtocol("pmtiles", protocol.tile);
 
       map.current = new maplibregl.Map({
-        container: mapContainer.current,
+        container: mapContainerRef.current,
         style: style,
         center: [20, -20],
         zoom: 3,
         minZoom: 2,
       });
 
-      map.current.addControl(new maplibregl.NavigationControl({
-        visualizePitch: true,
-        visualizeRoll: true,
-        showZoom: true,
-        showCompass: true,
-    }), "bottom-left");
+      map.current.addControl(
+        new maplibregl.NavigationControl({
+          visualizePitch: true,
+          visualizeRoll: true,
+          showZoom: true,
+          showCompass: true,
+        }),
+        "bottom-left"
+      );
 
       map.current.flyTo({
         center: [-75, 35],
@@ -240,137 +251,64 @@ export default function MapView() {
         zoom: 3,
       });
 
-      // styling for the mouse cursor
-      map.current.on("mouseenter", "cruises", () => {
-        map.current.getCanvas().style.cursor = "crosshair";
-      });
-      // styling for the mouse cursor
-      map.current.on("mouseleave", "cruises", () => {
-        map.current.getCanvas().style.cursor = "default";
-      });
+      map.current.on("load", () => {
+        // styling for the mouse cursor
+        map.current.on("mouseenter", "cruises", () => {
+          map.current.getCanvas().style.cursor = "crosshair";
+        });
+        map.current.on("mouseleave", "cruises", () => {
+          map.current.getCanvas().style.cursor = "";
+        });
 
-      // hovered cruise info
-      map.current.on("mousemove", (e) => {
-        // setMouseCoordinates(JSON.stringify(e.lngLat.wrap()));
-        setMouseCoordinates(e.lngLat);
+        map.current.on("click", "cruises", (e) => {
+          const allFeatureIds = map.current
+            .queryRenderedFeatures()
+            .map((x) => x.id);
 
-        const features = map.current.queryRenderedFeatures(e.point);
-        const displayProperties = ["type", "properties"];
-
-        features.map((feat) => {
-          const displayFeat = {};
-          displayProperties.forEach((prop) => {
-            // TODO: explore this further
-            displayFeat[prop] = feat[prop];
+          allFeatureIds.forEach((id) => { // reset styling for all
+            map.current.setFeatureState(
+              { source: "cruises", sourceLayer: "cruises", id: id },
+              { hover: false }
+            );
           });
-          if ("ship" in displayFeat.properties) {
-            // setInfo(`ship: ${displayFeat.properties['ship']}, cruise: ${displayFeat.properties['cruise']}, sensor: ${displayFeat.properties['sensor']}`);
-            setSelectedShip(displayFeat.properties["ship"]);
-            setSelectedCruise(displayFeat.properties["cruise"]);
-            setSelectedSensor(displayFeat.properties["sensor"]);
-          }
+
+          const id = e.features[0]["id"];
+
+          // GetZarrGeospatialIndex(cruise, longitude, latitude);
+          dispatch(updateTimeIndex(1024)); // TODO: 
+
+          popup
+            .setLngLat(e.lngLat)
+            .setHTML(
+              `
+            Ship: ${e.features[0].properties.ship}<br />
+            Cruise: ${e.features[0].properties.cruise}<br />
+            Sensor: ${e.features[0].properties.sensor}<br />
+            → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&time=1024">view echogram</a>
+            `
+            )
+            .addTo(map.current);
+
+          setHoveredStateId(id); // TODO:
+
+          map.current.setFeatureState(
+            { source: "cruises", sourceLayer: "cruises", id: id },
+            { hover: true }
+          );
         });
       });
     }
-  }, [map]);
-
-  useEffect(() => {
-    map.current.on("click", "cruises", (e) => {
-      // console.log('getting geospatial index');
-
-      // GetZarrGeospatialIndex(
-      //   e.features[0].properties.cruise,
-      //   e.lngLat["lng"],
-      //   e.lngLat["lat"]
-      // ).then((clickedIndex) => {
-      //   console.log('got geospatial index')
-      //   console.log(clickedIndex);
-      //   dispatch(updateTimeIndex(clickedIndex));
-      // });
-      // TODO: reenable this
-      dispatch(updateTimeIndex(1024));
-
-      // TODO: need to get this to redirect to the correct timeIndex
-      new maplibregl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(
-          `
-          Ship: ${e.features[0].properties.ship}<br />
-          Cruise: ${e.features[0].properties.cruise}<br />
-          Sensor: ${e.features[0].properties.sensor}<br />
-          → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&time=1024">view echogram</a>
-          `
-        )
-        .addTo(map.current);
-    });
-  }, [dispatch, timeIndex]);
-
-  useEffect(() => {
-    // selected cruise info
-    map.current.on("click", "cruises", (e) => {
-      // TODO: after first click the mouse interaction slows down a lot!
-      setHoveredStateId(null);
-
-      map.current.setFeatureState(
-        { source: "cruises", sourceLayer: "cruises", id: hoveredStateId },
-        { hover: false }
-      );
-
-      const features = e.features;
-      const idd = features[0]["id"];
-
-      setHoveredStateId(idd);
-      map.current.setFeatureState(
-        { source: "cruises", sourceLayer: "cruises", id: idd },
-        { hover: true }
-      );
-      // TODO: do click handler here for selected feature, jump to new page
-    });
-
-    map.current.on("mouseleave", "cruises", () => {
-      setHoveredStateId(null);
-      map.current.setFeatureState(
-        { source: "cruises", sourceLayer: "cruises", id: hoveredStateId },
-        { hover: false }
-      );
-    });
-  }, [hoveredStateId]);
+  }, []);
 
   return (
-    <>
-      <div className="MapView">
-        {/* this div gets populated by maplibre */}
-        <div ref={mapContainer} className="Map" />
+    <div className="MapView">
+      <div ref={mapContainerRef} className="Map" />
 
-        <div>
-          {/* {selectedCruise && (
-            <div className="bottom-left">
-              <p className="cruise-display">
-                Ship: {selectedShip} | Cruise: {selectedCruise} | Sensor:{" "}
-                {selectedSensor}
-              </p>
-            </div>
-          )} */}
-
-          {/* {mouseCoordinates && (
-            <div className="bottom-right">
-              <p className="coordinate-display">
-                {round(mouseCoordinates.lat, 5)}° N,{" "}
-                {round(mouseCoordinates.lng, 5)}° E
-              </p>
-            </div>
-          )} */}
-        </div>
-
-        <MapInformationPanel
-          ship={selectedShip}
-          cruise={selectedCruise}
-          sensor={selectedSensor}
-          // Cannot read properties of null (reading 'lat')
-          // latitude={mouseCoordinates.lat}
-          // longitude={mouseCoordinates.lng}
-        />
-      </div>
-    </>
+      <MapInformationPanel
+        ship={selectedShip}
+        cruise={selectedCruise}
+        sensor={selectedSensor}
+      />
+    </div>
   );
 }

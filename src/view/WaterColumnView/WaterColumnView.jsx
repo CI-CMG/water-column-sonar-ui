@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useSearchParams } from "react-router";
-import WaterColumnInformationPanel from "./WaterColumnInformationPanel";
+import WaterColumnInformationPanel from "./InformationPanel/WaterColumnInformationPanel";
 import WaterColumnVisualization from "./WaterColumnVisualization";
 import {
   updateShip,

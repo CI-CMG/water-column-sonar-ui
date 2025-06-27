@@ -16,6 +16,7 @@ import {
 // };
 
 async function latitudeArray(ship, cruise, sensor) {
+  console.log('async fet latAll');
   return fetchLatitudeAll(ship, cruise, sensor)
     .then((d1) => {
       return d1.data;
@@ -23,6 +24,7 @@ async function latitudeArray(ship, cruise, sensor) {
 }
 
 async function longitudeArray(ship, cruise, sensor) {
+  console.log('async fet lonAll');
   return fetchLongitudeAll(ship, cruise, sensor)
     .then((d1) => {
       return d1.data;
@@ -67,6 +69,10 @@ const GetZarrGeospatialIndex = function (cruise, lng, lat) {
     .catch((e) => {
       console.log(e);
     });
+    //   ).then((clickedIndex) => {
+    //     console.log(`got geospatial index: ${clickedIndex}`)
+    //     dispatch(updateTimeIndex(clickedIndex));
+    //   });
 };
 
 export default GetZarrGeospatialIndex;

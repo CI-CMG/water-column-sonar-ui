@@ -6,12 +6,12 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Dropdown from "react-bootstrap/Dropdown";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
-import MiniMapView from "./MiniMapView.jsx";
-import ColorMap from "./ColorMap.jsx";
+import MiniMapView from "../MiniMapView.jsx";
+import ColorMap from "../ColorMap.jsx";
 // import TimeAxis from "./Axes/TimeAxis.jsx";
-import SvPlotView from "./SvPlotView.jsx";
+import SvPlotView from "../SvPlotView.jsx";
 // import { HuePicker } from 'react-color';
-import AnnotationColors from "./InformationPanel/AnnotationColors.jsx"
+import AnnotationColors from "./AnnotationColors.jsx"
 import {
   selectShip,
   selectCruise,
@@ -57,8 +57,8 @@ import {
   //
   selectBottom,
   selectSv,
-} from "../../reducers/store/storeSlice.ts";
-import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
+} from "../../../reducers/store/storeSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
 // import { TbLocation } from "react-icons/tb";
 // import { TbClockHour9 } from "react-icons/tb";
 // import { MdOutlineAnchor } from "react-icons/md";
@@ -283,7 +283,12 @@ const WaterColumnInformationPanel = () => {
                   {depth.toFixed(1)} meters
                 </span>
               </p>
-              <p className="text-end"><i>[ min: {depthMinIndex}, max: {depthMaxIndex} ]</i></p>
+              <p>
+                <b>Range Depth:</b>
+                <span className="font-monospace float-end">
+                  <i>[min: {depthMinIndex}, max: {depthMaxIndex}]</i>
+                </span>
+              </p>
             </>
           ) : (
             <></>

@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
-import { round } from "@turf/helpers";
+// import { round } from "@turf/helpers";
 // import Card from "react-bootstrap/Card";
 // import Badge from "react-bootstrap/Badge";
 
@@ -74,7 +74,6 @@ const MapInformationPanel = ({
   // longitude,
 }) => {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

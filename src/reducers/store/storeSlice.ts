@@ -170,6 +170,7 @@ export const storeSlice = createSlice({
       state.depthIndex = action.payload;
     },
     updateTimeIndex: (state, action: PayloadAction<number>) => {
+      console.log('store slice updateTimeIndex');
       state.timeIndex = action.payload;
     },
     updateFrequencyIndex: (state, action: PayloadAction<number>) => {
