@@ -2,7 +2,7 @@ import {
   point,
   lineString,
 } from "@turf/helpers";
-import { cleanCoords } from "@turf/clean-coords";
+// import { cleanCoords } from "@turf/clean-coords";
 import { nearestPointOnLine } from "@turf/nearest-point-on-line";
 import {
   fetchLatitudeAll,
@@ -16,7 +16,7 @@ import {
 // };
 
 async function latitudeArray(ship, cruise, sensor) {
-  console.log('async fet latAll');
+  // console.log('async fet latAll');
   return fetchLatitudeAll(ship, cruise, sensor)
     .then((d1) => {
       return d1.data;
@@ -24,7 +24,7 @@ async function latitudeArray(ship, cruise, sensor) {
 }
 
 async function longitudeArray(ship, cruise, sensor) {
-  console.log('async fet lonAll');
+  // console.log('async fet lonAll');
   return fetchLongitudeAll(ship, cruise, sensor)
     .then((d1) => {
       return d1.data;
@@ -33,6 +33,8 @@ async function longitudeArray(ship, cruise, sensor) {
 
 // https://github.com/CI-CMG/echofish-aws-ui/blob/master/src/main/frontend/src/views/view/echofish/cruise/Echogram.vue
 const GetZarrGeospatialIndex = function (cruise, lng, lat) {
+  // TODO: add 'ship' and 'sensor' as variables
+  // debugger;
   const clickedPoint = point([lng, lat]);
   // console.log(`clicked cruise: ${cruise}`);
   const shipName = "Henry_B._Bigelow"; // TODO: fix this
@@ -44,19 +46,22 @@ const GetZarrGeospatialIndex = function (cruise, lng, lat) {
     longitudeArray(shipName, cruiseName, sensorName),
   ])
     .then(([latitudeData, longitudeData]) => {
-      console.log('got points')
       let aa = Array.from(latitudeData);
       let bb = Array.from(longitudeData);
 
-      const dataJoined = aa.map((e, i) => [bb[i], e])
+      const dataJoined = aa.map((e, i) => {
+        const bbNoise = bb[i] + (Math.random()/10000);
+        return [bbNoise, e];
+      })
       // Note redundant points will cause problems
       const clickedLinestring = lineString(dataJoined); // 162_727
-      const cleanedClickedLinestring = cleanCoords(clickedLinestring); // 119_280 // TODO: problem w too few coordinates
-      let snapped = nearestPointOnLine(
-        // clickedLinestring,
-        cleanedClickedLinestring, // [longitude, latitude]
-        clickedPoint,
-      );
+      // const cleanedClickedLinestring = cleanCoords(clickedLinestring); // 119_280 // TODO: problem w too few coordinates
+      let snapped = nearestPointOnLine(clickedLinestring, clickedPoint);
+      // let snapped = nearestPointOnLine(
+      //   clickedLinestring,
+      //   // cleanedClickedLinestring, // [longitude, latitude]
+      //   clickedPoint,
+      // );
       console.log(
           "closest polyline index: " +
           snapped.properties.index +

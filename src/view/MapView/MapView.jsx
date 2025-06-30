@@ -2,7 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
-import { round } from "@turf/helpers";
+// import { round } from "@turf/helpers";
+// import Toast from "react-bootstrap/Toast";
+// import ToastContainer from "react-bootstrap/ToastContainer";
+// import Spinner from 'react-bootstrap/Spinner';
 import GetZarrGeospatialIndex from "./GetZarrGeospatialIndex";
 import {
   selectTimeIndex,
@@ -10,21 +13,8 @@ import {
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import MapInformationPanel from "./MapInformationPanel.jsx";
-// import Button from "react-bootstrap/Button";
-// import Modal from "react-bootstrap/Modal";
-
-// const GetZarrGeospatialIndex = (cruise, longitude, latitude) => {
-//   e.features[0].properties.cruise,
-//     e.lngLat["lng"],
-//     e.lngLat["lat"]
-//   ).then((clickedIndex) => {
-//     console.log(`got geospatial index: ${clickedIndex}`)
-//     dispatch(updateTimeIndex(clickedIndex));
-//   });
-// }
 
 const map_key = import.meta.env.VITE_MAPTILER_API;
-
 const style = {
   version: 8,
   projection: {
@@ -200,6 +190,7 @@ const style = {
   },
 };
 
+
 export default function MapView() {
   const dispatch = useAppDispatch();
 
@@ -260,12 +251,12 @@ export default function MapView() {
 
         map.current.on("click", "cruises", (e) => {
           let popup = new maplibregl.Popup();
-          
+
           const allFeatureIds = map.current
             .queryRenderedFeatures()
             .map((x) => x.id);
-
-          allFeatureIds.forEach((id) => { // reset styling for all
+          allFeatureIds.forEach((id) => {
+            // reset styling for all
             map.current.setFeatureState(
               { source: "cruises", sourceLayer: "cruises", id: id },
               { hover: false }
@@ -275,19 +266,32 @@ export default function MapView() {
 
           const id = e.features[0]["id"];
 
-          // GetZarrGeospatialIndex(cruise, longitude, latitude);
-          dispatch(updateTimeIndex(1024)); // TODO: 
+          console.log(e.features[0]);
+          const properties = e.features[0]["properties"];
+          // properties: {id: 25, ship: 'Henry_B._Bigelow', cruise: 'HB1806', sensor: 'EK60'}
+          GetZarrGeospatialIndex(
+            properties["cruise"],
+            e["lngLat"]["lng"],
+            e["lngLat"]["lat"]
+          );
+          dispatch(updateTimeIndex(1024)); // TODO:
+
+          // var message = document.createElement('h1');
+          // message.innerHTML="Hello, World";
+          const placeholder = document.createElement('div');
+          placeholder.innerHTML = `Hello, World: ${timeIndex}`;
 
           popup
             .setLngLat(e.lngLat)
-            .setHTML(
-              `
-            Ship: ${e.features[0].properties.ship}<br />
-            Cruise: ${e.features[0].properties.cruise}<br />
-            Sensor: ${e.features[0].properties.sensor}<br />
-            → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&time=1024">view echogram</a>
-            `
-            )
+            // https://stackoverflow.com/questions/42101898/mapbox-gl-popup-setdomcontent-example
+            .setDOMContent(placeholder)
+            // .setHTML(
+            //   `
+            //   Ship: ${e.features[0].properties.ship}<br />
+            //   Cruise: ${e.features[0].properties.cruise}<br />
+            //   Sensor: ${e.features[0].properties.sensor}<br />
+            //   → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&time=1024">view echogram</a>
+            // `)
             .addTo(map.current);
 
           // setHoveredStateId(id); // TODO:
@@ -302,14 +306,16 @@ export default function MapView() {
   }, []);
 
   return (
-    <div className="MapView">
-      <div ref={mapContainerRef} className="Map" />
+    <>
+      <div className="MapView">
+        <div ref={mapContainerRef} className="Map" />
 
-      <MapInformationPanel
-        ship={selectedShip}
-        cruise={selectedCruise}
-        sensor={selectedSensor}
-      />
-    </div>
+        <MapInformationPanel
+          ship={selectedShip}
+          cruise={selectedCruise}
+          sensor={selectedSensor}
+        />
+      </div>
+    </>
   );
 }

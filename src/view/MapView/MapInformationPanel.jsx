@@ -7,6 +7,11 @@ import PropTypes from "prop-types";
 // import { round } from "@turf/helpers";
 // import Card from "react-bootstrap/Card";
 // import Badge from "react-bootstrap/Badge";
+import Spinner from "react-bootstrap/Spinner";
+
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Toast from "react-bootstrap/Toast";
 
 const all_cruises = [
   "HB0706",
@@ -73,6 +78,7 @@ const MapInformationPanel = ({
   // latitude,
   // longitude,
 }) => {
+  // TODO: move these to redux
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -94,6 +100,7 @@ const MapInformationPanel = ({
       >
         Cruise Information
       </Button>
+
       <Offcanvas
         show={show}
         onHide={handleClose}
@@ -107,6 +114,9 @@ const MapInformationPanel = ({
         </Offcanvas.Header>
 
         <Offcanvas.Body>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
           {/* { (latitude && longitude) (
               <>
                 <p>
@@ -119,10 +129,10 @@ const MapInformationPanel = ({
               </>
             )
           } */}
-          
+
           <p>
             <b>Ship:</b>
-            { (ship) ? (
+            {ship ? (
               <>
                 <span className="font-monospace float-end">{ship}</span>
               </>
@@ -135,7 +145,7 @@ const MapInformationPanel = ({
             <b>Cruise:</b>
             <span className="font-monospace float-end">{cruise}</span>
           </p>
-          
+
           <p>
             <b>Sensor:</b>
             <span className="font-monospace float-end">{sensor}</span>

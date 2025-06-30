@@ -199,10 +199,10 @@ const WaterColumnVisualization = ({
                 [0 + marginY, storeShape[1] + marginY],
               ]}
               whenReady={() => {
-                console.log("The map is created");
-                // loading all the depth data is fine:
+                // console.log("The map is created");
+                // NOTE: loading all the depth data is fine:
                 dispatch(depthArrayAsync({ ship, cruise, sensor }));
-                // loading all the time data is a problem:
+                // NOTE: loading all the time data is a problem:
                 // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
               }}
             >
@@ -211,10 +211,10 @@ const WaterColumnVisualization = ({
               {annotation ? (
                 <Polygon
                   color={annotationColor}
-                  opacity={0.75}
+                  opacity={0.95}
                   fillColor="white"
                   fillOpacity={0}
-                  weight={1}
+                  weight={2}
                   positions={positions}
                   title="Annotation"
                   className="Annotation"
