@@ -1,3 +1,8 @@
+import {
+  point,
+  lineString,
+} from "@turf/helpers";
+import { nearestPointOnLine } from "@turf/nearest-point-on-line";
 import * as zarr from "zarrita";
 import { get } from "@zarrita/ndarray";
 import { slice } from "zarrita";
@@ -101,7 +106,7 @@ export const fetchLongitude = (ship: string, cruise: string, sensor: string, ind
 }
 
 /* --- LATITUDE All — for ping-time lookup --- */
-export const fetchLatitudeAll = (ship: string, cruise: string, sensor: string ): any => {    
+export const fetchLatitudeAll = (ship: string, cruise: string, sensor: string ): any => {
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;    
     return zarr.withConsolidated(new zarr.FetchStore(url))
         .then((storePromise) => {
@@ -122,16 +127,61 @@ export const fetchLongitudeAll = (ship: string, cruise: string, sensor: string )
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;    
     return zarr.withConsolidated(new zarr.FetchStore(url))
         .then((storePromise) => {
-            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
-            return zarrGroup;
+            return zarr.open.v2(storePromise, { kind: "group" });
         })
         .then((rootPromise) => {
-            const longitudeArray = zarr.open(rootPromise.resolve("longitude"), { kind: "array" });
-            return longitudeArray; // TODO: don't need to create consts here...
+            return zarr.open(rootPromise.resolve("longitude"), { kind: "array" });
         })
         .then((longitudeArray) => {
             return get(longitudeArray, [slice(null)]); // returns all the data!
         });
+}
+
+/* --- LNG/LAT All — for Geospatial lookup --- */
+export const fetchGeospatialIndex = (
+    ship: string,
+    cruise: string,
+    sensor: string,
+    longitude: number,
+    latitude: number,
+): any => {
+    // const ship = "Henry_B._Bigelow"; // TODO: fix this
+    // const cruise = cruise;
+    // const sensor = "EK60";
+    const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+
+    const clickedPoint = point([longitude, latitude]);
+    
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            return zarr.open.v2(storePromise, { kind: "group" });
+        })
+        .then((rootPromise) => {
+            // return zarr.open(rootPromise.resolve("longitude"), { kind: "array" });
+            return Promise.all([
+                zarr.open(rootPromise.resolve("longitude"), { kind: "array" }),
+                zarr.open(rootPromise.resolve("latitude"), { kind: "array" }),
+            ])
+        })
+        .then(([longitudeArray, latitudeArray]) => {
+            // return get(longitudeArray, [slice(null)]); // returns all the data!
+            return Promise.all([
+                get(longitudeArray, [slice(null)]),
+                get(latitudeArray, [slice(null)]),
+            ])
+        }).then(([latitudeData, longitudeData]) => {
+            let aa = Array.from(latitudeData.data);
+            let bb = Array.from(longitudeData.data);
+
+            const dataJoined = aa.map((e, i) => {
+                const bbNoise = bb[i] + (Math.random()/10000);
+                return [bbNoise, e];
+            })
+            // Note: redundant points will cause problems, fixed with noise
+            const clickedLinestring = lineString(dataJoined);
+            let snapped = nearestPointOnLine(clickedLinestring, clickedPoint);
+            return snapped.properties.index;
+        })
 }
 
 /* --- TIME --- */
@@ -232,7 +282,6 @@ export const fetchBottom = (ship: string, cruise: string, sensor: string, indexT
         });
 }
 
-
 /* --- SV — gets a slice across all frequencies --- */
 export const fetchSv = (
     ship: string,
@@ -245,8 +294,7 @@ export const fetchSv = (
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
     return zarr.withConsolidated(new zarr.FetchStore(url))
         .then((storePromise) => {
-            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
-            return zarrGroup;
+            return zarr.open.v2(storePromise, { kind: "group" });
         })
         .then((rootPromise) => {
             const svArray = zarr.open(rootPromise.resolve("Sv"), { kind: "array" });

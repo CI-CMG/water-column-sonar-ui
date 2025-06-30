@@ -1,17 +1,36 @@
-import { useState } from "react";
-import Stack from "react-bootstrap/Stack";
+// import { useState } from "react";
+// import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
+
+// import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
 // import { round } from "@turf/helpers";
 // import Card from "react-bootstrap/Card";
 // import Badge from "react-bootstrap/Badge";
 import Spinner from "react-bootstrap/Spinner";
 
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Toast from "react-bootstrap/Toast";
+// import Col from "react-bootstrap/Col";
+// import Row from "react-bootstrap/Row";
+// import Toast from "react-bootstrap/Toast";
+import {
+  selectShowInfoPanel,
+  updateShowInfoPanel,
+  selectGeospatialIndex,
+  // geospatialIndexStatus,
+  selectGeospatialIndexStatus,
+  //
+  selectShip,
+  selectCruise,
+  selectSensor,
+  //
+  selectShipHovered,
+  selectCruiseHovered,
+  selectSensorHovered,
+  //
+} from "../../reducers/store/storeSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 const all_cruises = [
   "HB0706",
@@ -71,17 +90,28 @@ const all_cruises = [
   "HB20TR",
 ];
 
-const MapInformationPanel = ({
-  ship,
-  cruise,
-  sensor,
-  // latitude,
-  // longitude,
-}) => {
+// const MapInformationPanel = ({
+//   ship,
+//   cruise,
+//   sensor,
+// }) => {
+const MapInformationPanel = () => {
   // TODO: move these to redux
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const dispatch = useAppDispatch();
+  const showInfoPanel = useAppSelector(selectShowInfoPanel);
+  const geospatialIndex = useAppSelector(selectGeospatialIndex);
+  const geospatialIndexStatus = useAppSelector(selectGeospatialIndexStatus);
+
+  const ship = useAppSelector(selectShip);
+  const cruise = useAppSelector(selectCruise);
+  const sensor = useAppSelector(selectSensor);
+
+  const shipHovered = useAppSelector(selectShipHovered);
+  const cruiseHovered = useAppSelector(selectCruiseHovered);
+  const sensorHovered = useAppSelector(selectSensorHovered);
+
+  const handleClose = () => dispatch(updateShowInfoPanel(false));
+  const handleShow = () => dispatch(updateShowInfoPanel(true));
 
   const listItems = all_cruises.map((cruise) => (
     <div className="p-2" key={cruise}>
@@ -102,7 +132,7 @@ const MapInformationPanel = ({
       </Button>
 
       <Offcanvas
-        show={show}
+        show={showInfoPanel}
         onHide={handleClose}
         scroll
         backdrop={false}
@@ -114,9 +144,6 @@ const MapInformationPanel = ({
         </Offcanvas.Header>
 
         <Offcanvas.Body>
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
           {/* { (latitude && longitude) (
               <>
                 <p>
@@ -131,7 +158,36 @@ const MapInformationPanel = ({
           } */}
 
           <p>
-            <b>Ship:</b>
+            <b>Hovered:</b>
+          </p>
+          <p>
+            Ship:
+            {shipHovered && cruiseHovered && sensorHovered ? (
+              <>
+                <span className="font-monospace float-end">{shipHovered}</span>
+              </>
+            ) : (
+              <span className="font-monospace float-end">...</span>
+            )}
+          </p>
+
+          <p>
+            Cruise:
+            <span className="font-monospace float-end">{cruiseHovered}</span>
+          </p>
+
+          <p>
+            Sensor:
+            <span className="font-monospace float-end">{sensorHovered}</span>
+          </p>
+
+          <hr />
+
+          <p>
+            <b>Clicked:</b>
+          </p>
+          <p>
+            Ship:
             {ship ? (
               <>
                 <span className="font-monospace float-end">{ship}</span>
@@ -142,45 +198,40 @@ const MapInformationPanel = ({
           </p>
 
           <p>
-            <b>Cruise:</b>
+            Cruise:
             <span className="font-monospace float-end">{cruise}</span>
           </p>
 
           <p>
-            <b>Sensor:</b>
+            Sensor:
             <span className="font-monospace float-end">{sensor}</span>
           </p>
 
-          <hr />
+          {geospatialIndex !== null && geospatialIndexStatus !== "loading" ? (
+            <>
+              {/* <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&time=1024">view echogram</a> */}
+              <p className="text-center">
+                <Link
+                  to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
+                >
+                  → View Echogram
+                </Link>
+              </p>
+              <p className="text-center">Nearest ping time index: {geospatialIndex}</p>
+            </>
+          ) : (
+            <>
+              <span className="text-center">
+                <Spinner animation="grow" />
+              </span>
+              <p className="text-center">
+                Finding geospatial index for point clicked...
+              </p>
+            </>
+          )}
 
-          {/* <Stack direction="horizontal" gap={2}>
-            <Badge bg="dark">Henry_B._Bigelow</Badge>
-          </Stack> */}
-
-          <hr />
-
-          {/* <Card
-            bg="Light"
-            text='dark'
-            className="mb-2"
-            border="dark"
-          >
-            <Card.Header>HB0707</Card.Header>
-            <Card.Body>
-              <Card.Text>
-                Ship: Henry_B._Bigelow
-                <br />
-                Sensor: EK60
-                <br />
-              </Card.Text>
-              <Button size="sm" variant="dark">View Cruise</Button>
-            </Card.Body>
-          </Card>
-          <hr /> */}
-
-          <Form>
+          {/* <Form>
             <Form.Group controlId="exampleForm.ControlInput1">
-              {/* <Form.Label size="sm">Search Cruises</Form.Label> */}
               <Form.Control
                 size="sm"
                 type="text"
@@ -194,7 +245,7 @@ const MapInformationPanel = ({
           <b>Ship / Cruise / Instrument:</b>
           <br />
           <br />
-          <Stack gap={3}>{listItems}</Stack>
+          <Stack gap={3}>{listItems}</Stack> */}
         </Offcanvas.Body>
       </Offcanvas>
     </div>

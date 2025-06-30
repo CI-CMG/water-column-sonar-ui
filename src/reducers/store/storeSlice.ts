@@ -11,6 +11,7 @@ import {
   fetchFrequencies,
   fetchLatitude,
   fetchLongitude,
+  fetchGeospatialIndex,
   fetchTime,
   fetchTimeArray,
   fetchDepth,
@@ -21,9 +22,15 @@ import {
 
 
 export interface StoreState {
+  showInfoPanel: boolean,
+
   ship: string | null,
   cruise: string | null,
   sensor: string | null,
+
+  shipHovered: string | null,
+  cruiseHovered: string | null,
+  sensorHovered: string | null,
 
   // Sv Range thresholds
   svMin: number,
@@ -69,6 +76,9 @@ export interface StoreState {
   longitude: number | null,
   longitudeStatus: "idle" | "loading" | "failed",
 
+  geospatialIndex: number | null,
+  geospatialIndexStatus: "idle" | "loading" | "failed",
+
   time: any,
   timeStatus: "idle" | "loading" | "failed",
 
@@ -83,9 +93,15 @@ export interface StoreState {
 }
 
 const initialState: StoreState = {
+  showInfoPanel: false,
+
   ship: null, // "Henry_B._Bigelow",
   cruise: null, // "HB0707",
   sensor: null, // "EK60",
+
+  shipHovered: null,
+  cruiseHovered: null,
+  sensorHovered: null,
 
   svMin: -100, // default values for min & max Sv threshold
   svMax: -10,
@@ -129,6 +145,9 @@ const initialState: StoreState = {
   longitude: null,
   longitudeStatus: "idle",
 
+  geospatialIndex: null,
+  geospatialIndexStatus: "idle",
+
   time: null,
   timeStatus: "idle",
 
@@ -148,6 +167,10 @@ export const storeSlice = createSlice({
   initialState,
   
   reducers: {
+    updateShowInfoPanel: (state, action: PayloadAction<boolean>) => {
+      state.showInfoPanel = action.payload
+    },
+    //
     updateShip: (state, action: PayloadAction<string>) => {
       state.ship = action.payload
     },
@@ -157,6 +180,17 @@ export const storeSlice = createSlice({
     updateSensor: (state, action: PayloadAction<string>) => {
       state.sensor = action.payload
     },
+    //
+    updateShipHovered: (state, action: PayloadAction<string>) => {
+      state.shipHovered = action.payload
+    },
+    updateCruiseHovered: (state, action: PayloadAction<string>) => {
+      state.cruiseHovered = action.payload
+    },
+    updateSensorHovered: (state, action: PayloadAction<string>) => {
+      state.sensorHovered = action.payload
+    },
+    //
     updateSvMin: (state, action: PayloadAction<number>) => { // button click
       console.log('updated Sv Min')
       state.svMin = Number(action.payload);
@@ -227,6 +261,11 @@ export const storeSlice = createSlice({
     updateLongitude: (state, action: PayloadAction<any>) => {
       state.longitude = action.payload;
     },
+    //
+    updateGeospatialIndex: (state, action: PayloadAction<any>) => {
+      state.geospatialIndex = action.payload;
+    },
+    //
     updateTime: (state, action: PayloadAction<any>) => {
       state.time = action.payload;
     },
@@ -243,6 +282,7 @@ export const storeSlice = createSlice({
 
   extraReducers: builder => {
     builder
+      // ----------------------------------------------- //  
       .addCase(storeAttributesAsync.pending, state => {
         state.storeAttributesStatus = "loading";
       })
@@ -286,7 +326,7 @@ export const storeSlice = createSlice({
       .addCase(latitudeAsync.rejected, state => {
         state.latitudeStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // LONGITUDE-------------------------------------- //
       .addCase(longitudeAsync.pending, state => {
         state.longitudeStatus = "loading";
       })
@@ -296,6 +336,17 @@ export const storeSlice = createSlice({
       })
       .addCase(longitudeAsync.rejected, state => {
         state.longitudeStatus = "failed";
+      })
+      // GEOSPATIAL------------------------------------- //
+      .addCase(geospatialIndexAsync.pending, state => {
+        state.geospatialIndexStatus = "loading";
+      })
+      .addCase(geospatialIndexAsync.fulfilled, (state, action) => {
+        state.geospatialIndexStatus = "idle";
+        state.geospatialIndex = action.payload;
+      })
+      .addCase(geospatialIndexAsync.rejected, state => {
+        state.geospatialIndexStatus = "failed";
       })
       // ----------------------------------------------- //
       .addCase(timeAsync.pending, state => {
@@ -368,9 +419,16 @@ export const storeSlice = createSlice({
 });
 
 export const {
+  updateShowInfoPanel, // controls map view panel
+  //
   updateShip,
   updateCruise,
   updateSensor,
+  //
+  updateShipHovered,
+  updateCruiseHovered,
+  updateSensorHovered,
+  //
   updateSvMin,
   updateSvMax,
   //
@@ -395,6 +453,9 @@ export const {
   updateFrequencies,
   updateLatitude,
   updateLongitude,
+  //
+  updateGeospatialIndex,
+  //
   updateTime,
   updateDepth,
   updateBottom,
@@ -405,9 +466,17 @@ export default storeSlice.reducer;
 
 export const selectStoreAttributes = (state: RootState) => state.store.storeAttributes;
 export const selectStoreShape = (state: RootState) => state.store.storeShape;
+
+export const selectShowInfoPanel = (state: RootState) => state.store.showInfoPanel;
+
 export const selectShip = (state: RootState) => state.store.ship;
 export const selectCruise = (state: RootState) => state.store.cruise;
 export const selectSensor = (state: RootState) => state.store.sensor;
+
+export const selectShipHovered = (state: RootState) => state.store.shipHovered;
+export const selectCruiseHovered = (state: RootState) => state.store.cruiseHovered;
+export const selectSensorHovered = (state: RootState) => state.store.sensorHovered;
+
 export const selectSvMin = (state: RootState) => state.store.svMin;
 export const selectSvMax = (state: RootState) => state.store.svMax;
 
@@ -435,6 +504,10 @@ export const selectFrequencies = (state: RootState) => state.store.frequencies;
 // export const selectFrequencyButtonIndex = (state: RootState) => state.store.frequencyButtonIndex;
 export const selectLatitude = (state: RootState) => state.store.latitude;
 export const selectLongitude = (state: RootState) => state.store.longitude;
+//
+export const selectGeospatialIndex = (state: RootState) => state.store.geospatialIndex;
+export const selectGeospatialIndexStatus = (state: RootState) => state.store.geospatialIndexStatus;
+//
 export const selectTime = (state: RootState) => state.store.time;
 export const selectDepth = (state: RootState) => state.store.depth;
 export const selectBottom = (state: RootState) => state.store.bottom;
@@ -481,6 +554,16 @@ export const longitudeAsync = createAsyncThunk(
   },
 )
 
+export const geospatialIndexAsync = createAsyncThunk( // for geohash lookup
+  "store/fetchGeospatialIndex",
+  async ({ ship, cruise, sensor, longitude, latitude }: { ship: string, cruise: string, sensor: string, longitude: number, latitude: number }) => {
+    // const response = await fetchGeospatialIndex(ship, cruise, sensor, longitude, latitude);
+    const response =  await fetchGeospatialIndex(ship, cruise, sensor, longitude, latitude)
+      
+    return response;
+  },
+)
+
 export const timeAsync = createAsyncThunk(
   "store/fetchTime",
   async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
@@ -492,7 +575,6 @@ export const timeAsync = createAsyncThunk(
 export const timeArrayAsync = createAsyncThunk( // Fetches the full time array
   "store/fetchTimeArray",
   async ({ ship, cruise, sensor, indexStart, indexEnd }: { ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number }) => {
-    // console.log(`${cruise}: ${indexStart} to ${indexEnd}`)
     const response = await fetchTimeArray(ship, cruise, sensor, indexStart, indexEnd);
     return response.data;
   },

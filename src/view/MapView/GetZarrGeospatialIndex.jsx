@@ -33,10 +33,9 @@ async function longitudeArray(ship, cruise, sensor) {
 
 // https://github.com/CI-CMG/echofish-aws-ui/blob/master/src/main/frontend/src/views/view/echofish/cruise/Echogram.vue
 const GetZarrGeospatialIndex = function (cruise, lng, lat) {
+  // MOVING TO storeAPI
   // TODO: add 'ship' and 'sensor' as variables
-  // debugger;
   const clickedPoint = point([lng, lat]);
-  // console.log(`clicked cruise: ${cruise}`);
   const shipName = "Henry_B._Bigelow"; // TODO: fix this
   const cruiseName = cruise; // HB1304 3,573,052 samples
   const sensorName = "EK60";
@@ -53,15 +52,9 @@ const GetZarrGeospatialIndex = function (cruise, lng, lat) {
         const bbNoise = bb[i] + (Math.random()/10000);
         return [bbNoise, e];
       })
-      // Note redundant points will cause problems
-      const clickedLinestring = lineString(dataJoined); // 162_727
-      // const cleanedClickedLinestring = cleanCoords(clickedLinestring); // 119_280 // TODO: problem w too few coordinates
+      // Note: redundant points will cause problems, fixed with noise
+      const clickedLinestring = lineString(dataJoined);
       let snapped = nearestPointOnLine(clickedLinestring, clickedPoint);
-      // let snapped = nearestPointOnLine(
-      //   clickedLinestring,
-      //   // cleanedClickedLinestring, // [longitude, latitude]
-      //   clickedPoint,
-      // );
       console.log(
           "closest polyline index: " +
           snapped.properties.index +

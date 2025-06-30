@@ -6,12 +6,27 @@ import * as pmtiles from "pmtiles";
 // import Toast from "react-bootstrap/Toast";
 // import ToastContainer from "react-bootstrap/ToastContainer";
 // import Spinner from 'react-bootstrap/Spinner';
-import GetZarrGeospatialIndex from "./GetZarrGeospatialIndex";
+// import GetZarrGeospatialIndex from "./GetZarrGeospatialIndex";
 import {
-  selectTimeIndex,
-  updateTimeIndex,
+  // selectTimeIndex,
+  // updateTimeIndex,
+  //
+  geospatialIndexAsync,
+  //
+  updateShip,
+  updateCruise,
+  updateSensor,
+  //
+  updateShipHovered,
+  updateCruiseHovered,
+  updateSensorHovered,
+  // selectShowInfoPanel,
+  updateShowInfoPanel,
 } from ".././../reducers/store/storeSlice.ts";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  useAppDispatch,
+  // useAppSelector,
+} from "../../app/hooks";
 import MapInformationPanel from "./MapInformationPanel.jsx";
 
 const map_key = import.meta.env.VITE_MAPTILER_API;
@@ -193,17 +208,19 @@ const style = {
 
 export default function MapView() {
   const dispatch = useAppDispatch();
+  // const showInfoPanel = useAppSelector(selectShowInfoPanel);
+  const handleShow = () => dispatch(updateShowInfoPanel(true));
 
   const mapContainerRef = useRef();
   const map = useRef();
 
   // const [mouseCoordinates, setMouseCoordinates] = useState(null);
-  const [selectedShip, setSelectedShip] = useState(null);
-  const [selectedCruise, setSelectedCruise] = useState(null);
-  const [selectedSensor, setSelectedSensor] = useState(null);
+  // const [selectedShip, setSelectedShip] = useState(null);
+  // const [selectedCruise, setSelectedCruise] = useState(null);
+  // const [selectedSensor, setSelectedSensor] = useState(null);
   // const [hoveredStateId, setHoveredStateId] = useState(null);
 
-  const timeIndex = useAppSelector(selectTimeIndex);
+  // const timeIndex = useAppSelector(selectTimeIndex);
 
   useEffect(() => {
     document.title = `echofish`;
@@ -245,8 +262,30 @@ export default function MapView() {
         map.current.on("mouseenter", "cruises", () => {
           map.current.getCanvas().style.cursor = "crosshair";
         });
+
         map.current.on("mouseleave", "cruises", () => {
           map.current.getCanvas().style.cursor = "";
+        });
+
+        map.current.on("mousemove", (e) => {
+          // setMouseCoordinates(JSON.stringify(e.lngLat.wrap()));
+          // setMouseCoordinates(e.lngLat);
+          const features = map.current.queryRenderedFeatures(e.point);
+          const displayProperties = ["type", "properties"];
+
+          features.map((feat) => {
+            const displayFeat = {};
+            displayProperties.forEach((prop) => {
+              // TODO: explore this further
+              displayFeat[prop] = feat[prop];
+            });
+
+            if ("ship" in displayFeat.properties) {
+              dispatch(updateShipHovered(displayFeat.properties["ship"]));
+              dispatch(updateCruiseHovered(displayFeat.properties["cruise"]));
+              dispatch(updateSensorHovered(displayFeat.properties["sensor"]));
+            }
+          });
         });
 
         map.current.on("click", "cruises", (e) => {
@@ -255,6 +294,7 @@ export default function MapView() {
           const allFeatureIds = map.current
             .queryRenderedFeatures()
             .map((x) => x.id);
+
           allFeatureIds.forEach((id) => {
             // reset styling for all
             map.current.setFeatureState(
@@ -262,39 +302,37 @@ export default function MapView() {
               { hover: false }
             );
           });
+
           popup.remove();
-
+          handleShow();
           const id = e.features[0]["id"];
-
-          console.log(e.features[0]);
           const properties = e.features[0]["properties"];
           // properties: {id: 25, ship: 'Henry_B._Bigelow', cruise: 'HB1806', sensor: 'EK60'}
-          GetZarrGeospatialIndex(
-            properties["cruise"],
-            e["lngLat"]["lng"],
-            e["lngLat"]["lat"]
-          );
-          dispatch(updateTimeIndex(1024)); // TODO:
+          
+          dispatch(updateShip(properties["ship"]));
+          dispatch(updateCruise(properties["cruise"]));
+          dispatch(updateSensor(properties["sensor"]));
+          
+          dispatch(geospatialIndexAsync({
+            ship: properties["ship"],
+            cruise: properties["cruise"],
+            sensor: properties["sensor"],
+            longitude: e["lngLat"]["lng"],
+            latitude: e["lngLat"]["lat"],
+          }));
+          console.log('right after dispatch');
 
-          // var message = document.createElement('h1');
-          // message.innerHTML="Hello, World";
-          const placeholder = document.createElement('div');
-          placeholder.innerHTML = `Hello, World: ${timeIndex}`;
+          // dispatch(updateTimeIndex(1024)); // TODO: on load for wcv get from store
 
           popup
             .setLngLat(e.lngLat)
-            // https://stackoverflow.com/questions/42101898/mapbox-gl-popup-setdomcontent-example
-            .setDOMContent(placeholder)
-            // .setHTML(
-            //   `
-            //   Ship: ${e.features[0].properties.ship}<br />
-            //   Cruise: ${e.features[0].properties.cruise}<br />
-            //   Sensor: ${e.features[0].properties.sensor}<br />
-            //   → <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&time=1024">view echogram</a>
-            // `)
+            .setHTML(
+              `
+              Ship: ${e.features[0].properties.ship}<br />
+              Cruise: ${e.features[0].properties.cruise}<br />
+              Sensor: ${e.features[0].properties.sensor}
+            `)
             .addTo(map.current);
-
-          // setHoveredStateId(id); // TODO:
 
           map.current.setFeatureState(
             { source: "cruises", sourceLayer: "cruises", id: id },
@@ -311,9 +349,9 @@ export default function MapView() {
         <div ref={mapContainerRef} className="Map" />
 
         <MapInformationPanel
-          ship={selectedShip}
-          cruise={selectedCruise}
-          sensor={selectedSensor}
+          // ship={selectedShip}
+          // cruise={selectedCruise}
+          // sensor={selectedSensor}
         />
       </div>
     </>
