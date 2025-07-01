@@ -9,13 +9,17 @@ import { PiMapTrifoldThin } from "react-icons/pi";
 
 // https://react-icons.github.io/react-icons/search/#q=fish
 export default function LayoutView() {
-  let title = 'echofish';
+  let title = "echofish";
 
-  if (window.location.href.includes("test")) { // for test tier print different title
+  if (window.location.href.includes("test")) {
+    // for test tier print different title
     console.log(`dev: ${window.location.href}`);
-    title = "echofish-test"
-  } else if (window.location.href.includes("dev") || window.location.href.includes("localhost")) {
-    title = "echofish-dev"
+    title = "echofish-test";
+  } else if (
+    window.location.href.includes("dev") ||
+    window.location.href.includes("localhost")
+  ) {
+    title = "echofish-dev";
   }
 
   return (
@@ -25,15 +29,16 @@ export default function LayoutView() {
         <Navbar bg="dark" data-bs-theme="dark">
           <Container>
             <Navbar.Brand as={Link} to="/" className="font-weight-bold">
-            <h1 className="fs-4 m-0"><i className="bi bi-intersect"></i>&nbsp; {title}</h1>
+              <h1 className="fs-4 m-0">
+                <i className="bi bi-intersect"></i>&nbsp; {title}
+              </h1>
             </Navbar.Brand>
+            <p style={{ color: "grey", fontSize: "0.75em" }}>{`v${import.meta.env.VITE_REACT_APP_VERSION}`}</p>
 
             <Nav className="ms-auto">
-              <Nav.Link
-                as={Link}
-                to="/"
-              >
-                <PiMapTrifoldThin />&nbsp;Map
+              <Nav.Link as={Link} to="/">
+                <PiMapTrifoldThin />
+                &nbsp;Map
               </Nav.Link>
               <Nav.Link
                 as={Link}
@@ -43,12 +48,14 @@ export default function LayoutView() {
                 // sidescan ping time at: 435042, physical school at: 42472
               >
                 {/* <i className="bi bi-box"></i> */}
-                <PiCubeLight />&nbsp;Water Column
+                <PiCubeLight />
+                &nbsp;Water Column
               </Nav.Link>
 
               <Nav.Link as={Link} to="/dataset">
                 {/* <i className="bi bi-collection"></i> */}
-                <PiDatabase />&nbsp;Dataset
+                <PiDatabase />
+                &nbsp;Dataset
               </Nav.Link>
 
               {/* <Nav.Link as={Link} to="/catalog">
