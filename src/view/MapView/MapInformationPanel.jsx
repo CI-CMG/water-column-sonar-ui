@@ -207,26 +207,34 @@ const MapInformationPanel = () => {
             <span className="font-monospace float-end">{sensor}</span>
           </p>
 
-          {geospatialIndex !== null && geospatialIndexStatus !== "loading" ? (
-            <>
-              {/* <a href="/water-column?ship=${e.features[0].properties.ship}&cruise=${e.features[0].properties.cruise}&sensor=${e.features[0].properties.sensor}&frequency=0&color=2&time=1024">view echogram</a> */}
-              <p className="text-center">
-                <Link
-                  to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
-                >
-                  → View Echogram
-                </Link>
-              </p>
-              <p className="text-center">Nearest ping time index: {geospatialIndex}</p>
-            </>
+          {geospatialIndex === null && geospatialIndexStatus !== "loading" ? (
+            <></>
           ) : (
             <>
-              <span className="text-center">
-                <Spinner animation="grow" />
-              </span>
-              <p className="text-center">
-                Finding geospatial index for point clicked...
-              </p>
+              {geospatialIndexStatus === "loading" ? (
+                <>
+                  <center>
+                    <Spinner animation="grow" />
+                  </center>
+                  <br />
+                  <p className="text-center">
+                    Finding geospatial index for point clicked...
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-center">
+                    <Link
+                      to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
+                    >
+                      → View Echogram
+                    </Link>
+                  </p>
+                  <p className="text-center">
+                    Nearest ping time index: {geospatialIndex}
+                  </p>
+                </>
+              )}
             </>
           )}
 

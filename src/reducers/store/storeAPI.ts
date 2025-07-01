@@ -148,6 +148,7 @@ export const fetchGeospatialIndex = (
     // const ship = "Henry_B._Bigelow"; // TODO: fix this
     // const cruise = cruise;
     // const sensor = "EK60";
+    console.log(`s:${ship},c:${cruise},i:${sensor}`);
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     const clickedPoint = point([longitude, latitude]);
@@ -157,19 +158,17 @@ export const fetchGeospatialIndex = (
             return zarr.open.v2(storePromise, { kind: "group" });
         })
         .then((rootPromise) => {
-            // return zarr.open(rootPromise.resolve("longitude"), { kind: "array" });
             return Promise.all([
                 zarr.open(rootPromise.resolve("longitude"), { kind: "array" }),
                 zarr.open(rootPromise.resolve("latitude"), { kind: "array" }),
             ])
         })
         .then(([longitudeArray, latitudeArray]) => {
-            // return get(longitudeArray, [slice(null)]); // returns all the data!
             return Promise.all([
                 get(longitudeArray, [slice(null)]),
                 get(latitudeArray, [slice(null)]),
             ])
-        }).then(([latitudeData, longitudeData]) => {
+        }).then(([longitudeData, latitudeData]) => {
             let aa = Array.from(latitudeData.data);
             let bb = Array.from(longitudeData.data);
 
