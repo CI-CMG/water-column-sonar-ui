@@ -52,17 +52,17 @@ const TimeAxis = () => {
       .attr("height", height)
       .append("g")
       .call(xAxis
-        .tickFormat((d) => {
-            if(timeArray !== null && d !== null) {
-              const asdf = timeMinIndex + d; // d is the offset from left side
-              if(asdf < 0) {
-                return ''; // d3.isoFormat(new Date())
-              }
-              return d3.isoFormat(new Date(timeArray[asdf]*1000));
-            } else {
-              return '';
-            }
-          })
+        // .tickFormat((d) => {
+        //     if(timeArray !== null && d !== null) {
+        //       const asdf = timeMinIndex + d; // d is the offset from left side
+        //       if(asdf < 0) {
+        //         return ''; // d3.isoFormat(new Date())
+        //       }
+        //       return d3.isoFormat(new Date(timeArray[asdf]*1000));
+        //     } else {
+        //       return '';
+        //     }
+        // })
       );
   }, []);
 
@@ -72,17 +72,17 @@ const TimeAxis = () => {
       .duration(500)
       .call(
         xAxis
-          .tickFormat((d) => {
-            if(timeArray !== null && d !== null) {
-              const asdf = d - timeMinIndex;
-              if(asdf < 0) {
-                return ''; // d3.isoFormat(new Date())
-              }
-              return d3.isoFormat(new Date(timeArray[asdf]*1000));
-            } else {
-              return '';
-            }
-          })
+          // .tickFormat((d) => {
+          //   if(timeArray !== null && d !== null) {
+          //     const asdf = d - timeMinIndex;
+          //     if(asdf < 0) {
+          //       return ''; // d3.isoFormat(new Date())
+          //     }
+          //     return d3.isoFormat(new Date(timeArray[asdf]*1000));
+          //   } else {
+          //     return '';
+          //   }
+          // })
       );
   }, [domain, ref, selected, size, timeArray, timeMinIndex, x, xAxis]);
 
