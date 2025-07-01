@@ -50,8 +50,9 @@ https://echo.fish
 
  - add graticule legend for: depth axis & time axis
   
+ - need maitenance mode for when I am updating zarr stores
  - mask sub-bottom data w checkbox, not linestring
- - reenable click on linestring and query zarr store gps coordinates -> take to timeIndex
+ - ~~reenable click on linestring and query zarr store gps coordinates -> take to timeIndex~~
  - allow clicking on linestring in mini-map viewer & redirect to new cruise
  - add total Level_2 dataset size e.g. 120 GB to info panel
  - capture echopype provenance --> need to do in water-column-sonar-processing Zarr store metadata
@@ -61,17 +62,16 @@ https://echo.fish
  - add toggle from UTC/local-time --> need to get moment library working again
  - add celestial information for sunrise/sunset
  - add celestial information for moon phase
- - slowfly on home map <https://maplibre.org/maplibre-gl-js/docs/examples/flyto-options/>
+ - ~~slowfly on home map <https://maplibre.org/maplibre-gl-js/docs/examples/flyto-options/>~~
  - sync views (leaflet vs maplibre): https://maplibre.org/maplibre-gl-js/docs/examples/sync-move/
  - constrain Sv form input to int, prevent float --> too hard
- - update cfn deployment to s3 copy
- - create process for gitlab action to tag and create releases automatically
+ - ~~create process for gitlab action to tag and create releases automatically~~
  - prototype knowledge graph query
 
 # Tag a Release
 Step 1 --> increment the semantic version in the "package.json" under the "version" field.
 ```commandline
-git tag -a v25.6.14 -m "Releasing v25.6.14"
+git tag -a v25.7.1 -m "Releasing v25.7.1"
 git push origin --tags
 ```
 
