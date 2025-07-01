@@ -48,7 +48,7 @@ https://echo.fish
  - ~~create visualization layer of all EVR annotation time/lat/lon as points in PMTiles~~
  - ~~add bathymetric layer to map viewer~~
 
- - add graticule legend for: depth axis & time axis
+ - add graticule legend for: ~~depth axis~~ & time axis
   
  - need maitenance mode for when I am updating zarr stores
  - mask sub-bottom data w checkbox, not linestring
