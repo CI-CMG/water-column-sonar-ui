@@ -9,8 +9,6 @@ import {
 import { useAppSelector } from "../../../app/hooks.ts";
 
 //////////////////////////////////////////////////////////////////////////////////
-
-
 const TimeAxis = () => {
   const timeArray = useAppSelector(selectTimeArray);
 
@@ -45,46 +43,78 @@ const TimeAxis = () => {
   const xAxis = d3.axisBottom(x).ticks(4);
 
   useEffect(() => {
+    // initial axis update
     selected.selectAll("*").remove();
 
     selected
-      .attr("width", width - 1)
+      // .attr("width", width - 1)
+      .attr("width", width - 2)
       .attr("height", height)
       .append("g")
-      .call(xAxis
-        // .tickFormat((d) => {
-        //     if(timeArray !== null && d !== null) {
-        //       const asdf = timeMinIndex + d; // d is the offset from left side
-        //       if(asdf < 0) {
-        //         return ''; // d3.isoFormat(new Date())
-        //       }
-        //       return d3.isoFormat(new Date(timeArray[asdf]*1000));
-        //     } else {
-        //       return '';
-        //     }
-        // })
+      .call(
+        xAxis.tickFormat((d) => {
+          if (timeArray !== null && d !== null) {
+            const minIndex = Math.max(0, timeMinIndex);
+            const asdf = timeArray[d - minIndex];
+
+            if (isNaN(asdf)) {
+              return "";
+            }
+            if (asdf !== null) {
+              const tempDate = new Date(asdf * 1000);
+
+              return d3.isoFormat(tempDate);
+            }
+          }
+          return "";
+        })
       );
   }, []);
 
   useEffect(() => {
+    // subsequent axis update
     selected
       .transition()
-      .duration(500)
+      .duration(300)
       .call(
-        xAxis
-          // .tickFormat((d) => {
-          //   if(timeArray !== null && d !== null) {
-          //     const asdf = d - timeMinIndex;
-          //     if(asdf < 0) {
-          //       return ''; // d3.isoFormat(new Date())
-          //     }
-          //     return d3.isoFormat(new Date(timeArray[asdf]*1000));
-          //   } else {
-          //     return '';
-          //   }
-          // })
+        xAxis.tickFormat((d) => {
+          if (timeArray !== null && d !== null) {
+            const minIndex = Math.max(0, timeMinIndex);
+            // console.log(
+            //   `d: ${d}, timeMinIndex: ${timeMinIndex}, timeMaxIndex: ${timeMaxIndex}, timeArray: ${timeArray.length}`
+            // );
+            // debugger;
+            const asdf = timeArray[d - minIndex];
+            // console.log(
+            //   `timeArray: ${timeArray[0]}, ${timeArray[timeArray.length - 1]}`
+            // );
+
+            if (isNaN(asdf)) {
+              // console.log("NaN Found! _+_+_+_+_+");
+              return "";
+            }
+            if (asdf !== null) {
+              // console.log(`for asdf: ${asdf}`);
+              const tempDate = new Date(asdf * 1000);
+              // console.log(`tempDate: ${tempDate}`);
+
+              return d3.isoFormat(tempDate);
+            }
+          }
+          return "";
+        })
       );
-  }, [domain, ref, selected, size, timeArray, timeMinIndex, x, xAxis]);
+  }, [
+    domain,
+    ref,
+    selected,
+    size,
+    x,
+    timeArray,
+    xAxis,
+    timeMinIndex,
+    timeMaxIndex,
+  ]);
 
   return (
     <div ref={ref} className="timeAxis">

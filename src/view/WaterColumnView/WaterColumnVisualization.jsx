@@ -31,9 +31,11 @@ import {
   //
   // selectDepthMinIndex,
   // selectDepthMaxIndex,
-  depthArrayAsync,
+  //
   selectTimeMinIndex,
   selectTimeMaxIndex,
+  //
+  depthArrayAsync,
   timeArrayAsync,
 } from "../../reducers/store/storeSlice";
 import { useAppSelector } from "../../app/hooks.ts";
@@ -93,14 +95,15 @@ const WaterColumnVisualization = ({
     const map = useMap();
 
     useMapEvents({
-      move: () => {
-        // console.log('move use map events.');
-      },
-      load: () => {
-        console.log("this doesnt run?");
-      },
+      // move: () => {
+      //   console.log('move use map events.');
+      // },
+      // load: () => {
+      //   console.log("this doesnt run?");
+      // },
       moveend: () => {
         const bounds = map.getBounds();
+
         dispatch(
           updateDepthMinIndex(Math.round(bounds.getNorthEast().lat * -1))
         );
@@ -113,9 +116,16 @@ const WaterColumnVisualization = ({
         dispatch(
           updateTimeMaxIndex(Math.round(bounds.getNorthEast().lng))
         );
-        
-        dispatch(depthArrayAsync({ ship, cruise, sensor })); // , indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
-        dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
+        // dispatch(depthArrayAsync({ ship, cruise, sensor })); // TODO: indexStart: depthMinIndex, indexEnd: depthMaxIndex
+        // console.log('moveend timeArray')
+        // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
+        dispatch(timeArrayAsync({
+          ship,
+          cruise,
+          sensor,
+          indexStart: Math.round(bounds.getSouthWest().lng),
+          indexEnd: Math.round(bounds.getNorthEast().lng),
+        }));
       },
     });
 
@@ -170,8 +180,8 @@ const WaterColumnVisualization = ({
 
       dispatch(updateTimeMinIndex(Math.round(bounds._southWest.lng)));
       dispatch(updateTimeMaxIndex(Math.round(bounds._northEast.lng)));
-      // dispatch(depthArrayAsync({ ship, cruise, sensor })); // , indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
       
+      // dispatch(depthArrayAsync({ ship, cruise, sensor })); // , indexStart: depthMinIndex, indexEnd: depthMaxIndex }));
       // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
     }
   }, [cruise, dispatch, map, sensor, ship, timeMaxIndex, timeMinIndex]);
@@ -200,8 +210,11 @@ const WaterColumnVisualization = ({
               ]}
               whenReady={() => {
                 // console.log("The map is created");
+                dispatch(depthArrayAsync({ ship, cruise, sensor })); // TODO: indexStart: depthMinIndex, indexEnd: depthMaxIndex
+                // TODO: this isn't getting the right timeArray on initialize!
+                dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: 0, indexEnd: 1024 })); // TODO: hack right now
                 // NOTE: loading all the depth data is fine:
-                dispatch(depthArrayAsync({ ship, cruise, sensor }));
+                // dispatch(depthArrayAsync({ ship, cruise, sensor }));
                 // NOTE: loading all the time data is a problem:
                 // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
               }}

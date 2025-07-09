@@ -204,6 +204,7 @@ export const fetchTime = (ship: string, cruise: string, sensor: string, indexTim
 
 /* --- TIME ARRAY --- */
 export const fetchTimeArray = (ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number ): any => {
+    // console.log(`fetching timeArray: ${indexStart}, ${indexEnd}`)
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))
@@ -216,7 +217,15 @@ export const fetchTimeArray = (ship: string, cruise: string, sensor: string, ind
             return timeArray;
         })
         .then((timeArray) => {
-            return get(timeArray, [slice(indexStart, indexEnd)]); // ~1428 values
+            const max_indices = timeArray.shape[0];
+            // Limit query to the bounds o
+            return get(timeArray, [
+                    slice(
+                        Math.max(indexStart, 0),
+                        Math.min(indexEnd, max_indices),
+                    )
+                ]
+            );
         });
 }
 
@@ -247,6 +256,7 @@ export const fetchDepthArray = (
     // indexStart: number,
     // indexEnd: number,
 ): any => {
+    // console.log(`fetching: depthArray`)
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
 
     return zarr.withConsolidated(new zarr.FetchStore(url))

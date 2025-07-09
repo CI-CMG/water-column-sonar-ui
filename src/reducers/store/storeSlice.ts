@@ -572,10 +572,11 @@ export const timeAsync = createAsyncThunk(
   },
 )
 
-export const timeArrayAsync = createAsyncThunk( // Fetches the full time array
+export const timeArrayAsync = createAsyncThunk( // Fetches subset of the time array
   "store/fetchTimeArray",
   async ({ ship, cruise, sensor, indexStart, indexEnd }: { ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number }) => {
     const response = await fetchTimeArray(ship, cruise, sensor, indexStart, indexEnd);
+    // console.log(response.data.length);
     return response.data;
   },
 )

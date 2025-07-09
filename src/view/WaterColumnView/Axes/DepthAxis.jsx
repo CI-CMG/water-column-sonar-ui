@@ -1,15 +1,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 import { useLayoutEffect, useEffect, useRef, useState, useMemo } from "react";
-import {
-  // useAppDispatch,
-  useAppSelector,
-} from "../../../app/hooks.ts";
 import * as d3 from "d3";
 import {
   selectDepthMinIndex,
   selectDepthMaxIndex,
   selectDepthArray,
 } from "../../../reducers/store/storeSlice.ts";
+import { useAppSelector } from "../../../app/hooks.ts";
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -30,6 +27,7 @@ const DepthAxis = () => {
   const range = useMemo(() => {
     return [0, height - 1];
   }, [height]);
+
   const selected = d3.select("#depthAxisLabel");
 
   useLayoutEffect(() => {
@@ -42,22 +40,28 @@ const DepthAxis = () => {
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-  // Array.from({length: 101 - 10 + 1}, (_, a) => a + 10)
-  // domain=[-53, 560], range=[0, 612]
   const y = d3.scaleLinear().domain(domain).range(range).unknown(null); //.unknown(null);
   const yAxis = d3.axisRight(y).ticks(10);
 
-  useEffect(() => { // on updates to the axes
+  useEffect(() => { // initial axis update
     selected.selectAll("*").remove();
 
     selected
       .attr("width", width)
       .attr("height", height - 1)
       .append("g")
-      .call(yAxis);
+      .call(yAxis
+        .tickFormat((d) => {
+          if(depthArray !== null && d >= 0 && d < depthArray.length) {
+            return d3.format(".1f")(depthArray[d]) + ' m';
+          } else {
+            return '';
+          }
+        })
+      );
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { // subsequent axis update
     selected
       .transition()
       .duration(500)
