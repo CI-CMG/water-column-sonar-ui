@@ -208,11 +208,16 @@ const WaterColumnVisualization = ({
                 ],
                 [0 + marginY, storeShape[1] + marginY],
               ]}
-              whenReady={() => {
+              whenReady={(e) => {
+                const windowWidth = e.target._size.x;
+                const windowTopLeft = e.target._pixelOrigin.x
                 // console.log("The map is created");
                 dispatch(depthArrayAsync({ ship, cruise, sensor })); // TODO: indexStart: depthMinIndex, indexEnd: depthMaxIndex
                 // TODO: this isn't getting the right timeArray on initialize!
-                dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: 0, indexEnd: 1024 })); // TODO: hack right now
+                // console.log(e);
+                // debugger;
+                // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: 0, indexEnd: 1024 })); // TODO: hack right now
+                dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: windowTopLeft, indexEnd: (windowTopLeft+windowWidth) })); // TODO: hack right now
                 // NOTE: loading all the depth data is fine:
                 // dispatch(depthArrayAsync({ ship, cruise, sensor }));
                 // NOTE: loading all the time data is a problem:
