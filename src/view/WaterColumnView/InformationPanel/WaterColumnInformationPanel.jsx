@@ -119,7 +119,7 @@ const WaterColumnInformationPanel = () => {
   // const timeIndex = useAppSelector(selectTimeIndex);
 
   const [isLoading, setLoading] = useState(true);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

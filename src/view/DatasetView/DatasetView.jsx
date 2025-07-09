@@ -167,7 +167,7 @@ export default function DatasetView() {
             <br />
             <ul>
               <li>
-                <a href="https://www.ngdc.noaa.gov/mgg/wcd/">
+                <a href="https://www.ncei.noaa.gov/products/water-column-sonar-data">
                   NCEI water-column sonar data archive
                 </a>
               </li>
@@ -225,7 +225,7 @@ export default function DatasetView() {
             <br />
             <br />
             <br />
-            <h4>Level 1 — File Level Zarr stores</h4>
+            <h4>Level 2a — File Level Zarr stores</h4>
             <br />
             <p>
               EK60 data are calibrated and converted using echopype to generate
@@ -233,21 +233,21 @@ export default function DatasetView() {
             </p>
 
             <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/">
-              Level 1: Zarr store S3 Explorer
+              Level 2a: Zarr store S3 Explorer
             </a>
 
             <br />
             <br />
             <br />
-            <h4>Level 2 — Cruise Level Zarr stores</h4>
+            <h4>Level 3a — Cruise Level Zarr stores</h4>
             <br />
             <p>
-              Level 1 processed EK60 data is consolidated at a cruise level to
+              Level 2a processed EK60 data is consolidated at a cruise level to
               form a larger singular Zarr store.
             </p>
 
             <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/">
-              Level 2: Zarr store S3 Explorer
+              Level 3a: Zarr store S3 Explorer
             </a>
 
             <br />

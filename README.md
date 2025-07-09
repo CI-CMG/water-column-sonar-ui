@@ -47,12 +47,11 @@ https://echo.fish
  - ~~debounce mini map to relocate to last click~~
  - ~~create visualization layer of all EVR annotation time/lat/lon as points in PMTiles~~
  - ~~add bathymetric layer to map viewer~~
-
- - add graticule legend for: ~~depth axis~~ & time axis
+ - ~~reenable click on linestring and query zarr store gps coordinates -> take to timeIndex~~
+ - ~~add graticule legend for: depth axis & time axis using d3~~
   
  - need maitenance mode for when I am updating zarr stores
  - mask sub-bottom data w checkbox, not linestring
- - ~~reenable click on linestring and query zarr store gps coordinates -> take to timeIndex~~
  - allow clicking on linestring in mini-map viewer & redirect to new cruise
  - add total Level_2 dataset size e.g. 120 GB to info panel
  - capture echopype provenance --> need to do in water-column-sonar-processing Zarr store metadata
@@ -71,7 +70,7 @@ https://echo.fish
 # Tag a Release
 Step 1 --> increment the semantic version in the "package.json" under the "version" field.
 ```commandline
-git tag -a v25.7.2 -m "Releasing v25.7.2"
+git tag -a v25.7.3 -m "Releasing v25.7.3"
 git push origin --tags
 ```
 
