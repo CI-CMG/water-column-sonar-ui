@@ -75,7 +75,7 @@ const TimeAxis = () => {
     // subsequent axis update
     selected
       .transition()
-      .duration(300)
+      .duration(500)
       .call(
         xAxis.tickFormat((d) => {
           if (timeArray !== null && d !== null) {
