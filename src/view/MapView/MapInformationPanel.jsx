@@ -158,7 +158,7 @@ const MapInformationPanel = () => {
           } */}
 
           <p>
-            <b>Hovered:</b>
+            <b>Last Hovered:</b>
           </p>
           <p>
             Ship:
