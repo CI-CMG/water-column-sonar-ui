@@ -1,3 +1,4 @@
+import { RootState } from './../../app/store';
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
@@ -71,10 +72,13 @@ export interface StoreState {
   frequenciesStatus: "idle" | "loading" | "failed",
   
   latitude: number | null,
-  latitudeStatus: "idle" | "loading" | "failed",
+  // latitudeStatus: "idle" | "loading" | "failed",
+  latitudeStatus: "idle" | "pending" | "succeeded" | "failed",
 
   longitude: number | null,
-  longitudeStatus: "idle" | "loading" | "failed",
+  longitudeStatus: "idle" | "pending" | "succeeded" | "failed",
+  // longitudeStatus: "idle" | "pending" | "succeeded" | "failed",
+  // longitudeError: string | null,
 
   geospatialIndex: number | null,
   geospatialIndexStatus: "idle" | "loading" | "failed",
@@ -315,27 +319,42 @@ export const storeSlice = createSlice({
       .addCase(frequenciesAsync.rejected, state => {
         state.frequenciesStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // LATITUDE--------------------------------------- //
+      // .addCase(latitudeAsync.pending, state => {
+      //   state.latitudeStatus = "loading";
+      // })
+      // .addCase(latitudeAsync.fulfilled, (state, action) => {
+      //   state.latitudeStatus = "idle";
+      //   state.latitude = action.payload;
+      // })
+      // .addCase(latitudeAsync.rejected, state => {
+      //   state.latitudeStatus = "failed";
+      // })
+      // LATITUDE--------------------------------------- //
       .addCase(latitudeAsync.pending, state => {
-        state.latitudeStatus = "loading";
+        state.latitudeStatus = "pending";
       })
       .addCase(latitudeAsync.fulfilled, (state, action) => {
-        state.latitudeStatus = "idle";
+        state.latitudeStatus = "succeeded";
         state.latitude = action.payload;
       })
       .addCase(latitudeAsync.rejected, state => {
         state.latitudeStatus = "failed";
+        // state.longitudeError = action.error.message ?? 'Unknown Error';
       })
       // LONGITUDE-------------------------------------- //
-      .addCase(longitudeAsync.pending, state => {
-        state.longitudeStatus = "loading";
+      .addCase(longitudeAsync.pending, (state, action) => {
+        // state.longitudeStatus = "loading";
+        state.longitudeStatus = "pending";
       })
       .addCase(longitudeAsync.fulfilled, (state, action) => {
-        state.longitudeStatus = "idle";
+        // state.longitudeStatus = "idle";
+        state.longitudeStatus = "succeeded";
         state.longitude = action.payload;
       })
-      .addCase(longitudeAsync.rejected, state => {
+      .addCase(longitudeAsync.rejected, (state, action) => {
         state.longitudeStatus = "failed";
+        // state.longitudeError = action.error.message ?? 'Unknown Error';
       })
       // GEOSPATIAL------------------------------------- //
       .addCase(geospatialIndexAsync.pending, state => {
@@ -503,7 +522,9 @@ export const selectColorIndex = (state: RootState) => state.store.colorIndex;
 export const selectFrequencies = (state: RootState) => state.store.frequencies;
 // export const selectFrequencyButtonIndex = (state: RootState) => state.store.frequencyButtonIndex;
 export const selectLatitude = (state: RootState) => state.store.latitude;
+export const selectLatitudeStatus = (state: RootState) => state.store.latitudeStatus;
 export const selectLongitude = (state: RootState) => state.store.longitude;
+export const selectLongitudeStatus = (state: RootState) => state.store.longitudeStatus;
 //
 export const selectGeospatialIndex = (state: RootState) => state.store.geospatialIndex;
 export const selectGeospatialIndexStatus = (state: RootState) => state.store.geospatialIndexStatus;
@@ -515,11 +536,20 @@ export const selectSv = (state: RootState) => state.store.sv;
 
 // Just getting metadata from the store
 export const storeAttributesAsync = createAsyncThunk(
+  // https://redux.js.org/tutorials/essentials/part-5-async-logic#checking-async-thunk-conditions
   "store/fetchStoreAttributes",
   async ({ ship, cruise, sensor }: { ship: string, cruise: string, sensor: string }) => {
     const response = await fetchStoreAttributes(ship, cruise, sensor);
     return response;
   },
+  // {
+  //   condition(arg, thunkApi) {
+  //     const postsStatus = selectStoreAttributes(thunkApi.getState())
+  //     if (postsStatus !== 'idle') {
+  //       return false
+  //     }
+  //   }
+  // }
 )
 
 export const storeShapeAsync = createAsyncThunk( // gets the shape of the overall Sv array
@@ -540,11 +570,22 @@ export const frequenciesAsync = createAsyncThunk(
 
 export const latitudeAsync = createAsyncThunk( // only need to pass in the index value for one indice
   "store/fetchLatitude",
-  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }, thunkAPI) => {
     const response = await fetchLatitude(ship, cruise, sensor, indexTime);
     return Math.round(response * 1e5) / 1e5;
   },
+  // {
+  //   condition({ ship, cruise, sensor, indexTime }, state) {
+  //     const latitudeStatus = state.getState().store.latitudeStatus;
+  //     console.log(latitudeStatus);
+  //     if (latitudeStatus === "fulfilled" || latitudeStatus === "loading") {
+  //       // Already fetched or in progress, don't need to re-fetch
+  //       return false;
+  //     }
+  //   }
+  // }
 )
+// export const selectLatitudeStatus = (state: RootState) => state.store.latitudeStatus;
 
 export const longitudeAsync = createAsyncThunk(
   "store/fetchLongitude",

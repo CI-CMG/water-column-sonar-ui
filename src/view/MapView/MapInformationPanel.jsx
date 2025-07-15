@@ -184,7 +184,7 @@ const MapInformationPanel = () => {
           <hr />
 
           <p>
-            <b>Clicked:</b>
+            <b>Last Clicked:</b>
           </p>
           <p>
             Ship:

@@ -71,6 +71,7 @@ function drawTile(coords, canvas, colorIndex, tileSize, storeShape, minDB, maxDB
           }
         }
         ctx.putImageData(new ImageData(uintc8, width, height), 0, 0);
+        
         return; // This sped things up a lot!
       });
   }

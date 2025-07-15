@@ -42,7 +42,9 @@ import {
   // updateFrequencyButtonIndex,
   updateFrequencyIndex,
   selectLatitude, // uses clicked index
+  selectLatitudeStatus,
   selectLongitude,
+  selectLongitudeStatus,
   //
   selectTime,
   selectDepth,
@@ -99,7 +101,9 @@ const WaterColumnInformationPanel = () => {
   const frequencyIndex = useAppSelector(selectFrequencyIndex); //
   // const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); //
   const latitude = useAppSelector(selectLatitude); // from store
+  const latitudeStatus = useAppSelector(selectLatitudeStatus);
   const longitude = useAppSelector(selectLongitude);
+  const longitudeStatus = useAppSelector(selectLongitudeStatus);
   //
   const time = useAppSelector(selectTime);
   const depth = useAppSelector(selectDepth);
@@ -263,16 +267,16 @@ const WaterColumnInformationPanel = () => {
           </p>
 
           {/* <TbLocation /> */}
-          {latitude !== null && longitude !== null ? (
-            <p>
-              <b>Lon / Lat:</b>{" "}
-              <span className="font-monospace float-end">
-                {longitude.toFixed(5)}° E, {latitude.toFixed(5)}° N
-              </span>
-            </p>
-          ) : (
-            <></>
-          )}
+          <p>
+            <b>Lon / Lat:</b>{" "}
+            <span className="font-monospace float-end">
+              {latitudeStatus === 'succeeded' && longitudeStatus === 'succeeded' ? (
+                <>{longitude.toFixed(5)}° E, {latitude.toFixed(5)}° N</>
+              ) : (
+                <>...</>
+              )}
+            </span>
+          </p>
 
           {/* <TfiRuler /> */}
           {depth !== null ? (
