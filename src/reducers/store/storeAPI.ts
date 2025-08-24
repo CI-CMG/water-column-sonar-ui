@@ -11,6 +11,11 @@ import { slice } from "zarrita";
 const bucketName = "noaa-wcsd-zarr-pds";
 const level = "level_2";
 
+// paths to alex's ai ml results
+const aiBucketName = "noaa-wcsd-zarr-ai-pds";
+const aiLevel = "level_4";
+const aiVariableName = "sonar_clusters";
+
 /* --- Zarr Store --- */
 export const fetchStoreAttributes = (ship: string, cruise: string, sensor: string): any => {
     const url = `https://${bucketName}.s3.amazonaws.com/level_2/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
@@ -344,3 +349,75 @@ export const fetchSvTile = (
             return get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]);
         });
 }
+
+/* ----------------------------------------------------*/
+/* ----------------------------------------------------*/
+/* ---------------------ALEXs Results------------------*/
+/* ----------------------------------------------------*/
+/* ----------------------------------------------------*/
+/* --- AI Zarr Store --- */
+export const fetchAIStoreAttributes = (ship: string, cruise: string, sensor: string): any => {
+    const url = `https://${aiBucketName}.s3.amazonaws.com/${aiLevel}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
+            return zarrGroup;
+        })
+        .then((rootPromise) => {
+            return rootPromise.attrs;
+        });
+}
+
+/* --- AI Zarr Store --- */
+export const fetchAIStoreShape = (ship: string, cruise: string, sensor: string): any => {
+    const url = `https://${aiBucketName}.s3.amazonaws.com/${aiLevel}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
+            return zarrGroup;
+        })
+        .then((rootPromise) => {
+            // see here for name: https://colab.research.google.com/drive/17hEejyG6Ch2op1ZXCNFarK_dhgDngltN?usp=sharing#scrollTo=SHsltqQxqI6q
+            const svArray = zarr.open(rootPromise.resolve(aiVariableName), { kind: "array" });
+            return svArray;
+        })
+        .then((svArray) => {
+            // Gathers info about the store
+            // svArray.chunks = [512, 512, 1]
+            // svArray.dtype = 'float32'
+            // svArray.shape = [2538, 4_228_924, 4] ==> now write to 
+            return svArray.shape;
+        });
+}
+
+// ? AISv
+
+/* --- AI SV TILE — gets data for drawing tiles --- */
+export const fetchAISvTile = (
+    ship: string,
+    cruise: string,
+    sensor: string,
+    indicesTop: number,
+    indicesBottom: number,
+    indicesLeft: number,
+    indicesRight: number,
+    selectedFrequency: number,
+): any => {
+    const url = `https://${aiBucketName}.s3.amazonaws.com/${aiLevel}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+    return zarr.withConsolidated(new zarr.FetchStore(url))
+        .then((storePromise) => {
+            return zarr.open.v2(storePromise, { kind: "group" });
+        })
+        .then((rootPromise) => {
+            return zarr.open(rootPromise.resolve(aiVariableName), { kind: "array" });
+        })
+        .then((svArray) => {
+            return get(svArray, [slice(indicesTop, indicesBottom), slice(indicesLeft, indicesRight), selectedFrequency]);
+        });
+}
+
+/* ----------------------------------------------------*/
+/* ----------------------------------------------------*/
+/* ----------------------------------------------------*/

@@ -465,7 +465,15 @@ const WaterColumnInformationPanel = () => {
             </Form.Group>
           </Row>
 
-          {/* <p>Min: {svMin}, Max: {svMax}</p> */}
+          <Row className="mb-3">
+            <Form.Group>
+              <Form.Check
+                type="switch"
+                id="ai-switch"
+                label="Show AI Inference for HB1906"
+              />
+            </Form.Group>
+          </Row>
 
           <hr />
           <p><b>Data Access</b></p>

@@ -1,4 +1,4 @@
-import { RootState } from './../../app/store';
+// import { RootState } from './../../app/store';
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
@@ -19,6 +19,10 @@ import {
   fetchDepthArray,
   fetchBottom,
   fetchSv,
+  // alex's ai results
+  fetchAIStoreAttributes, // probably don't need, just need tile?
+  fetchAIStoreShape,
+  fetchAISvTile,
 } from "./storeAPI.js";
 
 
@@ -54,7 +58,6 @@ export interface StoreState {
   timeArray: Array<number> | null,
   timeArrayStatus: "idle" | "loading" | "failed",
 
-
   colorMaps: any, // TODO: get rid of this?
 
   annotation: boolean, // highlights polygon annotations on the leaflet layer
@@ -65,14 +68,20 @@ export interface StoreState {
   // attributes: any, // metadata of the store
   // calibration_status, cruise_name, processing_software_name, processing_software_time, processing_software_version, sensor_name, ship_name, tile_size
 
+  // Alex's AI
+  aiStoreAttributes: any,
+  aiStoreAttributesStatus: "idle" | "loading" | "failed",
+
   storeShape: number[] | null,
   storeShapeStatus: "idle" | "loading" | "failed",
+  // alex's ai
+  aiStoreShape: number[] | null,
+  aiStoreShapeStatus: "idle" | "loading" | "failed",
 
   frequencies: any,
   frequenciesStatus: "idle" | "loading" | "failed",
   
   latitude: number | null,
-  // latitudeStatus: "idle" | "loading" | "failed",
   latitudeStatus: "idle" | "pending" | "succeeded" | "failed",
 
   longitude: number | null,
@@ -94,6 +103,10 @@ export interface StoreState {
 
   sv: any, // BigUInt64? -> Float32Array
   svStatus: "idle" | "loading" | "failed",
+
+  // Alex's AI
+  aiSv: any, // BigUInt64? -> Float32Array
+  aiSvStatus: "idle" | "loading" | "failed",
 }
 
 const initialState: StoreState = {
@@ -134,10 +147,16 @@ const initialState: StoreState = {
 
   storeAttributes: null,
   storeAttributesStatus: "idle",
-  // attributes: null,
+  // attributes: null
+  // alexs ai
+  aiStoreAttributes: null,
+  aiStoreAttributesStatus: "idle",
 
   storeShape: null,
   storeShapeStatus: "idle",
+  // alexs ai
+  aiStoreShape: null,
+  aiStoreShapeStatus: "idle",
 
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
@@ -163,6 +182,9 @@ const initialState: StoreState = {
   
   sv: null,
   svStatus: "idle",
+  // alexs ai
+  aiSv: null,
+  aiSvStatus: "idle",
 }
 
 export const storeSlice = createSlice({

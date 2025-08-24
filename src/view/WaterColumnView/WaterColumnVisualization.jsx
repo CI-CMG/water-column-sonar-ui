@@ -1,8 +1,6 @@
 import {
   useState,
   useEffect,
-  // useMemo,
-  // useRef,
 } from "react";
 import PropTypes from "prop-types";
 import { MapContainer, Polygon, Tooltip } from "react-leaflet";
@@ -13,6 +11,7 @@ import { useMapEvents, useMap } from "react-leaflet/hooks";
 import { CRS } from "leaflet";
 import { useAppDispatch } from "../../app/hooks";
 import CustomLayer from "./CustomLayer";
+import CustomAILayer from "./CustomAILayer";
 import { useSearchParams } from "react-router";
 import {
   selectShip,
@@ -81,6 +80,7 @@ const WaterColumnVisualization = ({
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
+  // TODO: need to parse depth same way as time, currently too much data!
   // const depthMinIndex = useAppSelector(selectDepthMinIndex);
   // const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
   const timeMinIndex = useAppSelector(selectTimeMinIndex);
@@ -139,7 +139,7 @@ const WaterColumnVisualization = ({
 
   const mapCenterX = initialTimeIndex;
   // TODO: this will create a problem when page is resized
-  const mapCenterY = -1 * (window.innerHeight / 2) + 100; // where does 60 come from?
+  const mapCenterY = -1 * (window.innerHeight / 2) + 100;
   const mapCenter = [mapCenterY, mapCenterX];
   const marginX = 500; // map maxBounds + margin
   const marginY = 100;
@@ -224,8 +224,15 @@ const WaterColumnVisualization = ({
                 // dispatch(timeArrayAsync({ ship, cruise, sensor, indexStart: timeMinIndex, indexEnd: timeMaxIndex }));
               }}
             >
+              {/* Water Column Data */}
               <CustomLayer />
+
+              {/* Alex's AI Visualization Results */}
+              {/* TODO: use checkbox to enable/disable */}
+              <CustomAILayer />
+
               <LocationMarker />
+
               {annotation ? (
                 <Polygon
                   color={annotationColor}
