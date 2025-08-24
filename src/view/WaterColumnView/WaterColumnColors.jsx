@@ -36,8 +36,15 @@ export const WaterColumnColors = {
       '#D6BCC0', '#CA9CA4', '#BB7784', '#A74B61',
       '#8E063B',
     ],
+    bmw: ["#000558","#00065d","#000864","#000969","#000970","#000a75","#000b7c","#000b81","#000c88","#000d90","#000e95","#000f9c","#000fa1","#0010a9","#0011ae","#0012b5","#0013ba","#0014c2","#0016c9","#0016cd","#0018d4","#0018d8","#0019de","#001ae1","#001be6","#001ceb","#001ced","#001df1","#001df3","#001ef6","#001ef8","#001ffa","#001ffc","#191ffe","#301fff","#3b1fff","#4a20ff","#5220ff","#5e1fff","#661fff","#701fff","#771fff","#801fff","#891fff","#8f1fff","#971fff","#9d1fff","#a51eff","#aa1eff","#b11eff","#b81eff","#bd1eff","#c41fff","#c820ff","#ce23ff","#d224ff","#d728ff","#db2aff","#e02eff","#e532ff","#e735ff","#ec3aff","#ee3dff","#f243ff","#f446ff","#f74cff","#f850ff","#fb56ff","#fc5cff","#fd61ff","#fe67ff","#ff6bff","#ff72ff","#ff76ff","#ff7dff","#ff83ff","#ff86ff","#ff8cff","#ff90ff","#ff95ff","#ff99ff","#ff9eff","#ffa2ff","#ffa7ff","#ffacff","#ffafff","#ffb4ff","#ffb7ff","#ffbcff","#ffbfff","#ffc4ff","#ffc7ff","#ffccff","#ffd1ff","#ffd4ff","#ffd8ff","#ffdcff","#ffe0ff","#ffe3ff","#ffe8fe","#feebfe"],
   };
 
 // export const defaultColorPalette = 'virids';
 
 export default WaterColumnColors;
+
+// See here for more color schemes:
+// https://colorcet.com/gallery.html
+
+// https://victorpoughon.fr/css-gradients-colorcet/
+// ["#000558","#00065d","#000864","#000969","#000970","#000a75","#000b7c","#000b81","#000c88","#000d90","#000e95","#000f9c","#000fa1","#0010a9","#0011ae","#0012b5","#0013ba","#0014c2","#0016c9","#0016cd","#0018d4","#0018d8","#0019de","#001ae1","#001be6","#001ceb","#001ced","#001df1","#001df3","#001ef6","#001ef8","#001ffa","#001ffc","#191ffe","#301fff","#3b1fff","#4a20ff","#5220ff","#5e1fff","#661fff","#701fff","#771fff","#801fff","#891fff","#8f1fff","#971fff","#9d1fff","#a51eff","#aa1eff","#b11eff","#b81eff","#bd1eff","#c41fff","#c820ff","#ce23ff","#d224ff","#d728ff","#db2aff","#e02eff","#e532ff","#e735ff","#ec3aff","#ee3dff","#f243ff","#f446ff","#f74cff","#f850ff","#fb56ff","#fc5cff","#fd61ff","#fe67ff","#ff6bff","#ff72ff","#ff76ff","#ff7dff","#ff83ff","#ff86ff","#ff8cff","#ff90ff","#ff95ff","#ff99ff","#ff9eff","#ffa2ff","#ffa7ff","#ffacff","#ffafff","#ffb4ff","#ffb7ff","#ffbcff","#ffbfff","#ffc4ff","#ffc7ff","#ffccff","#ffd1ff","#ffd4ff","#ffd8ff","#ffdcff","#ffe0ff","#ffe3ff","#ffe8fe","#feebfe"]

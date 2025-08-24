@@ -63,6 +63,9 @@ export interface StoreState {
   annotation: boolean, // highlights polygon annotations on the leaflet layer
   annotationColor: string, // color of polygon for annotations --> should be string
 
+  // alex's ai
+  annotationAI: boolean, // allows overlay of ai results
+
   storeAttributes: any,
   storeAttributesStatus: "idle" | "loading" | "failed",
   // attributes: any, // metadata of the store
@@ -144,6 +147,8 @@ const initialState: StoreState = {
 
   annotation: false,
   annotationColor: "#fff",
+
+  annotationAI: false,
 
   storeAttributes: null,
   storeAttributesStatus: "idle",
@@ -272,6 +277,10 @@ export const storeSlice = createSlice({
     },
     updateAnnotationColor: (state, action: PayloadAction<any>) => {
       state.annotationColor = action.payload;
+    },
+
+    updateAnnotationAI: (state, action: PayloadAction<any>) => {
+      state.annotationAI = action.payload;
     },
 
     updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
@@ -490,6 +499,8 @@ export const {
   // updateColorMapButtonIndex, // TODO: get rid of
   updateAnnotation,
   updateAnnotationColor,
+  //
+  updateAnnotationAI,
   // TODO: colorMap
   updateFrequencies,
   updateLatitude,
@@ -525,6 +536,8 @@ export const selectColorMaps = (state: RootState) => state.store.colorMaps;
 // export const selectColorMapButtonIndex = (state: RootState) => state.store.colorMapButtonIndex;
 export const selectAnnotation = (state: RootState) => state.store.annotation;
 export const selectAnnotationColor = (state: RootState) => state.store.annotationColor;
+
+export const selectAnnotationAI = (state: RootState) => state.store.annotationAI;
 
 // store the indices of the clicked position
 export const selectDepthIndex = (state: RootState) => state.store.depthIndex;

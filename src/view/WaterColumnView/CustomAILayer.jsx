@@ -22,7 +22,7 @@ import { fetchAISvTile } from "../../reducers/store/storeAPI.ts"
 
 function drawTile(coords, canvas, colorIndex, tileSize, storeShape, minDB, maxDB, selectFrequency, cruise) {
   // const palette = WaterColumnColors[Object.keys(WaterColumnColors)[colorIndex]];
-  const palette = WaterColumnColors['blueRed'];
+  const palette = WaterColumnColors['bmw'];
   const ctx = canvas.getContext('2d');
 
   if (ctx) {
@@ -49,15 +49,16 @@ function drawTile(coords, canvas, colorIndex, tileSize, storeShape, minDB, maxDB
 
     // Diagnostic for getting X-Y-Z location of tiles
     // if (coords.y >= maxTileBoundsY || coords.y < 0 || coords.x < 0 || coords.x >= maxTileBoundsX) {
-    ctx.font = '24px serif';
-    ctx.fillStyle = '#ff0fdf';
-    ctx.fillText(`{${coords.x}, ${coords.y}, ${coords.z}}`, 20, 40);
+    // ctx.font = '24px serif';
+    // ctx.fillStyle = '#ff0fdf';
+    // ctx.fillText(`{${coords.x}, ${coords.y}, ${coords.z}}`, 20, 40);
     // return;
     // }
 
     fetchAISvTile('Henry_B._Bigelow', cruise, 'EK60', indicesTop, indicesBottom, indicesLeft, indicesRight, selectFrequency)
       .then((d1) => {
         const d = d1; // as RawArray;
+        // debugger;
         const [height, width] = d.shape;
         const uintc8 = new Uint8ClampedArray(4 * d.data.length).fill(255);
 
@@ -68,18 +69,27 @@ function drawTile(coords, canvas, colorIndex, tileSize, storeShape, minDB, maxDB
             uintc8[i * 4] = pixelColor.r;
             uintc8[i * 4 + 1] = pixelColor.g;
             uintc8[i * 4 + 2] = pixelColor.b;
-          } else {
-            // set to transparent
-            // uintc8[i * 4] = pixelColor.r;
-            // uintc8[i * 4 + 1] = pixelColor.g;
-            uintc8[i * 4 + 2] = 255;
           }
         }
 
-        // ctx.globalCompositeOperation = "source-over";
+        ctx.globalCompositeOperation = "source-over";
         ctx.putImageData(new ImageData(uintc8, width, height), 0, 0);
         
         // TODO: need to make background transparent
+        let imgd = ctx.getImageData(0, 0, 512, 512), pix = imgd.data;
+
+        for (let i = 0, n = pix.length; i <n; i += 4) {
+            let r = pix[i];
+            let g = pix[i + 1];
+            let b = pix[i + 2];
+            // If its white then change it
+            if(r == 255 && g == 255 && b == 255){ 
+              pix[i+3] = 0;
+            }
+        }
+
+        ctx.putImageData(imgd, 0, 0);
+        // end of make transparent
 
         return;
       });
@@ -112,7 +122,7 @@ const CustomAILayer = () => {
           let tile = L.DomUtil.create('canvas', 'leaflet-tile');
           tile.setAttribute('width', container.options.tileSize);
           tile.setAttribute('height', container.options.tileSize);          
-          drawTile(coords, tile, colorIndex, attributes.tile_size, storeShape, 0, 40, frequencyIndex, cruise);
+          drawTile(coords, tile, colorIndex, attributes.tile_size, storeShape, 0, 31, frequencyIndex, cruise);
           setTimeout(() => { done(error, tile) }, 10);
           return tile;
         },
@@ -120,9 +130,9 @@ const CustomAILayer = () => {
 
       return new GridLayerExtended({
         // opacity: 0.75, // Opacity of the tiles. Can be used in the createTile() function.
-        opacity: 0.90,
+        // opacity: 0.9,
         updateInterval: 25, // Tiles will not update more than once every updateInterval milliseconds when panning
-        className: "echoFishGridLayer",
+        className: "echoFishAIGridLayer",
       });
     };
 

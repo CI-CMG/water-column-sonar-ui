@@ -27,6 +27,9 @@ import {
   //
   selectAnnotation,
   updateAnnotation,
+  //
+  selectAnnotationAI,
+  updateAnnotationAI,
   // selectAnnotationColor,
   // updateAnnotationColor,
   //
@@ -93,6 +96,7 @@ const WaterColumnInformationPanel = () => {
   const sensor = useAppSelector(selectSensor);
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const annotation = useAppSelector(selectAnnotation);
+  const annotationAI = useAppSelector(selectAnnotationAI);
   // const annotationColor = useAppSelector(selectAnnotationColor);
   const colorIndex = useAppSelector(selectColorIndex); //
   const attributes = useAppSelector(selectStoreAttributes);
@@ -163,6 +167,10 @@ const WaterColumnInformationPanel = () => {
 
   const handleSelectAnnotation = () => {
     dispatch(updateAnnotation(!annotation));
+  };
+
+  const handleSelectAnnotationAI = () => {
+    dispatch(updateAnnotationAI(!annotationAI));
   };
 
   useEffect(() => {
@@ -469,8 +477,10 @@ const WaterColumnInformationPanel = () => {
             <Form.Group>
               <Form.Check
                 type="switch"
-                id="ai-switch"
+                id="annotate-ai-switch"
                 label="Show AI Inference for HB1906"
+                onChange={() => handleSelectAnnotationAI()}
+                checked={annotationAI}
               />
             </Form.Group>
           </Row>

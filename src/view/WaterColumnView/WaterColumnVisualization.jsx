@@ -22,6 +22,7 @@ import {
   updateTimeIndex,
   selectAnnotation,
   selectAnnotationColor,
+  selectAnnotationAI,
   //
   updateDepthMinIndex,
   updateDepthMaxIndex,
@@ -135,6 +136,7 @@ const WaterColumnVisualization = ({
   const [map, setMap] = useState(null);
 
   const annotation = useAppSelector(selectAnnotation);
+  const annotationAI = useAppSelector(selectAnnotationAI);
   const annotationColor = useAppSelector(selectAnnotationColor);
 
   const mapCenterX = initialTimeIndex;
@@ -229,7 +231,7 @@ const WaterColumnVisualization = ({
 
               {/* Alex's AI Visualization Results */}
               {/* TODO: use checkbox to enable/disable */}
-              <CustomAILayer />
+              {annotationAI && <CustomAILayer />}
 
               <LocationMarker />
 
