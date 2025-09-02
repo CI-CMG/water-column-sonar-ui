@@ -3,7 +3,12 @@ import {
   useEffect,
 } from "react";
 import PropTypes from "prop-types";
-import { MapContainer, Polygon, Tooltip } from "react-leaflet";
+import {
+  MapContainer,
+  // Polygon,
+  Rectangle,
+  Tooltip,
+} from "react-leaflet";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -146,19 +151,23 @@ const WaterColumnVisualization = ({
   const marginX = 500; // map maxBounds + margin
   const marginY = 100;
 
-  const polygon1 = [
-    // CTD sidescan example polygon for HB1906
+  // const polygon1 = [
+  //   // CTD sidescan example polygon for HB1906
+  //   [-274, 434959],
+  //   [-632, 435066],
+  //   [-636, 435081],
+  //   [-262, 435197],
+  //   [-262, 435182],
+  //   [-615, 435078],
+  //   [-615, 435070],
+  //   [-278, 434970],
+  //   [-274, 434959],
+  // ];
+  const rectangle1 = [ // bounding box example
     [-274, 434959],
-    [-632, 435066],
-    [-636, 435081],
-    [-262, 435197],
-    [-262, 435182],
-    [-615, 435078],
-    [-615, 435070],
-    [-278, 434970],
-    [-274, 434959],
+    [-632, 435197],
   ];
-  const positions = [polygon1];
+  // const positions = [rectangle1];
 
   useEffect(() => {
     if (map) {
@@ -236,24 +245,36 @@ const WaterColumnVisualization = ({
               <LocationMarker />
 
               {annotation ? (
-                <Polygon
-                  color={annotationColor}
-                  opacity={0.95}
+                // <Polygon
+                //   color={annotationColor}
+                //   opacity={0.95}
+                //   fillColor="white"
+                //   fillOpacity={0}
+                //   weight={2}
+                //   positions={positions}
+                //   title="Annotation"
+                //   className="Annotation"
+                // >
+                //   <Tooltip>
+                //     CTD stands for conductivity, temperature, and depth,
+                //     <br />
+                //     and refers to a package of electronic instruments
+                //     <br />
+                //     that measure these properties.
+                //   </Tooltip>
+                // </Polygon>
+                <Rectangle
+                  bounds={rectangle1}
+                  opacity={0.50}
                   fillColor="white"
-                  fillOpacity={0}
+                  fillOpacity={0.05}
                   weight={2}
-                  positions={positions}
                   title="Annotation"
                   className="Annotation"
+                  pathOptions={{ color: 'white' }}
                 >
-                  <Tooltip>
-                    CTD stands for conductivity, temperature, and depth,
-                    <br />
-                    and refers to a package of electronic instruments
-                    <br />
-                    that measure these properties.
-                  </Tooltip>
-                </Polygon>
+                  <Tooltip>AH_School</Tooltip>
+                </Rectangle>
               ) : (
                 <></>
               )}

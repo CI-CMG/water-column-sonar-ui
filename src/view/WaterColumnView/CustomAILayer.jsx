@@ -130,7 +130,7 @@ const CustomAILayer = () => {
 
       return new GridLayerExtended({
         // opacity: 0.75, // Opacity of the tiles. Can be used in the createTile() function.
-        // opacity: 0.9,
+        opacity: 0.95,
         updateInterval: 25, // Tiles will not update more than once every updateInterval milliseconds when panning
         className: "echoFishAIGridLayer",
       });

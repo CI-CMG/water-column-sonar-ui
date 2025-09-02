@@ -451,7 +451,7 @@ const WaterColumnInformationPanel = () => {
               <Form.Check
                 type="switch"
                 id="annotate-switch"
-                label="Show Annotations"
+                label="Show Annotations for HB1906"
                 onChange={() => handleSelectAnnotation()}
                 checked={annotation}
               />
