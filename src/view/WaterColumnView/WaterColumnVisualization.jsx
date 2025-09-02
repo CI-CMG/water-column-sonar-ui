@@ -76,6 +76,65 @@ function LocationMarker() {
   return null;
 }
 
+const rectangles = [
+  [
+    [-564, 2187169],
+    [-591, 2187178],
+  ],
+  [
+    [-574, 2187877],
+    [-602, 2187893],
+  ],
+  [
+    [-574, 2188016],
+    [-600, 2188026],
+  ],
+  [
+    [-557, 2188080],
+    [-583, 2188086],
+  ],
+  [
+    [-571, 2188143],
+    [-607, 2188153],
+  ],
+  [
+    [-586, 2188157],
+    [-609, 2188164],
+  ],
+  [
+    [-583, 2188504],
+    [-616, 2188511],
+  ],
+  [
+    [-567, 2189729],
+    [-603, 2189746],
+  ],
+  [
+    [-662, 2191532],
+    [-694, 2191543],
+  ],
+  [
+    [-721, 2191781],
+    [-744, 2191789]
+  ],
+]
+
+const rectangleItems = rectangles.map((rectangle, i) =>
+  <Rectangle
+    bounds={rectangle}
+    key={rectangle}
+    opacity={0.75}
+    fillColor="white"
+    fillOpacity={0.10}
+    weight={2}
+    title="Annotation"
+    className="Annotation"
+    pathOptions={{ color: '#FF69B4' }}
+  >
+    <Tooltip>Atlantic Herring School {i}</Tooltip>
+  </Rectangle>
+)
+
 const WaterColumnVisualization = ({
   tileSize,
   storeShape,
@@ -150,24 +209,6 @@ const WaterColumnVisualization = ({
   const mapCenter = [mapCenterY, mapCenterX];
   const marginX = 500; // map maxBounds + margin
   const marginY = 100;
-
-  // const polygon1 = [
-  //   // CTD sidescan example polygon for HB1906
-  //   [-274, 434959],
-  //   [-632, 435066],
-  //   [-636, 435081],
-  //   [-262, 435197],
-  //   [-262, 435182],
-  //   [-615, 435078],
-  //   [-615, 435070],
-  //   [-278, 434970],
-  //   [-274, 434959],
-  // ];
-  const rectangle1 = [ // bounding box example
-    [-274, 434959],
-    [-632, 435197],
-  ];
-  // const positions = [rectangle1];
 
   useEffect(() => {
     if (map) {
@@ -245,36 +286,7 @@ const WaterColumnVisualization = ({
               <LocationMarker />
 
               {annotation ? (
-                // <Polygon
-                //   color={annotationColor}
-                //   opacity={0.95}
-                //   fillColor="white"
-                //   fillOpacity={0}
-                //   weight={2}
-                //   positions={positions}
-                //   title="Annotation"
-                //   className="Annotation"
-                // >
-                //   <Tooltip>
-                //     CTD stands for conductivity, temperature, and depth,
-                //     <br />
-                //     and refers to a package of electronic instruments
-                //     <br />
-                //     that measure these properties.
-                //   </Tooltip>
-                // </Polygon>
-                <Rectangle
-                  bounds={rectangle1}
-                  opacity={0.50}
-                  fillColor="white"
-                  fillOpacity={0.05}
-                  weight={2}
-                  title="Annotation"
-                  className="Annotation"
-                  pathOptions={{ color: 'white' }}
-                >
-                  <Tooltip>AH_School</Tooltip>
-                </Rectangle>
+                <>{rectangleItems}</>
               ) : (
                 <></>
               )}
