@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@14islands/r3f-scroll-rig": "^8.15.0",
+    "@protomaps/basemaps": "^5.5.1",
     "@react-spring/three": "^10.0.1",
     "@react-spring/web": "^10.0.1",
     "@react-three/drei": "^10.3.0",
@@ -40,7 +41,6 @@
     "lodash": "^4.17.21",
     "maplibre-gl": "^5.6.0",
     "pmtiles": "^4.3.0",
-    "protomaps-themes-base": "^4.5.0",
     "query-string": "^9.2.1",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
