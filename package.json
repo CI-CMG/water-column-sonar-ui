@@ -15,7 +15,7 @@
     "lint": "eslint .",
     "test": "vitest",
     "preview": "vite preview",
-    "deploy": "aws s3 cp --recursive ./dist/ s3://watercolumnproject.org/; aws cloudfront create-invalidation --distribution-id E38IRRAY5TY4MK --paths '/*' >/dev/null",
+    "deploy": "aws s3 cp --recursive ./dist/ s3://dev.echo.fish/; aws cloudfront create-invalidation --distribution-id E38IRRAY5TY4MK --paths '/*' >/dev/null",
     "deploy-dev": "aws --profile=echofish s3 cp --recursive ./dist/ s3://dev.echo.fish/; aws --profile=echofish cloudfront create-invalidation --distribution-id E1N2M68LC9M3JY --paths '/*' >/dev/null",
     "deploy-test": "aws --profile=echofish s3 cp --recursive ./dist/ s3://test.echo.fish/; aws --profile=echofish cloudfront create-invalidation --distribution-id E1N2M68LC9M3JY --paths '/*' >/dev/null",
     "deploy-prod": "aws --profile=echofish s3 cp --recursive ./dist/ s3://echo.fish/; aws --profile=echofish cloudfront create-invalidation --distribution-id E3NV8I4HB1BPJV --paths '/*' >/dev/null",
@@ -29,8 +29,8 @@
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.2",
     "@reduxjs/toolkit": "^2.8.2",
-    "@turf/turf": "^7.2.0",
-    "@zarrita/ndarray": "^0.1.0",
+    "@turf/turf": "^7.3.0",
+    "@zarrita/ndarray": "^0.1.5",
     "bootstrap": "^5.3.7",
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.5.0",
@@ -56,7 +56,7 @@
     "sass": "^1.89.2",
     "three": "^0.177.0",
     "usehooks-ts": "^3.1.1",
-    "zarrita": "^0.4.0"
+    "zarrita": "^0.5.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
@@ -70,7 +70,7 @@
     "eslint-plugin-react-refresh": "^0.4.13",
     "globals": "^15.11.0",
     "typescript": "^5",
-    "vite": "^7.0.0",
+    "vite": "^7.2.4",
     "vitest": "^3.2.4"
   }
 }
