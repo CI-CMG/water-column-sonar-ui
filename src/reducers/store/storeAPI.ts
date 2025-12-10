@@ -12,7 +12,7 @@ const bucketName = "noaa-wcsd-zarr-pds";
 const aiBucketName = "noaa-wcsd-zarr-ai-pds";
 const aiLevel = "level_4";
 const aiVariableName = "sonar_clusters";
-const level_2 = "level_2a";
+const level = "level_2a";
 
 /* --- ATTRIBUTES --- */
 export const fetchStoreAttributes = (
@@ -20,7 +20,7 @@ export const fetchStoreAttributes = (
   cruise: string,
   sensor: string
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open.v3(root, { kind: "group" }).then((rootPromise) => {
@@ -34,7 +34,7 @@ export const fetchStoreShape = (
   cruise: string,
   sensor: string
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open.v3(root.resolve("Sv"), { kind: "array" }).then((arr) => {
@@ -48,7 +48,7 @@ export const fetchFrequencies = (
   cruise: string,
   sensor: string
 ) => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open
@@ -65,7 +65,7 @@ export const fetchLatitude = (
   sensor: string,
   indexTime: number
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open
@@ -82,7 +82,7 @@ export const fetchLongitude = (
   sensor: string,
   indexTime: number
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open
@@ -99,7 +99,7 @@ export const fetchLatitudeAll = (
   cruise: string,
   sensor: string
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open
@@ -115,7 +115,7 @@ export const fetchLongitudeAll = (
   cruise: string,
   sensor: string
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open
@@ -176,7 +176,7 @@ export const fetchTime = (
   sensor: string,
   indexTime: number
 ) => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open.v3(root.resolve("time"), { kind: "array" }).then((arr) => {
@@ -192,55 +192,34 @@ export const fetchTimeArray = (
   indexStart: number,
   indexEnd: number
 ): any => {
-  // console.log(`fetching timeArray: ${indexStart}, ${indexEnd}`)
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
 
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      const zarrGroup = zarr.open(storePromise, { kind: "group" });
-      return zarrGroup;
-    })
-    .then((rootPromise) => {
-      const timeArray = zarr.open(rootPromise.resolve("time"), {
-        kind: "array",
-      });
-      return timeArray;
-    })
+  return zarr.open
+    .v3(root.resolve("time"), { kind: "array" })
     .then((timeArray) => {
+      // Limit query to the bounds //
       const max_indices = timeArray.shape[0];
-      // Limit query to the bounds o
+
       return get(timeArray, [
         slice(Math.max(indexStart, 0), Math.min(indexEnd, max_indices)),
       ]);
     });
 };
 
-/* --- DEPTH --- */
+/* --- DEPTH INDEXED --- */
 export const fetchDepth = (
   ship: string,
   cruise: string,
   sensor: string,
   indexDepth: number
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
 
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      const zarrGroup = zarr.open(storePromise, { kind: "group" });
-      return zarrGroup;
-    })
-    .then((rootPromise) => {
-      const depthArray = zarr.open(rootPromise.resolve("depth"), {
-        kind: "array",
-      });
-      return depthArray;
-    })
-    .then((depthArray) => {
-      // returns all the data in a BigUint64Array
-      return get(depthArray, [indexDepth]);
-    });
+  return zarr.open.v3(root.resolve("depth"), { kind: "array" }).then((arr) => {
+    return get(arr, [indexDepth]);
+  });
 };
 
 /* --- DEPTH ARRAY --- */
@@ -248,24 +227,13 @@ export const fetchDepthArray = (
   ship: string,
   cruise: string,
   sensor: string
-  // indexStart: number,
-  // indexEnd: number,
 ): any => {
-  // console.log(`fetching: depthArray`)
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
 
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      return zarr.open(storePromise, { kind: "group" });
-    })
-    .then((rootPromise) => {
-      return zarr.open(rootPromise.resolve("depth"), { kind: "array" });
-    })
-    .then((depthArray) => {
-      // returns all the data in a BigUint64Array
-      return get(depthArray, [slice(null)]); // , [slice(indexStart, indexEnd)]);
-    });
+  return zarr.open.v3(root.resolve("depth"), { kind: "array" }).then((arr) => {
+    return get(arr, [slice(null)]);
+  });
 };
 
 /* --- BOTTOM --- */
@@ -275,23 +243,43 @@ export const fetchBottom = (
   sensor: string,
   indexTime: number
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
 
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      const zarrGroup = zarr.open(storePromise, { kind: "group" });
-      return zarrGroup;
-    })
-    .then((rootPromise) => {
-      const bottomArray = zarr.open(rootPromise.resolve("bottom"), {
-        kind: "array",
-      });
-      return bottomArray;
-    })
-    .then((bottomArray) => {
-      // returns all the data in a BigUint64Array
-      return get(bottomArray, [indexTime]);
+  return zarr.open.v3(root.resolve("bottom"), { kind: "array" }).then((arr) => {
+    return get(arr, [indexTime]);
+  });
+};
+
+/* --- SPEED --- */
+export const fetchSpeed = (
+  ship: string,
+  cruise: string,
+  sensor: string,
+  indexTime: number
+): any => {
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
+
+  return zarr.open.v3(root.resolve("speed"), { kind: "array" }).then((arr) => {
+    return get(arr, [indexTime]);
+  });
+};
+
+/* --- DISTANCE --- */
+export const fetchDistance = (
+  ship: string,
+  cruise: string,
+  sensor: string,
+  indexTime: number
+): any => {
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
+
+  return zarr.open
+    .v3(root.resolve("distance"), { kind: "array" })
+    .then((arr) => {
+      return get(arr, [indexTime]);
     });
 };
 
@@ -301,32 +289,17 @@ export const fetchSv = (
   cruise: string,
   sensor: string,
   indexDepth: number,
-  indexTime: number,
-  indexFrequency: number // TODO: remove this
+  indexTime: number
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      return zarr.open(storePromise, { kind: "group" });
-    })
-    .then((rootPromise) => {
-      const svArray = zarr.open(rootPromise.resolve("Sv"), { kind: "array" });
-      return svArray;
-    })
-    .then((svArray) => {
-      // returns all the data in a BigUint64Array
-      // const sv = get(svArray, [indexDepth, indexTime, indexFrequency]);
-      return get(svArray, [indexDepth, indexTime, slice(null)]); // TODO: get index of frequency
-      // TODO: get the following
-      // svArray.chunks = [512, 512, 1]
-      // svArray.dtype = 'float32'
-      // svArray.shape = [2538, 4_228_924, 4] ==> now write to
-      // return [sv, svArray.chunks, svArray.shape];
-    });
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
+
+  return zarr.open.v3(root.resolve("Sv"), { kind: "array" }).then((arr) => {
+    return get(arr, [indexDepth, indexTime, slice(null)]);
+  });
 };
 
-/* --- SV TILE — gets data for drawing tiles --- */
+/* --- SV TILE — Gets Data for Drawing Each Tile --- */
 export const fetchSvTile = (
   ship: string,
   cruise: string,
@@ -337,22 +310,16 @@ export const fetchSvTile = (
   indicesRight: number,
   selectedFrequency: number
 ): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level_2}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      return zarr.open(storePromise, { kind: "group" });
-    })
-    .then((rootPromise) => {
-      return zarr.open(rootPromise.resolve("Sv"), { kind: "array" });
-    })
-    .then((svArray) => {
-      return get(svArray, [
-        slice(indicesTop, indicesBottom),
-        slice(indicesLeft, indicesRight),
-        selectedFrequency,
-      ]);
-    });
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
+
+  return zarr.open.v3(root.resolve("Sv"), { kind: "array" }).then((arr) => {
+    return get(arr, [
+      slice(indicesTop, indicesBottom),
+      slice(indicesLeft, indicesRight),
+      selectedFrequency,
+    ]);
+  });
 };
 
 /* ----------------------------------------------------*/
@@ -360,6 +327,7 @@ export const fetchSvTile = (
 /* ---------------------ALEXs Results------------------*/
 /* ----------------------------------------------------*/
 /* ----------------------------------------------------*/
+
 /* --- AI Zarr Store --- */
 export const fetchAIStoreAttributes = (
   ship: string,
@@ -367,16 +335,11 @@ export const fetchAIStoreAttributes = (
   sensor: string
 ): any => {
   const url = `https://${aiBucketName}.s3.amazonaws.com/${aiLevel}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
 
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
-      return zarrGroup;
-    })
-    .then((rootPromise) => {
-      return rootPromise.attrs;
-    });
+  return zarr.open.v2(root, { kind: "group" }).then((arr) => {
+    return arr.attrs;
+  });
 };
 
 /* --- AI Zarr Store --- */
@@ -386,30 +349,14 @@ export const fetchAIStoreShape = (
   sensor: string
 ): any => {
   const url = `https://${aiBucketName}.s3.amazonaws.com/${aiLevel}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
 
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      const zarrGroup = zarr.open.v2(storePromise, { kind: "group" });
-      return zarrGroup;
-    })
-    .then((rootPromise) => {
-      // see here for name: https://colab.research.google.com/drive/17hEejyG6Ch2op1ZXCNFarK_dhgDngltN?usp=sharing#scrollTo=SHsltqQxqI6q
-      const svArray = zarr.open(rootPromise.resolve(aiVariableName), {
-        kind: "array",
-      });
-      return svArray;
-    })
-    .then((svArray) => {
-      // Gathers info about the store
-      // svArray.chunks = [512, 512, 1]
-      // svArray.dtype = 'float32'
-      // svArray.shape = [2538, 4_228_924, 4] ==> now write to
-      return svArray.shape;
+  return zarr.open
+    .v2(root.resolve(aiVariableName), { kind: "array" })
+    .then((arr) => {
+      return arr.shape;
     });
 };
-
-// ? AISv
 
 /* --- AI SV TILE — gets data for drawing tiles --- */
 export const fetchAISvTile = (
@@ -422,22 +369,16 @@ export const fetchAISvTile = (
   indicesRight: number,
   selectedFrequency: number
 ): any => {
-  const url = `https://${aiBucketName}.s3.amazonaws.com/${aiLevel}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      return zarr.open.v2(storePromise, { kind: "group" });
-    })
-    .then((rootPromise) => {
-      return zarr.open(rootPromise.resolve(aiVariableName), { kind: "array" });
-    })
-    .then((svArray) => {
-      return get(svArray, [
-        slice(indicesTop, indicesBottom),
-        slice(indicesLeft, indicesRight),
-        selectedFrequency,
-      ]);
-    });
+  const url = `https://${aiBucketName}.s3.amazonaws.com/${aiLevel}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;  
+  const root = zarr.root(new zarr.FetchStore(url));
+
+  return zarr.open.v3(root.resolve(aiVariableName), { kind: "array" }).then((arr) => {
+    return get(arr, [
+      slice(indicesTop, indicesBottom),
+      slice(indicesLeft, indicesRight),
+      selectedFrequency,
+    ]);
+  });
 };
 
 /* ----------------------------------------------------*/
