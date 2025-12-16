@@ -45,7 +45,7 @@ const TimeAxis = () => {
   useEffect(() => {
     // initial axis update
     selected.selectAll("*").remove();
-
+    
     selected
       // .attr("width", width - 1)
       .attr("width", width - 2)
