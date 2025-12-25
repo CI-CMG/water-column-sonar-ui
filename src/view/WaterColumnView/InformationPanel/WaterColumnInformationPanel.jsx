@@ -79,6 +79,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 
 const getDateTime = function (epochSeconds, timezone) {
+  debugger;
   // timezone='Etc/UTC'
   const tempDate = new Date(0);
   tempDate.setUTCMilliseconds(epochSeconds * 1000);
@@ -262,7 +263,7 @@ const WaterColumnInformationPanel = () => {
           <p>
             <b>Time:</b>{" "}
             <span className="font-monospace float-end">
-              {getDateTime(time, "Etc/UTC")}{" "}
+              {/*{getDateTime(time, "Etc/UTC")}{" "}*/}
               <span style={{ color: "#9933CC" }}>UTC</span>
             </span>
           </p>
