@@ -3,6 +3,8 @@
 .DatasetView {
   // border: 1px solid orchid;
   // background-color: aliceblue;
+  flex: 1 1 100%;
+  display: flex;
 
   // just playing with the opacity and intersection observer
   .itemHidden {

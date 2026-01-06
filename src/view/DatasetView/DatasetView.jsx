@@ -106,24 +106,10 @@ export default function DatasetView() {
           <Col sm={6}>
             <br />
             <br />
-            {/* <h1 style={{ backgroundColor: "lightblue" }}> */}
             <h1 className="text-center">NOAA NCEI&apos;s<br />Water Column Sonar Dataset</h1>
             <br />
             <br />
             <p className="text-center">⌘</p>
-
-            {/* <div style={{ display: "flex", justifyContent: "center" }}>
-              <animated.div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 10,
-                  ...springs,
-                }}
-              />
-            </div>
-            <br />
-            <br /> */}
 
             <br />
             <p>

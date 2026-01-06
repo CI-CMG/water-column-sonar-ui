@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { PiCubeLight } from "react-icons/pi";
 import { PiDatabase } from "react-icons/pi";
 import { PiMapTrifoldThin } from "react-icons/pi";
+import { PiGraphLight } from "react-icons/pi";
 
 // https://react-icons.github.io/react-icons/search/#q=fish
 export default function LayoutView() {
@@ -53,6 +54,11 @@ export default function LayoutView() {
               <Nav.Link as={Link} to="/dataset">
                 <PiDatabase />
                 &nbsp;Dataset
+              </Nav.Link>
+
+              <Nav.Link disabled as={Link} to="/graph">
+                <PiGraphLight />
+                &nbsp;Graph
               </Nav.Link>
             </Nav>
           </Container>
