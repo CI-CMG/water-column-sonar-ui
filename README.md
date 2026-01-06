@@ -5,51 +5,6 @@ https://echo.fish
 [![Deploy DEV to dev.echo.fish](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml/badge.svg)](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml)
 
 # TODO:
- - ~~install bootstrap~~
- - ~~remove material design mui~~
- - ~~get nav bar up and running~~
- - ~~update zarrita to newest version~~
- - ~~get color palette working <https://2019.wattenberger.com/blog/react-and-d3>~~
- - ~~color palette needs min/max/colorMap/labels~~
- - ~~move 'calibration status' higher in the legend~~
- - ~~add ship icon to minimap~~
- - ~~sync up map center with mini-map~~
- - ~~get plot Sv values properly populated -> get num of frequencies~~
- - ~~get time/lat/lon/Sv from click~~
- - ~~format time w GMT/local~~
- - ~~don't hard code tile size~~
- - ~~open bottom array w zarr~~
- - ~~get leaflet working again~~
- - ~~center the water-column view when user first opens the data~~
- - ~~get rid of zarr package from getZarrGeoSpatialIndex page - replace w zarrita~~
- - ~~get jump to x axis time value working - working from wc view~~
- - ~~update x-axis in query searchParameters w panning~~
- - ~~make sure lat/lon are always 5 decimals, sv is always 2, depth is 2~~
- - ~~fix fetchSv to get proper frequency value? --> gets all for the plot right now~~
- - ~~add code to hide layers icon(s) in top-right via css [done, keeping for debugging]~~
- - ~~add better labels to color palette legend -- [min, median, max]~~
- - ~~get nav from pmtiles to water column working with ping time index ...abandon~~
- - ~~regenerate pm-tiles with latest data~~
- - ~~print dimension to the "Data Acces" info box~~
- - ~~restrain boundaries for leaflet, bounce back to data <https://react-leaflet.js.org/docs/example-view-bounds/>~~
- - ~~make sure that HB1906 isnt hard coded everywhere~~
- - ~~fix navbar button values; added reload of the document~~
- - ~~add link to echofish tagged releases~~
- - ~~read the documentation~~
- - ~~draw evr polygon on data -> currently circle --> toggle switch in the info panel~~
- - ~~print total dimensions of L2 data: depth x time x frequency~~
- - ~~refresh layer when clicking on frequency/colorMap/minSv/maxSv button~~
- - ~~add citation for ospool~~
- - ~~disable click ping time index for main map view --> take users to beginning of cruise~~
- - ~~remove debugging info~~
- - ~~frequency button works, "color map" does not cause refresh of map~~
- - ~~deploy to domain echo.fish~~
- - ~~debounce mini map to relocate to last click~~
- - ~~create visualization layer of all EVR annotation time/lat/lon as points in PMTiles~~
- - ~~add bathymetric layer to map viewer~~
- - ~~reenable click on linestring and query zarr store gps coordinates -> take to timeIndex~~
- - ~~add graticule legend for: depth axis & time axis using d3~~
-  
  - need maitenance mode for when I am updating zarr stores
  - mask sub-bottom data w checkbox, not linestring
  - allow clicking on linestring in mini-map viewer & redirect to new cruise
@@ -61,10 +16,8 @@ https://echo.fish
  - add toggle from UTC/local-time --> need to get moment library working again
  - add celestial information for sunrise/sunset
  - add celestial information for moon phase
- - ~~slowfly on home map <https://maplibre.org/maplibre-gl-js/docs/examples/flyto-options/>~~
  - sync views (leaflet vs maplibre): https://maplibre.org/maplibre-gl-js/docs/examples/sync-move/
  - constrain Sv form input to int, prevent float --> too hard
- - ~~create process for gitlab action to tag and create releases automatically~~
  - prototype knowledge graph query
 
 # Tag a Release
@@ -78,3 +31,6 @@ git push origin --tags
 Test will be automatically released anytime a tagged release is created and the project can be built automatically.
 
 Prod will only release manually. If you navigate to https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_prod_action.yaml and select 'Run workflow'. You can specify the specific tagged version of the project to release, e.g. "v25.6.10".
+
+# Check for outdated packages
+> npm outdated
