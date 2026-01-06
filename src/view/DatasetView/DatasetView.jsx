@@ -1,13 +1,20 @@
-import { useRef, useState, useEffect } from "react";
+import {
+  // useRef,
+  // useState,
+  useEffect,
+} from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useInView } from "react-intersection-observer";
 
-import { useFrame } from "@react-three/fiber";
-import { RoundedBox } from "@react-three/drei";
+// import { useFrame } from "@react-three/fiber";
+// import { RoundedBox } from "@react-three/drei";
 // import { a, config, useSpring } from "@react-spring/three";
-import { useSpring, animated } from "@react-spring/web";
+// import {
+//   // useSpring,
+//   // animated
+// } from "@react-spring/web";
 // import {
 //   GlobalCanvas,
 //   UseCanvas,
@@ -61,16 +68,16 @@ import { useSpring, animated } from "@react-spring/web";
 // }
 
 export default function DatasetView() {
-  const springs = useSpring({
-    from: { background: "#ff6d6d", y: -40, x: -20 },
-    to: [
-      { x: 20, background: "#fff59a" },
-      { y: 40, background: "#88DFAB" },
-      { x: -20, background: "#569AFF" },
-      { y: -40, background: "#ff6d6d" },
-    ],
-    loop: true,
-  });
+  // const springs = useSpring({
+  //   from: { background: "#ff6d6d", y: -40, x: -20 },
+  //   to: [
+  //     { x: 20, background: "#fff59a" },
+  //     { y: 40, background: "#88DFAB" },
+  //     { x: -20, background: "#569AFF" },
+  //     { y: -40, background: "#ff6d6d" },
+  //   ],
+  //   loop: true,
+  // });
 
   // const [isTouch, setTouch] = useState(false);
   // useEffect(() => {
@@ -87,7 +94,7 @@ export default function DatasetView() {
 
   const { ref, inView } = useInView({
     triggerOnce: false,
-    rootMargin: "-200px 0px",
+    rootMargin: "-40px 0px",
   });
 
   return (
@@ -100,12 +107,12 @@ export default function DatasetView() {
             <br />
             <br />
             {/* <h1 style={{ backgroundColor: "lightblue" }}> */}
-            <h1 className="text-center">NOAA NCEI's<br />Water Column Sonar Dataset</h1>
+            <h1 className="text-center">NOAA NCEI&apos;s<br />Water Column Sonar Dataset</h1>
             <br />
             <br />
-            <br />
+            <p className="text-center">⌘</p>
 
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            {/* <div style={{ display: "flex", justifyContent: "center" }}>
               <animated.div
                 style={{
                   width: 40,
@@ -116,7 +123,7 @@ export default function DatasetView() {
               />
             </div>
             <br />
-            <br />
+            <br /> */}
 
             <br />
             <p>

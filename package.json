@@ -22,7 +22,6 @@
     "delete-me-invalidate-cache": "aws cloudfront create-invalidation --distribution-id E38IRRAY5TY4MK --paths '/*'"
   },
   "dependencies": {
-    "@14islands/r3f-scroll-rig": "^8.15.0",
     "@protomaps/basemaps": "^5.5.1",
     "@react-spring/three": "^10.0.1",
     "@react-spring/web": "^10.0.1",

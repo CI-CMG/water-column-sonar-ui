@@ -178,7 +178,6 @@ export const fetchTime = (
 ) => {
   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
-  // debugger;
 
   return zarr.open.v3(root.resolve("time"), { kind: "array" }).then((arr) => {
     return get(arr, [indexTime]);
@@ -195,14 +194,12 @@ export const fetchTimeArray = (
 ): any => {
   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
-  // debugger;
 
   return zarr.open
     .v3(root.resolve("time"), { kind: "array" })
     .then((timeArray) => {
       // Limit query to the bounds //
       const max_indices = timeArray.shape[0];
-      // debugger;
 
       return get(timeArray, [
         slice(Math.max(indexStart, 0), Math.min(indexEnd, max_indices)),
