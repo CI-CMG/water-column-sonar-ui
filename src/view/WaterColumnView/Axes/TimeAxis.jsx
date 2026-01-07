@@ -1,6 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 import { useLayoutEffect, useEffect, useRef, useState, useMemo } from "react";
 import * as d3 from "d3";
+import { transition } from 'd3-transition';
 import {
   selectTimeMinIndex,
   selectTimeMaxIndex,
@@ -42,12 +43,10 @@ const TimeAxis = () => {
   const x = d3.scaleLinear().domain(domain).range(range).unknown(null);
   const xAxis = d3.axisBottom(x).ticks(4);
 
-  useEffect(() => {
-    // initial axis update
+  useEffect(() => { // For the initial axis update
     selected.selectAll("*").remove();
     
     selected
-      // .attr("width", width - 1)
       .attr("width", width - 2)
       .attr("height", height)
       .append("g")
@@ -55,14 +54,14 @@ const TimeAxis = () => {
         xAxis.tickFormat((d) => {
           if (timeArray !== null && d !== null) {
             const minIndex = Math.max(0, timeMinIndex);
-            const asdf = timeArray[d - minIndex];
+            const selectTime = timeArray[d - minIndex];
 
-            if (isNaN(asdf)) {
-              return "";
-            }
-            if (asdf !== null) {
-              const tempDate = new Date(asdf * 1000);
-
+            // if (isNaN(Number(selectTime))) {
+            //   console.log("NaN Found! _+_+_+_+_+");
+            //   return "";
+            // }
+            if (selectTime !== null && !isNaN(Number(selectTime))) {
+              const tempDate = new Date(selectTime * 1_000_000);
               return d3.isoFormat(tempDate);
             }
           }
@@ -71,35 +70,25 @@ const TimeAxis = () => {
       );
   }, []);
 
-  useEffect(() => {
-    // subsequent axis update
+  useEffect(() => { // ...and subsequent axis update
     selected
       .transition()
       .duration(500)
+      // .ease("easeLinear")
       .call(
         xAxis.tickFormat((d) => {
           if (timeArray !== null && d !== null) {
             const minIndex = Math.max(0, timeMinIndex);
-            // console.log(
-            //   `d: ${d}, timeMinIndex: ${timeMinIndex}, timeMaxIndex: ${timeMaxIndex}, timeArray: ${timeArray.length}`
-            // );
-            // debugger;
-            const asdf = timeArray[d - minIndex];
-            // console.log(
-            //   `timeArray: ${timeArray[0]}, ${timeArray[timeArray.length - 1]}`
-            // );
+            const selectTime = timeArray[d - minIndex];
 
-            if (isNaN(asdf)) {
-              // console.log("NaN Found! _+_+_+_+_+");
-              return "";
-            }
-            if (asdf !== null) {
-              // console.log(`for asdf: ${asdf}`);
-              const tempDate = new Date(asdf * 1000);
-              // console.log(`tempDate: ${tempDate}`);
-
+            if (selectTime !== null && !isNaN(Number(selectTime))) {
+              const tempDate = new Date(Number(selectTime)/1_000_000);
               return d3.isoFormat(tempDate);
             }
+            // if(selectTime === null) {
+            //   console.log("NaN Found! _+_+_+_+_+");
+            //   return "";
+            // }
           }
           return "";
         })

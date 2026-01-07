@@ -2,14 +2,7 @@ import {
   useEffect,
   useRef,
 } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import ForceGraph3D from 'react-force-graph-3d';
-import { createRoot } from 'react-dom';
-import SpriteText from "https://esm.sh/three-spritetext";
-    import { UnrealBloomPass } from 'https://esm.sh/three/examples/jsm/postprocessing/UnrealBloomPass.js';
-
 
 
 // Would like to get this example working:
@@ -35,14 +28,6 @@ export default function GraphView() {
   }
   const fgRef = useRef();
 
-  // useEffect(() => {
-  //   const bloomPass = new UnrealBloomPass();
-  //   bloomPass.strength = 10;
-  //   bloomPass.radius = 10;
-  //   bloomPass.threshold = 10;
-  //   fgRef.current.postProcessingComposer().addPass(bloomPass);
-  // }, []);
-
   return (
     <div className="GraphView">
       <ForceGraph3D
@@ -66,7 +51,6 @@ export default function GraphView() {
           ctx.textBaseline = "middle";
           ctx.fillStyle = "white"; //node.color;
           ctx.beginPath();
-          // ctx.arc(x, y, Math.max(fontSize / 1.4 + id), 0, 2 * Math.PI, false);
           ctx.arc(node.x, node.y, 20, 0, 2 * Math.PI, false);
           ctx.fill();
           ctx.fillText(label, node.x, node.y, 10);
