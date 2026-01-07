@@ -56,10 +56,6 @@ const TimeAxis = () => {
             const minIndex = Math.max(0, timeMinIndex);
             const selectTime = timeArray[d - minIndex];
 
-            // if (isNaN(Number(selectTime))) {
-            //   console.log("NaN Found! _+_+_+_+_+");
-            //   return "";
-            // }
             if (selectTime !== null && !isNaN(Number(selectTime))) {
               const tempDate = new Date(selectTime * 1_000_000);
               return d3.isoFormat(tempDate);
@@ -74,7 +70,6 @@ const TimeAxis = () => {
     selected
       .transition()
       .duration(500)
-      // .ease("easeLinear")
       .call(
         xAxis.tickFormat((d) => {
           if (timeArray !== null && d !== null) {
@@ -85,10 +80,6 @@ const TimeAxis = () => {
               const tempDate = new Date(Number(selectTime)/1_000_000);
               return d3.isoFormat(tempDate);
             }
-            // if(selectTime === null) {
-            //   console.log("NaN Found! _+_+_+_+_+");
-            //   return "";
-            // }
           }
           return "";
         })

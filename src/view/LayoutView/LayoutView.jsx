@@ -44,8 +44,9 @@ export default function LayoutView() {
               <Nav.Link
                 as={Link}
                 reloadDocument
-                to="/water-column?ship=Henry_B._Bigelow&cruise=HB0710&sensor=EK60&frequency=0&color=2&time=0"
-                key={Date.now()}
+                // to="/water-column?ship=Henry_B._Bigelow&cruise=HB0710&sensor=EK60&frequency=0&color=2&time=0"
+                to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3965712"
+                // key={Date.now()} // TODO: fix this?
               >
                 <PiCubeLight />
                 &nbsp;Water Column

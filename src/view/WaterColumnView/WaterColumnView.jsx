@@ -28,6 +28,8 @@ import {
   depthAsync,
   bottomAsync,
   svAsync,
+  speedAsync,
+  distanceAsync,
   ////
   // updateDepthIndex,
   updateTimeIndex,
@@ -73,7 +75,6 @@ export default function WaterColumnView() {
       dispatch(updateSensor(searchParams.get("sensor")));
     }
     if (indexTime === null) {
-      // console.log(`intialTimeIndex: ${initialTimeIndex}`);
       dispatch(updateTimeIndex(initialTimeIndex));
     }
     if (indexFrequency === null) {
@@ -118,6 +119,8 @@ export default function WaterColumnView() {
       dispatch(timeAsync({ ship, cruise, sensor, indexTime }));
       dispatch(depthAsync({ ship, cruise, sensor, indexDepth }));
       dispatch(bottomAsync({ ship, cruise, sensor, indexTime }));
+      dispatch(speedAsync({ ship, cruise, sensor, indexTime }));
+      dispatch(distanceAsync({ ship, cruise, sensor, indexTime }));
       dispatch(
         svAsync({
           ship,

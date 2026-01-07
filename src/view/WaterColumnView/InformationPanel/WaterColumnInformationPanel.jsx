@@ -52,16 +52,18 @@ import {
   selectTime,
   selectDepth,
   //
-  selectDepthMinIndex,
-  selectDepthIndex,
-  selectDepthMaxIndex,
+  // selectDepthMinIndex,
+  // selectDepthIndex,
+  // selectDepthMaxIndex,
   //
-  selectTimeMinIndex,
-  selectTimeIndex,
-  selectTimeMaxIndex,
+  // selectTimeMinIndex,
+  // selectTimeIndex,
+  // selectTimeMaxIndex,
   //
   selectBottom,
   selectSv,
+  selectSpeed,
+  selectDistance,
 } from "../../../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
 // import { TbLocation } from "react-icons/tb";
@@ -78,11 +80,9 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
 import Spinner from 'react-bootstrap/Spinner';
 
 
-const getDateTime = function (epochSeconds, timezone) {
-  debugger;
-  // timezone='Etc/UTC'
+const getDateTime = function (nanosecondValue) {
   const tempDate = new Date(0);
-  tempDate.setUTCMilliseconds(epochSeconds * 1000);
+  tempDate.setUTCMilliseconds(Number(nanosecondValue) / 1_000_000);
   return `${tempDate.toISOString().substring(0, 19)}Z`;
 };
 
@@ -113,15 +113,18 @@ const WaterColumnInformationPanel = () => {
   const time = useAppSelector(selectTime);
   const depth = useAppSelector(selectDepth);
   //
-  const depthMinIndex = useAppSelector(selectDepthMinIndex);
-  const depthIndex = useAppSelector(selectDepthIndex);
-  const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
-  const timeMinIndex = useAppSelector(selectTimeMinIndex);
-  const timeIndex = useAppSelector(selectTimeIndex);
-  const timeMaxIndex = useAppSelector(selectTimeMaxIndex);
+  // const depthMinIndex = useAppSelector(selectDepthMinIndex);
+  // const depthIndex = useAppSelector(selectDepthIndex);
+  // const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
+  // const timeMinIndex = useAppSelector(selectTimeMinIndex);
+  // const timeIndex = useAppSelector(selectTimeIndex);
+  // const timeMaxIndex = useAppSelector(selectTimeMaxIndex);
   //
   const bottom = useAppSelector(selectBottom);
   const sv = useAppSelector(selectSv);
+  const speed = useAppSelector(selectSpeed);
+  const distance = useAppSelector(selectDistance);
+
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
   // const depthIndex = useAppSelector(selectDepthIndex);
@@ -221,61 +224,36 @@ const WaterColumnInformationPanel = () => {
         </Offcanvas.Header>
 
         <Offcanvas.Body>
-          
-          {/* TODO: move me to the main water column view and float to the bottom */}
-          {/* <TimeAxis /> */}
 
           <MiniMapView />
 
           <SvPlotView />
-          {/* frequencyButtonIndex replaces frequencyIndex */}
 
           <br />
 
-
-          { (window.location.href.includes("test") || window.location.href.includes("localhost")) ? (
-            <p style={{ color: 'grey' }}>
-              <b>Debugging:</b>
-              <span className="font-monospace float-end">[d: { depthIndex }, t: { timeIndex }, f: { frequencyIndex }]</span>
-            </p>
-          ) : <></> }
-
-          {/* <PiSailboat /> */}
           <p>
-            {/* TODO: change to platform? */}
             <b>Ship:</b>
             <span className="font-monospace float-end">{ship}</span>
           </p>
 
-          {/* <TbRoute /> */}
           <p>
             <b>Cruise:</b>
             <span className="font-monospace float-end">{cruise}</span>
           </p>
 
-          {/* <MdLeakAdd /> */}
           <p>
             <b>Instrument:</b>
             <span className="font-monospace float-end">{sensor}</span>
           </p>
 
-          {/* <TbClockHour9 /> */}
           <p>
             <b>Time:</b>{" "}
             <span className="font-monospace float-end">
-              {/*{getDateTime(time, "Etc/UTC")}{" "}*/}
+              {getDateTime(time)}{" "}
               <span style={{ color: "#9933CC" }}>UTC</span>
             </span>
           </p>
 
-          <p>
-            <b>Ping Time:</b>{" "}
-            <span className="font-monospace float-end">
-              [min: {timeMinIndex}, max: {timeMaxIndex}]
-            </span>
-          </p>
-
-          {/* <TbLocation /> */}
           <p>
             <b>Lon / Lat:</b>{" "}
             <span className="font-monospace float-end">
@@ -287,39 +265,6 @@ const WaterColumnInformationPanel = () => {
             </span>
           </p>
 
-          {/* <TfiRuler /> */}
-          {depth !== null ? (
-            <>
-              <p>
-                <b>Depth:</b>
-                <span className="font-monospace float-end">
-                  {depth.toFixed(1)} meters
-                </span>
-              </p>
-              <p>
-                <b>Range Depth:</b>
-                <span className="font-monospace float-end">
-                  <i>[min: {depthMinIndex}, max: {depthMaxIndex}]</i>
-                </span>
-              </p>
-            </>
-          ) : (
-            <></>
-          )}
-
-          {/* <MdOutlineAnchor /> */}
-          {bottom !== null ? (
-            <p>
-              <b> Bottom:</b>
-              <span className="font-monospace float-end">
-                {bottom.toFixed(1)} meters
-              </span>
-            </p>
-          ) : (
-            <></>
-          )}
-
-          {/* <TbCrosshair /> */}
           {sv !== null &&
           frequencyIndex !== null &&
           !isNaN(sv[frequencyIndex]) ? (
@@ -341,7 +286,52 @@ const WaterColumnInformationPanel = () => {
             </p>
           )}
 
-          {/* <RiCompasses2Line /> */}
+          {depth !== null ? (
+            <>
+              <p>
+                <b>Depth:</b>
+                <span className="font-monospace float-end">
+                  {depth.toFixed(1)} meters
+                </span>
+              </p>
+            </>
+          ) : (
+            <></>
+          )}
+
+          {bottom !== null ? (
+            <p>
+              <b>Bottom:</b>
+              <span className="font-monospace float-end">
+                {bottom.toFixed(1)} meters
+              </span>
+            </p>
+          ) : (
+            <></>
+          )}
+
+          {speed !== null ? (
+            <p>
+              <b>Speed:</b>
+              <span className="font-monospace float-end">
+                {speed.toFixed(2)} knots
+              </span>
+            </p>
+          ) : (
+            <></>
+          )}
+
+          {distance !== null ? (
+            <p>
+              <b> Distance:</b>
+              <span className="font-monospace float-end">
+                {distance.toFixed(2)} meters
+              </span>
+            </p>
+          ) : (
+            <></>
+          )}
+
           {attributes !== null ? (
             <p>
               <b>Calibration:</b>

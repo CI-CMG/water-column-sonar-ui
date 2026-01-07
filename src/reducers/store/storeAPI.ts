@@ -251,6 +251,22 @@ export const fetchBottom = (
   });
 };
 
+/* --- SV — gets a slice across all frequencies --- */
+export const fetchSv = (
+  ship: string,
+  cruise: string,
+  sensor: string,
+  indexDepth: number,
+  indexTime: number
+): any => {
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
+
+  return zarr.open.v3(root.resolve("Sv"), { kind: "array" }).then((arr) => {
+    return get(arr, [indexDepth, indexTime, slice(null)]);
+  });
+};
+
 /* --- SPEED --- */
 export const fetchSpeed = (
   ship: string,
@@ -281,22 +297,6 @@ export const fetchDistance = (
     .then((arr) => {
       return get(arr, [indexTime]);
     });
-};
-
-/* --- SV — gets a slice across all frequencies --- */
-export const fetchSv = (
-  ship: string,
-  cruise: string,
-  sensor: string,
-  indexDepth: number,
-  indexTime: number
-): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
-  const root = zarr.root(new zarr.FetchStore(url));
-
-  return zarr.open.v3(root.resolve("Sv"), { kind: "array" }).then((arr) => {
-    return get(arr, [indexDepth, indexTime, slice(null)]);
-  });
 };
 
 /* --- SV TILE — Gets Data for Drawing Each Tile --- */

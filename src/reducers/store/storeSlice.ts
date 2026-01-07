@@ -19,6 +19,8 @@ import {
   fetchDepthArray,
   fetchBottom,
   fetchSv,
+  fetchSpeed,
+  fetchDistance,
   // alex's ai results
   fetchAIStoreAttributes, // probably don't need, just need tile?
   fetchAIStoreShape,
@@ -107,6 +109,12 @@ export interface StoreState {
   sv: any, // BigUInt64? -> Float32Array
   svStatus: "idle" | "loading" | "failed",
 
+  speed: any,
+  speedStatus: "idle" | "loading" | "failed",
+
+  distance: any,
+  distanceStatus: "idle" | "loading" | "failed",
+
   // Alex's AI
   aiSv: any, // BigUInt64? -> Float32Array
   aiSvStatus: "idle" | "loading" | "failed",
@@ -187,6 +195,13 @@ const initialState: StoreState = {
   
   sv: null,
   svStatus: "idle",
+
+  speed: null,
+  speedStatus: "idle",
+
+  distance: null,
+  distanceStatus: "idle",
+
   // alexs ai
   aiSv: null,
   aiSvStatus: "idle",
@@ -241,7 +256,7 @@ export const storeSlice = createSlice({
     updateFrequencyIndex: (state, action: PayloadAction<number>) => {
       state.frequencyIndex = action.payload;
     },
-
+    //
     updateDepthMinIndex: (state, action: PayloadAction<number>) => {
       state.depthMinIndex = action.payload; // TODO: wrap with Math.round()
     },
@@ -260,18 +275,17 @@ export const storeSlice = createSlice({
     updateTimeArray: (state, action: PayloadAction<Array<number>>) => {
       state.timeArray = action.payload;
     },
-
+    //
     updateColorIndex: (state, action: PayloadAction<number>) => {
       state.colorIndex = action.payload;
     },
-     
+    //
     updateColorMaps: (state, action: PayloadAction<any>) => { // do i need these
       state.colorMaps = action.payload;
     },
     // updateColorIndex: (state, action: PayloadAction<any>) => {
     //   state.colorMapIndex = action.payload;
     // },
-
     updateAnnotation: (state, action: PayloadAction<any>) => {
       state.annotation = action.payload;
     },
@@ -313,11 +327,17 @@ export const storeSlice = createSlice({
     updateSv: (state, action: PayloadAction<any>) => {
       state.sv = action.payload;
     },
+    updateSpeed: (state, action: PayloadAction<any>) => {
+      state.speed = action.payload;
+    },
+    updateDistance: (state, action: PayloadAction<any>) => {
+      state.distance = action.payload;
+    },
   },
 
   extraReducers: builder => {
     builder
-      // ----------------------------------------------- //  
+      // STOREATTRIBUTES-------------------------------- //
       .addCase(storeAttributesAsync.pending, state => {
         state.storeAttributesStatus = "loading";
       })
@@ -328,7 +348,7 @@ export const storeSlice = createSlice({
       .addCase(storeAttributesAsync.rejected, state => {
         state.storeAttributesStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // STORESHAPE------------------------------------- //
       .addCase(storeShapeAsync.pending, state => {
         state.storeShapeStatus = "loading";
       })
@@ -339,7 +359,7 @@ export const storeSlice = createSlice({
       .addCase(storeShapeAsync.rejected, state => {
         state.storeShapeStatus = "failed";
       })
-      // ----------------------------------------------- //  
+      // FREQUENCIES------------------------------------ //  
       .addCase(frequenciesAsync.pending, state => {
         state.frequenciesStatus = "loading";
       })
@@ -350,17 +370,6 @@ export const storeSlice = createSlice({
       .addCase(frequenciesAsync.rejected, state => {
         state.frequenciesStatus = "failed";
       })
-      // LATITUDE--------------------------------------- //
-      // .addCase(latitudeAsync.pending, state => {
-      //   state.latitudeStatus = "loading";
-      // })
-      // .addCase(latitudeAsync.fulfilled, (state, action) => {
-      //   state.latitudeStatus = "idle";
-      //   state.latitude = action.payload;
-      // })
-      // .addCase(latitudeAsync.rejected, state => {
-      //   state.latitudeStatus = "failed";
-      // })
       // LATITUDE--------------------------------------- //
       .addCase(latitudeAsync.pending, state => {
         state.latitudeStatus = "pending";
@@ -398,7 +407,7 @@ export const storeSlice = createSlice({
       .addCase(geospatialIndexAsync.rejected, state => {
         state.geospatialIndexStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // TIME------------------------------------------- //
       .addCase(timeAsync.pending, state => {
         state.timeStatus = "loading";
       })
@@ -409,7 +418,7 @@ export const storeSlice = createSlice({
       .addCase(timeAsync.rejected, state => {
         state.timeStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // TIMEARRAY-------------------------------------- //
       .addCase(timeArrayAsync.pending, state => {
         state.timeArrayStatus = "loading";
       })
@@ -420,7 +429,7 @@ export const storeSlice = createSlice({
       .addCase(timeArrayAsync.rejected, state => {
         state.timeArrayStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // DEPTH------------------------------------------ //
       .addCase(depthAsync.pending, state => {
         state.depthStatus = "loading";
       })
@@ -431,7 +440,7 @@ export const storeSlice = createSlice({
       .addCase(depthAsync.rejected, state => {
         state.depthStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // DEPTHARRAY------------------------------------- //
       .addCase(depthArrayAsync.pending, state => {
         state.depthArrayStatus = "loading";
       })
@@ -442,7 +451,7 @@ export const storeSlice = createSlice({
       .addCase(depthArrayAsync.rejected, state => {
         state.depthArrayStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // BOTTOM----------------------------------------- //
       .addCase(bottomAsync.pending, state => {
         state.bottomStatus = "loading";
       })
@@ -453,7 +462,7 @@ export const storeSlice = createSlice({
       .addCase(bottomAsync.rejected, state => {
         state.bottomStatus = "failed";
       })
-      // ----------------------------------------------- //
+      // SV--------------------------------------------- //
       .addCase(svAsync.pending, state => {
         state.svStatus = "loading";
       })
@@ -463,6 +472,28 @@ export const storeSlice = createSlice({
       })
       .addCase(svAsync.rejected, state => {
         state.svStatus = "failed";
+      })
+      // SPEED------------------------------------------ //
+      .addCase(speedAsync.pending, state => {
+        state.speedStatus = "loading";
+      })
+      .addCase(speedAsync.fulfilled, (state, action) => {
+        state.speedStatus = "idle";
+        state.speed = action.payload;
+      })
+      .addCase(speedAsync.rejected, state => {
+        state.speedStatus = "failed";
+      })
+      // DISTANCE---------------------------------------- //
+      .addCase(distanceAsync.pending, state => {
+        state.distanceStatus = "loading";
+      })
+      .addCase(distanceAsync.fulfilled, (state, action) => {
+        state.distanceStatus = "idle";
+        state.distance = action.payload;
+      })
+      .addCase(distanceAsync.rejected, state => {
+        state.distanceStatus = "failed";
       });
       // ----------------------------------------------- //
   },
@@ -512,6 +543,8 @@ export const {
   updateDepth,
   updateBottom,
   updateSv,
+  updateSpeed,
+  updateDistance,
 } = storeSlice.actions;
 
 export default storeSlice.reducer;
@@ -568,6 +601,8 @@ export const selectTime = (state: RootState) => state.store.time;
 export const selectDepth = (state: RootState) => state.store.depth;
 export const selectBottom = (state: RootState) => state.store.bottom;
 export const selectSv = (state: RootState) => state.store.sv;
+export const selectSpeed = (state: RootState) => state.store.speed;
+export const selectDistance = (state: RootState) => state.store.distance;
 
 // Just getting metadata from the store
 export const storeAttributesAsync = createAsyncThunk(
@@ -609,18 +644,7 @@ export const latitudeAsync = createAsyncThunk( // only need to pass in the index
     const response = await fetchLatitude(ship, cruise, sensor, indexTime);
     return Math.round(response * 1e5) / 1e5;
   },
-  // {
-  //   condition({ ship, cruise, sensor, indexTime }, state) {
-  //     const latitudeStatus = state.getState().store.latitudeStatus;
-  //     console.log(latitudeStatus);
-  //     if (latitudeStatus === "fulfilled" || latitudeStatus === "loading") {
-  //       // Already fetched or in progress, don't need to re-fetch
-  //       return false;
-  //     }
-  //   }
-  // }
 )
-// export const selectLatitudeStatus = (state: RootState) => state.store.latitudeStatus;
 
 export const longitudeAsync = createAsyncThunk(
   "store/fetchLongitude",
@@ -633,7 +657,6 @@ export const longitudeAsync = createAsyncThunk(
 export const geospatialIndexAsync = createAsyncThunk( // for geohash lookup
   "store/fetchGeospatialIndex",
   async ({ ship, cruise, sensor, longitude, latitude }: { ship: string, cruise: string, sensor: string, longitude: number, latitude: number }) => {
-    // const response = await fetchGeospatialIndex(ship, cruise, sensor, longitude, latitude);
     const response =  await fetchGeospatialIndex(ship, cruise, sensor, longitude, latitude)
       
     return response;
@@ -652,7 +675,6 @@ export const timeArrayAsync = createAsyncThunk( // Fetches subset of the time ar
   "store/fetchTimeArray",
   async ({ ship, cruise, sensor, indexStart, indexEnd }: { ship: string, cruise: string, sensor: string, indexStart: number, indexEnd: number }) => {
     const response = await fetchTimeArray(ship, cruise, sensor, indexStart, indexEnd);
-    // console.log(response.data.length);
     return response.data;
   },
 )
@@ -698,7 +720,25 @@ export const svAsync = createAsyncThunk(
     indexTime: number,
     indexFrequency: number,
   }) => {
-    const response = await fetchSv(ship, cruise, sensor, indexDepth, indexTime, indexFrequency);
+    const response = await fetchSv(ship, cruise, sensor, indexDepth, indexTime);
     return [...response.data].map((x: number) => Number(Math.round(x * 1e2) / 1e2))
+  },
+)
+
+export const speedAsync = createAsyncThunk(
+  "store/fetchSpeed",
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    const response = await fetchSpeed(ship, cruise, sensor, indexTime);
+    // debugger;
+    return response; // TODO: do I round?
+  },
+)
+
+export const distanceAsync = createAsyncThunk(
+  "store/fetchDistance",
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    const response = await fetchDistance(ship, cruise, sensor, indexTime);
+    // debugger;
+    return response;  // TODO: do I round?
   },
 )
