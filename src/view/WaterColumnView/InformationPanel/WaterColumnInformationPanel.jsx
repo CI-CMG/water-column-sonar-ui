@@ -437,7 +437,7 @@ const WaterColumnInformationPanel = () => {
             </Form.Group>
           </Row>
 
-          <Row className="mb-3">
+          {/* <Row className="mb-3">
             <Form.Group>
               <Form.Check
                 type="switch"
@@ -447,9 +447,9 @@ const WaterColumnInformationPanel = () => {
                 checked={annotation}
               />
             </Form.Group>
-          </Row>
+          </Row> */}
 
-          <AnnotationColors />
+          {/* <AnnotationColors /> */}
 
           <br />
 
@@ -464,7 +464,7 @@ const WaterColumnInformationPanel = () => {
             </Form.Group>
           </Row>
 
-          <Row className="mb-3">
+          {/* <Row className="mb-3">
             <Form.Group>
               <Form.Check
                 type="switch"
@@ -474,7 +474,7 @@ const WaterColumnInformationPanel = () => {
                 checked={annotationAI}
               />
             </Form.Group>
-          </Row>
+          </Row> */}
 
           <hr />
           <p><b>Data Access</b></p>

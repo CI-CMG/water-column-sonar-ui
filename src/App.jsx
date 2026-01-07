@@ -29,7 +29,7 @@ export default function App() {
 
           <Route path="about" element={<AboutView />} />
 
-          <Route path="*" element={<ErrorView />} />
+          {/* <Route path="*" element={<ErrorView />} /> */}
 
         </Route>
       </Routes>

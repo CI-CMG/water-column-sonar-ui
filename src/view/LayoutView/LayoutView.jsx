@@ -57,7 +57,11 @@ export default function LayoutView() {
                 &nbsp;Dataset
               </Nav.Link>
 
-              <Nav.Link disabled as={Link} to="/graph">
+              <Nav.Link
+                // disabled
+                as={Link}
+                to="/graph"
+              >
                 <PiGraphLight />
                 &nbsp;Graph
               </Nav.Link>
