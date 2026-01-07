@@ -45,34 +45,34 @@ export default function GraphView() {
 
   return (
     <div className="GraphView">
-            <ForceGraph3D
-              ref={fgRef}
-              graphData={genRandomTree(70)}
-              nodeThreeObjectExtend={true}
-              nodeAutoColorBy="group"
-              nodeLabel="id"
-              backgroundColor="purple"
-              //
-              nodeRelSize={6}
-              linkDirectionalArrowLength={5}
-              linkDirectionalArrowRelPos={1}
-              // nodeCanvasObjectMode={() => "after"}
-              // nodeThreeObject
-              nodeCanvasObject={(node, ctx, globalScale) => {
-                const label = node.id;
-                const fontSize = 24 / globalScale;
-                ctx.font = `${fontSize}px Sans-Serif`;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillStyle = "white"; //node.color;
-                ctx.beginPath();
-                // ctx.arc(x, y, Math.max(fontSize / 1.4 + id), 0, 2 * Math.PI, false);
-                ctx.arc(node.x, node.y, 20, 0, 2 * Math.PI, false);
-                ctx.fill();
-                ctx.fillText(label, node.x, node.y, 10);
-              }}
-              linkCurvature={0.025}
-            />
+      <ForceGraph3D
+        ref={fgRef}
+        graphData={genRandomTree(70)}
+        nodeThreeObjectExtend={true}
+        nodeAutoColorBy="group"
+        nodeLabel="id"
+        backgroundColor="black"
+        //
+        nodeRelSize={6}
+        linkDirectionalArrowLength={5}
+        linkDirectionalArrowRelPos={1}
+        // nodeCanvasObjectMode={() => "after"}
+        // nodeThreeObject
+        nodeCanvasObject={(node, ctx, globalScale) => {
+          const label = node.id;
+          const fontSize = 24 / globalScale;
+          ctx.font = `${fontSize}px Sans-Serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "white"; //node.color;
+          ctx.beginPath();
+          // ctx.arc(x, y, Math.max(fontSize / 1.4 + id), 0, 2 * Math.PI, false);
+          ctx.arc(node.x, node.y, 20, 0, 2 * Math.PI, false);
+          ctx.fill();
+          ctx.fillText(label, node.x, node.y, 10);
+        }}
+        linkCurvature={0.025}
+      />
     </div>
   );
 }
