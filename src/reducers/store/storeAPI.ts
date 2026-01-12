@@ -136,37 +136,31 @@ export const fetchGeospatialIndex = (
   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
   const clickedPoint = point([longitude, latitude]);
+  debugger;
 
-  return zarr
-    .withConsolidated(new zarr.FetchStore(url))
-    .then((storePromise) => {
-      return zarr.open(storePromise, { kind: "group" });
-    })
-    .then((rootPromise) => {
-      return Promise.all([
-        zarr.open(rootPromise.resolve("longitude"), { kind: "array" }),
-        zarr.open(rootPromise.resolve("latitude"), { kind: "array" }),
-      ]);
-    })
-    .then(([longitudeArray, latitudeArray]) => {
-      return Promise.all([
-        get(longitudeArray, [slice(null)]),
-        get(latitudeArray, [slice(null)]),
-      ]);
-    })
-    .then(([longitudeData, latitudeData]) => {
-      let aa = Array.from(latitudeData.data);
-      let bb = Array.from(longitudeData.data);
+  return Promise.all([
+    zarr.open.v3(root.resolve("longitude"), { kind: "array" }),
+    zarr.open.v3(root.resolve("latitude"), { kind: "array" }),
+  ])
+  .then(([longitudeArray, latitudeArray]) => {
+    return Promise.all([
+      get(longitudeArray, [slice(null)]),
+      get(latitudeArray, [slice(null)]),
+    ]);
+  })
+  .then(([longitudeData, latitudeData]) => {
+    let aa = Array.from(latitudeData.data);
+    let bb = Array.from(longitudeData.data);
 
-      const dataJoined = aa.map((e, i) => {
-        const bbNoise = bb[i] + Math.random() / 10000;
-        return [bbNoise, e];
-      });
-      // Note: redundant points will cause problems, fixed with noise
-      const clickedLinestring = lineString(dataJoined);
-      let snapped = nearestPointOnLine(clickedLinestring, clickedPoint);
-      return snapped.properties.index;
+    const dataJoined = aa.map((e, i) => {
+      const bbNoise = bb[i] + Math.random() / 10000;
+      return [bbNoise, e];
     });
+    // Note: redundant points will cause problems, fixed with noise
+    const clickedLinestring = lineString(dataJoined);
+    let snapped = nearestPointOnLine(clickedLinestring, clickedPoint);
+    return snapped.properties.index;
+  });
 };
 
 /* --- TIME --- */

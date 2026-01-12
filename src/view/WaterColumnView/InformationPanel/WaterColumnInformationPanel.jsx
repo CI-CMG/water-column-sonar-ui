@@ -11,7 +11,7 @@ import ColorMap from "../ColorMap.jsx";
 // import TimeAxis from "./Axes/TimeAxis.jsx";
 import SvPlotView from "../SvPlotView.jsx";
 // import { HuePicker } from 'react-color';
-import AnnotationColors from "./AnnotationColors.jsx"
+// import AnnotationColors from "./AnnotationColors.jsx"
 import {
   selectShip,
   selectCruise,
