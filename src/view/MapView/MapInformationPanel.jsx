@@ -230,9 +230,6 @@ const MapInformationPanel = () => {
                       → View Echogram
                     </Link>
                   </p>
-                  <p className="text-center">
-                    Nearest ping time index: {geospatialIndex}
-                  </p>
                 </>
               )}
             </>
