@@ -136,7 +136,6 @@ export const fetchGeospatialIndex = (
   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
   const root = zarr.root(new zarr.FetchStore(url));
   const clickedPoint = point([longitude, latitude]);
-  debugger;
 
   return Promise.all([
     zarr.open.v3(root.resolve("longitude"), { kind: "array" }),
