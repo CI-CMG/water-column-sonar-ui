@@ -6,3 +6,9 @@
 @use './DatasetView/DatasetView.scss';
 @use './GraphView/GraphView.scss';
 @use './ErrorView/ErrorView.scss';
+
+.MainView {
+    // border: 2px solid red;
+    flex: 0 0 100%;
+    display: flex;
+}

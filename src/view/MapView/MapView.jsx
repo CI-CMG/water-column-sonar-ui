@@ -1,20 +1,11 @@
 import {
-  // useState,
   useRef,
   useEffect,
 } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
-// import { round } from "@turf/helpers";
-// import Toast from "react-bootstrap/Toast";
-// import ToastContainer from "react-bootstrap/ToastContainer";
-// import Spinner from 'react-bootstrap/Spinner';
-// import GetZarrGeospatialIndex from "./GetZarrGeospatialIndex";
 import {
-  // selectTimeIndex,
-  // updateTimeIndex,
-  //
   geospatialIndexAsync,
   //
   updateShip,
@@ -24,12 +15,10 @@ import {
   updateShipHovered,
   updateCruiseHovered,
   updateSensorHovered,
-  // selectShowInfoPanel,
   updateShowInfoPanel,
 } from ".././../reducers/store/storeSlice.ts";
 import {
   useAppDispatch,
-  // useAppSelector,
 } from "../../app/hooks";
 import MapInformationPanel from "./MapInformationPanel.jsx";
 
@@ -110,7 +99,7 @@ const style = {
           "case",
           ["boolean", ["feature-state", "hover"], false],
           3,
-          1,
+          2,
         ],
         // "line-gap-width": 1,
         "line-blur": 0,
@@ -170,19 +159,12 @@ const style = {
 
 export default function MapView() {
   const dispatch = useAppDispatch();
-  // const showInfoPanel = useAppSelector(selectShowInfoPanel);
   const handleShow = () => dispatch(updateShowInfoPanel(true));
 
   const mapContainerRef = useRef();
+  // const [mapWidth, setMapWidth] = useState();
+  // const [mapHeight, setMapHeight] = useState();
   const map = useRef();
-
-  // const [mouseCoordinates, setMouseCoordinates] = useState(null);
-  // const [selectedShip, setSelectedShip] = useState(null);
-  // const [selectedCruise, setSelectedCruise] = useState(null);
-  // const [selectedSensor, setSelectedSensor] = useState(null);
-  // const [hoveredStateId, setHoveredStateId] = useState(null);
-
-  // const timeIndex = useAppSelector(selectTimeIndex);
 
   useEffect(() => {
     document.title = `echofish`;
@@ -302,13 +284,16 @@ export default function MapView() {
           );
         });
       });
+
+      // setMapHeight(mapContainerRef.current.offsetHeight);
+      // setMapWidth(mapContainerRef.current.offsetWidth);
     }
-  }, []);
+  });
 
   return (
     <>
       <div className="MapView">
-        <div ref={mapContainerRef} className="Map" />
+        <div ref={mapContainerRef} className="Map" style={{ width: window.innerWidth, height: window.innerHeight }} />
 
         <MapInformationPanel
           // ship={selectedShip}
