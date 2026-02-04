@@ -1,7 +1,7 @@
 {
   "name": "water-column-sonar-ui",
   "private": true,
-  "version": "26.1.3",
+  "version": "26.2.0",
   "homepage": "https://www.watercolumnproject.org/",
   "repository": {
     "type": "git",
@@ -38,8 +38,8 @@
     "d3-scale": "^4.0.2",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
-    "maplibre-gl": "^5.15.0",
-    "pmtiles": "^4.3.2",
+    "maplibre-gl": "^5.17.0",
+    "pmtiles": "^4.4.0",
     "query-string": "^9.2.1",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",

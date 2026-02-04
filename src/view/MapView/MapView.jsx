@@ -35,13 +35,24 @@ import MapInformationPanel from "./MapInformationPanel.jsx";
 
 const map_key = import.meta.env.VITE_MAPTILER_API;
 const style = {
-  version: 8,
-  projection: {
-    type: "globe",
+  "version": 8,
+  // "projection": {
+  //   type: "globe",
+  // },
+  "projection": {
+    "type": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        10,
+        "vertical-perspective",
+        12,
+        "mercator"
+    ]
   },
-  name: "Water Column Project",
-  glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
-  sources: {
+  "name": "Water Column Project",
+  "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+  "sources": {
     // satellite: {
     //   url: `https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=${map_key}`,
     //   type: "raster",
@@ -52,7 +63,7 @@ const style = {
       type: "raster",
     },
     cruises: {
-      url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar-id.pmtiles",
+      url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/pmtiles/water-column-sonar-26.2.1.pmtiles",
       type: "vector",
     },
     // annotations: {
@@ -60,13 +71,14 @@ const style = {
     //   type: "vector",
     // },
   },
-  layers: [
+  "layers": [
     {
       id: "Ocean",
       type: "raster",
       source: "ocean",
       // minZoom: 5,
       // maxZoom: 15,
+      "color": "rgba(255, 15, 63, 0.25)",
     },
     // {
     //   id: "Satellite",
@@ -80,32 +92,32 @@ const style = {
       type: "line",
       source: "cruises",
       paint: {
+        // options here: https://maplibre.org/maplibre-style-spec/layers/#line
+        // "line-cap": "round",
+        // "line-join": "bevel",
+        // "fill-sort-key": 2,
+        // "visibility": true,
         "line-color": [
           "case",
           ["boolean", ["feature-state", "hover"], false],
-          "rgba(255, 255, 255, 0.95)", // white
-          "rgba(155, 32, 238, 0.25)",
+          // "rgba(255, 255, 255, 0.95)", // white
+          "#ffffff",
+          "rgba(155, 32, 238, 0.15)",
         ],
-        "line-width": 2,
+        // "fill-color": "rgba(32, 238, 121, 0.25)",
+        // "line-width": 1.25,
+        "line-width": [
+          "case",
+          ["boolean", ["feature-state", "hover"], false],
+          3,
+          1,
+        ],
+        // "line-gap-width": 1,
+        "line-blur": 0,
       },
       "source-layer": "cruises",
       // "minzoom": 5,
     },
-    // {
-    //   id: "AH_School",
-    //   type: "circle",
-    //   source: "annotations",
-    //   paint: {
-    //     "circle-blur": 0,
-    //     "circle-color": "grey",
-    //     // "circle-opacity": 0.4,
-    //     "circle-radius": 4,
-    //     "circle-stroke-color": "grey",
-    //     // "circle-stroke-opacity": 0.9,
-    //     // "circle-stroke-width": 2,
-    //   },
-    //   "source-layer": "AH_School",
-    // },
     // {
     //   id: "Atlantic_Herring",
     //   type: "circle",
@@ -121,92 +133,38 @@ const style = {
     //   },
     //   "source-layer": "Atlantic_Herring",
     // },
-    // {
-    //   id: "Fish_School",
-    //   type: "circle",
-    //   source: "annotations",
-    //   paint: {
-    //     "circle-blur": 0,
-    //     "circle-color": "yellow",
-    //     "circle-opacity": 0.4,
-    //     "circle-radius": 4,
-    //     "circle-stroke-color": "yellow",
-    //     "circle-stroke-opacity": 0.9,
-    //     // "circle-stroke-width": 2,
-    //   },
-    //   "source-layer": "Fish_School",
-    // },
-    // // {
-    // //   id: "Krill_Schools",
-    // //   type: "circle",
-    // //   source: "annotations",
-    // //   paint: {
-    // //     "circle-blur": 0,
-    // //     "circle-color": "pink",
-    // //     "circle-opacity": 0.4,
-    // //     "circle-radius": 2,
-    // //     "circle-stroke-color": "pink",
-    // //     "circle-stroke-opacity": 0.9,
-    // //     // "circle-stroke-width": 2,
-    // //   },
-    // //   "source-layer": "Krill_Schools",
-    // // },
-    // {
-    //   id: "Possible_Herring",
-    //   type: "circle",
-    //   source: "annotations",
-    //   paint: {
-    //     "circle-blur": 0,
-    //     "circle-color": "cyan",
-    //     "circle-opacity": 0.4,
-    //     "circle-radius": 4,
-    //     "circle-stroke-color": "cyan",
-    //     "circle-stroke-opacity": 0.9,
-    //     // "circle-stroke-width": 2,
-    //   },
-    //   "source-layer": "Possible_Herring",
-    // },
-    // {
-    //   id: "Unclassified_regions",
-    //   type: "circle",
-    //   source: "annotations",
-    //   paint: {
-    //     "circle-blur": 0,
-    //     "circle-color": "red",
-    //     "circle-opacity": 0.4,
-    //     "circle-radius": 2,
-    //     "circle-stroke-color": "red",
-    //     "circle-stroke-opacity": 0.9,
-    //     // "circle-stroke-width": 2,
-    //   },
-    //   "source-layer": "Unclassified_regions",
-    // },
   ],
-  sky: {
-    "sky-color": "#5a19f3",
+  "sky": {
+    "sky-color": "#199EF3",
     "sky-horizon-blend": 0.75,
-    "horizon-color": "purple",
+    "horizon-color": "#ffffff",
     "horizon-fog-blend": 0.75,
-    "fog-color": "#ff0000",
+    "fog-color": "#0000ff",
     "fog-ground-blend": 0.75,
     "atmosphere-blend": [
-      "interpolate",
-      ["linear"],
-      ["zoom"],
-      0,
-      1,
-      10,
-      1,
-      12,
-      0,
-    ],
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        0,
+        1,
+        10,
+        1,
+        12,
+        0
+    ]
   },
-  light: {
+  "light": {
     anchor: "viewport", // or 'map'
     color: "purple",
-    intensity: 0.2,
+    intensity: 0.45,
     // 'position': [2.5, 90, 80],
   },
+  "state": {
+    "chargerType": {"default": ["CCS", "CHAdeMO", "Type2"]},
+    "minPreferredChargingSpeed": {"default": 50}
+  },
+  "terrain": { "source": "raster-dem-source", "exaggeration": 0.5 },
+  "transition": { "duration": 200, "delay": 0 },
 };
 
 
@@ -257,7 +215,7 @@ export default function MapView() {
       map.current.flyTo({
         center: [-75, 35],
         essential: true,
-        speed: 0.2,
+        speed: 0.7, // 0.2
         zoom: 3,
       });
 

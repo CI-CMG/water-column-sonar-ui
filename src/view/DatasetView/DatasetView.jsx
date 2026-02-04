@@ -109,7 +109,6 @@ export default function DatasetView() {
             <h1 className="text-center">NOAA NCEI&apos;s<br />Water Column Sonar Dataset</h1>
             <br />
             <br />
-            <p className="text-center">⌘</p>
 
             <br />
             <p>
@@ -483,7 +482,7 @@ export default function DatasetView() {
             <br />
             <p className="text-end">
               Contact <i className="bi bi-person-arms-up"></i>
-              <b>wcd.info@noaa.gov</b> for support with the data set
+              <b>wcd.info@noaa.gov</b> for support with the dataset
             </p>
             <hr />
             <br />
