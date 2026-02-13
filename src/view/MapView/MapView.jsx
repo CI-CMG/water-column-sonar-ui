@@ -1,6 +1,7 @@
 import {
   useRef,
   useEffect,
+  useState,
 } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -25,9 +26,6 @@ import MapInformationPanel from "./MapInformationPanel.jsx";
 const map_key = import.meta.env.VITE_MAPTILER_API;
 const style = {
   "version": 8,
-  // "projection": {
-  //   type: "globe",
-  // },
   "projection": {
     "type": [
         "interpolate",
@@ -162,8 +160,8 @@ export default function MapView() {
   const handleShow = () => dispatch(updateShowInfoPanel(true));
 
   const mapContainerRef = useRef();
-  // const [mapWidth, setMapWidth] = useState();
-  // const [mapHeight, setMapHeight] = useState();
+  const [mapWidth, setMapWidth] = useState();
+  const [mapHeight, setMapHeight] = useState();
   const map = useRef();
 
   useEffect(() => {
@@ -288,19 +286,14 @@ export default function MapView() {
       // setMapHeight(mapContainerRef.current.offsetHeight);
       // setMapWidth(mapContainerRef.current.offsetWidth);
     }
-  });
+  }, []);
 
   return (
     <>
       <div className="MapView">
-        {/* <div ref={mapContainerRef} className="Map" style={{ width: window.innerWidth, height: window.innerHeight }} /> */}
-        <div ref={mapContainerRef} className="Map" />
+        <div ref={mapContainerRef} className="Map" style={{ width: "100vw", height: "100vh" }} />
 
-        <MapInformationPanel
-          // ship={selectedShip}
-          // cruise={selectedCruise}
-          // sensor={selectedSensor}
-        />
+        <MapInformationPanel />
       </div>
     </>
   );
