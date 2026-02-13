@@ -50,7 +50,7 @@ export default function AboutView() {
       <div>
         <div>
           <br />
-          <h1>Water Column Sonar Data Lake</h1>
+          <h1>Water Column Sonar Data</h1>
           <br />
           <p>version {import.meta.env.VITE_REACT_APP_VERSION}</p>
           <hr />
@@ -77,7 +77,7 @@ export default function AboutView() {
           <h2>NODD — NOAA Open Data Dissemination</h2>
           <p>NOAA curates hundreds of terabytes of water column sonar data. The NOAA Open Data Dissemination program provides public access to NOAA's data via AWS S3 bucket access.</p>
           <img src={NOAALogo} width={100} height={100} />
-          <img src={AWSLogo} height={100} />
+          {/* <img src={AWSLogo} height={100} /> */}
           <p>The water column sonar archive includes nearly 300 TB of echosounder data ready for analysis.</p>
 
           <br />
@@ -180,7 +180,7 @@ export default function AboutView() {
         </div>
 
         <div>
-          <h2>Our Data Science Ecosystem</h2>
+          <h2>Our Processing Ecosystem</h2>
           <p>Analysis is interoperable between a suite of scientific tools in the Python ecosystem.</p>
           {/* TODO: make these actual links to projects */}
           <img src={XarrayLogo} height={100} />

@@ -293,7 +293,8 @@ export default function MapView() {
   return (
     <>
       <div className="MapView">
-        <div ref={mapContainerRef} className="Map" style={{ width: window.innerWidth, height: window.innerHeight }} />
+        {/* <div ref={mapContainerRef} className="Map" style={{ width: window.innerWidth, height: window.innerHeight }} /> */}
+        <div ref={mapContainerRef} className="Map" />
 
         <MapInformationPanel
           // ship={selectedShip}

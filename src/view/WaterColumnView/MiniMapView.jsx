@@ -16,6 +16,7 @@ import { useAppSelector } from "../../app/hooks";
 
 const map_key = import.meta.env.VITE_MAPTILER_API;
 
+// TODO: this should be composed from other style of main map viewer
 const style = {
   version: 8,
   projection: {
@@ -33,7 +34,8 @@ const style = {
       type: "raster",
     },
     cruises: {
-      url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar-id.pmtiles",
+      // url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/water-column-sonar-id.pmtiles",
+      url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/pmtiles/water-column-sonar-26.2.1.pmtiles",
       type: "vector",
     },
     annotations: {
@@ -113,21 +115,6 @@ const style = {
       "source-layer": "Fish_School",
     },
     {
-      id: "Krill_Schools",
-      type: "circle",
-      source: "annotations",
-      paint: {
-        "circle-blur": 1,
-        "circle-color": "black",
-        "circle-opacity": 0.5,
-        "circle-radius": 3,
-        "circle-stroke-color": "black",
-        "circle-stroke-opacity": 0.5,
-        // "circle-stroke-width": 2,
-      },
-      "source-layer": "Krill_Schools",
-    },
-    {
       id: "Possible_Herring",
       type: "circle",
       source: "annotations",
@@ -142,21 +129,21 @@ const style = {
       },
       "source-layer": "Possible_Herring",
     },
-    {
-      id: "Unclassified_regions",
-      type: "circle",
-      source: "annotations",
-      paint: {
-        "circle-blur": 0,
-        "circle-color": "red",
-        "circle-opacity": 0.4,
-        "circle-radius": 2,
-        "circle-stroke-color": "red",
-        "circle-stroke-opacity": 0.9,
-        // "circle-stroke-width": 2,
-      },
-      "source-layer": "Unclassified_regions",
-    },
+    // {
+    //   id: "Unclassified_regions",
+    //   type: "circle",
+    //   source: "annotations",
+    //   paint: {
+    //     "circle-blur": 0,
+    //     "circle-color": "red",
+    //     "circle-opacity": 0.4,
+    //     "circle-radius": 2,
+    //     "circle-stroke-color": "red",
+    //     "circle-stroke-opacity": 0.9,
+    //     // "circle-stroke-width": 2,
+    //   },
+    //   "source-layer": "Unclassified_regions",
+    // },
   ],
 };
 

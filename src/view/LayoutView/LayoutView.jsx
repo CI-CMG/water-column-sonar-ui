@@ -58,7 +58,7 @@ export default function LayoutView() {
               </Nav.Link>
 
               <Nav.Link
-                // disabled
+                disabled
                 as={Link}
                 to="/graph"
               >
