@@ -329,7 +329,7 @@ export default function DatasetView() {
             <p>
               The library boto3 provides an object-oriented and well documented
               interface to the data set. We can configure the boto3 resource to
-              access our bucket, "noaa-wcsd-pds" as an anonymous user using
+              access our bucket, &quot;noaa-wcsd-pds&quot; as an anonymous user using
               low-level functions from botocore.
             </p>
 
@@ -481,8 +481,7 @@ export default function DatasetView() {
             <br />
             <br />
             <p className="text-end">
-              Contact <i className="bi bi-person-arms-up"></i>
-              <b>wcd.info@noaa.gov</b> for support with the dataset
+              Contact <b>wcd.info@noaa.gov</b> for support with the dataset.
             </p>
             <hr />
             <br />

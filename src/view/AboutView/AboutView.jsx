@@ -12,7 +12,7 @@ import PandasLogo from "../../../src/assets/images/pandas/pandas.png";
 import Echopype from "../../../src/assets/images/echopype/echopype.png";
 import OSPool from "../../../src/assets/images/osdf/OSPool.png";
 import OSDF from "../../../src/assets/images/osdf/OSDF.png";
-import AWSLogo from "../../../src/assets/images/aws/aws.png";
+// import AWSLogo from "../../../src/assets/images/aws/aws.png";
 
 export default function AboutView() {
   useEffect(() => {

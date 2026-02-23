@@ -1,7 +1,6 @@
 import {
   useRef,
   useEffect,
-  useState,
 } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -122,12 +121,12 @@ const style = {
     // },
   ],
   "sky": {
-    "sky-color": "#199EF3",
-    "sky-horizon-blend": 0.75,
-    "horizon-color": "#ffffff",
-    "horizon-fog-blend": 0.75,
-    "fog-color": "#0000ff",
-    "fog-ground-blend": 0.75,
+    "sky-color": "Silver",
+    "sky-horizon-blend": 0.15,
+    "horizon-color": "#3a2828",
+    "horizon-fog-blend": 0.15,
+    "fog-color": "SlateBlue",
+    "fog-ground-blend": 0.15,
     "atmosphere-blend": [
         "interpolate",
         ["linear"],
@@ -160,8 +159,6 @@ export default function MapView() {
   const handleShow = () => dispatch(updateShowInfoPanel(true));
 
   const mapContainerRef = useRef();
-  const [mapWidth, setMapWidth] = useState();
-  const [mapHeight, setMapHeight] = useState();
   const map = useRef();
 
   useEffect(() => {
@@ -282,16 +279,14 @@ export default function MapView() {
           );
         });
       });
-
-      // setMapHeight(mapContainerRef.current.offsetHeight);
-      // setMapWidth(mapContainerRef.current.offsetWidth);
     }
   }, []);
 
   return (
     <>
       <div className="MapView">
-        <div ref={mapContainerRef} className="Map" style={{ width: "100vw", height: "100vh" }} />
+        <div ref={mapContainerRef} className="Map" style={{ minHeight: "100%" , minWidth: "100%" }} />
+        {/* <div ref={mapContainerRef} className="Map" /> */}
 
         <MapInformationPanel />
       </div>
