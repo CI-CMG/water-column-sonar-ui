@@ -7,6 +7,16 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useInView } from "react-intersection-observer";
+import Image from 'react-bootstrap/Image';
+import header from "../../../src/assets/images/header.jpg";
+import logo_noaa from "../../../src/assets/images/noaa/noaa.png";
+import logo_ncei from "../../../src/assets/images/noaa/ncei.png";
+import { Link } from "react-router-dom";
+import { MdOutlineAnchor } from "react-icons/md";
+import { ImCompass } from "react-icons/im";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { library } from "@fortawesome/fontawesome-svg-core";
+// import { fab } from "@fortawesome/free-brands-svg-icons";
 
 // import { useFrame } from "@react-three/fiber";
 // import { RoundedBox } from "@react-three/drei";
@@ -101,19 +111,37 @@ export default function DatasetView() {
     <div className="DatasetView">
       <Container fluid>
         <Row>
+            <Image src={header} />
+        </Row>
+        <Row>
           <Col sm={3} />
           
           <Col sm={6}>
             <br />
             <br />
-            <h1 className="text-center">NOAA NCEI&apos;s<br />Water Column Sonar Dataset</h1>
+            <br />
+            <h1 className="text-left">NOAA NCEI Water Column Sonar Data</h1>
             <br />
             <br />
-
-            <br />
+            
             <p>
-              Water column sonar data, the acoustic back-scatter from the
-              near-surface to the seafloor, are used to assess physical and
+              <Link
+                to="/map"
+              >
+                Map View<MdOutlineAnchor />
+              </Link>
+              {' | '}
+              <Link
+                to="/water-column"
+              >
+                Water Column View<ImCompass />
+              </Link>
+            </p>
+            <br />
+            
+            <p>
+              Water column sonar, the acoustic back-scatter from the
+              near-surface to the seafloor, is used to assess physical and
               biological characteristics of the ocean including the spatial
               distribution of plankton, fish, methane seeps, and underwater oil
               plumes.
@@ -121,14 +149,19 @@ export default function DatasetView() {
 
             <br />
             <p>
-              In collaboration with NOAA's National Marine Fisheries Service
-              (NMFS) and the University of Colorado Boulder, NOAA’s National
-              Centers for Environmental Information (NCEI) established a
+              In collaboration with NOAA's <b>National Marine Fisheries Service
+              (NMFS)</b> and the <b>University of Colorado Boulder</b>, NOAA’s <b>National
+              Centers for Environmental Information (NCEI)</b> established a
               national archive for water column sonar data. This project entails
               ensuring the long-term stewardship of well-documented water column
               sonar data, and enabling discovery and access to researchers and
               the public around the world.
             </p>
+
+            <center>
+              <Image src={logo_noaa} style={{ height: "100px", marginRight: "60px" }}/>
+              <Image src={logo_ncei} style={{ height: "100px" }}/>
+            </center>
 
             <br />
             <p>
@@ -248,10 +281,7 @@ export default function DatasetView() {
             <h4>Data Details</h4>
             <br />
             <p>
-              The raw EK60 data are processed with the routine below. This
-              routine will be available in pyEcholab in 2020. Processed data are
-              not available for all raw data. However, more will be added over
-              time as it is created.
+              The raw EK60 data are processed with the following routine.
             </p>
 
             <ul>
@@ -337,12 +367,12 @@ export default function DatasetView() {
             <hr />
             <br />
             <h2>Tutorials</h2>
-            <div
+            {/* <div
               ref={ref}
               className={`ordinary ${inView ? "itemShown" : "itemHidden"}`}
             >
               <span aria-label="Wave">🐍</span>
-            </div>
+            </div> */}
             <br />
             <p>
               There are several tutorials that will help you download the data
@@ -481,11 +511,13 @@ export default function DatasetView() {
             <br />
             <br />
             <p className="text-end">
-              Contact <b>wcd.info@noaa.gov</b> for support with the dataset.
+              <i>Contact <b>wcd.info@noaa.gov</b> for support with the dataset</i>
             </p>
             <hr />
             <br />
           </Col>
+
+          {/* <Col sm={2} /> */}
 
           <Col sm={3} />
         </Row>

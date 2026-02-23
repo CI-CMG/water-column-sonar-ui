@@ -1,8 +1,16 @@
 /// Dataset View ///
 
 .DatasetView {
+  .container-fluid {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+  }
   // border: 1px solid orchid;
   // background-color: aliceblue;
+  background-color: SeaShell;
   flex: 1 1 100%;
   display: flex;
 
@@ -14,6 +22,27 @@
   .itemShown {
     opacity: 1;
     transition: opacity 2s;
+  }
+  
+  p, a {
+    line-height: 28px;
+    font-weight: 400;
+    font-size: 1.1em;
+    letter-spacing: 0.2px;
+  }
+  a {
+    color: rgb(93, 93, 101);
+    // background-color: yellow;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  svg {
+    margin: 5px;
+  }
+  svg:hover {
+    transform: rotate(-45deg);
+    transition: all 0.35s ease-in-out;
   }
 }
 
