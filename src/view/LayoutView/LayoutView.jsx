@@ -37,6 +37,11 @@ export default function LayoutView() {
             <p style={{ color: "grey", fontSize: "0.75em" }}>{`v${import.meta.env.VITE_REACT_APP_VERSION}`}</p>
 
             <Nav className="ms-auto">
+              <Nav.Link as={Link} to="/dataset">
+                <PiDatabase />
+                &nbsp;Data
+              </Nav.Link>
+
               <Nav.Link as={Link} to="/map">
                 <PiMapTrifoldThin />
                 &nbsp;Map
@@ -51,11 +56,6 @@ export default function LayoutView() {
               >
                 <PiCubeLight />
                 &nbsp;Water Column
-              </Nav.Link>
-
-              <Nav.Link as={Link} to="/dataset">
-                <PiDatabase />
-                &nbsp;Dataset
               </Nav.Link>
 
               <Nav.Link

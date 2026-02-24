@@ -1,33 +1,21 @@
-// import { useState } from "react";
-// import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Link } from "react-router-dom";
-
-// import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
-// import { round } from "@turf/helpers";
-// import Card from "react-bootstrap/Card";
-// import Badge from "react-bootstrap/Badge";
 import Spinner from "react-bootstrap/Spinner";
-
-// import Col from "react-bootstrap/Col";
-// import Row from "react-bootstrap/Row";
-// import Toast from "react-bootstrap/Toast";
 import {
   selectShowInfoPanel,
   updateShowInfoPanel,
   selectGeospatialIndex,
-  // geospatialIndexStatus,
   selectGeospatialIndexStatus,
   //
   selectShip,
   selectCruise,
   selectSensor,
   //
-  selectShipHovered,
-  selectCruiseHovered,
-  selectSensorHovered,
+  // selectShipHovered,
+  // selectCruiseHovered,
+  // selectSensorHovered,
   //
 } from "../../reducers/store/storeSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -48,7 +36,7 @@ const all_cruises = [
   "HB0904",
   "HB0905",
   "HB1002",
-  "HB1006",
+  // "HB1006",
   "HB1102",
   "HB1103",
   "HB1105",
@@ -106,18 +94,18 @@ const MapInformationPanel = () => {
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
 
-  const shipHovered = useAppSelector(selectShipHovered);
-  const cruiseHovered = useAppSelector(selectCruiseHovered);
-  const sensorHovered = useAppSelector(selectSensorHovered);
+  // const shipHovered = useAppSelector(selectShipHovered);
+  // const cruiseHovered = useAppSelector(selectCruiseHovered);
+  // const sensorHovered = useAppSelector(selectSensorHovered);
 
   const handleClose = () => dispatch(updateShowInfoPanel(false));
   const handleShow = () => dispatch(updateShowInfoPanel(true));
 
-  const listItems = all_cruises.map((cruise) => (
-    <div className="p-2" key={cruise}>
-      Henry_B._Bigelow / {cruise} / EK60
-    </div>
-  ));
+  // const listItems = all_cruises.map((cruise) => (
+  //   <div className="p-2" key={cruise}>
+  //     Henry_B._Bigelow / {cruise} / EK60
+  //   </div>
+  // ));
 
   return (
     <div className="MapInformationPanel">
@@ -144,49 +132,8 @@ const MapInformationPanel = () => {
         </Offcanvas.Header>
 
         <Offcanvas.Body>
-          {/* { (latitude && longitude) (
-              <>
-                <p>
-                  <b>Latitude:</b>
-                  <span className="font-monospace float-end">
-                    {round(latitude, 5)}° N,{" "}
-                    {round(longitude, 5)}° E
-                  </span>
-                </p>
-              </>
-            )
-          } */}
-
           <p>
-            <b>Last Hovered:</b>
-          </p>
-          <p>
-            Ship:
-            {shipHovered && cruiseHovered && sensorHovered ? (
-              <>
-                <span className="font-monospace float-end">{shipHovered}</span>
-              </>
-            ) : (
-              <span className="font-monospace float-end">...</span>
-            )}
-          </p>
-
-          <p>
-            Cruise:
-            <span className="font-monospace float-end">{cruiseHovered}</span>
-          </p>
-
-          <p>
-            Sensor:
-            <span className="font-monospace float-end">{sensorHovered}</span>
-          </p>
-
-          <hr />
-
-          <p>
-            <b>Last Clicked:</b>
-          </p>
-          <p>
+            Last Cruise Clicked:
             Ship:
             {ship ? (
               <>
@@ -208,7 +155,9 @@ const MapInformationPanel = () => {
           </p>
 
           {geospatialIndex === null && geospatialIndexStatus !== "loading" ? (
-            <></>
+            <>
+              <p>[no data]</p>
+            </>
           ) : (
             <>
               {geospatialIndexStatus === "loading" ? (
@@ -234,23 +183,6 @@ const MapInformationPanel = () => {
               )}
             </>
           )}
-
-          {/* <Form>
-            <Form.Group controlId="exampleForm.ControlInput1">
-              <Form.Control
-                size="sm"
-                type="text"
-                placeholder="Filter Cruises"
-                disabled
-              />
-            </Form.Group>
-          </Form>
-          <br />
-
-          <b>Ship / Cruise / Instrument:</b>
-          <br />
-          <br />
-          <Stack gap={3}>{listItems}</Stack> */}
         </Offcanvas.Body>
       </Offcanvas>
     </div>

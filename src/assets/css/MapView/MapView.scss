@@ -2,33 +2,19 @@
 
 .MapView {
   flex: 1;
-  // border: 2px solid cyan;
-  /////////////////////////////////////////////////////////////////
-  // .Map { // the map div populated by maplibre
-  //   // border: 2px solid orange;
-  //   // flex: 0 0 100%; // grow, shrink, basis
-  //   // flex: 1 1 100%;
-  //   // display: flex;
-
-  //   .maplibregl-canvas-container {
-  //     // border: 2px solid yellowgreen;
-  //     flex-basis: 100%;
-  //     display: flex;
-
-  //     .maplibregl-canvas {
-  //       border: 2px solid yellow;
-  //       flex: 1 1 100%;
-  //       display: flex;
-  //       // flex-grow: 1;
-  //     }
-      
-  //   }
-  // }
+  display: flex;
+  position: relative;
 
   .legend {
     position: absolute;
-    top: 75px;
+    top: 25px;
     right: 15px;
+  }
+
+  .clikedPoint {
+    position: absolute;
+    top: 25px;
+    left: 15px;
   }
 
   /////////////////////////////////////////////////////////////////
@@ -65,4 +51,5 @@
 
   /////////////////////////////////////////////////////////////////
   .maplibregl-ctrl-bottom-right > .maplibregl-ctrl-attrib { display: none; }
+  /////////////////////////////////////////////////////////////////
 }

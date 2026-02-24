@@ -20,11 +20,11 @@ export default function App() {
           
           <Route index element={<DatasetView />} />
 
-          <Route path="map" element={<MapView />} />
-          
-          <Route path="water-column" element={<WaterColumnView />} />
-
           <Route path="dataset" element={<DatasetView />} />
+
+          <Route path="map" element={<MapView />} />
+
+          <Route path="water-column" element={<WaterColumnView />} />
 
           {/* <Route path="graph" element={<GraphView />} /> */}
 

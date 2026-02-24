@@ -28,12 +28,13 @@ ChartJS.register(
   Tooltip,
 );
 
+// Sv Label: https://github.com/CI-CMG/water-column-sonar-ui/issues/114
 const options = {
   responsive: true,
   plugins: {
     title: {
       display: true,
-      text: 'Volume Backscattering Strength, Sv (dB re 1 m-1)',
+      text: 'Volume Backscattering Strength, Sv (dB re 1 m^2 m^-3)',
     },
   },
   // maintainAspectRatio: false,

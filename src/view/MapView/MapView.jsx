@@ -1,44 +1,49 @@
-import {
-  useRef,
-  useEffect,
-} from "react";
+import { useRef, useEffect, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
 import {
   geospatialIndexAsync,
+  selectGeospatialIndexStatus,
+  selectGeospatialIndex,
   //
   updateShip,
   updateCruise,
   updateSensor,
+  //
+  selectShip,
+  selectCruise,
+  selectSensor,
   //
   updateShipHovered,
   updateCruiseHovered,
   updateSensorHovered,
   updateShowInfoPanel,
 } from ".././../reducers/store/storeSlice.ts";
-import {
-  useAppDispatch,
-} from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import MapInformationPanel from "./MapInformationPanel.jsx";
+import { useAppSelector } from "../../app/hooks";
+import Toast from "react-bootstrap/Toast";
+import Spinner from "react-bootstrap/Spinner";
+import { Link } from "react-router-dom";
 
 const map_key = import.meta.env.VITE_MAPTILER_API;
 const style = {
-  "version": 8,
-  "projection": {
-    "type": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        10,
-        "vertical-perspective",
-        12,
-        "mercator"
-    ]
+  version: 8,
+  projection: {
+    type: [
+      "interpolate",
+      ["linear"],
+      ["zoom"],
+      10,
+      "vertical-perspective",
+      12,
+      "mercator",
+    ],
   },
-  "name": "Water Column Project",
-  "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
-  "sources": {
+  name: "Water Column Project",
+  glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+  sources: {
     // satellite: {
     //   url: `https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=${map_key}`,
     //   type: "raster",
@@ -57,14 +62,14 @@ const style = {
     //   type: "vector",
     // },
   },
-  "layers": [
+  layers: [
     {
       id: "Ocean",
       type: "raster",
       source: "ocean",
       // minZoom: 5,
       // maxZoom: 15,
-      "color": "rgba(255, 15, 63, 0.25)",
+      color: "rgba(255, 15, 63, 0.25)",
     },
     // {
     //   id: "Satellite",
@@ -120,7 +125,7 @@ const style = {
     //   "source-layer": "Atlantic_Herring",
     // },
   ],
-  "sky": {
+  sky: {
     "sky-color": "Silver",
     "sky-horizon-blend": 0.15,
     "horizon-color": "#3a2828",
@@ -128,35 +133,44 @@ const style = {
     "fog-color": "SlateBlue",
     "fog-ground-blend": 0.15,
     "atmosphere-blend": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        0,
-        1,
-        10,
-        1,
-        12,
-        0
-    ]
+      "interpolate",
+      ["linear"],
+      ["zoom"],
+      0,
+      1,
+      10,
+      1,
+      12,
+      0,
+    ],
   },
-  "light": {
+  light: {
     anchor: "viewport", // or 'map'
     color: "purple",
     intensity: 0.45,
     // 'position': [2.5, 90, 80],
   },
-  "state": {
-    "chargerType": {"default": ["CCS", "CHAdeMO", "Type2"]},
-    "minPreferredChargingSpeed": {"default": 50}
+  state: {
+    chargerType: { default: ["CCS", "CHAdeMO", "Type2"] },
+    minPreferredChargingSpeed: { default: 50 },
   },
-  "terrain": { "source": "raster-dem-source", "exaggeration": 0.5 },
-  "transition": { "duration": 200, "delay": 0 },
+  terrain: { source: "raster-dem-source", exaggeration: 0.5 },
+  transition: { duration: 200, delay: 0 },
 };
 
-
 export default function MapView() {
+  const [showToast, setShowToast] = useState(false);
+  const toggleShowToast = () => setShowToast(!showToast);
+
   const dispatch = useAppDispatch();
-  const handleShow = () => dispatch(updateShowInfoPanel(true));
+  // const handleShow = () => dispatch(updateShowInfoPanel(true));
+  // const geospatialIndex = useAppSelector(selectGeospatialIndex);
+  const geospatialIndex = useAppSelector(selectGeospatialIndex);
+  const geospatialIndexStatus = useAppSelector(selectGeospatialIndexStatus);
+
+  const ship = useAppSelector(selectShip);
+  const cruise = useAppSelector(selectCruise);
+  const sensor = useAppSelector(selectSensor);
 
   const mapContainerRef = useRef();
   const map = useRef();
@@ -186,7 +200,7 @@ export default function MapView() {
           showZoom: true,
           showCompass: true,
         }),
-        "bottom-left"
+        "bottom-left",
       );
 
       map.current.flyTo({
@@ -228,54 +242,58 @@ export default function MapView() {
         });
 
         map.current.on("click", "cruises", (e) => {
-          let popup = new maplibregl.Popup();
+          // let popup = new maplibregl.Popup();
 
           const allFeatureIds = map.current
             .queryRenderedFeatures()
             .map((x) => x.id);
 
           allFeatureIds.forEach((id) => {
-            // reset styling for all
-            map.current.setFeatureState(
+            map.current.setFeatureState( // reset styling for all
               { source: "cruises", sourceLayer: "cruises", id: id },
-              { hover: false }
+              { hover: false },
             );
           });
 
-          popup.remove();
-          handleShow();
+          // popup.remove();
+          // handleShow();
           const id = e.features[0]["id"];
           const properties = e.features[0]["properties"];
           // properties: {id: 25, ship: 'Henry_B._Bigelow', cruise: 'HB1806', sensor: 'EK60'}
-          
+
           dispatch(updateShip(properties["ship"]));
           dispatch(updateCruise(properties["cruise"]));
           dispatch(updateSensor(properties["sensor"]));
-          
-          dispatch(geospatialIndexAsync({
-            ship: properties["ship"],
-            cruise: properties["cruise"],
-            sensor: properties["sensor"],
-            longitude: e["lngLat"]["lng"],
-            latitude: e["lngLat"]["lat"],
-          }));
-          console.log('right after dispatch');
+
+          dispatch(
+            geospatialIndexAsync({
+              ship: properties["ship"],
+              cruise: properties["cruise"],
+              sensor: properties["sensor"],
+              longitude: e["lngLat"]["lng"],
+              latitude: e["lngLat"]["lat"],
+            }),
+          );
+          console.log("right after dispatch for geospatial");
 
           // dispatch(updateTimeIndex(1024)); // TODO: on load for wcv get from store
 
-          popup
-            .setLngLat(e.lngLat)
-            .setHTML(
-              `
-              Ship: ${e.features[0].properties.ship}<br />
-              Cruise: ${e.features[0].properties.cruise}<br />
-              Sensor: ${e.features[0].properties.sensor}
-            `)
-            .addTo(map.current);
+          // popup
+          //   .setLngLat(e.lngLat)
+          //   .setHTML(
+          //     `
+          //     Ship: ${e.features[0].properties.ship}<br />
+          //     Cruise: ${e.features[0].properties.cruise}<br />
+          //     Sensor: ${e.features[0].properties.sensor}
+          //   `,
+          //   )
+          //   .addTo(map.current);
+
+          setShowToast(true);
 
           map.current.setFeatureState(
             { source: "cruises", sourceLayer: "cruises", id: id },
-            { hover: true }
+            { hover: true },
           );
         });
       });
@@ -285,10 +303,40 @@ export default function MapView() {
   return (
     <>
       <div className="MapView">
-        <div ref={mapContainerRef} className="Map" style={{ minHeight: "100%" , minWidth: "100%" }} />
+        <div
+          ref={mapContainerRef}
+          className="Map"
+          style={{ minHeight: "100%", minWidth: "100%" }}
+        />
         {/* <div ref={mapContainerRef} className="Map" /> */}
 
         <MapInformationPanel />
+
+        {/* expirement with toast on click */}
+        <div className="clikedPoint">
+          <Toast onClose={() => toggleShowToast()} show={showToast} delay={30_000} autohide>
+            <Toast.Header>
+              <strong className="me-auto">Clicked Point</strong>
+            </Toast.Header>
+            <Toast.Body>
+              Ship: <span className="font-monospace float-end">{ship}</span>
+              <br />
+              Cruise: <span className="font-monospace float-end">{cruise}</span>
+              <br />
+              Instrument:{" "}
+              <span className="font-monospace float-end">{sensor}</span>
+              <br /><br />
+              <p>{geospatialIndexStatus}</p>
+              <p>
+                <Link
+                  to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
+                >
+                  → View Echogram
+                </Link>
+              </p>
+            </Toast.Body>
+          </Toast>
+        </div>
       </div>
     </>
   );

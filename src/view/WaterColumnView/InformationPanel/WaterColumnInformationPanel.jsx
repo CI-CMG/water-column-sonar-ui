@@ -310,9 +310,10 @@ const WaterColumnInformationPanel = () => {
             <></>
           )}
 
+          {/* https://github.com/CI-CMG/water-column-sonar-ui/issues/118 */}
           {speed !== null ? (
             <p>
-              <b>Speed:</b>
+              <b>Speed over water:</b>
               <span className="font-monospace float-end">
                 {speed.toFixed(2)} knots
               </span>
@@ -323,7 +324,7 @@ const WaterColumnInformationPanel = () => {
 
           {distance !== null ? (
             <p>
-              <b> Distance:</b>
+              <b>GPS alongtrack distance:</b>
               <span className="font-monospace float-end">
                 {distance.toFixed(2)} meters
               </span>

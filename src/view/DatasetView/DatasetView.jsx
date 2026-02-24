@@ -11,9 +11,11 @@ import Image from 'react-bootstrap/Image';
 import header from "../../../src/assets/images/header.jpg";
 import logo_noaa from "../../../src/assets/images/noaa/noaa.png";
 import logo_ncei from "../../../src/assets/images/noaa/ncei.png";
+import logo_echopype from "../../../src/assets/images/echopype/echopype.png";
 import { Link } from "react-router-dom";
-import { MdOutlineAnchor } from "react-icons/md";
-import { ImCompass } from "react-icons/im";
+// https://react-icons.github.io/react-icons/search/#q=compass
+// import { MdOutlineAnchor } from "react-icons/md";
+// import { ImCompass } from "react-icons/im";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { library } from "@fortawesome/fontawesome-svg-core";
 // import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -120,21 +122,23 @@ export default function DatasetView() {
             <br />
             <br />
             <br />
-            <h1 className="text-left">NOAA NCEI Water Column Sonar Data</h1>
+            <h1 className="text-center" style={{lineHeight: "1.5em"}}>EchoFish<br />Water Column Sonar Data Viewer</h1>
             <br />
             <br />
             
-            <p>
+            <p className="text-center">
               <Link
                 to="/map"
               >
-                Map View<MdOutlineAnchor />
+                Map View <i className="bi bi-arrow-right" />
               </Link>
+              {' '}
               {' | '}
+              {' '}
               <Link
                 to="/water-column"
               >
-                Water Column View<ImCompass />
+                Water Column View <i className="bi bi-arrow-right" />
               </Link>
             </p>
             <br />
@@ -164,6 +168,7 @@ export default function DatasetView() {
             </center>
 
             <br />
+            <br />
             <p>
               Data providers include NOAA National Marine Fisheries Service
               (NMFS), NOAA Office of Ocean Exploration and Research (OER), NOAA
@@ -192,13 +197,13 @@ export default function DatasetView() {
             <br />
             <ul>
               <li>
-                <a href="https://www.ncei.noaa.gov/products/water-column-sonar-data">
+                <a target="_blank" href="https://www.ncei.noaa.gov/products/water-column-sonar-data">
                   NCEI water-column sonar data archive
                 </a>
               </li>
               <br />
               <li>
-                <a href="https://www.ncei.noaa.gov/maps/water-column-sonar/">
+                <a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">
                   NCEI water-column sonar archive data access page
                 </a>
               </li>
@@ -238,12 +243,13 @@ export default function DatasetView() {
             <h4>Level 0 — Raw Data Files</h4>
             <br />
             <p>
-              Binary files are generated during individual cruises. Users would
-              typically use a tool such as pyEcholab to open the files and
-              process the data into a more conventional format.
+              Binary files are generated during individual cruises. Users can
+              use open source tools such as <a target="_blank" href="https://echopype.readthedocs.io/en/latest/">echopype</a> to
+              open the files and process the data into a more
+              conventional Xarray Dataset format.
             </p>
 
-            <a href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/">
+            <a target="_blank" href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/">
               Level 0: Raw data S3 Explorer
             </a>
 
@@ -253,11 +259,18 @@ export default function DatasetView() {
             <h4>Level 2a — File Level Zarr stores</h4>
             <br />
             <p>
-              EK60 data are calibrated and converted using echopype to generate
-              Zarr stores.
+              EK60 data are opened and calibrated using <a target="_blank" href="https://echopype.readthedocs.io/en/latest/">echopype</a> to generate
+              Xarray datasets which are then saved as Zarr stores.
             </p>
+            <br />
+            <center>
+              <Image src={logo_echopype} style={{ height: "50px" }}/>
+            </center>
+            <br />
+            <br />
+            
 
-            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/">
+            <a target="_blank" href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/">
               Level 2a: Zarr store S3 Explorer
             </a>
 
@@ -271,7 +284,7 @@ export default function DatasetView() {
               form a larger singular Zarr store.
             </p>
 
-            <a href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/">
+            <a target="_blank" href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/">
               Level 3a: Zarr store S3 Explorer
             </a>
 
@@ -324,12 +337,12 @@ export default function DatasetView() {
             <br />
             <p>
               To download a 18 kHz frequency file from the SH1305 cruise such as
-              "SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv" you
+              &quot;SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv&quot; you
               can read directly from the URL as follows:
             </p>
             <br />
             <p>
-              <a href="https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv">
+              <a target="_blank" href="https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv">
                 https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv
               </a>
             </p>
@@ -382,22 +395,22 @@ export default function DatasetView() {
             <br />
             <ul>
               <li>
-                <a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Plotting_Raw_EK60_Data.ipynb">
+                <a target="_blank" href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Plotting_Raw_EK60_Data.ipynb">
                   Plotting Raw EK60 Data
                 </a>
               </li>
               <li>
-                <a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Frequency_Differencing_With_Raw_Data.ipynb">
+                <a target="_blank" href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Frequency_Differencing_With_Raw_Data.ipynb">
                   Frequency Differencing with Raw Data
                 </a>
               </li>
               <li>
-                <a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Processed_CSV_Data.ipynb">
+                <a target="_blank" href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Processed_CSV_Data.ipynb">
                   Reading and Plotting Processed CSV Data
                 </a>
               </li>
               <li>
-                <a href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Bottom_Data.ipynb">
+                <a target="_blank" href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Bottom_Data.ipynb">
                   Reading and Plotting Raw Bottom Data
                 </a>
               </li>
@@ -412,17 +425,17 @@ export default function DatasetView() {
             <br />
             <ul>
               <li>
-                <a href="https://colab.research.google.com/drive/14VVFf9KRlaFyr5T-dwkM0bytDl1QChAi?usp=sharing">
+                <a target="_blank" href="https://colab.research.google.com/drive/14VVFf9KRlaFyr5T-dwkM0bytDl1QChAi?usp=sharing">
                   Echopype EK60 Cloud Processing
                 </a>
               </li>
               <li>
-                <a href="https://colab.research.google.com/drive/1-I56QOIftj9sewlbyzTzncdRt54Fh51d?usp=sharing">
+                <a target="_blank" href="https://colab.research.google.com/drive/1-I56QOIftj9sewlbyzTzncdRt54Fh51d?usp=sharing">
                   Frequency Differencing with L2 EK60 Data
                 </a>
               </li>
               <li>
-                <a href="https://colab.research.google.com/drive/12hf-1gV6QyrR9pLPfsjYIQyzleTCp-Uz?usp=sharing">
+                <a target="_blank" href="https://colab.research.google.com/drive/12hf-1gV6QyrR9pLPfsjYIQyzleTCp-Uz?usp=sharing">
                   Geospatial Indexing
                 </a>
               </li>
