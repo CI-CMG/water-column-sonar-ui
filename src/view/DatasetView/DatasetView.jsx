@@ -6,7 +6,7 @@ import {
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { useInView } from "react-intersection-observer";
+// import { useInView } from "react-intersection-observer";
 import Image from "react-bootstrap/Image";
 import header from "../../../src/assets/images/header.jpg";
 import logo_noaa from "../../../src/assets/images/noaa/noaa.png";
@@ -123,7 +123,7 @@ export default function DatasetView() {
             <br />
             <br />
             <br />
-            <h1 className="text-center" style={{ lineHeight: "1.5em" }}>
+            <h1 className="text-left" style={{ lineHeight: "1.5em" }}>
               EchoFish
               <br />
               Water Column Sonar Data Viewer
@@ -132,7 +132,7 @@ export default function DatasetView() {
             <br />
 
             <p className="text-center">
-              <Link to="/map">
+              <Link to="/map" className="LinkToMap">
                 Map View <i className="bi bi-arrow-right" />
               </Link>
             </p>
@@ -340,6 +340,15 @@ export default function DatasetView() {
             >
               Level 3a: Zarr store S3 Explorer
             </a>
+
+            {/* <br />
+            <br />
+            <a
+              target="_blank"
+              href="https://radiantearth.github.io/stac-browser/#/external/noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/catalog/catalog.json?.language=en"
+            >
+              Stac Catalog for the Zarr stores
+            </a> */}
 
             <br />
             <br />

@@ -37,10 +37,11 @@
     font-weight: 600;
     text-decoration: none;
   }
-  a:hover {
+  .LinkToMap:hover {
     font-size: 1.2em !important;
-    transition: all 0.1s ease-in-out;
-    color: DarkOrchid ;
+    transition: all 0.25s ease-in-out;
+    // color: DarkOrchid ;
+    color: rgb(62, 182, 206);
   }
 
   svg {

@@ -198,12 +198,12 @@ const WaterColumnInformationPanel = () => {
     );
   }
   return (
-    <>
+    <div className="WaterColumnInformationPanel">
       <Button
         variant="dark"
         size="sm"
         onClick={handleShow}
-        className="legend"
+        className="CruiseInformationButton"
         style={{ zIndex: 999 }}
       >
         Cruise Information
@@ -250,7 +250,7 @@ const WaterColumnInformationPanel = () => {
             <b>Time:</b>{" "}
             <span className="font-monospace float-end">
               {getDateTime(time)}{" "}
-              <span style={{ color: "#9933CC" }}>UTC</span>
+              <span style={{ color: "#6b437d" }}>UTC</span>
             </span>
           </p>
 
@@ -571,7 +571,7 @@ const WaterColumnInformationPanel = () => {
           </p>
         </Offcanvas.Body>
       </Offcanvas>
-    </>
+    </div>
   );
 };
 

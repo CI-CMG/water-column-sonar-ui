@@ -331,7 +331,8 @@ export default function MapView() {
               <br />
               Instrument:{" "}
               <span className="font-monospace float-end">{sensor}</span>
-              <br /><br />
+              <br />
+              <br />
               {/* <br />
               <p>
                 geoIndStat: {geospatialIndexStatus}, geoSpInd: {geospatialIndex}
@@ -345,9 +346,11 @@ export default function MapView() {
                   </Link>
                 </p>
               ) : (
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                <center>
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </center>
               )}
             </Toast.Body>
           </Toast>

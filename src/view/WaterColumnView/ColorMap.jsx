@@ -53,6 +53,7 @@ const ColorMap = ({
       maxSv,
       (maxSv - minSv) / palette.length,
     );
+    
     const colorScaleFunction = scaleOrdinal().domain(colorValueArray).range(palette);
 
     d3.select('#colorPalette').selectAll('*').remove();

@@ -5,13 +5,13 @@ https://echo.fish
 [![Deploy DEV to dev.echo.fish](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml/badge.svg)](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml)
 
 # TODO:
- - need maitenance mode for when I am updating zarr stores
+ - ~~need maitenance mode for when I am updating zarr stores~~
  - mask sub-bottom data w checkbox, not linestring
  - allow clicking on linestring in mini-map viewer & redirect to new cruise
  - add total Level_2 dataset size e.g. 120 GB to info panel
  - capture echopype provenance --> need to do in water-column-sonar-processing Zarr store metadata
  - constrain the input Sv Range Minimum dB to be less than Maximum dB
- - open and add "speed" to zarr --> needs to be manually written to zarr stores
+ - ~~open and add "speed" to zarr --> needs to be manually written to zarr stores~~
  - get zoom working
  - add toggle from UTC/local-time --> need to get moment library working again
  - add celestial information for sunrise/sunset
