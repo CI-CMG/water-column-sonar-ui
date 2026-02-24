@@ -7,11 +7,12 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useInView } from "react-intersection-observer";
-import Image from 'react-bootstrap/Image';
+import Image from "react-bootstrap/Image";
 import header from "../../../src/assets/images/header.jpg";
 import logo_noaa from "../../../src/assets/images/noaa/noaa.png";
 import logo_ncei from "../../../src/assets/images/noaa/ncei.png";
 import logo_echopype from "../../../src/assets/images/echopype/echopype.png";
+import logo_cires from "../../../src/assets/images/cu/cires_cu.png";
 import { Link } from "react-router-dom";
 // https://react-icons.github.io/react-icons/search/#q=compass
 // import { MdOutlineAnchor } from "react-icons/md";
@@ -104,45 +105,39 @@ export default function DatasetView() {
     document.title = `Dataset`;
   }, []);
 
-  const { ref, inView } = useInView({
-    triggerOnce: false,
-    rootMargin: "-40px 0px",
-  });
+  // const { ref, inView } = useInView({
+  //   triggerOnce: false,
+  //   rootMargin: "-40px 0px",
+  // });
 
   return (
     <div className="DatasetView">
       <Container fluid>
         <Row>
-            <Image src={header} />
+          <Image src={header} />
         </Row>
         <Row>
           <Col sm={3} />
-          
+
           <Col sm={6}>
             <br />
             <br />
             <br />
-            <h1 className="text-center" style={{lineHeight: "1.5em"}}>EchoFish<br />Water Column Sonar Data Viewer</h1>
+            <h1 className="text-center" style={{ lineHeight: "1.5em" }}>
+              EchoFish
+              <br />
+              Water Column Sonar Data Viewer
+            </h1>
             <br />
             <br />
-            
+
             <p className="text-center">
-              <Link
-                to="/map"
-              >
+              <Link to="/map">
                 Map View <i className="bi bi-arrow-right" />
-              </Link>
-              {' '}
-              {' | '}
-              {' '}
-              <Link
-                to="/water-column"
-              >
-                Water Column View <i className="bi bi-arrow-right" />
               </Link>
             </p>
             <br />
-            
+
             <p>
               Water column sonar, the acoustic back-scatter from the
               near-surface to the seafloor, is used to assess physical and
@@ -153,18 +148,45 @@ export default function DatasetView() {
 
             <br />
             <p>
-              In collaboration with NOAA's <b>National Marine Fisheries Service
-              (NMFS)</b> and the <b>University of Colorado Boulder</b>, NOAA’s <b>National
-              Centers for Environmental Information (NCEI)</b> established a
-              national archive for water column sonar data. This project entails
-              ensuring the long-term stewardship of well-documented water column
-              sonar data, and enabling discovery and access to researchers and
-              the public around the world.
+              In collaboration with NOAA's{" "}
+              <b>National Marine Fisheries Service (NMFS)</b> and the{" "}
+              <b>University of Colorado Boulder</b>, NOAA’s{" "}
+              <b>National Centers for Environmental Information (NCEI)</b>{" "}
+              established a national archive for water column sonar data. This
+              project entails ensuring the long-term stewardship of
+              well-documented water column sonar data, and enabling discovery
+              and access to researchers and the public around the world.
             </p>
 
             <center>
-              <Image src={logo_noaa} style={{ height: "100px", marginRight: "60px" }}/>
-              <Image src={logo_ncei} style={{ height: "100px" }}/>
+              <a
+                target="_blank"
+                href="https://www.fisheries.noaa.gov/"
+              >
+              <Image
+                src={logo_noaa}
+                style={{ height: "100px", padding: "0px 30px" }}
+              />
+              </a>
+              <a
+                target="_blank"
+                href="https://cires.colorado.edu/"
+              >
+                <Image
+                  src={logo_cires}
+                  style={{ height: "100px", padding: "0px 30px" }}
+                />
+              </a>
+
+              <a
+                target="_blank"
+                href="https://www.ncei.noaa.gov/"
+              >
+                <Image
+                  src={logo_ncei}
+                  style={{ height: "100px", padding: "0px 30px" }}
+                />
+              </a>
             </center>
 
             <br />
@@ -197,13 +219,19 @@ export default function DatasetView() {
             <br />
             <ul>
               <li>
-                <a target="_blank" href="https://www.ncei.noaa.gov/products/water-column-sonar-data">
+                <a
+                  target="_blank"
+                  href="https://www.ncei.noaa.gov/products/water-column-sonar-data"
+                >
                   NCEI water-column sonar data archive
                 </a>
               </li>
               <br />
               <li>
-                <a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">
+                <a
+                  target="_blank"
+                  href="https://www.ncei.noaa.gov/maps/water-column-sonar/"
+                >
                   NCEI water-column sonar archive data access page
                 </a>
               </li>
@@ -244,12 +272,21 @@ export default function DatasetView() {
             <br />
             <p>
               Binary files are generated during individual cruises. Users can
-              use open source tools such as <a target="_blank" href="https://echopype.readthedocs.io/en/latest/">echopype</a> to
-              open the files and process the data into a more
-              conventional Xarray Dataset format.
+              use open source tools such as{" "}
+              <a
+                target="_blank"
+                href="https://echopype.readthedocs.io/en/latest/"
+              >
+                echopype
+              </a>{" "}
+              to open the files and process the data into a more conventional
+              Xarray Dataset format.
             </p>
 
-            <a target="_blank" href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/">
+            <a
+              target="_blank"
+              href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/"
+            >
               Level 0: Raw data S3 Explorer
             </a>
 
@@ -259,18 +296,31 @@ export default function DatasetView() {
             <h4>Level 2a — File Level Zarr stores</h4>
             <br />
             <p>
-              EK60 data are opened and calibrated using <a target="_blank" href="https://echopype.readthedocs.io/en/latest/">echopype</a> to generate
-              Xarray datasets which are then saved as Zarr stores.
+              EK60 data are opened and calibrated using{" "}
+              <a
+                target="_blank"
+                href="https://echopype.readthedocs.io/en/latest/"
+              >
+                echopype
+              </a>{" "}
+              to generate Xarray datasets which are then saved as Zarr stores.
             </p>
             <br />
             <center>
-              <Image src={logo_echopype} style={{ height: "50px" }}/>
+              <a
+                target="_blank"
+                href="https://echopype.readthedocs.io/"
+              >
+              <Image src={logo_echopype} style={{ height: "50px" }} />
+              </a>
             </center>
             <br />
             <br />
-            
 
-            <a target="_blank" href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/">
+            <a
+              target="_blank"
+              href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/"
+            >
               Level 2a: Zarr store S3 Explorer
             </a>
 
@@ -284,7 +334,10 @@ export default function DatasetView() {
               form a larger singular Zarr store.
             </p>
 
-            <a target="_blank" href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/">
+            <a
+              target="_blank"
+              href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/"
+            >
               Level 3a: Zarr store S3 Explorer
             </a>
 
@@ -293,9 +346,7 @@ export default function DatasetView() {
             <br />
             <h4>Data Details</h4>
             <br />
-            <p>
-              The raw EK60 data are processed with the following routine.
-            </p>
+            <p>The raw EK60 data are processed with the following routine.</p>
 
             <ul>
               <li>Match ping times</li>
@@ -337,12 +388,15 @@ export default function DatasetView() {
             <br />
             <p>
               To download a 18 kHz frequency file from the SH1305 cruise such as
-              &quot;SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv&quot; you
-              can read directly from the URL as follows:
+              &quot;SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv&quot;
+              you can read directly from the URL as follows:
             </p>
             <br />
             <p>
-              <a target="_blank" href="https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv">
+              <a
+                target="_blank"
+                href="https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv"
+              >
                 https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv
               </a>
             </p>
@@ -372,8 +426,8 @@ export default function DatasetView() {
             <p>
               The library boto3 provides an object-oriented and well documented
               interface to the data set. We can configure the boto3 resource to
-              access our bucket, &quot;noaa-wcsd-pds&quot; as an anonymous user using
-              low-level functions from botocore.
+              access our bucket, &quot;noaa-wcsd-pds&quot; as an anonymous user
+              using low-level functions from botocore.
             </p>
 
             <br />
@@ -395,22 +449,34 @@ export default function DatasetView() {
             <br />
             <ul>
               <li>
-                <a target="_blank" href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Plotting_Raw_EK60_Data.ipynb">
+                <a
+                  target="_blank"
+                  href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Plotting_Raw_EK60_Data.ipynb"
+                >
                   Plotting Raw EK60 Data
                 </a>
               </li>
               <li>
-                <a target="_blank" href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Frequency_Differencing_With_Raw_Data.ipynb">
+                <a
+                  target="_blank"
+                  href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Frequency_Differencing_With_Raw_Data.ipynb"
+                >
                   Frequency Differencing with Raw Data
                 </a>
               </li>
               <li>
-                <a target="_blank" href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Processed_CSV_Data.ipynb">
+                <a
+                  target="_blank"
+                  href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Processed_CSV_Data.ipynb"
+                >
                   Reading and Plotting Processed CSV Data
                 </a>
               </li>
               <li>
-                <a target="_blank" href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Bottom_Data.ipynb">
+                <a
+                  target="_blank"
+                  href="https://github.com/CI-CMG/pyEcholab/tree/master/examples/cloud%20tutorials/Reading_And_Plotting_Bottom_Data.ipynb"
+                >
                   Reading and Plotting Raw Bottom Data
                 </a>
               </li>
@@ -425,17 +491,26 @@ export default function DatasetView() {
             <br />
             <ul>
               <li>
-                <a target="_blank" href="https://colab.research.google.com/drive/14VVFf9KRlaFyr5T-dwkM0bytDl1QChAi?usp=sharing">
+                <a
+                  target="_blank"
+                  href="https://colab.research.google.com/drive/14VVFf9KRlaFyr5T-dwkM0bytDl1QChAi?usp=sharing"
+                >
                   Echopype EK60 Cloud Processing
                 </a>
               </li>
               <li>
-                <a target="_blank" href="https://colab.research.google.com/drive/1-I56QOIftj9sewlbyzTzncdRt54Fh51d?usp=sharing">
+                <a
+                  target="_blank"
+                  href="https://colab.research.google.com/drive/1-I56QOIftj9sewlbyzTzncdRt54Fh51d?usp=sharing"
+                >
                   Frequency Differencing with L2 EK60 Data
                 </a>
               </li>
               <li>
-                <a target="_blank" href="https://colab.research.google.com/drive/12hf-1gV6QyrR9pLPfsjYIQyzleTCp-Uz?usp=sharing">
+                <a
+                  target="_blank"
+                  href="https://colab.research.google.com/drive/12hf-1gV6QyrR9pLPfsjYIQyzleTCp-Uz?usp=sharing"
+                >
                   Geospatial Indexing
                 </a>
               </li>
@@ -524,7 +599,9 @@ export default function DatasetView() {
             <br />
             <br />
             <p className="text-end">
-              <i>Contact <b>wcd.info@noaa.gov</b> for support with the dataset</i>
+              <i>
+                Contact <b>wcd.info@noaa.gov</b> for support with the dataset
+              </i>
             </p>
             <hr />
             <br />

@@ -18,7 +18,7 @@ import {
   updateShipHovered,
   updateCruiseHovered,
   updateSensorHovered,
-  updateShowInfoPanel,
+  // updateShowInfoPanel,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch } from "../../app/hooks";
 import MapInformationPanel from "./MapInformationPanel.jsx";
@@ -249,7 +249,8 @@ export default function MapView() {
             .map((x) => x.id);
 
           allFeatureIds.forEach((id) => {
-            map.current.setFeatureState( // reset styling for all
+            map.current.setFeatureState(
+              // reset styling for all
               { source: "cruises", sourceLayer: "cruises", id: id },
               { hover: false },
             );
@@ -314,7 +315,12 @@ export default function MapView() {
 
         {/* expirement with toast on click */}
         <div className="clikedPoint">
-          <Toast onClose={() => toggleShowToast()} show={showToast} delay={30_000} autohide>
+          <Toast
+            onClose={() => toggleShowToast()}
+            show={showToast}
+            delay={60_000}
+            autohide
+          >
             <Toast.Header>
               <strong className="me-auto">Clicked Point</strong>
             </Toast.Header>
@@ -326,14 +332,23 @@ export default function MapView() {
               Instrument:{" "}
               <span className="font-monospace float-end">{sensor}</span>
               <br /><br />
-              <p>{geospatialIndexStatus}</p>
+              {/* <br />
               <p>
-                <Link
-                  to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
-                >
-                  → View Echogram
-                </Link>
-              </p>
+                geoIndStat: {geospatialIndexStatus}, geoSpInd: {geospatialIndex}
+              </p> */}
+              {geospatialIndexStatus === "idle" ? (
+                <p>
+                  <Link
+                    to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
+                  >
+                    → Click to View {cruise} Echogram
+                  </Link>
+                </p>
+              ) : (
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              )}
             </Toast.Body>
           </Toast>
         </div>

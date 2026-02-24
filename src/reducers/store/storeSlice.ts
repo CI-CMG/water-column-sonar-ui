@@ -131,8 +131,8 @@ const initialState: StoreState = {
   cruiseHovered: null,
   sensorHovered: null,
 
-  svMin: -100, // default values for min & max Sv threshold
-  svMax: -10,
+  svMin: -120, // default values for min & max Sv threshold
+  svMax: 0,
 
   depthIndex: 0, // these will hold mouse click coordinates
   timeIndex: null,

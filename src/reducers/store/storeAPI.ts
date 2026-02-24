@@ -141,10 +141,10 @@ export const fetchGeospatialIndex = (
     zarr.open.v3(root.resolve("longitude"), { kind: "array" }),
     zarr.open.v3(root.resolve("latitude"), { kind: "array" }),
   ])
-  .then(([longitudeArray, latitudeArray]) => {
+  .then((values) => {
     return Promise.all([
-      get(longitudeArray, [slice(null)]),
-      get(latitudeArray, [slice(null)]),
+      get(values[0], [slice(null)]),
+      get(values[1], [slice(null)]),
     ]);
   })
   .then(([longitudeData, latitudeData]) => {

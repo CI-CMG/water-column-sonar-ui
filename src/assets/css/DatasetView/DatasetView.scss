@@ -37,6 +37,11 @@
     font-weight: 600;
     text-decoration: none;
   }
+  a:hover {
+    font-size: 1.2em !important;
+    transition: all 0.1s ease-in-out;
+    color: DarkOrchid ;
+  }
 
   svg {
     margin: 5px;
