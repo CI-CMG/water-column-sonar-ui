@@ -283,7 +283,6 @@ export default function MapView() {
               latitude: e["lngLat"]["lat"],
             }),
           );
-          console.log("right after dispatch for geospatial");
 
           // dispatch(updateTimeIndex(1024)); // TODO: on load for wcv get from store
 
@@ -323,7 +322,7 @@ export default function MapView() {
           <Toast
             onClose={() => toggleShowToast()}
             show={showToast}
-            delay={60_000}
+            delay={120_000}
             autohide
           >
             <Toast.Header>

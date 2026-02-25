@@ -46,16 +46,11 @@ export default function LayoutView() {
                 as={Link}
                 reloadDocument
                 // to="/water-column?ship=Henry_B._Bigelow&cruise=HB0710&sensor=EK60&frequency=0&color=2&time=0"
-                to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3965712"
+                to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
                 // key={Date.now()} // TODO: fix this?
               >
                 <PiCubeLight />
                 &nbsp;Water Column
-              </Nav.Link>
-
-              <Nav.Link as={Link} to="/dataset">
-                <PiDatabase />
-                &nbsp;Data
               </Nav.Link>
 
               <Nav.Link

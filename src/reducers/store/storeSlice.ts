@@ -238,7 +238,7 @@ export const storeSlice = createSlice({
     },
     //
     updateSvMin: (state, action: PayloadAction<number>) => { // button click
-      console.log('updated Sv Min')
+      // console.log('updated Sv Min')
       state.svMin = Number(action.payload);
     },
     updateSvMax: (state, action: PayloadAction<number>) => { // button click
@@ -657,7 +657,7 @@ export const longitudeAsync = createAsyncThunk(
 export const geospatialIndexAsync = createAsyncThunk( // for geohash lookup
   "store/fetchGeospatialIndex",
   async ({ ship, cruise, sensor, longitude, latitude }: { ship: string, cruise: string, sensor: string, longitude: number, latitude: number }) => {
-    console.log('getting index...');
+    // console.log('getting index...');
     // debugger;
     const response =  await fetchGeospatialIndex(ship, cruise, sensor, longitude, latitude)
       
