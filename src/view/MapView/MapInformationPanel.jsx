@@ -119,6 +119,8 @@ const MapInformationPanel = () => {
         Cruise Information
       </Button>
 
+      {/* <MapInformationPanel /> */}
+
       <Offcanvas
         show={showInfoPanel}
         onHide={handleClose}

@@ -15,13 +15,17 @@ import {
   selectCruise,
   selectSensor,
   //
+  selectShipHovered,
+  selectCruiseHovered,
+  selectSensorHovered,
+  //
   updateShipHovered,
   updateCruiseHovered,
   updateSensorHovered,
   // updateShowInfoPanel,
 } from ".././../reducers/store/storeSlice.ts";
 import { useAppDispatch } from "../../app/hooks";
-import MapInformationPanel from "./MapInformationPanel.jsx";
+// import MapInformationPanel from "./MapInformationPanel.jsx";
 import { useAppSelector } from "../../app/hooks";
 import Toast from "react-bootstrap/Toast";
 import Spinner from "react-bootstrap/Spinner";
@@ -172,6 +176,10 @@ export default function MapView() {
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
 
+  const shipHovered = useAppSelector(selectShipHovered);
+  const cruiseHovered = useAppSelector(selectCruiseHovered);
+  const sensorHovered = useAppSelector(selectSensorHovered);
+
   const mapContainerRef = useRef();
   const map = useRef();
 
@@ -309,11 +317,7 @@ export default function MapView() {
           className="Map"
           style={{ minHeight: "100%", minWidth: "100%" }}
         />
-        {/* <div ref={mapContainerRef} className="Map" /> */}
 
-        <MapInformationPanel />
-
-        {/* expirement with toast on click */}
         <div className="clikedPoint">
           <Toast
             onClose={() => toggleShowToast()}
@@ -333,10 +337,6 @@ export default function MapView() {
               <span className="font-monospace float-end">{sensor}</span>
               <br />
               <br />
-              {/* <br />
-              <p>
-                geoIndStat: {geospatialIndexStatus}, geoSpInd: {geospatialIndex}
-              </p> */}
               {geospatialIndexStatus === "idle" ? (
                 <p>
                   <Link
@@ -354,6 +354,10 @@ export default function MapView() {
               )}
             </Toast.Body>
           </Toast>
+        </div>
+
+        <div className="coordinateDisplay ">
+          <p>ship: {shipHovered} / cruise: {cruiseHovered} / instrument: {sensorHovered}</p>
         </div>
       </div>
     </>

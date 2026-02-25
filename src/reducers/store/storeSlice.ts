@@ -121,7 +121,7 @@ export interface StoreState {
 }
 
 const initialState: StoreState = {
-  showInfoPanel: false,
+  // showInfoPanel: false,
 
   ship: null, // "Henry_B._Bigelow",
   cruise: null, // "HB0707",
@@ -213,9 +213,9 @@ export const storeSlice = createSlice({
   initialState,
   
   reducers: {
-    updateShowInfoPanel: (state, action: PayloadAction<boolean>) => {
-      state.showInfoPanel = action.payload
-    },
+    // updateShowInfoPanel: (state, action: PayloadAction<boolean>) => {
+    //   state.showInfoPanel = action.payload
+    // },
     //
     updateShip: (state, action: PayloadAction<string>) => {
       state.ship = action.payload
@@ -500,7 +500,7 @@ export const storeSlice = createSlice({
 });
 
 export const {
-  updateShowInfoPanel, // controls map view panel
+  // updateShowInfoPanel, // controls map view panel
   //
   updateShip,
   updateCruise,

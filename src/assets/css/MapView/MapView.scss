@@ -38,15 +38,19 @@
     position: relative;
   }
 
-  .coordinate-display {
+  .coordinateDisplay {
     position: absolute;
-    bottom: 0px;
-    right: 25px;
-    padding: 5px;
-    background-color: rgba(0, 0, 0, 0.75);
-    color: white;
-    font-family: "Courier New", Courier, monospace;
-    font-weight: 700;
+    bottom: 15px;
+    right: 15px;
+    background-color: rgba(256, 256, 256, 0.75);
+    
+    // font-weight: 700;
+    p {
+      margin: 2px 10px 2px 10px;
+      color: rgb(33, 37, 41);
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 550;
+    }
   }
 
   /////////////////////////////////////////////////////////////////

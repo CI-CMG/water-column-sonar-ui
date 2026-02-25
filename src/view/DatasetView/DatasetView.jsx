@@ -603,6 +603,15 @@ export default function DatasetView() {
                 Foundation awards #2030508 and #2323298.
               </li>
             </ul>
+            
+            {/* <br />
+            <hr />
+            <br />
+            <h2>Contributing</h2>
+            <br />
+            <p>
+              <i className="bi bi-github"></i>
+            </p> */}
 
             <br />
             <br />
