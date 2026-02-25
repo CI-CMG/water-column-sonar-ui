@@ -29,7 +29,7 @@ import {
 
 
 export interface StoreState {
-  showInfoPanel: boolean,
+  // showInfoPanel: boolean,
 
   ship: string | null,
   cruise: string | null,
@@ -132,7 +132,7 @@ const initialState: StoreState = {
   sensorHovered: null,
 
   svMin: -120, // default values for min & max Sv threshold
-  svMax: 0,
+  svMax: -10,
 
   depthIndex: 0, // these will hold mouse click coordinates
   timeIndex: null,

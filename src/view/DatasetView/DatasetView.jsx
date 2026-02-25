@@ -13,6 +13,7 @@ import logo_noaa from "../../../src/assets/images/noaa/noaa.png";
 import logo_ncei from "../../../src/assets/images/noaa/ncei.png";
 import logo_echopype from "../../../src/assets/images/echopype/echopype.png";
 import logo_cires from "../../../src/assets/images/cu/cires_cu.png";
+import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // https://react-icons.github.io/react-icons/search/#q=compass
 // import { MdOutlineAnchor } from "react-icons/md";
@@ -123,17 +124,19 @@ export default function DatasetView() {
             <br />
             <br />
             <br />
-            <h1 className="text-left" style={{ lineHeight: "1.5em" }}>
+            <h1 className="text-left" style={{ lineHeight: "1.5em", fontWeight: "600" }}>
               EchoFish
               <br />
-              Water Column Sonar Data Viewer
+              Water Column Sonar
+              <br />
+              Data Viewer
             </h1>
             <br />
             <br />
 
-            <p className="text-center">
+            <p className="text-center" style={{ textTransform: "capitalize" }}>
               <Link to="/map" className="LinkToMap">
-                Map View <i className="bi bi-arrow-right" />
+                Go to the Map <i className="bi bi-arrow-right" />
               </Link>
             </p>
             <br />
@@ -148,40 +151,31 @@ export default function DatasetView() {
 
             <br />
             <p>
-              In collaboration with NOAA's{" "}
-              <b>National Marine Fisheries Service (NMFS)</b> and the{" "}
-              <b>University of Colorado Boulder</b>, NOAA’s{" "}
-              <b>National Centers for Environmental Information (NCEI)</b>{" "}
-              established a national archive for water column sonar data. This
-              project entails ensuring the long-term stewardship of
-              well-documented water column sonar data, and enabling discovery
-              and access to researchers and the public around the world.
+              In collaboration with NOAA&apos;s National Marine Fisheries
+              Service (NMFS) and the University of Colorado Boulder, NOAA’s
+              National Centers for Environmental Information (NCEI) established
+              a national archive for water column sonar data. This project
+              entails ensuring the long-term stewardship of well-documented
+              water column sonar data, and enabling discovery and access to
+              researchers and the public around the world.
             </p>
+            <br />
 
             <center>
-              <a
-                target="_blank"
-                href="https://www.fisheries.noaa.gov/"
-              >
-              <Image
-                src={logo_noaa}
-                style={{ height: "100px", padding: "0px 30px" }}
-              />
+              <a target="_blank" href="https://www.fisheries.noaa.gov/">
+                <Image
+                  src={logo_noaa}
+                  style={{ height: "100px", padding: "0px 30px" }}
+                />
               </a>
-              <a
-                target="_blank"
-                href="https://cires.colorado.edu/"
-              >
+              <a target="_blank" href="https://cires.colorado.edu/">
                 <Image
                   src={logo_cires}
                   style={{ height: "100px", padding: "0px 30px" }}
                 />
               </a>
 
-              <a
-                target="_blank"
-                href="https://www.ncei.noaa.gov/"
-              >
+              <a target="_blank" href="https://www.ncei.noaa.gov/">
                 <Image
                   src={logo_ncei}
                   style={{ height: "100px", padding: "0px 30px" }}
@@ -245,11 +239,12 @@ export default function DatasetView() {
             <br />
             <p>
               Raw archived data were collected using a variety of vessel-mounted
-              sonars with Kongsberg's EM 122 (12 kHz) and EM 302 (30 kHz),
-              Simrad's EK60 (18-710 kHz, split beam), ME70 (70-120 kHz, can be
-              split beam), and EK80 (18-710 kHz, split beam and broadband) being
-              the most common. The configuration of each cruise's sonar system
-              (e.g., beam type and angle) can be found in the file metadata.
+              sonars with Kongsberg&apos;s EM 122 (12 kHz) and EM 302 (30 kHz),
+              Simrad&apos;s EK60 (18-710 kHz, split beam), ME70 (70-120 kHz, can
+              be split beam), and EK80 (18-710 kHz, split beam and broadband)
+              being the most common. The configuration of each cruise&apos;s
+              sonar system (e.g., beam type and angle) can be found in the file
+              metadata.
             </p>
 
             <br />
@@ -307,11 +302,8 @@ export default function DatasetView() {
             </p>
             <br />
             <center>
-              <a
-                target="_blank"
-                href="https://echopype.readthedocs.io/"
-              >
-              <Image src={logo_echopype} style={{ height: "50px" }} />
+              <a target="_blank" href="https://echopype.readthedocs.io/">
+                <Image src={logo_echopype} style={{ height: "50px" }} />
               </a>
             </center>
             <br />
@@ -598,12 +590,25 @@ export default function DatasetView() {
             <br />
             <ul>
               <li>
+                Wu-Jung Lee, Landung Setiawan, Caesar Tuguinay, Emilio Mayorga,
+                Valentina Staneva, Interoperable and scalable echosounder data
+                processing with Echopype, ICES Journal of Marine Science, Volume
+                81, Issue 10, December 2024, Pages 1941–1951,{' '}
+                <a
+                  target="_blank"
+                  href="https://doi.org/10.1093/icesjms/fsae133"
+                >
+                  https://doi.org/10.1093/icesjms/fsae133
+                </a>
+              </li>
+              <br />
+              <li>
                 This research was done using services provided by the OSG
                 Consortium, which is supported by the National Science
                 Foundation awards #2030508 and #2323298.
               </li>
             </ul>
-            
+
             {/* <br />
             <hr />
             <br />
@@ -622,6 +627,17 @@ export default function DatasetView() {
               </i>
             </p>
             <hr />
+            <br />
+            
+            <a
+              target="_blank"
+              href="https://github.com/CI-CMG/water-column-sonar-ui"
+            >
+              <FaGithub /> GitHub Source
+            </a>
+            <br />
+            <br />
+            <br />
             <br />
           </Col>
 

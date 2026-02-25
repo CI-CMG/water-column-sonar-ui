@@ -42,15 +42,17 @@
     transition: all 0.25s ease-in-out;
     // color: DarkOrchid ;
     color: rgb(62, 182, 206);
+
+    // svg {
+    //   margin: 5px;
+    // }
+    // svg:hover {
+    //   transform: rotate(-45deg);
+    //   transition: all 0.35s ease-in-out;
+    // }
   }
 
-  svg {
-    margin: 5px;
-  }
-  svg:hover {
-    transform: rotate(-45deg);
-    transition: all 0.35s ease-in-out;
-  }
+  
 }
 
 

@@ -318,6 +318,7 @@ export default function MapView() {
           style={{ minHeight: "100%", minWidth: "100%" }}
         />
 
+        {/* The toast shows up in upper left corner when linestring is clicked */}
         <div className="clikedPoint">
           <Toast
             onClose={() => toggleShowToast()}
@@ -342,7 +343,7 @@ export default function MapView() {
                   <Link
                     to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
                   >
-                    → Click to View {cruise} Echogram
+                    Click to View {cruise} Echogram →
                   </Link>
                 </p>
               ) : (
