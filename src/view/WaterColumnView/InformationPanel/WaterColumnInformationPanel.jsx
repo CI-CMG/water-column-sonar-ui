@@ -77,8 +77,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
 // import { PiSailboat } from "react-icons/pi";
 // import { TbRoute } from "react-icons/tb";
 // import { MdLeakAdd } from "react-icons/md";
-import Spinner from 'react-bootstrap/Spinner';
-
+import Spinner from "react-bootstrap/Spinner";
 
 const getDateTime = function (nanosecondValue) {
   const tempDate = new Date(0);
@@ -87,7 +86,6 @@ const getDateTime = function (nanosecondValue) {
 };
 
 const WaterColumnInformationPanel = () => {
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const dispatch = useAppDispatch();
@@ -138,34 +136,34 @@ const WaterColumnInformationPanel = () => {
 
   const handleSelectColorMap = (key) => {
     dispatch(
-      updateColorIndex(Object.keys(colorMaps).findIndex((x) => x === key))
+      updateColorIndex(Object.keys(colorMaps).findIndex((x) => x === key)),
     );
     setSearchParams(
       (prev) => {
         prev.set(
           "color",
-          Object.keys(colorMaps).findIndex((x) => x === key)
+          Object.keys(colorMaps).findIndex((x) => x === key),
         );
         return prev;
       },
-      { preventScrollReset: true }
+      { preventScrollReset: true },
     );
   };
 
   const handleSelectFrequency = (key) => {
     // console.log(`frequency changed to: ${Number(key)}`)
     dispatch(
-      updateFrequencyIndex(frequencies.findIndex((x) => x === Number(key)))
+      updateFrequencyIndex(frequencies.findIndex((x) => x === Number(key))),
     );
     setSearchParams(
       (prev) => {
         prev.set(
           "frequency",
-          frequencies.findIndex((x) => x === Number(key))
+          frequencies.findIndex((x) => x === Number(key)),
         );
         return prev;
       },
-      { preventScrollReset: true }
+      { preventScrollReset: true },
     );
   };
 
@@ -224,7 +222,6 @@ const WaterColumnInformationPanel = () => {
         </Offcanvas.Header>
 
         <Offcanvas.Body>
-
           <MiniMapView />
 
           <SvPlotView />
@@ -249,16 +246,18 @@ const WaterColumnInformationPanel = () => {
           <p>
             <b>Time:</b>{" "}
             <span className="font-monospace float-end">
-              {getDateTime(time)}{" "}
-              <span style={{ color: "#6b437d" }}>UTC</span>
+              {getDateTime(time)} <span style={{ color: "#6b437d" }}>UTC</span>
             </span>
           </p>
 
           <p>
             <b>Lon / Lat:</b>{" "}
             <span className="font-monospace float-end">
-              {latitudeStatus === 'succeeded' && longitudeStatus === 'succeeded' ? (
-                <>{longitude.toFixed(5)}° E, {latitude.toFixed(5)}° N</>
+              {latitudeStatus === "succeeded" &&
+              longitudeStatus === "succeeded" ? (
+                <>
+                  {longitude.toFixed(5)}° E, {latitude.toFixed(5)}° N
+                </>
               ) : (
                 <>...</>
               )}
@@ -438,17 +437,21 @@ const WaterColumnInformationPanel = () => {
             </Form.Group>
           </Row>
 
-          <Row className="mb-3">
-            <Form.Group>
-              <Form.Check
-                type="switch"
-                id="annotate-switch"
-                label="Show Annotations for HB1906"
-                onChange={() => handleSelectAnnotation()}
-                checked={annotation}
-              />
-            </Form.Group>
-          </Row>
+          {cruise === "HB1906" ? (
+            <Row className="mb-3">
+              <Form.Group>
+                <Form.Check
+                  type="switch"
+                  id="annotate-switch"
+                  label="Show Annotations for HB1906"
+                  onChange={() => handleSelectAnnotation()}
+                  checked={annotation}
+                />
+              </Form.Group>
+            </Row>
+          ) : (
+            <></>
+          )}
 
           {/* <AnnotationColors /> */}
 
@@ -478,14 +481,21 @@ const WaterColumnInformationPanel = () => {
           </Row> */}
 
           <hr />
-          <p><b>Data Access</b></p>
+          <p>
+            <b>Data Access</b>
+          </p>
 
           <p>
             <small>
-            (see{' '}
-            <a href="https://echolevels.readthedocs.io/en/latest/levels_proposed.html" target="_blank" rel="noopener noreferrer">
-              processing levels
-            </a>)
+              (see{" "}
+              <a
+                href="https://echolevels.readthedocs.io/en/latest/levels_proposed.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                processing levels
+              </a>
+              )
             </small>
           </p>
 
