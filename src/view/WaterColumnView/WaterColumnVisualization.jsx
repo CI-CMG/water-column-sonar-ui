@@ -28,9 +28,6 @@ import {
   updateTimeMinIndex,
   updateTimeMaxIndex,
   //
-  // selectDepthMinIndex,
-  // selectDepthMaxIndex,
-  //
   selectTimeMinIndex,
   selectTimeMaxIndex,
   //
@@ -38,8 +35,6 @@ import {
   timeArrayAsync,
 } from "../../reducers/store/storeSlice";
 import { useAppSelector } from "../../app/hooks.ts";
-// Using this to figure out most of the solution:
-// https://stackblitz.com/edit/react-leaflet-square?file=src%2FApp.js
 import TimeAxis from "../WaterColumnView/Axes/TimeAxis.jsx";
 import DepthAxis from "../WaterColumnView/Axes/DepthAxis.jsx";
 
@@ -74,7 +69,6 @@ const WaterColumnVisualization = ({
   tileSize,
   storeShape,
   initialTimeIndex,
-  // initialFrequencyIndex,
 }) => {
   const dispatch = useAppDispatch();
   const ship = useAppSelector(selectShip);

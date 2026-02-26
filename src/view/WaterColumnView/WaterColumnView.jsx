@@ -30,8 +30,7 @@ import {
   svAsync,
   speedAsync,
   distanceAsync,
-  ////
-  // updateDepthIndex,
+  //
   updateTimeIndex,
   updateFrequencyIndex,
   updateColorIndex,
@@ -85,13 +84,12 @@ export default function WaterColumnView() {
     }
 
     if (
-      !loadedCruiseInfo &&
       ship !== null &&
       cruise !== null &&
-      sensor !== null
+      sensor !== null &&
+      !loadedCruiseInfo
     ) {
-      // only need to call once per cruise
-      setLoadedCruiseInfo(true); // only call once
+      setLoadedCruiseInfo(true); // only need to call once per cruise
       dispatch(storeAttributesAsync({ ship, cruise, sensor }));
       dispatch(storeShapeAsync({ ship, cruise, sensor }));
       dispatch(frequenciesAsync({ ship, cruise, sensor }));
@@ -129,7 +127,7 @@ export default function WaterColumnView() {
           indexDepth,
           indexTime,
           indexFrequency,
-        })
+        }),
       );
     }
   }, [
@@ -151,8 +149,7 @@ export default function WaterColumnView() {
           <WaterColumnVisualization
             tileSize={attributes.tile_size}
             storeShape={storeShape}
-            initialTimeIndex={initialTimeIndex} // can i pass this through redux?
-            // initialFrequencyIndex={initialFrequencyIndex}
+            initialTimeIndex={initialTimeIndex}
           />
 
           <WaterColumnInformationPanel />

@@ -7,6 +7,7 @@ https://echo.fish
 # TODO:
  - ~~need maitenance mode for when I am updating zarr stores~~
  - mask sub-bottom data w checkbox, not linestring
+ - Update Robots.txt and reindex 
  - allow clicking on linestring in mini-map viewer & redirect to new cruise
  - add total Level_2 dataset size e.g. 120 GB to info panel
  - capture echopype provenance --> need to do in water-column-sonar-processing Zarr store metadata
@@ -23,7 +24,7 @@ https://echo.fish
 # Tag a Release
 Step 1 --> increment the semantic version in the "package.json" under the "version" field.
 ```commandline
-git tag -a v25.9.1 -m "Releasing v25.9.1"
+git tag -a v26.2.5 -m "Releasing v26.2.5"
 git push origin --tags
 ```
 

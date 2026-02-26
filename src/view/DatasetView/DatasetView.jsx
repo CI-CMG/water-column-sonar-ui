@@ -124,17 +124,13 @@ export default function DatasetView() {
             <br />
             <br />
             <br />
-            <h1 className="text-left" style={{ lineHeight: "1.5em", fontWeight: "600" }}>
-              EchoFish
-              <br />
-              Water Column Sonar
-              <br />
-              Data Viewer
+            <h1 className="text-left" style={{ lineHeight: "1.7em", fontWeight: "600", color: "LightSlateGrey" }}>
+              EchoFish<br />Water Column Sonar Data Explorer
             </h1>
             <br />
             <br />
 
-            <p className="text-center" style={{ textTransform: "capitalize" }}>
+            <p className="text-center">
               <Link to="/map" className="LinkToMap">
                 Go to the Map <i className="bi bi-arrow-right" />
               </Link>
@@ -161,27 +157,32 @@ export default function DatasetView() {
             </p>
             <br />
 
-            <center>
-              <a target="_blank" href="https://www.fisheries.noaa.gov/">
-                <Image
-                  src={logo_noaa}
-                  style={{ height: "100px", padding: "0px 30px" }}
-                />
-              </a>
-              <a target="_blank" href="https://cires.colorado.edu/">
-                <Image
-                  src={logo_cires}
-                  style={{ height: "100px", padding: "0px 30px" }}
-                />
-              </a>
-
-              <a target="_blank" href="https://www.ncei.noaa.gov/">
-                <Image
-                  src={logo_ncei}
-                  style={{ height: "100px", padding: "0px 30px" }}
-                />
-              </a>
-            </center>
+            <Row xs='auto'> 
+              <Col>
+                <a target="_blank" href="https://www.fisheries.noaa.gov/">
+                  <Image
+                    src={logo_noaa}
+                    style={{ height: "100px", padding: "0px 30px" }}
+                  />
+                </a>
+              </Col>
+              <Col>
+                <a target="_blank" href="https://cires.colorado.edu/">
+                  <Image
+                    src={logo_cires}
+                    style={{ height: "100px", padding: "0px 30px" }}
+                  />
+                </a>
+              </Col>
+              <Col>
+                <a target="_blank" href="https://www.ncei.noaa.gov/">
+                  <Image
+                    src={logo_ncei}
+                    style={{ height: "100px", padding: "0px 30px" }}
+                  />
+                </a>
+              </Col>
+            </Row>
 
             <br />
             <br />
@@ -278,14 +279,16 @@ export default function DatasetView() {
               Xarray Dataset format.
             </p>
 
-            <a
-              target="_blank"
-              href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/"
-            >
-              Level 0: Raw data S3 Explorer
-            </a>
-
             <br />
+            <p style={{ textIndent: "4em" }}>
+              <a
+                target="_blank"
+                href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/"
+              >
+                Level 0: Raw data S3 Explorer
+              </a>
+            </p>
+
             <br />
             <br />
             <h4>Level 2a — File Level Zarr stores</h4>
@@ -309,14 +312,15 @@ export default function DatasetView() {
             <br />
             <br />
 
-            <a
-              target="_blank"
-              href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/"
-            >
-              Level 2a: Zarr store S3 Explorer
-            </a>
+            <p style={{ textIndent: "4em" }}>
+              <a
+                target="_blank"
+                href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/"
+              >
+                Level 2a: Zarr store S3 Explorer
+              </a>
+            </p>
 
-            <br />
             <br />
             <br />
             <h4>Level 3a — Cruise Level Zarr stores</h4>
@@ -326,12 +330,14 @@ export default function DatasetView() {
               form a larger singular Zarr store.
             </p>
 
-            <a
-              target="_blank"
-              href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/"
-            >
-              Level 3a: Zarr store S3 Explorer
-            </a>
+            <p style={{ textIndent: "4em" }}>
+              <a
+                target="_blank"
+                href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/"
+              >
+                Level 3a: Zarr store S3 Explorer
+              </a>
+            </p>
 
             {/* <br />
             <br />
@@ -342,7 +348,6 @@ export default function DatasetView() {
               Stac Catalog for the Zarr stores
             </a> */}
 
-            <br />
             <br />
             <br />
             <h4>Data Details</h4>
@@ -358,12 +363,6 @@ export default function DatasetView() {
               </li>
               <li>Re-sample by pings</li>
               <li>Removal of top 10 m of data due to bubble interference</li>
-              <li>
-                If EK60 data contain multiple frequencies, preprocess with a 3x3
-                median convolution filter and apply multi-frequency single-beam
-                imaging index outlined in Wall et al. (2016) using a threshold
-                of -66 dB
-              </li>
             </ul>
 
             <br />
@@ -378,12 +377,7 @@ export default function DatasetView() {
 
             <br />
             <ul>
-              <li>
-                For processed data: cruise → transducer
-                frequency/bottom/multi-frequency single-beam imaging index →
-                file
-              </li>
-              <li>For raw data: ship → cruise → instrument → file</li>
+              <li>Ship → Cruise → Instrument → Raw File</li>
             </ul>
 
             <br />
