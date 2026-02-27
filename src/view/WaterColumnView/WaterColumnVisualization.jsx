@@ -7,6 +7,7 @@ import {
   MapContainer,
   Rectangle,
   Tooltip,
+  Polygon,
 } from "react-leaflet";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -937,22 +938,35 @@ const rectangles = [
  [[-50, 4009524], [-80, 4009534]]
 ]
 
-
 const rectangleItems = rectangles.map((rectangle, i) =>
   <Rectangle
     bounds={rectangle}
     key={rectangle}
     opacity={0.75}
     fillColor="white"
-    fillOpacity={0.10}
-    weight={2}
+    fillOpacity={0.2}
+    // weight={3}
     title="Annotation"
     className="Annotation"
-    pathOptions={{ color: '#FF69B4' }}
+    pathOptions={{ color: '#FF69B4', weight: 2 }}
   >
-    <Tooltip>AH_School {i}<br />d20191016_t121103-t233917_Zsc-DWBA-Schools_All-RegionDefs.evr</Tooltip>
+    <Tooltip
+      direction="bottom"
+      opacity={0.65}
+    >
+      AH_School {i}<br />d20191016_t121103-t233917_Zsc-DWBA-Schools_All-RegionDefs.evr
+    </Tooltip>
   </Rectangle>
 )
+
+const polygon = [
+  [-120, 3965719],
+  [-100, 3965729],
+  [-110, 3965739],
+  [-60, 3965749],
+  [-120, 3965759]
+];
+const limeOptions = { color: 'lime' }
 
 const WaterColumnVisualization = ({
   tileSize,
@@ -1035,6 +1049,8 @@ const WaterColumnVisualization = ({
     }
   }, [cruise, dispatch, map, sensor, ship, timeMaxIndex, timeMinIndex]);
 
+  // TODO: how to handle updates to rectangles
+  //  https://stackoverflow.com/questions/54412980/react-leaflet-how-to-dynamically-change-rectangle-color
   return (
     <div className="WaterColumnVisualization">
       <Container fluid className="h-100 d-flex flex-column">
@@ -1073,6 +1089,7 @@ const WaterColumnVisualization = ({
               {annotation ? (
                 <>
                   <>{rectangleItems}</>
+                  <Polygon pathOptions={limeOptions} positions={polygon} />
                 </>
               ) : (
                 <></>
