@@ -468,17 +468,22 @@ const WaterColumnInformationPanel = () => {
             </Form.Group>
           </Row>
 
-          {/* <Row className="mb-3">
-            <Form.Group>
-              <Form.Check
-                type="switch"
-                id="annotate-ai-switch"
-                label="Show AI Inference for HB1906"
-                onChange={() => handleSelectAnnotationAI()}
-                checked={annotationAI}
-              />
-            </Form.Group>
-          </Row> */}
+          {cruise === "HB1906" ? (
+            <Row className="mb-3">
+              <Form.Group>
+                <Form.Check
+                  disabled
+                  type="switch"
+                  id="annotate-ai-switch"
+                  label="Show AI Clustering for HB1906"
+                  // onChange={() => handleSelectAnnotationAI()}
+                  checked={annotationAI}
+                />
+              </Form.Group>
+            </Row>
+          ) : (
+            <></>
+          )}
 
           <hr />
           <p>
