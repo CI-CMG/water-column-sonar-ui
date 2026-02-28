@@ -66,6 +66,7 @@ import {
   selectDistance,
 } from "../../../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
+import { MdAnchor } from "react-icons/md";
 // import { TbLocation } from "react-icons/tb";
 // import { TbClockHour9 } from "react-icons/tb";
 // import { MdOutlineAnchor } from "react-icons/md";
@@ -454,8 +455,7 @@ const WaterColumnInformationPanel = () => {
           )}
 
           {/* <AnnotationColors /> */}
-
-          <br />
+          {/* <br /> */}
 
           <Row className="mb-3">
             <Form.Group>
@@ -581,9 +581,8 @@ const WaterColumnInformationPanel = () => {
             <></>
           )}
 
-          <p className="text-center">
-            <b>~</b>
-          </p>
+          <br />
+          <p className="text-center"><MdAnchor /></p>
         </Offcanvas.Body>
       </Offcanvas>
     </div>

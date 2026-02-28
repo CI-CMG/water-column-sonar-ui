@@ -7,6 +7,7 @@ import { UnrealBloomPass } from "https://esm.sh/three/examples/jsm/postprocessin
 // import Image from "react-bootstrap/Image";
 // import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
 
 // Would like to get this example working:
 // https://github.com/vasturiano/react-force-graph/blob/master/example/text-nodes/index-3d.html
@@ -80,35 +81,64 @@ export default function GraphView() {
           <Col md={3} />
         </Row>
         <Row mx-auto>
-          {/* <Col xs={6} md={4}>
-            <Image
-              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/03ff1a28a5d78c955265a95d96ad1f7ccd8497d5d31f309e29fb4c50c7839f31.jpeg"
-              rounded
-            />
-          </Col> */}
-
-          <Card style={{ width: "18rem" }}>
+          <Card style={{ width: "18rem" }} className="mx-auto">
             <Card.Img
               variant="top"
               src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/03ff1a28a5d78c955265a95d96ad1f7ccd8497d5d31f309e29fb4c50c7839f31.jpeg"
             />
             <Card.Body>
-              <Card.Title>EVR: 03ff1a2</Card.Title>
-              <Card.Text>
-                Henry_B._Bigelow / HB1906 / EK60
+              <Card.Title className="text-center">AH_School</Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60<br />
+                <br />
+                start: 2025-02-06 10:50:00<br />
+                end: 2025-02-06 10:51:00<br />
+                depth: [11.12, 13.14]<br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60<br />
+                solar altitude: 35.02°<br />
+                phase of day: day<br /><br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                  >
+                    View in the water column →
+                </Link>
               </Card.Text>
-              <Card.Text>
-                Time: [2025-02-06 10:50:00, 2025-02-06 10:51:00]
-              </Card.Text>
-              <Card.Text>
-                Depth: [11.12, 13.14]
-              </Card.Text>
-              <Card.Text>
-                Altitude: 1.23
-              </Card.Text>
-              <Card.Link href="#">View water column</Card.Link>
             </Card.Body>
           </Card>
+
+          <Card style={{ width: "18rem" }} className="mx-auto">
+            <Card.Img
+              variant="top"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/03ff1a28a5d78c955265a95d96ad1f7ccd8497d5d31f309e29fb4c50c7839f31.jpeg"
+            />
+            <Card.Body>
+              <Card.Title className="text-center">AH_School</Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60<br />
+                <br />
+                start: 2025-02-06 10:50:00<br />
+                end: 2025-02-06 10:51:00<br />
+                depth: [11.12, 13.14]<br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60<br />
+                solar altitude: 35.02°<br />
+                phase of day: day<br /><br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                  >
+                    View in the water column →
+                </Link>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+
           <Card style={{ width: "18rem" }} className="mx-auto">
             <Card.Img
               variant="top"

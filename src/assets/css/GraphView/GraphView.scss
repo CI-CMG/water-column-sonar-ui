@@ -1,12 +1,24 @@
 /// Graph View ///
 
 .GraphView {
-  // border: 1px solid orchid;
   background-color: darkgrey;
   background-color: black;
   flex: 1 1 100%;
   display: flex;
+
+  .card-text {
+    font-size: 0.75em;
+  }
+
+  .card-img-top {
+    width: 100%;
+    height: 10vw;
+    // object-fit: cover;
+    object-fit: contain;
+    margin-top: 12px;
+  }
 }
+
 
 
 
