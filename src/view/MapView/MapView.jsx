@@ -30,6 +30,8 @@ import { useAppSelector } from "../../app/hooks";
 import Toast from "react-bootstrap/Toast";
 import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+// import { LinkContainer } from "react-router-bootstrap";
 
 const map_key = import.meta.env.VITE_MAPTILER_API;
 const style = {
@@ -326,7 +328,7 @@ export default function MapView() {
             autohide
           >
             <Toast.Header>
-              <strong className="me-auto">Clicked Point</strong>
+              <strong className="me-auto">Clicked Cruise</strong>
             </Toast.Header>
             <Toast.Body>
               Ship: <span className="font-monospace float-end">{ship}</span>
@@ -338,13 +340,11 @@ export default function MapView() {
               <br />
               <br />
               {geospatialIndexStatus === "idle" ? (
-                <p>
-                  <Link
-                    to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
-                  >
-                    Click to View {cruise} Echogram →
-                  </Link>
-                </p>
+                <Link
+                  to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
+                >
+                  <Button variant="outline-primary" size="sm">View {cruise} Echogram →</Button>
+                </Link>
               ) : (
                 <center>
                   <Spinner animation="border" role="status">
@@ -357,7 +357,10 @@ export default function MapView() {
         </div>
 
         <div className="coordinateDisplay ">
-          <p>ship: {shipHovered} / cruise: {cruiseHovered} / instrument: {sensorHovered}</p>
+          <p>
+            ship: {shipHovered} / cruise: {cruiseHovered} / instrument:{" "}
+            {sensorHovered}
+          </p>
         </div>
       </div>
     </>

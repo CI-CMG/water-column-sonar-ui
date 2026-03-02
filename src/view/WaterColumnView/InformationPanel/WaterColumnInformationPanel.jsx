@@ -457,7 +457,7 @@ const WaterColumnInformationPanel = () => {
           {/* <AnnotationColors /> */}
           {/* <br /> */}
 
-          <Row className="mb-3">
+          {/* <Row className="mb-3">
             <Form.Group>
               <Form.Check
                 disabled
@@ -466,7 +466,7 @@ const WaterColumnInformationPanel = () => {
                 label="Mask Data Beneath Sea Floor"
               />
             </Form.Group>
-          </Row>
+          </Row> */}
 
           {cruise === "HB1906" ? (
             <Row className="mb-3">
@@ -529,18 +529,21 @@ const WaterColumnInformationPanel = () => {
               </a>
             </span>
           </p>
-          <p style={{ textIndent: "6px" }}>Total Sv dimension:</p>
-          <p
-            style={{
-              textIndent: "6px",
-              fontFamily: "monospace",
-              fontSize: "14px",
-            }}
-          >
-            {storeShape[0].toLocaleString()} x {storeShape[1].toLocaleString()}{" "}
-            x {storeShape[2].toLocaleString()} ={" "}
-            {(storeShape[0] * storeShape[1] * storeShape[2]).toLocaleString()}
-          </p>
+          <div>
+            <p style={{ textIndent: "6px", color: "grey" }}>Total Sv dimension:</p>
+            <p
+              style={{
+                textIndent: "6px",
+                fontFamily: "monospace",
+                fontSize: "14px",
+                color: "grey"
+              }}
+            >
+              {storeShape[0].toLocaleString()} x {storeShape[1].toLocaleString()}{" "}
+              x {storeShape[2].toLocaleString()} ={" "}
+              {(storeShape[0] * storeShape[1] * storeShape[2]).toLocaleString()}
+            </p>
+          </div>
 
           <br />
           <hr />

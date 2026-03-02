@@ -9,7 +9,8 @@ import Col from "react-bootstrap/Col";
 // import { useInView } from "react-intersection-observer";
 import Image from "react-bootstrap/Image";
 import header from "../../../src/assets/images/header.jpg";
-import logo_noaa from "../../../src/assets/images/noaa/noaa.png";
+// import logo_noaa from "../../../src/assets/images/noaa/noaa.png";
+import logo_noaa_fisheries from "../../../src/assets/images/noaa/noaa_fisheries_logo.png";
 import logo_ncei from "../../../src/assets/images/noaa/ncei.png";
 import logo_echopype from "../../../src/assets/images/echopype/echopype.png";
 import logo_cires from "../../../src/assets/images/cu/cires_cu.png";
@@ -161,8 +162,8 @@ export default function DatasetView() {
               <Col>
                 <a target="_blank" href="https://www.fisheries.noaa.gov/">
                   <Image
-                    src={logo_noaa}
-                    style={{ height: "100px", padding: "0px 30px" }}
+                    src={logo_noaa_fisheries}
+                    style={{ height: "80px", padding: "0px 30px" }}
                   />
                 </a>
               </Col>
@@ -170,7 +171,7 @@ export default function DatasetView() {
                 <a target="_blank" href="https://cires.colorado.edu/">
                   <Image
                     src={logo_cires}
-                    style={{ height: "100px", padding: "0px 30px" }}
+                    style={{ height: "80px", padding: "0px 30px" }}
                   />
                 </a>
               </Col>
@@ -178,7 +179,7 @@ export default function DatasetView() {
                 <a target="_blank" href="https://www.ncei.noaa.gov/">
                   <Image
                     src={logo_ncei}
-                    style={{ height: "100px", padding: "0px 30px" }}
+                    style={{ height: "80px", padding: "0px 30px" }}
                   />
                 </a>
               </Col>
