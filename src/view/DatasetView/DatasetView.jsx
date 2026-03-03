@@ -13,7 +13,7 @@ import header from "../../../src/assets/images/header.jpg";
 import logo_noaa_fisheries from "../../../src/assets/images/noaa/noaa_fisheries_logo.png";
 import logo_ncei from "../../../src/assets/images/noaa/ncei_logo.png";
 import logo_echopype from "../../../src/assets/images/echopype/echopype.png";
-import logo_cires from "../../../src/assets/images/cu/cires_cu.png";
+import logo_cires from "../../../src/assets/images/cu/cires_cu_logo.png";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // https://react-icons.github.io/react-icons/search/#q=compass
