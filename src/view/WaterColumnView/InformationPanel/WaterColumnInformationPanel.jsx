@@ -254,9 +254,12 @@ const WaterColumnInformationPanel = () => {
               {getDateTime(time)} <span style={{ color: "#6b437d" }}>UTC</span>
             </span>
             <br />
-            min: {timeMinValue}<br />
-            click: {time}<br />
-            max: {timeMaxValue}
+          </p>
+          
+          <p style={{ marginLeft: "15px" }}>
+            min: {getDateTime(timeMinValue)}
+            <br />
+            max: {getDateTime(timeMaxValue)}
           </p>
 
           <p>

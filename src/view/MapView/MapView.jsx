@@ -359,9 +359,9 @@ export default function MapView() {
         <div className="coordinateDisplay">
           {cruiseHovered ? (
             <p>
-              ship: {shipHovered} <font color="#00CC33">/</font>{' '}
-              cruise: {cruiseHovered} <font color="#00CC33">/</font>{' '}
-              instrument: {sensorHovered}
+              Ship: {shipHovered} <font color="#00CC33">/</font>{' '}
+              Cruise: {cruiseHovered} <font color="#00CC33">/</font>{' '}
+              Instrument: {sensorHovered}
             </p>
           ) : (
             <p>Zoom In and Click on a Cruise</p>

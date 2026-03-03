@@ -33,14 +33,17 @@ import {
   updateDepthMaxIndex,
   updateTimeMinIndex,
   updateTimeMaxIndex,
-  updateTimeMinValue,
-  updateTimeMaxValue,
+  // updateTimeMinValue,
+  // updateTimeMaxValue,
   //
   selectTimeMinIndex,
   selectTimeMaxIndex,
   //
   depthArrayAsync,
   timeArrayAsync,
+  //
+  timeMinValueAsync,
+  timeMaxValueAsync,
 } from "../../reducers/store/storeSlice";
 import { useAppSelector } from "../../app/hooks.ts";
 import TimeAxis from "../WaterColumnView/Axes/TimeAxis.jsx";
@@ -1013,13 +1016,8 @@ const WaterColumnVisualization = ({
         }));
 
         // get min-max times for drawing polygons
-        // TODO: read from cruise at indices and write the timestamp to this
-        // dispatch(
-        //   updateTimeMinValue(Math.round(bounds.getSouthWest().lng))
-        // );
-        // dispatch(
-        //   updateTimeMaxValue(Math.round(bounds.getNorthEast().lng))
-        // );
+        dispatch(timeMinValueAsync({ ship, cruise, sensor, indexTime: Math.round(bounds.getSouthWest().lng) })); // TODO: need to update to min and max indices
+        dispatch(timeMaxValueAsync({ ship, cruise, sensor, indexTime: Math.round(bounds.getNorthEast().lng) }));
       },
     });
 
@@ -1058,6 +1056,10 @@ const WaterColumnVisualization = ({
 
       dispatch(updateTimeMinIndex(Math.round(bounds._southWest.lng)));
       dispatch(updateTimeMaxIndex(Math.round(bounds._northEast.lng)));
+
+      // for getting leaflet min/max times
+      dispatch(timeMinValueAsync({ ship, cruise, sensor, indexTime: Math.round(bounds.getSouthWest().lng) }));
+      dispatch(timeMaxValueAsync({ ship, cruise, sensor, indexTime: Math.round(bounds.getNorthEast().lng) }));
     }
   }, [cruise, dispatch, map, sensor, ship, timeMaxIndex, timeMinIndex]);
 

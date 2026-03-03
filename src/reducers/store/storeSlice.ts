@@ -285,10 +285,10 @@ export const storeSlice = createSlice({
     updateTimeMaxIndex: (state, action: PayloadAction<number>) => {
       state.timeMaxIndex = action.payload;
     },
-    updateTimeMinValue: (state, action: PayloadAction<Date>) => {
+    updateTimeMinValue: (state, action: PayloadAction<number>) => {
       state.timeMinValue = action.payload;
     },
-    updateTimeMaxValue: (state, action: PayloadAction<Date>) => {
+    updateTimeMaxValue: (state, action: PayloadAction<number>) => {
       state.timeMaxValue = action.payload;
     },
     updateTimeArray: (state, action: PayloadAction<Array<number>>) => {

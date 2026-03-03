@@ -25,8 +25,6 @@ import {
   latitudeAsync,
   longitudeAsync,
   timeAsync,
-  timeMinValueAsync,
-  timeMaxValueAsync,
   //
   depthAsync,
   bottomAsync,
@@ -118,9 +116,6 @@ export default function WaterColumnView() {
       dispatch(latitudeAsync({ ship, cruise, sensor, indexTime }));
       dispatch(longitudeAsync({ ship, cruise, sensor, indexTime }));
       dispatch(timeAsync({ ship, cruise, sensor, indexTime }));
-      //
-      dispatch(timeMinValueAsync({ ship, cruise, sensor, indexTime })); // TODO: need to update to min and max indices
-      dispatch(timeMaxValueAsync({ ship, cruise, sensor, indexTime }));
       //
       dispatch(depthAsync({ ship, cruise, sensor, indexDepth }));
       dispatch(bottomAsync({ ship, cruise, sensor, indexTime }));
