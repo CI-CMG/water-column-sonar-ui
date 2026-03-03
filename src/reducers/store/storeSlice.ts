@@ -14,6 +14,8 @@ import {
   fetchLongitude,
   fetchGeospatialIndex,
   fetchTime,
+  fetchTimeMinValue,
+  fetchTimeMaxValue,
   fetchTimeArray,
   fetchDepth,
   fetchDepthArray,
@@ -26,6 +28,7 @@ import {
   fetchAIStoreShape,
   fetchAISvTile,
 } from "./storeAPI.js";
+import { IntegerType } from "three/src/nodes/core/Node.js";
 
 
 export interface StoreState {
@@ -56,6 +59,11 @@ export interface StoreState {
 
   timeMinIndex: number | null, // leaflet minX for axes
   timeMaxIndex: number | null, // leaflet maxX for axes
+
+  timeMinValue: number | null, // zarr min time for parquet query
+  timeMinValueStatus: "idle" | "loading" | "failed",
+  timeMaxValue: number | null, // zarr max time for parquet query
+  timeMaxValueStatus: "idle" | "loading" | "failed",
   
   timeArray: Array<number> | null,
   timeArrayStatus: "idle" | "loading" | "failed",
@@ -144,8 +152,13 @@ const initialState: StoreState = {
   depthArray: null, // will hold result of query
   depthArrayStatus: "idle",
   
-  timeMinIndex: null,
+  timeMinIndex: null, // used by leaflet for indices
   timeMaxIndex: null,
+
+  timeMinValue: null, // used by leaflet for querying parquet polygons
+  timeMinValueStatus: "idle",
+  timeMaxValue: null,
+  timeMaxValueStatus: "idle",
   
   timeArray: null,
   timeArrayStatus: "idle",
@@ -271,6 +284,12 @@ export const storeSlice = createSlice({
     },
     updateTimeMaxIndex: (state, action: PayloadAction<number>) => {
       state.timeMaxIndex = action.payload;
+    },
+    updateTimeMinValue: (state, action: PayloadAction<Date>) => {
+      state.timeMinValue = action.payload;
+    },
+    updateTimeMaxValue: (state, action: PayloadAction<Date>) => {
+      state.timeMaxValue = action.payload;
     },
     updateTimeArray: (state, action: PayloadAction<Array<number>>) => {
       state.timeArray = action.payload;
@@ -418,6 +437,27 @@ export const storeSlice = createSlice({
       .addCase(timeAsync.rejected, state => {
         state.timeStatus = "failed";
       })
+      // MIN MAX TIMEs for leaflet polygons-------------- //
+      .addCase(timeMinValueAsync.pending, state => {
+        state.timeMinValueStatus = "loading";
+      })
+      .addCase(timeMinValueAsync.fulfilled, (state, action) => {
+        state.timeMinValueStatus = "idle";
+        state.timeMinValue = action.payload; // TODO: fix
+      })
+      .addCase(timeMinValueAsync.rejected, state => {
+        state.timeMinValueStatus = "failed";
+      })
+      .addCase(timeMaxValueAsync.pending, state => {
+        state.timeMaxValueStatus = "loading";
+      })
+      .addCase(timeMaxValueAsync.fulfilled, (state, action) => {
+        state.timeMaxValueStatus = "idle";
+        state.timeMaxValue = action.payload; // TODO: fix
+      })
+      .addCase(timeMaxValueAsync.rejected, state => {
+        state.timeMaxValueStatus = "failed";
+      })
       // TIMEARRAY-------------------------------------- //
       .addCase(timeArrayAsync.pending, state => {
         state.timeArrayStatus = "loading";
@@ -522,6 +562,8 @@ export const {
   updateDepthArray,
   updateTimeMinIndex,
   updateTimeMaxIndex,
+  updateTimeMinValue, // used for plotting polygons in leaflet
+  updateTimeMaxValue,
   updateTimeArray,
   //
   updateColorIndex,
@@ -582,6 +624,8 @@ export const selectDepthMaxIndex = (state: RootState) => state.store.depthMaxInd
 export const selectDepthArray = (state: RootState) => state.store.depthArray; // wip
 export const selectTimeMinIndex = (state: RootState) => state.store.timeMinIndex;
 export const selectTimeMaxIndex = (state: RootState) => state.store.timeMaxIndex;
+export const selectTimeMinValue = (state: RootState) => state.store.timeMinValue; // for polygon plotting
+export const selectTimeMaxValue = (state: RootState) => state.store.timeMaxValue;
 export const selectTimeArray = (state: RootState) => state.store.timeArray;
 
 export const selectColorIndex = (state: RootState) => state.store.colorIndex;
@@ -670,6 +714,22 @@ export const timeAsync = createAsyncThunk(
   async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
     const response = await fetchTime(ship, cruise, sensor, indexTime);
     return response;
+  },
+)
+
+// TODO: consolidate into one?
+export const timeMinValueAsync = createAsyncThunk(
+  "store/fetchTimeMinValue",
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    return await fetchTimeMinValue(ship, cruise, sensor, indexTime);
+    // return new Date(foo / 1000000); // nanoseconds to date
+  },
+)
+export const timeMaxValueAsync = createAsyncThunk(
+  "store/fetchTimeMaxValue",
+  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    return await fetchTimeMaxValue(ship, cruise, sensor, indexTime);
+    // return new Date(foo / 1000000); // nanoseconds to date
   },
 )
 

@@ -33,6 +33,8 @@ import {
   updateDepthMaxIndex,
   updateTimeMinIndex,
   updateTimeMaxIndex,
+  updateTimeMinValue,
+  updateTimeMaxValue,
   //
   selectTimeMinIndex,
   selectTimeMaxIndex,
@@ -989,6 +991,7 @@ const WaterColumnVisualization = ({
       moveend: () => {
         const bounds = map.getBounds();
 
+        // get the bounds of current leaflet view
         dispatch(
           updateDepthMinIndex(Math.round(bounds.getNorthEast().lat * -1))
         );
@@ -1008,6 +1011,15 @@ const WaterColumnVisualization = ({
           indexStart: Math.round(bounds.getSouthWest().lng),
           indexEnd: Math.round(bounds.getNorthEast().lng),
         }));
+
+        // get min-max times for drawing polygons
+        // TODO: read from cruise at indices and write the timestamp to this
+        // dispatch(
+        //   updateTimeMinValue(Math.round(bounds.getSouthWest().lng))
+        // );
+        // dispatch(
+        //   updateTimeMaxValue(Math.round(bounds.getNorthEast().lng))
+        // );
       },
     });
 

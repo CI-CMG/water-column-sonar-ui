@@ -177,6 +177,41 @@ export const fetchTime = (
   });
 };
 
+export const fetchTimeMinValue = (
+  ship: string,
+  cruise: string,
+  sensor: string,
+  indexTime: number
+) => { // TODO: type as number in nanoseconds
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
+
+  return zarr.open.v3(root.resolve("time"), { kind: "array" }).then((arr) => {
+    if (!arr.is("number")) {
+      throw Error("data type not supported!");
+    }
+    return get(arr, [indexTime]);
+  });
+};
+
+export const fetchTimeMaxValue = (
+  ship: string,
+  cruise: string,
+  sensor: string,
+  indexTime: number
+) => { // TODO: type as number in nanoseconds
+  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+  const root = zarr.root(new zarr.FetchStore(url));
+
+  return zarr.open.v3(root.resolve("time"), { kind: "array" }).then((arr) => {
+    if (!arr.is("number")) {
+      throw Error("data type not supported!");
+    }
+    return get(arr, [indexTime]);
+  });
+};
+
+
 /* --- TIME ARRAY --- */
 export const fetchTimeArray = (
   ship: string,

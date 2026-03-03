@@ -343,7 +343,7 @@ export default function MapView() {
                 <Link
                   to={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${sensor}&frequency=0&color=2&time=${geospatialIndex}`}
                 >
-                  <Button variant="outline-primary" size="sm">View {cruise} Echogram →</Button>
+                  <Button variant="primary" size="sm">View {cruise} Echogram →</Button>
                 </Link>
               ) : (
                 <center>
@@ -356,11 +356,17 @@ export default function MapView() {
           </Toast>
         </div>
 
-        <div className="coordinateDisplay ">
-          <p>
-            ship: {shipHovered} / cruise: {cruiseHovered} / instrument:{" "}
-            {sensorHovered}
-          </p>
+        <div className="coordinateDisplay">
+          {cruiseHovered ? (
+            <p>
+              ship: {shipHovered} <font color="#00CC33">/</font>{' '}
+              cruise: {cruiseHovered} <font color="#00CC33">/</font>{' '}
+              instrument: {sensorHovered}
+            </p>
+          ) : (
+            <p>Zoom In and Click on a Cruise</p>
+          )}
+          
         </div>
       </div>
     </>

@@ -29,7 +29,7 @@ import {
   updateAnnotation,
   //
   selectAnnotationAI,
-  updateAnnotationAI,
+  // updateAnnotationAI,
   // selectAnnotationColor,
   // updateAnnotationColor,
   //
@@ -59,6 +59,8 @@ import {
   // selectTimeMinIndex,
   // selectTimeIndex,
   // selectTimeMaxIndex,
+  selectTimeMinValue,
+  selectTimeMaxValue,
   //
   selectBottom,
   selectSv,
@@ -110,6 +112,8 @@ const WaterColumnInformationPanel = () => {
   const longitudeStatus = useAppSelector(selectLongitudeStatus);
   //
   const time = useAppSelector(selectTime);
+  const timeMinValue = useAppSelector(selectTimeMinValue); // for drawing leaflet polygons
+  const timeMaxValue = useAppSelector(selectTimeMaxValue);
   const depth = useAppSelector(selectDepth);
   //
   // const depthMinIndex = useAppSelector(selectDepthMinIndex);
@@ -172,9 +176,9 @@ const WaterColumnInformationPanel = () => {
     dispatch(updateAnnotation(!annotation));
   };
 
-  const handleSelectAnnotationAI = () => {
-    dispatch(updateAnnotationAI(!annotationAI));
-  };
+  // const handleSelectAnnotationAI = () => {
+  //   dispatch(updateAnnotationAI(!annotationAI));
+  // };
 
   useEffect(() => {
     if (frequencies !== null) {
@@ -249,6 +253,10 @@ const WaterColumnInformationPanel = () => {
             <span className="font-monospace float-end">
               {getDateTime(time)} <span style={{ color: "#6b437d" }}>UTC</span>
             </span>
+            <br />
+            min: {timeMinValue}<br />
+            click: {time}<br />
+            max: {timeMaxValue}
           </p>
 
           <p>
@@ -490,20 +498,6 @@ const WaterColumnInformationPanel = () => {
             <b>Data Access</b>
           </p>
 
-          <p>
-            <small>
-              (see{" "}
-              <a
-                href="https://echolevels.readthedocs.io/en/latest/levels_proposed.html"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                processing levels
-              </a>
-              )
-            </small>
-          </p>
-
           {/* https://echolevels.readthedocs.io/en/latest/levels_proposed.html */}
           <p>
             <b>Level 0:</b>
@@ -529,18 +523,38 @@ const WaterColumnInformationPanel = () => {
               </a>
             </span>
           </p>
+
+          <p>
+            <small>
+              (see{" "}
+              <a
+                href="https://echolevels.readthedocs.io/en/latest/levels_proposed.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                processing levels
+              </a>
+              )
+            </small>
+          </p>
+
+          <br />
+
           <div>
-            <p style={{ textIndent: "6px", color: "grey" }}>Total Sv dimension:</p>
+            <p style={{ textIndent: "6px", color: "grey" }}>
+              Total Sv dimension:
+            </p>
             <p
               style={{
                 textIndent: "6px",
                 fontFamily: "monospace",
                 fontSize: "14px",
-                color: "grey"
+                color: "grey",
               }}
             >
-              {storeShape[0].toLocaleString()} x {storeShape[1].toLocaleString()}{" "}
-              x {storeShape[2].toLocaleString()} ={" "}
+              {storeShape[0].toLocaleString()} x{" "}
+              {storeShape[1].toLocaleString()} x{" "}
+              {storeShape[2].toLocaleString()} ={" "}
               {(storeShape[0] * storeShape[1] * storeShape[2]).toLocaleString()}
             </p>
           </div>
@@ -585,7 +599,9 @@ const WaterColumnInformationPanel = () => {
           )}
 
           <br />
-          <p className="text-center"><MdAnchor /></p>
+          <p className="text-center">
+            <MdAnchor />
+          </p>
         </Offcanvas.Body>
       </Offcanvas>
     </div>
