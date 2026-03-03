@@ -8,7 +8,6 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import MiniMapView from "../MiniMapView.jsx";
 import ColorMap from "../ColorMap.jsx";
-// import TimeAxis from "./Axes/TimeAxis.jsx";
 import SvPlotView from "../SvPlotView.jsx";
 // import { HuePicker } from 'react-color';
 // import AnnotationColors from "./AnnotationColors.jsx"
@@ -40,9 +39,9 @@ import {
   selectStoreAttributes,
   selectStoreShape,
   selectFrequencies, // all the values
-  // selectFrequencyButtonIndex,
+  //
   selectFrequencyIndex,
-  // updateFrequencyButtonIndex,
+  //
   updateFrequencyIndex,
   selectLatitude, // uses clicked index
   selectLatitudeStatus,
@@ -52,13 +51,6 @@ import {
   selectTime,
   selectDepth,
   //
-  // selectDepthMinIndex,
-  // selectDepthIndex,
-  // selectDepthMaxIndex,
-  //
-  // selectTimeMinIndex,
-  // selectTimeIndex,
-  // selectTimeMaxIndex,
   selectTimeMinValue,
   selectTimeMaxValue,
   //
@@ -69,24 +61,9 @@ import {
 } from "../../../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
 import { MdAnchor } from "react-icons/md";
-// import { TbLocation } from "react-icons/tb";
-// import { TbClockHour9 } from "react-icons/tb";
-// import { MdOutlineAnchor } from "react-icons/md";
-// import { TbCrosshair } from "react-icons/tb";
-// import { TfiRuler } from "react-icons/tfi";
-// import { RiCompasses2Line } from "react-icons/ri";
-// import { LuAudioWaveform } from "react-icons/lu";
-// import { IoIosColorFilter } from "react-icons/io";
-// import { PiSailboat } from "react-icons/pi";
-// import { TbRoute } from "react-icons/tb";
-// import { MdLeakAdd } from "react-icons/md";
 import Spinner from "react-bootstrap/Spinner";
+import { GetDateTime } from "../GetDateTime.jsx";
 
-const getDateTime = function (nanosecondValue) {
-  const tempDate = new Date(0);
-  tempDate.setUTCMilliseconds(Number(nanosecondValue) / 1_000_000);
-  return `${tempDate.toISOString().substring(0, 19)}Z`;
-};
 
 const WaterColumnInformationPanel = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -115,13 +92,6 @@ const WaterColumnInformationPanel = () => {
   const timeMinValue = useAppSelector(selectTimeMinValue); // for drawing leaflet polygons
   const timeMaxValue = useAppSelector(selectTimeMaxValue);
   const depth = useAppSelector(selectDepth);
-  //
-  // const depthMinIndex = useAppSelector(selectDepthMinIndex);
-  // const depthIndex = useAppSelector(selectDepthIndex);
-  // const depthMaxIndex = useAppSelector(selectDepthMaxIndex);
-  // const timeMinIndex = useAppSelector(selectTimeMinIndex);
-  // const timeIndex = useAppSelector(selectTimeIndex);
-  // const timeMaxIndex = useAppSelector(selectTimeMaxIndex);
   //
   const bottom = useAppSelector(selectBottom);
   const sv = useAppSelector(selectSv);
@@ -189,7 +159,7 @@ const WaterColumnInformationPanel = () => {
 
   const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${ship}/${cruise}/${sensor}/`;
   const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${ship}/${cruise}/${sensor}/`;
-  const url_level_2 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/${ship}/${cruise}/${sensor}/`;
+  const url_level_2 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2a/${ship}/${cruise}/${sensor}/`;
 
   if (isLoading) {
     return (
@@ -251,15 +221,15 @@ const WaterColumnInformationPanel = () => {
           <p>
             <b>Time:</b>{" "}
             <span className="font-monospace float-end">
-              {getDateTime(time)} <span style={{ color: "#6b437d" }}>UTC</span>
+              {GetDateTime(time)} <span style={{ color: "#6b437d" }}>UTC</span>
             </span>
             <br />
           </p>
           
-          <p style={{ marginLeft: "15px" }}>
-            min: {getDateTime(timeMinValue)}
+          <p className="text-end" style={{ color: "grey" }}>
+            min: {GetDateTime(timeMinValue)}
             <br />
-            max: {getDateTime(timeMaxValue)}
+            max: {GetDateTime(timeMaxValue)}
           </p>
 
           <p>
@@ -268,7 +238,7 @@ const WaterColumnInformationPanel = () => {
               {latitudeStatus === "succeeded" &&
               longitudeStatus === "succeeded" ? (
                 <>
-                  {longitude.toFixed(5)}° E, {latitude.toFixed(5)}° N
+                  {longitude.toFixed(5)}°E, {latitude.toFixed(5)}°N
                 </>
               ) : (
                 <>...</>

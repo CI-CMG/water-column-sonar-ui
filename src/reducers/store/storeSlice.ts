@@ -23,12 +23,15 @@ import {
   fetchSv,
   fetchSpeed,
   fetchDistance,
+  //
+  fetchParquetData,
+  //
   // alex's ai results
   fetchAIStoreAttributes, // probably don't need, just need tile?
   fetchAIStoreShape,
   fetchAISvTile,
 } from "./storeAPI.js";
-import { IntegerType } from "three/src/nodes/core/Node.js";
+// import { IntegerType } from "three/src/nodes/core/Node.js";
 
 
 export interface StoreState {
@@ -126,6 +129,10 @@ export interface StoreState {
   // Alex's AI
   aiSv: any, // BigUInt64? -> Float32Array
   aiSvStatus: "idle" | "loading" | "failed",
+
+  // Parquet Geometries
+  parquetData: any,
+  parquetDataStatus: "idle" | "loading" | "failed",
 }
 
 const initialState: StoreState = {
@@ -218,6 +225,9 @@ const initialState: StoreState = {
   // alexs ai
   aiSv: null,
   aiSvStatus: "idle",
+
+  parquetData: null,
+  parquetDataStatus: "idle",
 }
 
 export const storeSlice = createSlice({
@@ -351,6 +361,10 @@ export const storeSlice = createSlice({
     },
     updateDistance: (state, action: PayloadAction<any>) => {
       state.distance = action.payload;
+    },
+    //
+    updateParquetData: (state, action: PayloadAction<any>) => {
+      state.parquetData = action.payload;
     },
   },
 
@@ -534,6 +548,17 @@ export const storeSlice = createSlice({
       })
       .addCase(distanceAsync.rejected, state => {
         state.distanceStatus = "failed";
+      })
+      // PARQUET DATA---------------------------------------- //
+      .addCase(parquetDataAsync.pending, state => {
+        state.parquetDataStatus = "loading";
+      })
+      .addCase(parquetDataAsync.fulfilled, (state, action) => {
+        state.parquetDataStatus = "idle";
+        state.parquetData = action.payload;
+      })
+      .addCase(parquetDataAsync.rejected, state => {
+        state.parquetDataStatus = "failed";
       });
       // ----------------------------------------------- //
   },
@@ -587,6 +612,8 @@ export const {
   updateSv,
   updateSpeed,
   updateDistance,
+  //
+  updateParquetData,
 } = storeSlice.actions;
 
 export default storeSlice.reducer;
@@ -648,6 +675,8 @@ export const selectSv = (state: RootState) => state.store.sv;
 export const selectSpeed = (state: RootState) => state.store.speed;
 export const selectDistance = (state: RootState) => state.store.distance;
 
+export const selectParquetData = (state: RootState) => state.store.parquetData;
+
 // Just getting metadata from the store
 export const storeAttributesAsync = createAsyncThunk(
   // https://redux.js.org/tutorials/essentials/part-5-async-logic#checking-async-thunk-conditions
@@ -656,14 +685,6 @@ export const storeAttributesAsync = createAsyncThunk(
     const response = await fetchStoreAttributes(ship, cruise, sensor);
     return response;
   },
-  // {
-  //   condition(arg, thunkApi) {
-  //     const postsStatus = selectStoreAttributes(thunkApi.getState())
-  //     if (postsStatus !== 'idle') {
-  //       return false
-  //     }
-  //   }
-  // }
 )
 
 export const storeShapeAsync = createAsyncThunk( // gets the shape of the overall Sv array
@@ -802,5 +823,14 @@ export const distanceAsync = createAsyncThunk(
     const response = await fetchDistance(ship, cruise, sensor, indexTime);
     // debugger;
     return response;  // TODO: do I round?
+  },
+)
+
+export const parquetDataAsync = createAsyncThunk(
+  "store/fetchParquetData",
+  async ({ startTime, endTime, selectColumns }: { startTime: Date, endTime: Date, selectColumns: [] }) => {
+    const response = await fetchParquetData(startTime, endTime, selectColumns);
+    // console.log(`${response[0].x_index[0]}, ${response[0].y_index[0]}`);
+    return response;
   },
 )

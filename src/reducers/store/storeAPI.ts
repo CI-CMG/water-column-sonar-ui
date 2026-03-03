@@ -3,6 +3,10 @@ import { nearestPointOnLine } from "@turf/nearest-point-on-line";
 import * as zarr from "zarrita";
 import { get } from "@zarrita/ndarray"; // TODO: get rid of ndarray, it's old
 import { slice } from "zarrita";
+//
+import { useEffect } from "react";
+import { asyncBufferFromUrl, parquetReadObjects } from "hyparquet";
+import { compressors } from "hyparquet-compressors";
 
 // TODO: move somewhere else?
 const bucketName = "noaa-wcsd-zarr-pds";
@@ -177,6 +181,7 @@ export const fetchTime = (
   });
 };
 
+/* --- MIN MAX TIME for Leaflet Plot --- */
 export const fetchTimeMinValue = (
   ship: string,
   cruise: string,
@@ -210,7 +215,6 @@ export const fetchTimeMaxValue = (
     return get(arr, [indexTime]);
   });
 };
-
 
 /* --- TIME ARRAY --- */
 export const fetchTimeArray = (
@@ -351,9 +355,7 @@ export const fetchSvTile = (
 };
 
 /* ----------------------------------------------------*/
-/* ----------------------------------------------------*/
 /* ---------------------ALEXs Results------------------*/
-/* ----------------------------------------------------*/
 /* ----------------------------------------------------*/
 
 /* --- AI Zarr Store --- */
@@ -411,6 +413,82 @@ export const fetchAISvTile = (
     });
 };
 
+/* ----------------------------------------------------*/
+/* ---------------------PARQUET DATA-------------------*/
+/* ----------------------------------------------------*/
+// const all_columns = ["geometry_hash", "classification", "point_count", "time_start", "time_end", "depth_min", "depth_max", "month", "altitude", "latitude", "longitude", "local_time", "distance_from_coastline", "solar_altitude", "filename", "region_id", "ship", "cruise", "instrument", "phase_of_day", "x", "y",];
+const parquetFile = await asyncBufferFromUrl({
+  // url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/pmtiles/Henry_B._Bigelow_HB1906_neo4j_with_geometry.parquet"
+  url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/parquet/Henry_B._Bigelow_HB1906_geometry_26_3_2.parquet"
+});
+
+export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
+  return parquetReadObjects({
+    file: parquetFile,
+    compressors: compressors,
+    columns: ['x_index', 'y_index'],
+    rowStart: rowStart,
+    rowEnd: rowEnd,
+  }).then((d) => {
+    debugger;
+    return d;
+  });
+}
+
+// const start_time = new Date("2019-09-26T05:00:00.000000" + "Z");
+// const end_time = new Date("2019-09-26T23:10:00.000000" + "Z");
+export const fetchParquetData = (startTime: Date, endTime: Date, selectColumns=['time_start', 'time_end']) => {
+  return parquetReadObjects({
+    file: parquetFile,
+    compressors: compressors,
+    columns: selectColumns,
+  }).then((d) => {
+        const time_starts = d.map((x) => x.time_start);
+        const time_ends = d.map((x) => x.time_end);
+
+        let matches_starts = time_starts.map((v, i) => (v.getTime() < endTime.getTime()) ? i : -1).filter(v => v > -1);
+        let matches_ends = time_ends.map((v, i) => (v.getTime() > startTime.getTime()) ? i : -1).filter(v => v > -1);        
+        const overlapping_indices = matches_starts.filter(x => matches_ends.includes(x));
+        
+        const rowStart = overlapping_indices[0]
+        const rowEnd = overlapping_indices[overlapping_indices.length -1]
+
+        // get intersection of two
+        return GetSelectGeometries(rowStart, rowEnd)
+          .then((d: any) => {
+            // TODO: write to x_index and y_index vertices
+            return d[0];
+          }).catch((error: any) => console.error(error));
+      })
+      .catch((error) => console.error(error));
+
+  // return data;
+}
+
+
+// export const fetchParquetData = (
+//   ship: string,
+//   cruise: string,
+//   sensor: string,
+//   indexStart: number,
+//   indexEnd: number
+// ): any => {
+//   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+//   const root = zarr.root(new zarr.FetchStore(url));
+
+//   return zarr.open
+//     .v3(root.resolve("time"), { kind: "array" })
+//     .then((timeArray) => {
+//       // Limit query to the bounds //
+//       const max_indices = timeArray.shape[0];
+
+//       return get(timeArray, [
+//         slice(Math.max(indexStart, 0), Math.min(indexEnd, max_indices)),
+//       ]);
+//     });
+// };
+
+/* ----------------------------------------------------*/
 /* ----------------------------------------------------*/
 /* ----------------------------------------------------*/
 /* ----------------------------------------------------*/
