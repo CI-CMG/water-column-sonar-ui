@@ -13,11 +13,12 @@ export default defineConfig({
       }
     }
   },
+  // sourcemap: process.ENV === 'production' ? 'hidden' : true;
 
-  server: {
-    hmr: {
-        host: "localhost",
-        protocol: "ws",
-    },
-  },
+  // server: {
+  //   hmr: {
+  //       host: "localhost",
+  //       protocol: "ws",
+  //   },
+  // },
 })

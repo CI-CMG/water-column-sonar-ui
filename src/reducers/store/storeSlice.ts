@@ -131,7 +131,8 @@ export interface StoreState {
   aiSvStatus: "idle" | "loading" | "failed",
 
   // Parquet Geometries
-  parquetData: any,
+  parquetDataXIndexes: any | null,
+  parquetDataYIndexes: any | null,
   parquetDataStatus: "idle" | "loading" | "failed",
 }
 
@@ -226,7 +227,9 @@ const initialState: StoreState = {
   aiSv: null,
   aiSvStatus: "idle",
 
-  parquetData: null,
+  // parquetData: null,
+  parquetDataXIndexes: null,
+  parquetDataYIndexes: null,
   parquetDataStatus: "idle",
 }
 
@@ -363,8 +366,11 @@ export const storeSlice = createSlice({
       state.distance = action.payload;
     },
     //
-    updateParquetData: (state, action: PayloadAction<any>) => {
-      state.parquetData = action.payload;
+    updateParquetDataXIndexes: (state, action: PayloadAction<any>) => {
+      state.parquetDataXIndexes = action.payload;
+    },
+    updateParquetDataYIndexes: (state, action: PayloadAction<any>) => {
+      state.parquetDataYIndexes = action.payload;
     },
   },
 
@@ -555,7 +561,8 @@ export const storeSlice = createSlice({
       })
       .addCase(parquetDataAsync.fulfilled, (state, action) => {
         state.parquetDataStatus = "idle";
-        state.parquetData = action.payload;
+        state.parquetDataXIndexes = action.payload.x_indexes;
+        state.parquetDataYIndexes = action.payload.y_indexes;
       })
       .addCase(parquetDataAsync.rejected, state => {
         state.parquetDataStatus = "failed";
@@ -613,7 +620,8 @@ export const {
   updateSpeed,
   updateDistance,
   //
-  updateParquetData,
+  updateParquetDataXIndexes,
+  updateParquetDataYIndexes,
 } = storeSlice.actions;
 
 export default storeSlice.reducer;
@@ -675,7 +683,8 @@ export const selectSv = (state: RootState) => state.store.sv;
 export const selectSpeed = (state: RootState) => state.store.speed;
 export const selectDistance = (state: RootState) => state.store.distance;
 
-export const selectParquetData = (state: RootState) => state.store.parquetData;
+export const selectParquetDataXIndexes = (state: RootState) => state.store.parquetDataXIndexes;
+export const selectParquetDataYIndexes = (state: RootState) => state.store.parquetDataYIndexes;
 
 // Just getting metadata from the store
 export const storeAttributesAsync = createAsyncThunk(
@@ -810,27 +819,21 @@ export const svAsync = createAsyncThunk(
 
 export const speedAsync = createAsyncThunk(
   "store/fetchSpeed",
-  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
-    const response = await fetchSpeed(ship, cruise, sensor, indexTime);
-    // debugger;
-    return response; // TODO: do I round?
+  ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    return fetchSpeed(ship, cruise, sensor, indexTime);
   },
 )
 
 export const distanceAsync = createAsyncThunk(
   "store/fetchDistance",
-  async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
-    const response = await fetchDistance(ship, cruise, sensor, indexTime);
-    // debugger;
-    return response;  // TODO: do I round?
+  ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+    return fetchDistance(ship, cruise, sensor, indexTime);
   },
 )
 
 export const parquetDataAsync = createAsyncThunk(
   "store/fetchParquetData",
-  async ({ startTime, endTime, selectColumns }: { startTime: Date, endTime: Date, selectColumns: [] }) => {
-    const response = await fetchParquetData(startTime, endTime, selectColumns);
-    // console.log(`${response[0].x_index[0]}, ${response[0].y_index[0]}`);
-    return response;
+  async ({ startTime, endTime }: { startTime: Date, endTime: Date }) => {
+    return fetchParquetData(startTime, endTime);
   },
 )

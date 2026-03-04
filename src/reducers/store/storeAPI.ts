@@ -426,22 +426,28 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
   return parquetReadObjects({
     file: parquetFile,
     compressors: compressors,
-    columns: ['x_index', 'y_index'],
+    // columns: ['x_index', 'y_index'], // for the full geometry, too slow now
+    columns: ['depth_min', 'depth_max'],
     rowStart: rowStart,
     rowEnd: rowEnd,
   }).then((d) => {
-    debugger;
-    return d;
+    // debugger;
+    // const x_indexes = d.map((x) => { return x.x_index });
+    // const y_indexes = d.map((y) => { return y.y_index });
+    const x_indexes = d.map((x) => { return x.depth_min });
+    const y_indexes = d.map((y) => { return y.depth_max });
+    return { x_indexes, y_indexes };
   });
 }
 
 // const start_time = new Date("2019-09-26T05:00:00.000000" + "Z");
 // const end_time = new Date("2019-09-26T23:10:00.000000" + "Z");
-export const fetchParquetData = (startTime: Date, endTime: Date, selectColumns=['time_start', 'time_end']) => {
+export const fetchParquetData = (startTime: Date, endTime: Date) => {
+  // return 100;
   return parquetReadObjects({
     file: parquetFile,
     compressors: compressors,
-    columns: selectColumns,
+    columns: ['time_start', 'time_end'],
   }).then((d) => {
         const time_starts = d.map((x) => x.time_start);
         const time_ends = d.map((x) => x.time_end);
@@ -454,15 +460,18 @@ export const fetchParquetData = (startTime: Date, endTime: Date, selectColumns=[
         const rowEnd = overlapping_indices[overlapping_indices.length -1]
 
         // get intersection of two
-        return GetSelectGeometries(rowStart, rowEnd)
-          .then((d: any) => {
-            // TODO: write to x_index and y_index vertices
-            return d[0];
-          }).catch((error: any) => console.error(error));
+        // return 100;
+        console.log(`rows: ${rowStart}, ${rowEnd}`);
+        return GetSelectGeometries(rowStart, rowEnd);
+          // .then((d: any) => {
+          //   // TODO: write to x_index and y_index vertices
+          //   debugger;
+          //   return d;
+          // }); //.catch((error: any) => console.error(error));
       })
       .catch((error) => console.error(error));
 
-  // return data;
+  // return;
 }
 
 

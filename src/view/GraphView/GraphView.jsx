@@ -8,6 +8,7 @@ import { UnrealBloomPass } from "https://esm.sh/three/examples/jsm/postprocessin
 // import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
+import Form from "react-bootstrap/Form";
 
 // Would like to get this example working:
 // https://github.com/vasturiano/react-force-graph/blob/master/example/text-nodes/index-3d.html
@@ -15,7 +16,7 @@ import { Link } from "react-router-dom";
 // https://codesandbox.io/p/sandbox/react-l6tnvc?file=%2Fsrc%2FApp.js%3A21%2C7-42%2C9
 export default function GraphView() {
   useEffect(() => {
-    document.title = `Graph`;
+    document.title = `Knowledge Graph`;
   }, []);
 
   function genRandomTree(N = 10, reverse = false) {
@@ -33,8 +34,8 @@ export default function GraphView() {
 
   useEffect(() => {
     const bloomPass = new UnrealBloomPass();
-    bloomPass.strength = 0.1;
-    bloomPass.radius = 0.1;
+    bloomPass.strength = 0.033;
+    bloomPass.radius = 0.01;
     bloomPass.threshold = 0;
     fgRef.current.postProcessingComposer().addPass(bloomPass);
   }, []);
@@ -43,14 +44,16 @@ export default function GraphView() {
     <div className="GraphView">
       <Container>
         <Row>
-          <Col md={3} />
+          {/* <Col md={3} /> */}
 
-          <Col md={3}>
+          <Col md={8}>
+          <br />
+            <p className="text-center" style={{ color: "white"}}>EchoFish Meta Graph</p>
             <ForceGraph3D
               ref={fgRef}
-              graphData={genRandomTree(20)}
+              graphData={genRandomTree(15)}
               nodeThreeObjectExtend={true}
-              width={600}
+              width={800}
               height={400}
               // backgroundColor='#000003'
               backgroundColor="black"
@@ -78,33 +81,113 @@ export default function GraphView() {
               // bloomPass={bloomPass}
             />
           </Col>
-          <Col md={3} />
+          <Col md={4}>
+            <br />
+            <p style={{ color: "white" }}>Query the Knowledge Graph</p>
+            <Form.Select aria-label="Default select example">
+              <option>Phase of the Day</option>
+              <option value="1">Night</option>
+              <option value="2">Dawn</option>
+              <option value="3">Day</option>
+              <option value="4">Dusk</option>
+            </Form.Select>
+            <br />
+            <Form.Select aria-label="Default select example">
+              <option>Classification</option>
+              <option value="1">AH_School</option>
+              <option value="2">Unclassified</option>
+              <option value="3">fish_school</option>
+              <option value="4">possible_herring</option>
+            </Form.Select>
+            <br />
+            <div style={{ color: "white"}}>
+              <Form.Label>Altitude</Form.Label>
+              <Form.Range min="0" max="200" step="10" value="100" id="customRange3" />
+            </div>
+            <br />
+            <div style={{ color: "white"}}>
+              <Form.Label>Distance From the Coast</Form.Label>
+              <Form.Range min="0" max="1000" step="100" value="200" id="customRange3" />
+            </div>
+            <br />
+            <Form style={{color: "white"}}>
+              <Form.Check
+                type="switch"
+                id="custom-switch"
+                label="Cruise"
+              />
+            </Form>
+          </Col>
         </Row>
-        <Row mx-auto>
+
+        <Row className="mx-auto mt-4">
           <Card style={{ width: "18rem" }} className="mx-auto">
             <Card.Img
               variant="top"
-              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/03ff1a28a5d78c955265a95d96ad1f7ccd8497d5d31f309e29fb4c50c7839f31.jpeg"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/1d4b073ae6dda69972e42d4f707134640c1897c63b04c620d355dc527f7ef4ed.jpeg"
+            />
+            <Card.Body>
+              <Card.Title className="text-center">fish_school</Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60
+                <br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: day
+                <br />
+                <br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                >
+                  View in the water column →
+                </Link>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+
+          <Card style={{ width: "18rem" }} className="mx-auto">
+            <Card.Img
+              variant="top"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/058ca885054617fc5e15bec4f3c7e3b3bfc2a92cdf218f32cab7000a74895edc.jpeg"
             />
             <Card.Body>
               <Card.Title className="text-center">AH_School</Card.Title>
               <Card.Text className="text-center">
-                Henry_B._Bigelow / HB1906 / EK60<br />
+                Henry_B._Bigelow / HB1906 / EK60
                 <br />
-                start: 2025-02-06 10:50:00<br />
-                end: 2025-02-06 10:51:00<br />
-                depth: [11.12, 13.14]<br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
                 altitude: 1.23 m<br />
                 gps: -69.80750° E, 41.79967° N<br />
                 distance from coast: 250 m<br />
-                local time: 2019-09-25T10:02:06.60<br />
-                solar altitude: 35.02°<br />
-                phase of day: day<br /><br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: night
+                <br />
+                <br />
                 <Link
                   to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
                   target="_blank"
-                  >
-                    View in the water column →
+                >
+                  View in the water column →
                 </Link>
               </Card.Text>
             </Card.Body>
@@ -116,24 +199,71 @@ export default function GraphView() {
               src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/03ff1a28a5d78c955265a95d96ad1f7ccd8497d5d31f309e29fb4c50c7839f31.jpeg"
             />
             <Card.Body>
-              <Card.Title className="text-center">AH_School</Card.Title>
+              <Card.Title className="text-center">
+                Unclassified regions
+              </Card.Title>
               <Card.Text className="text-center">
-                Henry_B._Bigelow / HB1906 / EK60<br />
+                Henry_B._Bigelow / HB1906 / EK60
                 <br />
-                start: 2025-02-06 10:50:00<br />
-                end: 2025-02-06 10:51:00<br />
-                depth: [11.12, 13.14]<br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
                 altitude: 1.23 m<br />
                 gps: -69.80750° E, 41.79967° N<br />
                 distance from coast: 250 m<br />
-                local time: 2019-09-25T10:02:06.60<br />
-                solar altitude: 35.02°<br />
-                phase of day: day<br /><br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: sunrise
+                <br />
+                <br />
                 <Link
                   to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
                   target="_blank"
-                  >
-                    View in the water column →
+                >
+                  View in the water column →
+                </Link>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Row>
+
+        <Row className="mx-auto mt-5">
+          <Card style={{ width: "18rem" }} className="mx-auto">
+            <Card.Img
+              variant="top"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/8bbeec194add2f5c4d9f153caea83f6d4a61506cc458907443bda654d73ba8fa.jpeg"
+            />
+            <Card.Body>
+              <Card.Title className="text-center">AH_School</Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60
+                <br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: day
+                <br />
+                <br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                >
+                  View in the water column →
                 </Link>
               </Card.Text>
             </Card.Body>
@@ -142,34 +272,74 @@ export default function GraphView() {
           <Card style={{ width: "18rem" }} className="mx-auto">
             <Card.Img
               variant="top"
-              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/3dcc07f31feb57001cd30f7857237d89389dac389734faf3bf38af87ce560a0d.jpeg"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/8be3f1af949c92cf03171491ca4e6db1b03c595fb56f108cdb20dfc026c00cfe.jpeg"
             />
             <Card.Body>
-              <Card.Title>EVR: 03ff1a2</Card.Title>
-              <Card.Text>Henry_B._Bigelow / HB1906 / EK60</Card.Text>
-              <Card.Link href="#">View water column</Card.Link>
+              <Card.Title className="text-center">
+                Unclassified regions
+              </Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60
+                <br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: day
+                <br />
+                <br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                >
+                  View in the water column →
+                </Link>
+              </Card.Text>
             </Card.Body>
           </Card>
+
           <Card style={{ width: "18rem" }} className="mx-auto">
             <Card.Img
               variant="top"
-              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/1fc15b0a466777f3cb81c5e6c2fb2641654adbcce25d6695ec06939b21968682.jpeg"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/9f1a7a95e93801996eb4e88b829c6070320dabdc8dce0669a706c96f1e5f9e53.jpeg"
             />
             <Card.Body>
-              <Card.Title>EVR: 03ff1a2</Card.Title>
-              <Card.Text>Henry_B._Bigelow / HB1906 / EK60</Card.Text>
-              <Card.Link href="#">View water column</Card.Link>
-            </Card.Body>
-          </Card>
-          <Card style={{ width: "18rem" }} className="mx-auto">
-            <Card.Img
-              variant="top"
-              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/5ffd9952ae125c6758afb41222c019afc06587bbbc2ebcc01d0b96330e5198c7.jpeg"
-            />
-            <Card.Body>
-              <Card.Title>EVR: 03ff1a2</Card.Title>
-              <Card.Text>Henry_B._Bigelow / HB1906 / EK60</Card.Text>
-              <Card.Link href="#">View water column</Card.Link>
+              <Card.Title className="text-center">AH_School</Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60
+                <br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: day
+                <br />
+                <br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                >
+                  View in the water column →
+                </Link>
+              </Card.Text>
             </Card.Body>
           </Card>
         </Row>
@@ -177,7 +347,6 @@ export default function GraphView() {
       </Container>
       <br />
       <br />
-      
     </div>
   );
 }
