@@ -427,16 +427,29 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
     file: parquetFile,
     compressors: compressors,
     // columns: ['x_index', 'y_index'], // for the full geometry, too slow now
-    columns: ['depth_min', 'depth_max'],
+    columns: ['classification', 'x_index', 'y_index'],
     rowStart: rowStart,
     rowEnd: rowEnd,
   }).then((d) => {
-    // debugger;
-    // const x_indexes = d.map((x) => { return x.x_index });
-    // const y_indexes = d.map((y) => { return y.y_index });
     const x_indexes = d.map((x) => { return x.depth_min });
     const y_indexes = d.map((y) => { return y.depth_max });
-    return { x_indexes, y_indexes };
+    const bboxes = [];
+    const classifications = [];
+    for (let i = 0; i < d.length; i++) {
+      const destructured_x = d[i].x_index.map((x: any) => { return Number(x); })
+      const destructured_y = d[i].y_index.map((y: any) => { return Number(y); })
+      // bounding box x
+      const x_min = Math.min(...destructured_x)
+      const x_max = Math.max(...destructured_x)
+      // bounding box y
+      const y_min = -1 * Math.min(...destructured_y)
+      const y_max = -1 * Math.max(...destructured_y)
+      //
+      bboxes.push([x_min, x_max, y_min, y_max]);
+      classifications.push(d[i].classification)
+    }
+    // debugger;
+    return { bboxes, classifications }; // TODO: need to pass the labels as well
   });
 }
 

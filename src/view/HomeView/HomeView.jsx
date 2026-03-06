@@ -1,110 +1,21 @@
 import {
-  // useRef,
-  // useState,
   useEffect,
 } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-// import { useInView } from "react-intersection-observer";
 import Image from "react-bootstrap/Image";
 import header from "../../../src/assets/images/header.jpg";
-// import logo_noaa from "../../../src/assets/images/noaa/noaa.png";
 import logo_noaa_fisheries from "../../../src/assets/images/noaa/noaa_fisheries_logo.png";
 import logo_ncei from "../../../src/assets/images/noaa/ncei_logo.png";
 import logo_echopype from "../../../src/assets/images/echopype/echopype.png";
 import logo_cires from "../../../src/assets/images/cu/cires_cu_logo.png";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
-// https://react-icons.github.io/react-icons/search/#q=compass
-// import { MdOutlineAnchor } from "react-icons/md";
-// import { ImCompass } from "react-icons/im";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { library } from "@fortawesome/fontawesome-svg-core";
-// import { fab } from "@fortawesome/free-brands-svg-icons";
 
-// import { useFrame } from "@react-three/fiber";
-// import { RoundedBox } from "@react-three/drei";
-// import { a, config, useSpring } from "@react-spring/three";
-// import {
-//   // useSpring,
-//   // animated
-// } from "@react-spring/web";
-// import {
-//   GlobalCanvas,
-//   UseCanvas,
-//   SmoothScrollbar,
-// } from "@14islands/r3f-scroll-rig";
-// import { StickyScrollScene } from "@14islands/r3f-scroll-rig/powerups";
-
-// prototyping with this: https://codesandbox.io/p/sandbox/r3f-scroll-rig-sticky-box-w5v4u7?file=%2Fsrc%2FApp.jsx%3A6%2C36-6%2C70
-// const AnimatedRoundedBox = a(RoundedBox);
-// function SpinningBox({ scale, scrollState, inViewport }) {
-//   const box = useRef();
-//   const size = scale.xy.min() * 0.5;
-
-//   useFrame(() => {
-//     box.current.rotation.y = scrollState.progress * Math.PI * 2;
-//   });
-
-//   const spring = useSpring({
-//     scale: inViewport ? size : size * 0.0,
-//     config: inViewport ? config.wobbly : config.stiff,
-//     delay: inViewport ? 100 : 0,
-//   });
-
-//   return (
-//     <AnimatedRoundedBox ref={box} {...spring}>
-//       <meshNormalMaterial />
-//     </AnimatedRoundedBox>
-//   );
-// }
-
-// function StickySection() {
-//   const el = useRef();
-//   return (
-//     <section>
-//       <div className="StickyContainer">
-//         <div ref={el} className="SomeStickyContent Debug">
-//           <p>This element is position:sticky and will be tracked.</p>
-//         </div>
-//       </div>
-//       <UseCanvas>
-//         <StickyScrollScene track={el}>
-//           {(props) => (
-//             <>
-//               <SpinningBox {...props} />
-//             </>
-//           )}
-//         </StickyScrollScene>
-//       </UseCanvas>
-//     </section>
-//   );
-// }
-
-export default function DatasetView() {
-  // const springs = useSpring({
-  //   from: { background: "#ff6d6d", y: -40, x: -20 },
-  //   to: [
-  //     { x: 20, background: "#fff59a" },
-  //     { y: 40, background: "#88DFAB" },
-  //     { x: -20, background: "#569AFF" },
-  //     { y: -40, background: "#ff6d6d" },
-  //   ],
-  //   loop: true,
-  // });
-
-  // const [isTouch, setTouch] = useState(false);
-  // useEffect(() => {
-  //   const isTouch =
-  //     "ontouchstart" in window ||
-  //     navigator.maxTouchPoints > 0 ||
-  //     navigator.msMaxTouchPoints > 0;
-  //   setTouch(isTouch);
-  // }, []);
-
+export default function HomeView() {
   useEffect(() => {
-    document.title = `Dataset`;
+    document.title = `echofish`;
   }, []);
 
   // const { ref, inView } = useInView({

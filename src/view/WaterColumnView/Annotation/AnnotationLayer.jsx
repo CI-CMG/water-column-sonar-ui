@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import {
-  // Rectangle,
-  // Tooltip,
+  Rectangle,
+  Tooltip,
   // Polygon,
 } from "react-leaflet";
 import {
@@ -28,9 +28,33 @@ goto: https://hyperparam.app/?preview
 // const url = "https://github.com/CI-CMG/water-column-sonar-annotation/releases/download/v26.1.0/Henry_B._Bigelow_HB1906_neo4j_with_geometry.parquet";
 // const parquet_url = "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/pmtiles/Henry_B._Bigelow_HB1906_neo4j_with_geometry.parquet";
 
+// reference: https://github.com/CI-CMG/water-column-sonar-ui/blob/5c27612f375fa5a6819410a5f80d42410ecf9f45/src/view/WaterColumnView/WaterColumnVisualization.jsx
+
+const rectangles = [
+ [[-564, 2187169], [-591, 2187178]],
+ [[-574, 2187877], [-602, 2187893]],
+]
+
 export default function AnnotationLayer() {
   const dispatch = useAppDispatch();
   const annotation = useAppSelector(selectAnnotation);
+
+  const rectangleItems = rectangles.map((rectangle, i) =>
+    <Rectangle
+      bounds={rectangle}
+      key={rectangle}
+      opacity={0.75}
+      fillColor="white"
+      fillOpacity={0.10}
+      weight={2}
+      title="Annotation"
+      className="Annotation"
+      pathOptions={{ color: '#FF69B4' }}
+    >
+      <Tooltip>AH_School {i}<br />d20191016_t121103-t233917_Zsc-DWBA-Schools_All-RegionDefs.evr</Tooltip>
+    </Rectangle>
+  )
+
   
   // const startTime = new Date("2019-09-26T05:00:00.000000" + "Z"); // NOTE: requires 'Z'
   // const endTime = new Date("2019-09-26T23:10:00.000000" + "Z");
@@ -54,9 +78,7 @@ export default function AnnotationLayer() {
   return (
     <div className="AnnotationLayer">
       {annotation ? (
-        <>
-          <p>{`${timeMinValue}, ${timeMaxValue}`}</p>
-        </>
+        <>{rectangleItems}</>
       ) : (
         <></>
       )}

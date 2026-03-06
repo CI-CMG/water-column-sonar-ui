@@ -5,7 +5,7 @@ import {
 import LayoutView from './view/LayoutView/LayoutView';
 import MapView from './view/MapView/MapView';
 import WaterColumnView from './view/WaterColumnView/WaterColumnView';
-import DatasetView from './view/DatasetView/DatasetView';
+import HomeView from './view/HomeView/HomeView';
 import GraphView from './view/GraphView/GraphView';
 // import CatalogView from './view/CatalogView/CatalogView';
 // import AboutView from './view/AboutView/AboutView';
@@ -18,9 +18,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LayoutView />}>
           
-          <Route index element={<DatasetView />} />
-
-          <Route path="dataset" element={<DatasetView />} />
+          <Route index element={<HomeView />} />
 
           <Route path="map" element={<MapView />} />
 

@@ -114,7 +114,8 @@ export default function GraphView() {
               <Form.Check
                 type="switch"
                 id="custom-switch"
-                label="Cruise"
+                label="Include Unknown"
+                default={true}
               />
             </Form>
           </Col>
@@ -145,7 +146,6 @@ export default function GraphView() {
                 solar altitude: 35.02°
                 <br />
                 phase of day: day
-                <br />
                 <br />
                 <Link
                   to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
@@ -181,7 +181,6 @@ export default function GraphView() {
                 solar altitude: 35.02°
                 <br />
                 phase of day: night
-                <br />
                 <br />
                 <Link
                   to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
@@ -219,7 +218,6 @@ export default function GraphView() {
                 solar altitude: 35.02°
                 <br />
                 phase of day: sunrise
-                <br />
                 <br />
                 <Link
                   to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"

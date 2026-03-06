@@ -131,8 +131,7 @@ export interface StoreState {
   aiSvStatus: "idle" | "loading" | "failed",
 
   // Parquet Geometries
-  parquetDataXIndexes: any | null,
-  parquetDataYIndexes: any | null,
+  parquetData: any | null,
   parquetDataStatus: "idle" | "loading" | "failed",
 }
 
@@ -228,8 +227,7 @@ const initialState: StoreState = {
   aiSvStatus: "idle",
 
   // parquetData: null,
-  parquetDataXIndexes: null,
-  parquetDataYIndexes: null,
+  parquetData: null,
   parquetDataStatus: "idle",
 }
 
@@ -366,11 +364,8 @@ export const storeSlice = createSlice({
       state.distance = action.payload;
     },
     //
-    updateParquetDataXIndexes: (state, action: PayloadAction<any>) => {
-      state.parquetDataXIndexes = action.payload;
-    },
-    updateParquetDataYIndexes: (state, action: PayloadAction<any>) => {
-      state.parquetDataYIndexes = action.payload;
+    updateParquetData: (state, action: PayloadAction<any>) => {
+      state.parquetData = action.payload;
     },
   },
 
@@ -561,8 +556,7 @@ export const storeSlice = createSlice({
       })
       .addCase(parquetDataAsync.fulfilled, (state, action) => {
         state.parquetDataStatus = "idle";
-        state.parquetDataXIndexes = action.payload.x_indexes;
-        state.parquetDataYIndexes = action.payload.y_indexes;
+        state.parquetData = action.payload;
       })
       .addCase(parquetDataAsync.rejected, state => {
         state.parquetDataStatus = "failed";
@@ -620,8 +614,7 @@ export const {
   updateSpeed,
   updateDistance,
   //
-  updateParquetDataXIndexes,
-  updateParquetDataYIndexes,
+  updateParquetData,
 } = storeSlice.actions;
 
 export default storeSlice.reducer;
@@ -683,8 +676,7 @@ export const selectSv = (state: RootState) => state.store.sv;
 export const selectSpeed = (state: RootState) => state.store.speed;
 export const selectDistance = (state: RootState) => state.store.distance;
 
-export const selectParquetDataXIndexes = (state: RootState) => state.store.parquetDataXIndexes;
-export const selectParquetDataYIndexes = (state: RootState) => state.store.parquetDataYIndexes;
+export const selectParquetData = (state: RootState) => state.store.parquetData;
 
 // Just getting metadata from the store
 export const storeAttributesAsync = createAsyncThunk(
