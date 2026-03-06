@@ -226,11 +226,11 @@ const WaterColumnInformationPanel = () => {
             <br />
           </p>
           
-          <p className="text-end" style={{ color: "grey" }}>
+          {/* <p className="text-end" style={{ color: "grey" }}>
             min: {GetDateTime(timeMinValue)}
             <br />
             max: {GetDateTime(timeMaxValue)}
-          </p>
+          </p> */}
 
           <p>
             <b>Lon / Lat:</b>{" "}

@@ -427,7 +427,7 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
     file: parquetFile,
     compressors: compressors,
     // columns: ['x_index', 'y_index'], // for the full geometry, too slow now
-    columns: ['classification', 'x_index', 'y_index'],
+    columns: ['classification', 'x_index', 'y_index', 'phase_of_day'],
     rowStart: rowStart,
     rowEnd: rowEnd+1,
   }).then((d) => {
@@ -447,11 +447,11 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
       //
       // bboxes.push([x_min, x_max, y_min, y_max]);
       bboxes.push([[y_min, x_min], [y_max, x_max]]);
-      classifications.push(d[i].classification)
+      classifications.push(`${d[i].classification}, ${d[i].phase_of_day}`)
     }
     // debugger;
     return { bboxes, classifications };
-  });
+  }).catch((error) => console.error(error));
 }
 
 // const start_time = new Date("2019-09-26T05:00:00.000000" + "Z");
