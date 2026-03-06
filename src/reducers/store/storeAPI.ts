@@ -449,14 +449,13 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
       classifications.push(d[i].classification)
     }
     // debugger;
-    return { bboxes, classifications }; // TODO: need to pass the labels as well
+    return { bboxes, classifications };
   });
 }
 
 // const start_time = new Date("2019-09-26T05:00:00.000000" + "Z");
 // const end_time = new Date("2019-09-26T23:10:00.000000" + "Z");
 export const fetchParquetData = (startTime: Date, endTime: Date) => {
-  // return 100;
   return parquetReadObjects({
     file: parquetFile,
     compressors: compressors,
@@ -469,18 +468,16 @@ export const fetchParquetData = (startTime: Date, endTime: Date) => {
         let matches_ends = time_ends.map((v, i) => (v.getTime() > startTime.getTime()) ? i : -1).filter(v => v > -1);        
         const overlapping_indices = matches_starts.filter(x => matches_ends.includes(x));
         
-        const rowStart = overlapping_indices[0]
-        const rowEnd = overlapping_indices[overlapping_indices.length -1]
-
-        // get intersection of two
-        // return 100;
+        let rowStart = 0;
+        let rowEnd = 0;
+        if (overlapping_indices.length > 0) {
+          rowStart = overlapping_indices[0];
+          rowEnd = overlapping_indices[overlapping_indices.length -1]
+          console.log(`rows: ${rowStart}, ${rowEnd}`);
+          return GetSelectGeometries(rowStart, rowEnd);
+        }
         console.log(`rows: ${rowStart}, ${rowEnd}`);
-        return GetSelectGeometries(rowStart, rowEnd);
-          // .then((d: any) => {
-          //   // TODO: write to x_index and y_index vertices
-          //   debugger;
-          //   return d;
-          // }); //.catch((error: any) => console.error(error));
+        return { bboxes: [], classifications: [] }
       })
       .catch((error) => console.error(error));
 

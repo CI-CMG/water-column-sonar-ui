@@ -17,8 +17,9 @@ import {
   updateDepthIndex,
   updateTimeIndex,
   //
-  // selectAnnotation,
-  selectAnnotationColor,
+  selectAnnotation,
+  // selectParquetData,
+  // selectAnnotationColor,
   // selectAnnotationAI,
   //
   updateDepthMinIndex,
@@ -133,8 +134,9 @@ const WaterColumnVisualization = ({
   }
 
   const [map, setMap] = useState(null);
-  // const annotation = useAppSelector(selectAnnotation);
-  const annotationColor = useAppSelector(selectAnnotationColor);
+  const annotation = useAppSelector(selectAnnotation);
+  // const parquetData = useAppSelector(selectParquetData);
+  // const annotationColor = useAppSelector(selectAnnotationColor);
 
   const mapCenterX = initialTimeIndex;
   // TODO: this will create a problem when page is resized
@@ -143,17 +145,18 @@ const WaterColumnVisualization = ({
   const marginX = 500; // map maxBounds + margin
   const marginY = 100;
 
-  useEffect(() => {
-    if (map) { // color of the polygon annotation shape
-      map.eachLayer((x) => {
-        if (x.options.className === "Annotation") {
-          x.setStyle({
-            color: annotationColor,
-          });
-        }
-      });
-    }
-  }, [annotationColor, map]);
+  // useEffect(() => {
+  //   if (map) {
+  //     // color of the polygon annotation shape
+  //     map.eachLayer((x) => {
+  //       if (x.options.className === "Annotation") {
+  //         x.setStyle({
+  //           color: annotationColor,
+  //         });
+  //       }
+  //     });
+  //   }
+  // }, [annotationColor, map]);
 
   useEffect(() => {
     if (map) {
@@ -228,8 +231,8 @@ const WaterColumnVisualization = ({
               <CustomLayer />
 
               {/* {annotationAI && <CustomAILayer />} */}
-              <AnnotationLayer />
-
+            {annotation ? <AnnotationLayer /> : <></>}
+              
               <LocationMarker />
 
               <GetMapBounds />
