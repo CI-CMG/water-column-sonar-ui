@@ -37,19 +37,19 @@ goto: https://hyperparam.app/?preview
 // ]
 
 // const rectangleItems = all_rectangles.map((rectangle, i) =>
-//   <Rectangle
-//     bounds={rectangle}
-//     key={i}
-//     opacity={0.75}
-//     fillColor="white"
-//     fillOpacity={0.10}
-//     weight={2}
-//     title="Annotation"
-//     className="Annotation"
-//     pathOptions={{ color: '#FF69B4' }}
-//   >
-//     <Tooltip>AH_School</Tooltip>
-//   </Rectangle>
+// <Rectangle
+//   bounds={rectangle}
+//   key={i}
+//   opacity={0.75}
+//   fillColor="white"
+//   fillOpacity={0.10}
+//   weight={2}
+//   title="Annotation"
+//   className="Annotation"
+//   pathOptions={{ color: '#FF69B4' }}
+// >
+//   <Tooltip>AH_School</Tooltip>
+// </Rectangle>
 // )
 
 export default function AnnotationLayer() {
@@ -74,7 +74,9 @@ export default function AnnotationLayer() {
 
   useEffect(() => {
     if (timeMinValue !== null && timeMaxValue !== null) {
-      const startTime = new Date(new Date(timeMinValue / 1000000).toISOString());
+      const startTime = new Date(
+        new Date(timeMinValue / 1000000).toISOString(),
+      );
       const endTime = new Date(new Date(timeMaxValue / 1000000).toISOString());
       dispatch(parquetDataAsync({ startTime, endTime }));
     }
@@ -82,9 +84,26 @@ export default function AnnotationLayer() {
 
   return (
     <div className="AnnotationLayer">
-      { parquetData !== null ? (
-        parquetData.classifications?.map((classification, i) => {
-          return (<p key={i}>{classification}</p>)
+      {parquetData !== null && parquetData.bboxes?.length > 0 ? (
+        // parquetData.classifications?.map((classification, i) => {
+        //   return (<p key={i}>{classification}</p>)
+        // })
+        parquetData.bboxes?.map((bbox, i) => {
+          return (
+            <Rectangle
+              bounds={bbox}
+              key={i}
+              opacity={0.75}
+              fillColor="white"
+              fillOpacity={0.1}
+              weight={2}
+              title="Annotation"
+              className="Annotation"
+              pathOptions={{ color: "#FF69B4" }}
+            >
+              <Tooltip>{parquetData.classifications[i]}</Tooltip>
+            </Rectangle>
+          );
         })
       ) : (
         <></>

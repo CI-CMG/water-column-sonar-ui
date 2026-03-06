@@ -445,7 +445,8 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
       const y_min = -1 * Math.min(...destructured_y)
       const y_max = -1 * Math.max(...destructured_y)
       //
-      bboxes.push([x_min, x_max, y_min, y_max]);
+      // bboxes.push([x_min, x_max, y_min, y_max]);
+      bboxes.push([[y_min, x_min], [y_max, x_max]]);
       classifications.push(d[i].classification)
     }
     // debugger;
