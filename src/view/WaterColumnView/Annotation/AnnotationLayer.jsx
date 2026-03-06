@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Rectangle,
   Tooltip,
-  // Polygon,
+  Polygon,
+  Polyline,
 } from "react-leaflet";
 import {
-  selectAnnotation,
+  // selectAnnotation,
   // selectTimeMinValue,
   // selectTimeMaxValue,
 } from "../../../reducers/store/storeSlice.ts";
@@ -86,20 +87,35 @@ export default function AnnotationLayer() {
     <div className="AnnotationLayer">
       {parquetData !== null && parquetData.bboxes?.length > 0 ? (
         parquetData.bboxes?.map((bbox, i) => {
+          // console.log(bbox)
           return (
-            <Rectangle
-              bounds={bbox}
+            // <Polygon
+            //   bounds={bbox}
+            //   key={i}
+            //   // opacity={0.75}
+            //   // fillColor="white"
+            //   // fillOpacity={0.1}
+            //   // weight={2}
+            //   title="Annotation"
+            //   className="Annotation"
+            //   // pathOptions={{ color: "#FF69B4" }}
+            // >
+            //   <Tooltip>{parquetData.classifications[i]}</Tooltip>
+            // </Polygon>
+            <Polygon
+              positions={bbox}
               key={i}
-              opacity={0.75}
+              opacity={0.90}
               fillColor="white"
-              fillOpacity={0.1}
+              fillOpacity={0.05}
               weight={2}
               title="Annotation"
               className="Annotation"
-              pathOptions={{ color: "#FF69B4" }}
+              // pathOptions={{ color: "#FF69B4" }}
+              pathOptions={{ color: "#FFB6C1" }}
             >
               <Tooltip>{parquetData.classifications[i]}</Tooltip>
-            </Rectangle>
+            </Polygon>
           );
         })
       ) : (

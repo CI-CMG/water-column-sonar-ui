@@ -341,6 +341,118 @@ export default function GraphView() {
             </Card.Body>
           </Card>
         </Row>
+
+        <Row className="mx-auto mt-5">
+          <Card style={{ width: "18rem" }} className="mx-auto">
+            <Card.Img
+              variant="top"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/8bbeec194add2f5c4d9f153caea83f6d4a61506cc458907443bda654d73ba8fa.jpeg"
+            />
+            <Card.Body>
+              <Card.Title className="text-center">AH_School</Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60
+                <br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: day
+                <br />
+                <br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                >
+                  View in the water column →
+                </Link>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+
+          <Card style={{ width: "18rem" }} className="mx-auto">
+            <Card.Img
+              variant="top"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/8be3f1af949c92cf03171491ca4e6db1b03c595fb56f108cdb20dfc026c00cfe.jpeg"
+            />
+            <Card.Body>
+              <Card.Title className="text-center">
+                Unclassified regions
+              </Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60
+                <br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: day
+                <br />
+                <br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                >
+                  View in the water column →
+                </Link>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+
+          <Card style={{ width: "18rem" }} className="mx-auto">
+            <Card.Img
+              variant="top"
+              src="https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/thumbnails/9f1a7a95e93801996eb4e88b829c6070320dabdc8dce0669a706c96f1e5f9e53.jpeg"
+            />
+            <Card.Body>
+              <Card.Title className="text-center">AH_School</Card.Title>
+              <Card.Text className="text-center">
+                Henry_B._Bigelow / HB1906 / EK60
+                <br />
+                start: 2025-02-06 10:50:00
+                <br />
+                end: 2025-02-06 10:51:00
+                <br />
+                depth: [11.12, 13.14]
+                <br />
+                altitude: 1.23 m<br />
+                gps: -69.80750° E, 41.79967° N<br />
+                distance from coast: 250 m<br />
+                local time: 2019-09-25T10:02:06.60
+                <br />
+                solar altitude: 35.02°
+                <br />
+                phase of day: day
+                <br />
+                <br />
+                <Link
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                  target="_blank"
+                >
+                  View in the water column →
+                </Link>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Row>
         <br />
       </Container>
       <br />
