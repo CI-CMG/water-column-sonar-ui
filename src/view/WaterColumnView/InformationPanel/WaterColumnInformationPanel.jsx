@@ -28,7 +28,7 @@ import {
   updateAnnotation,
   //
   selectAnnotationAI,
-  // updateAnnotationAI,
+  updateAnnotationAI,
   // selectAnnotationColor,
   // updateAnnotationColor,
   //
@@ -89,8 +89,8 @@ const WaterColumnInformationPanel = () => {
   const longitudeStatus = useAppSelector(selectLongitudeStatus);
   //
   const time = useAppSelector(selectTime);
-  const timeMinValue = useAppSelector(selectTimeMinValue); // for drawing leaflet polygons
-  const timeMaxValue = useAppSelector(selectTimeMaxValue);
+  // const timeMinValue = useAppSelector(selectTimeMinValue); // for drawing leaflet polygons
+  // const timeMaxValue = useAppSelector(selectTimeMaxValue);
   const depth = useAppSelector(selectDepth);
   //
   const bottom = useAppSelector(selectBottom);
@@ -146,9 +146,9 @@ const WaterColumnInformationPanel = () => {
     dispatch(updateAnnotation(!annotation));
   };
 
-  // const handleSelectAnnotationAI = () => {
-  //   dispatch(updateAnnotationAI(!annotationAI));
-  // };
+  const handleSelectAnnotationAI = () => {
+    dispatch(updateAnnotationAI(!annotationAI));
+  };
 
   useEffect(() => {
     if (frequencies !== null) {
@@ -438,6 +438,23 @@ const WaterColumnInformationPanel = () => {
           {/* <AnnotationColors /> */}
           {/* <br /> */}
 
+          {cruise === "HB1906" ? (
+            <Row className="mb-3">
+              <Form.Group>
+                <Form.Check
+                  // disabled
+                  type="switch"
+                  id="annotate-ai-switch"
+                  label="Show AI Clustering for HB1906"
+                  onChange={() => handleSelectAnnotationAI()}
+                  checked={annotationAI}
+                />
+              </Form.Group>
+            </Row>
+          ) : (
+            <></>
+          )}
+
           {/* <Row className="mb-3">
             <Form.Group>
               <Form.Check
@@ -448,23 +465,6 @@ const WaterColumnInformationPanel = () => {
               />
             </Form.Group>
           </Row> */}
-
-          {cruise === "HB1906" ? (
-            <Row className="mb-3">
-              <Form.Group>
-                <Form.Check
-                  disabled
-                  type="switch"
-                  id="annotate-ai-switch"
-                  label="Show AI Clustering for HB1906"
-                  // onChange={() => handleSelectAnnotationAI()}
-                  checked={annotationAI}
-                />
-              </Form.Group>
-            </Row>
-          ) : (
-            <></>
-          )}
 
           <hr />
           <p>

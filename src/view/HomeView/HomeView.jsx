@@ -542,6 +542,12 @@ export default function HomeView() {
               <FaGithub /> GitHub Source
             </a>
             <br />
+            <a
+              target="_blank"
+              href="https://github.com/CI-CMG/water-column-sonar-ui"
+            >
+              <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing" />
+            </a>
             <br />
             <br />
             <br />
