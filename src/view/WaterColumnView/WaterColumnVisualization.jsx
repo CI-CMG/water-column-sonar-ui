@@ -231,7 +231,7 @@ const WaterColumnVisualization = ({
               <CustomLayer />
 
               {/* {annotationAI && <CustomAILayer />} */}
-            {annotation ? <AnnotationLayer /> : <></>}
+              {annotation && cruise == "HB1906" ? <AnnotationLayer /> : <></>}
               
               <LocationMarker />
 

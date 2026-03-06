@@ -32,34 +32,11 @@ goto: https://hyperparam.app/?preview
 
 // reference: https://github.com/CI-CMG/water-column-sonar-ui/blob/5c27612f375fa5a6819410a5f80d42410ecf9f45/src/view/WaterColumnView/WaterColumnVisualization.jsx
 
-// const all_rectangles = [
-//  [[-564, 2187169], [-591, 2187178]],
-//  [[-574, 2187877], [-602, 2187893]],
-// ]
-
-// const rectangleItems = all_rectangles.map((rectangle, i) =>
-// <Rectangle
-//   bounds={rectangle}
-//   key={i}
-//   opacity={0.75}
-//   fillColor="white"
-//   fillOpacity={0.10}
-//   weight={2}
-//   title="Annotation"
-//   className="Annotation"
-//   pathOptions={{ color: '#FF69B4' }}
-// >
-//   <Tooltip>AH_School</Tooltip>
-// </Rectangle>
-// )
-
 export default function AnnotationLayer() {
   const dispatch = useAppDispatch();
   const timeMinValue = useAppSelector(selectTimeMinValue); // for drawing leaflet polygons
   const timeMaxValue = useAppSelector(selectTimeMaxValue);
   const parquetData = useAppSelector(selectParquetData);
-  // const [rectangles, setRectangles] = useState(rectangleItems);
-  // const [map, setMap] = useState(null);
 
   // useEffect(() => {
   //   if (map) {
@@ -87,21 +64,7 @@ export default function AnnotationLayer() {
     <div className="AnnotationLayer">
       {parquetData !== null && parquetData.bboxes?.length > 0 ? (
         parquetData.bboxes?.map((bbox, i) => {
-          // console.log(bbox)
           return (
-            // <Polygon
-            //   bounds={bbox}
-            //   key={i}
-            //   // opacity={0.75}
-            //   // fillColor="white"
-            //   // fillOpacity={0.1}
-            //   // weight={2}
-            //   title="Annotation"
-            //   className="Annotation"
-            //   // pathOptions={{ color: "#FF69B4" }}
-            // >
-            //   <Tooltip>{parquetData.classifications[i]}</Tooltip>
-            // </Polygon>
             <Polygon
               positions={bbox}
               key={i}
