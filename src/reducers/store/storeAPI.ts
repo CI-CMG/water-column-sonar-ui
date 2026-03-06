@@ -431,8 +431,8 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
     rowStart: rowStart,
     rowEnd: rowEnd,
   }).then((d) => {
-    const x_indexes = d.map((x) => { return x.depth_min });
-    const y_indexes = d.map((y) => { return y.depth_max });
+    // const x_indexes = d.map((x) => { return x.depth_min });
+    // const y_indexes = d.map((y) => { return y.depth_max });
     const bboxes = [];
     const classifications = [];
     for (let i = 0; i < d.length; i++) {

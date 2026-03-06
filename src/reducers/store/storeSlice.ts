@@ -173,7 +173,7 @@ const initialState: StoreState = {
   colorIndex: null,
   colorMaps: WaterColumnColors, // get rid of
 
-  annotation: false,
+  annotation: true,
   annotationColor: "#fff",
 
   annotationAI: false,

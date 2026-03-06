@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Rectangle,
   Tooltip,
@@ -16,6 +16,7 @@ import { parquetDataAsync } from "../../../reducers/store/storeSlice";
 import {
   selectTimeMinValue,
   selectTimeMaxValue,
+  selectParquetData,
 } from "../../../reducers/store/storeSlice.ts";
 
 /*
@@ -30,55 +31,95 @@ goto: https://hyperparam.app/?preview
 
 // reference: https://github.com/CI-CMG/water-column-sonar-ui/blob/5c27612f375fa5a6819410a5f80d42410ecf9f45/src/view/WaterColumnView/WaterColumnVisualization.jsx
 
-const rectangles = [
- [[-564, 2187169], [-591, 2187178]],
- [[-574, 2187877], [-602, 2187893]],
-]
+// const rectangles = [
+//  [[-564, 2187169], [-591, 2187178]],
+//  [[-574, 2187877], [-602, 2187893]],
+// ]
 
 export default function AnnotationLayer() {
   const dispatch = useAppDispatch();
   const annotation = useAppSelector(selectAnnotation);
-
-  const rectangleItems = rectangles.map((rectangle, i) =>
-    <Rectangle
-      bounds={rectangle}
-      key={rectangle}
-      opacity={0.75}
-      fillColor="white"
-      fillOpacity={0.10}
-      weight={2}
-      title="Annotation"
-      className="Annotation"
-      pathOptions={{ color: '#FF69B4' }}
-    >
-      <Tooltip>AH_School {i}<br />d20191016_t121103-t233917_Zsc-DWBA-Schools_All-RegionDefs.evr</Tooltip>
-    </Rectangle>
-  )
-
-  
-  // const startTime = new Date("2019-09-26T05:00:00.000000" + "Z"); // NOTE: requires 'Z'
-  // const endTime = new Date("2019-09-26T23:10:00.000000" + "Z");
-  
   const timeMinValue = useAppSelector(selectTimeMinValue); // for drawing leaflet polygons
   const timeMaxValue = useAppSelector(selectTimeMaxValue);
+  const parquetData = useAppSelector(selectParquetData);
+
+  const [rectangles, setRectangles] = useState(null);
+
+  // const rectangleItems = rectangles.map((rectangle, i) =>
+  //   <Rectangle
+  //     bounds={rectangle}
+  //     key={i}
+  //     opacity={0.75}
+  //     fillColor="white"
+  //     fillOpacity={0.10}
+  //     weight={2}
+  //     title="Annotation"
+  //     className="Annotation"
+  //     pathOptions={{ color: '#FF69B4' }}
+  //   >
+  //     <Tooltip>hello</Tooltip>
+  //   </Rectangle>
+  // )
 
   useEffect(() => {
-    // debugger;
+    console.log("updated rectangles");
+    if (parquetData !== null) {
+      parquetData.bboxes.map((rectangle, i) => {
+        console.log(`rectangle[${i}]: ${rectangle}`);
+      });
+      // setRectangles(parquetData.bboxes.map((rectangle, i) =>
+      //   <Rectangle
+      //     bounds={rectangle}
+      //     key={i}
+      //     opacity={0.75}
+      //     fillColor="white"
+      //     fillOpacity={0.10}
+      //     weight={2}
+      //     title="Annotation"
+      //     className="Annotation"
+      //     pathOptions={{ color: '#FF69B4' }}
+      //   >
+      //     <Tooltip>hello</Tooltip>
+      //   </Rectangle>
+      // ))
+    }
+  }, [parquetData]);
+
+  useEffect(() => {
     // const startTime = new Date("2019-09-26T05:00:00.000000" + "Z"); // NOTE: requires 'Z'
     if (timeMinValue !== null && timeMaxValue !== null) {
-      console.log(`${timeMinValue}, ${timeMaxValue}`);
-      const startTime = new Date((new Date(timeMinValue / 1000000)).toISOString());
+      // console.log(`${timeMinValue}, ${timeMaxValue}`);
+      const startTime = new Date(
+        new Date(timeMinValue / 1000000).toISOString(),
+      );
       // const endTime = new Date("2019-09-26T23:10:00.000000" + "Z");
-      const endTime = new Date((new Date(timeMaxValue / 1000000)).toISOString());
+      const endTime = new Date(new Date(timeMaxValue / 1000000).toISOString());
       // console.log(`${startTime}, ${endTime}`);
       dispatch(parquetDataAsync({ startTime, endTime }));
     }
-  }, [timeMinValue, timeMaxValue, dispatch])
+  }, [timeMinValue, timeMaxValue, dispatch]);
 
   return (
     <div className="AnnotationLayer">
-      {annotation ? (
-        <>{rectangleItems}</>
+      {/* <p>adf</p> */}
+      {annotation && parquetData ? (
+        <>
+          {/* {parquetData.bboxes.map((rectangle, i) => (
+            <Rectangle
+              bounds={rectangle}
+              key={i}
+              opacity={0.75}
+              fillColor="white"
+              fillOpacity={0.1}
+              weight={2}
+              title="Annotation"
+              className="Annotation"
+              pathOptions={{ color: "#FF69B4" }}
+            >
+              <Tooltip>hello</Tooltip>
+            </Rectangle>
+          ))} */}
+        </>
       ) : (
         <></>
       )}
