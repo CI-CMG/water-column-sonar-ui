@@ -85,9 +85,6 @@ export default function AnnotationLayer() {
   return (
     <div className="AnnotationLayer">
       {parquetData !== null && parquetData.bboxes?.length > 0 ? (
-        // parquetData.classifications?.map((classification, i) => {
-        //   return (<p key={i}>{classification}</p>)
-        // })
         parquetData.bboxes?.map((bbox, i) => {
           return (
             <Rectangle

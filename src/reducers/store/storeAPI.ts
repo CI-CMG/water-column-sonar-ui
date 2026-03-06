@@ -429,7 +429,7 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
     // columns: ['x_index', 'y_index'], // for the full geometry, too slow now
     columns: ['classification', 'x_index', 'y_index'],
     rowStart: rowStart,
-    rowEnd: rowEnd,
+    rowEnd: rowEnd+1,
   }).then((d) => {
     // const x_indexes = d.map((x) => { return x.depth_min });
     // const y_indexes = d.map((y) => { return y.depth_max });
@@ -474,10 +474,10 @@ export const fetchParquetData = (startTime: Date, endTime: Date) => {
         if (overlapping_indices.length > 0) {
           rowStart = overlapping_indices[0];
           rowEnd = overlapping_indices[overlapping_indices.length -1]
-          console.log(`rows: ${rowStart}, ${rowEnd}`);
+          console.log(`indices: ${rowStart}, ${rowEnd}`);
           return GetSelectGeometries(rowStart, rowEnd);
         }
-        console.log(`rows: ${rowStart}, ${rowEnd}`);
+        console.log(`indices: ${rowStart}, ${rowEnd}`);
         return { bboxes: [], classifications: [] }
       })
       .catch((error) => console.error(error));
