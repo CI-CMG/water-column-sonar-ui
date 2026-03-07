@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 
 export default function HomeView() {
   useEffect(() => {
-    document.title = `echofish`;
+    document.title = `EchoFish`;
   }, []);
 
   // const { ref, inView } = useInView({
@@ -69,7 +69,7 @@ export default function HomeView() {
             </p>
             <br />
 
-            <Row xs='auto'> 
+            <Row> 
               <Col>
                 <a target="_blank" href="https://www.fisheries.noaa.gov/">
                   <Image
@@ -153,8 +153,8 @@ export default function HomeView() {
             <p>
               Raw archived data were collected using a variety of vessel-mounted
               sonars with Kongsberg&apos;s EM 122 (12 kHz) and EM 302 (30 kHz),
-              Simrad&apos;s EK60 (18-710 kHz, split beam), ME70 (70-120 kHz, can
-              be split beam), and EK80 (18-710 kHz, split beam and broadband)
+              Simrad&apos;s EK60 (18-70 kHz, split beam), ME70 (70-120 kHz, can
+              be split beam), and EK80 (18-70 kHz, split beam and broadband)
               being the most common. The configuration of each cruise&apos;s
               sonar system (e.g., beam type and angle) can be found in the file
               metadata.
@@ -539,15 +539,19 @@ export default function HomeView() {
               target="_blank"
               href="https://github.com/CI-CMG/water-column-sonar-ui"
             >
-              <FaGithub /> GitHub Source
+              <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing" />
             </a>
+            <br />
             <br />
             <a
               target="_blank"
               href="https://github.com/CI-CMG/water-column-sonar-ui"
             >
-              <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing" />
+              <FaGithub /> GitHub Source
             </a>
+            <br />
+            <br />
+            <br />
             <br />
             <br />
             <br />
@@ -556,7 +560,12 @@ export default function HomeView() {
           {/* <Col sm={2} /> */}
 
           <Col sm={3} />
+
+          <br />
+          <br />
+          <br />
         </Row>
+        <hr />
       </Container>
     </div>
   );

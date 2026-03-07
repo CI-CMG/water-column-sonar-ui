@@ -427,19 +427,17 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
     file: parquetFile,
     compressors: compressors,
     // columns: ['x_index', 'y_index'], // for the full geometry, too slow now
-    columns: ['classification', 'x_index', 'y_index', 'phase_of_day'],
+    columns: ['classification', 'x_index', 'y_index', 'phase_of_day', 'solar_altitude'],
     rowStart: rowStart,
     rowEnd: rowEnd+1,
   }).then((d) => {
-    // const x_indexes = d.map((x) => { return x.depth_min });
-    // const y_indexes = d.map((y) => { return y.depth_max });
     const bboxes = [];
     const classifications = [];
     for (let i = 0; i < d.length; i++) {
       const destructured_x = d[i].x_index.map((x: any) => { return Number(x); })
       const destructured_y = d[i].y_index.map((y: any) => { return Number(y); })
-      if (destructured_x.length < 500) {
-        // For smaller polygons, <100 points, create a polygon
+      if (destructured_x.length < 2000) {
+        // For smaller polygons, <N points, create a polygon
         var poly = destructured_y.map((e: number, i: number) => {
           return [-1 * e, destructured_x[i]];
         });
@@ -454,14 +452,8 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
         const y_max = -1 * Math.max(...destructured_y)
         bboxes.push([[y_min, x_min], [y_min, x_max], [y_max, x_max], [y_max, x_min], [y_min, x_min]]);
       }
-      // const x_min = Math.min(...destructured_x)
-      // const x_max = Math.max(...destructured_x)
-      // // bounding box y
-      // const y_min = -1 * Math.min(...destructured_y)
-      // const y_max = -1 * Math.max(...destructured_y)
-      // bboxes.push([[y_min, x_min], [y_max, x_max]]);
 
-      classifications.push(`${d[i].classification}, ${d[i].phase_of_day}`)
+      classifications.push(`${d[i].classification}, ${d[i].phase_of_day}, ${d[i].solar_altitude}`)
     }
     // debugger;
     return { bboxes, classifications };
