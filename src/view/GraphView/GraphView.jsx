@@ -18,33 +18,10 @@ export default function GraphView() {
     document.title = `EchoFish Knowledge Graph`;
   }, []);
 
-  function genRandomTree(N = 10, reverse = false) {
-    return {
-      nodes: [...Array(N).keys()].map((i) => ({ id: i })),
-      links: [...Array(N).keys()]
-        .filter((id) => id)
-        .map((id) => ({
-          [reverse ? "target" : "source"]: id,
-          [reverse ? "source" : "target"]: Math.floor(Math.random() * (id - 1)),
-        })),
-    };
-  }
-  const fgRef = useRef();
-
-  useEffect(() => {
-    const bloomPass = new UnrealBloomPass();
-    bloomPass.strength = 0.033;
-    bloomPass.radius = 0.01;
-    bloomPass.threshold = 0;
-    fgRef.current.postProcessingComposer().addPass(bloomPass);
-  }, []);
-
   return (
     <div className="GraphView">
       <Container>
         <Row>
-          {/* <Col md={3} /> */}
-
           <Col md={8}>
             <GraphPlot />
           </Col>
@@ -59,9 +36,9 @@ export default function GraphView() {
           <GraphCard />
           <GraphCard classification="unclassified" />
           <GraphCard />
+          <GraphCard classification="unclassified" />
           <GraphCard />
-          <GraphCard />
-          <GraphCard />
+          <GraphCard classification="AH School"/>
           <GraphCard />
         </CardGroup>
 

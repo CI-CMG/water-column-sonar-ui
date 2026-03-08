@@ -23,10 +23,14 @@ export default function ErrorView() {
               <br />
               <h1 className="text-center">Sorry</h1>
 
+              <br />
+
               <p>This path does not exist!</p>
 
-              <Link to="">
-                <p>Click here to return home.</p>
+              <br /><br />
+
+              <Link to="/">
+                <p style={{ color: "white"}}>Click Here to Return Home</p>
               </Link>
             </center>
           </Col>
