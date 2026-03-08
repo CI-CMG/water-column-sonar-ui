@@ -74,7 +74,8 @@ export default function MiniMapView() {
 
       map.current = new maplibregl.Map({
         container: miniMapContainer.current,
-        style: style,
+        // style: style,
+        style: "https://demotiles.maplibre.org/style.json",
         center: [0, 0],
         zoom: 1,
         minZoom: 0,
@@ -82,6 +83,44 @@ export default function MiniMapView() {
 
       // move all this somewhere else
       map.current.on('load', () => {
+map.current.setProjection({ type: 'globe' });
+        const layers = map.current.getStyle().layers;
+        let firstSymbolId;
+        for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol') {
+                firstSymbolId = layers[i].id;
+                break;
+            }
+        }
+        map.current.addSource('cruises', {
+            type: "vector",
+            url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/pmtiles/water-column-sonar-26.2.1.pmtiles",
+        });
+        map.current.addLayer(
+            {
+                id: 'cruises',
+                type: 'line',
+                source: 'cruises',
+                "source-layer": "cruises",
+                paint: {
+                  "line-color": [
+                    "case",
+                    ["boolean", ["feature-state", "hover"], false],
+                    "#ffffff",
+                    "rgba(155, 32, 238, 0.15)",
+                  ],
+                  "line-width": [
+                    "case",
+                    ["boolean", ["feature-state", "hover"], false],
+                    3,
+                    2,
+                  ],
+                  "line-blur": 0,
+                },
+            },
+            firstSymbolId
+        );
+
         let geojson = {
           'type': 'FeatureCollection',
           'features': [
