@@ -33,7 +33,51 @@ import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 
-const map_key = import.meta.env.VITE_MAPTILER_API;
+// const map_key = import.meta.env.VITE_MAPTILER_API;
+// free map sources: https://codepen.io/g2g/pen/rNRJBZg
+const arcgis_hybrid = "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/arcgis_hybrid.json";
+const openStreetMap = "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json";
+const darkMatter = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+const darkMatterNoLabels = "https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json";
+const positron = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
+const positronNoLabels = "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json";
+const voyager = "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json";
+const voyagerNoLabels = "https://basemaps.cartocdn.com/gl/voyager-nolabels-gl-style/style.json";
+
+var styles = [
+    { 
+      label: 'OpenStreetMap', 
+      source: openStreetMap
+    },
+    { 
+      label: 'ArcGIS Hybrid', 
+      source: arcgis_hybrid
+    },
+    { 
+      label: 'Positron', 
+      source: positron 
+    },
+    { 
+      label: 'Positron No Labels', 
+      source: positronNoLabels
+    },
+    { 
+      label: 'Dark Matter', 
+      source: darkMatter
+    },
+    { 
+      label: 'Dark Matter No Labels', 
+      source: darkMatterNoLabels
+    },
+    { 
+      label: 'Voyager', 
+      source: voyager 
+    },
+    { 
+      label: 'Voyager No Labels', 
+      source: voyagerNoLabels
+    },
+];
 const style = {
   version: 8,
   projection: {
@@ -50,9 +94,23 @@ const style = {
   name: "Water Column Project",
   glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   sources: {
-    ocean: {
-      url: `https://api.maptiler.com/maps/ocean/tiles.json?key=${map_key}`,
-      type: "raster",
+    // ocean: {
+    //   url: `https://api.maptiler.com/maps/ocean/tiles.json?key=${map_key}`,
+    //   type: "raster",
+    // },
+    // maplibre: {
+    //   url: "https://demotiles.maplibre.org/tiles/tiles.json",
+    //   type: "vector",
+    // },
+    // "maplibre-demotiles": {
+    //     "type": "vector",
+    //     "url": "https://demotiles.maplibre.org/tiles/tiles.json"
+    // },
+    maplibre: {
+      "type": "vector",
+      "tiles": [
+          "https://demotiles.maplibre.org/tiles/{z}/{x}/{y}.pbf"
+      ]
     },
     cruises: {
       url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/pmtiles/water-column-sonar-26.2.1.pmtiles",
@@ -61,37 +119,22 @@ const style = {
   },
   layers: [
     {
-      id: "Ocean",
-      type: "raster",
-      source: "ocean",
-      color: "rgba(255, 15, 63, 0.25)",
-    },
-    {
       id: "cruises",
       type: "line",
       source: "cruises",
       paint: {
-        // options here: https://maplibre.org/maplibre-style-spec/layers/#line
-        // "line-cap": "round",
-        // "line-join": "bevel",
-        // "fill-sort-key": 2,
-        // "visibility": true,
         "line-color": [
           "case",
           ["boolean", ["feature-state", "hover"], false],
-          // "rgba(255, 255, 255, 0.95)", // white
           "#ffffff",
           "rgba(155, 32, 238, 0.15)",
         ],
-        // "fill-color": "rgba(32, 238, 121, 0.25)",
-        // "line-width": 1.25,
         "line-width": [
           "case",
           ["boolean", ["feature-state", "hover"], false],
           3,
           2,
         ],
-        // "line-gap-width": 1,
         "line-blur": 0,
       },
       "source-layer": "cruises",
@@ -136,10 +179,8 @@ export default function MapView() {
 
   const [showToast, setShowToast] = useState(false);
   const toggleShowToast = () => setShowToast(!showToast);
-
   const dispatch = useAppDispatch();
-  // const handleShow = () => dispatch(updateShowInfoPanel(true));
-  // const geospatialIndex = useAppSelector(selectGeospatialIndex);
+
   const geospatialIndex = useAppSelector(selectGeospatialIndex);
   const geospatialIndexStatus = useAppSelector(selectGeospatialIndexStatus);
 
@@ -162,7 +203,8 @@ export default function MapView() {
 
       map.current = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: style,
+        // style: style,
+        style: "https://demotiles.maplibre.org/style.json",
         center: [20, -20],
         zoom: 3,
         minZoom: 2,
@@ -186,6 +228,45 @@ export default function MapView() {
       });
 
       map.current.on("load", () => {
+        map.current.setProjection({ type: 'globe' });
+        const layers = map.current.getStyle().layers;
+        let firstSymbolId;
+        for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol') {
+                firstSymbolId = layers[i].id;
+                break;
+            }
+        }
+        map.current.addSource('cruises', {
+            type: "vector",
+            url: "pmtiles://https://noaa-wcsd-pds-index.s3.amazonaws.com/pmtiles/water-column-sonar-26.2.1.pmtiles",
+        });
+        map.current.addLayer(
+            {
+                id: 'cruises',
+                type: 'line',
+                source: 'cruises',
+                "source-layer": "cruises",
+                // 'layout': {},
+                paint: {
+                  "line-color": [
+                    "case",
+                    ["boolean", ["feature-state", "hover"], false],
+                    "#ffffff",
+                    "rgba(155, 32, 238, 0.15)",
+                  ],
+                  "line-width": [
+                    "case",
+                    ["boolean", ["feature-state", "hover"], false],
+                    3,
+                    2,
+                  ],
+                  "line-blur": 0,
+                },
+            },
+            firstSymbolId
+        );
+
         // styling for the mouse cursor
         map.current.on("mouseenter", "cruises", () => {
           map.current.getCanvas().style.cursor = "crosshair";

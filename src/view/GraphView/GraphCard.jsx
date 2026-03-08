@@ -18,6 +18,7 @@ function GraphCard({
   solarAltitude=35.02,
   phaseOfDay="day",
   geometryHash="1d4b073ae6dda69972e42d4f707134640c1897c63b04c620d355dc527f7ef4ed",
+  creator="michael.jech@noaa.gov"
 }) {
   return (
     <div className="GraphCard">
@@ -37,9 +38,11 @@ function GraphCard({
             <br />
             {ship} | {cruise} | {instrument}
             <br />
-            {startTime} to {endTime}
+            start: {startTime}
             <br />
-            (local time: {localTime})
+            end: {endTime}
+            <br />
+            local time: {localTime}
             <br />
             coordinates: {longitude}° E, {latitude}° N
             <br />
@@ -48,6 +51,8 @@ function GraphCard({
             distance from coast: {distanceFromCoast} m
             <br />
             solar altitude: {solarAltitude}° | phase: {phaseOfDay}
+            <br />
+            creator: {creator}
             <br />
             {/* TODO: need to convert time to ping_time */}
             <Card.Link
@@ -82,4 +87,5 @@ GraphCard.propTypes = {
   solarAltitude: PropTypes.number.isRequired,
   phaseOfDay: PropTypes.string.isRequired,
   geometryHash: PropTypes.string.isRequired,
+  creator: PropTypes.string.isRequired,
 };

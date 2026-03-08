@@ -125,9 +125,9 @@ export default function GraphView() {
 
         <br />
         <CardGroup>
+          <GraphCard classification="AH School"/>
           <GraphCard />
-          <GraphCard />
-          <GraphCard />
+          <GraphCard classification="unclassified" />
           <GraphCard />
           <GraphCard />
           <GraphCard />
