@@ -204,7 +204,8 @@ export default function MapView() {
       map.current = new maplibregl.Map({
         container: mapContainerRef.current,
         // style: style,
-        style: "https://demotiles.maplibre.org/style.json",
+        // style: "https://demotiles.maplibre.org/style.json",
+        style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
         center: [20, -20],
         zoom: 3,
         minZoom: 2,
@@ -247,7 +248,6 @@ export default function MapView() {
                 type: 'line',
                 source: 'cruises',
                 "source-layer": "cruises",
-                // 'layout': {},
                 paint: {
                   "line-color": [
                     "case",

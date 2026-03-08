@@ -75,7 +75,8 @@ export default function MiniMapView() {
       map.current = new maplibregl.Map({
         container: miniMapContainer.current,
         // style: style,
-        style: "https://demotiles.maplibre.org/style.json",
+        // style: "https://demotiles.maplibre.org/style.json",
+        style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
         center: [0, 0],
         zoom: 1,
         minZoom: 0,
