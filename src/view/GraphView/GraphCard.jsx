@@ -52,8 +52,8 @@ function GraphCard({
             <br />
             solar altitude: {solarAltitude}° | phase: {phaseOfDay}
             <br />
-            creator: {creator}
-            <br />
+            {/* creator: {creator}
+            <br /> */}
             {/* TODO: need to convert time to ping_time */}
             <Card.Link
               href={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${instrument}&frequency=0&color=2&time=3974082`}
