@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 // import Multiselect from 'react-bootstrap-multiselect'
 // Reference for multiselect:
 //  https://projects.skratchdot.com/react-bootstrap-multiselect/
+import { Slider } from '@react-native-community/slider';
 
 function GraphForm() {
   const [phaseOfDayList, setPhaseOfDayList] = useState([]);
@@ -37,8 +38,6 @@ function GraphForm() {
 
   return (
     <div className="GraphForm" style={{ color: "white" }}>
-      <p>Query the Knowledge Graph</p>
-
       <Form onSubmit={handleSubmit}>
         <Form.Label>Phase of the Day</Form.Label>
         <div key="inline-checkbox1" className="mb-3">
@@ -141,8 +140,16 @@ function GraphForm() {
         </div>
 
         <br />
+        <Slider
+          style={{width: 200, height: 40}}
+          minimumValue={0}
+          maximumValue={1}
+          minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#000000"
+        />
+        <br />
 
-        <Button type="submit">Submit form</Button>
+        <Button type="submit">Query the Graph</Button>
       </Form>
     </div>
   );

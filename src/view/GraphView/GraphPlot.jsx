@@ -2,6 +2,11 @@ import { useEffect, useRef } from "react";
 import ForceGraph3D from "react-force-graph-3d";
 import { UnrealBloomPass } from "https://esm.sh/three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
+
+// Would like to get this example working:
+// https://github.com/vasturiano/react-force-graph/blob/master/example/text-nodes/index-3d.html
+// Using code from here:
+// https://codesandbox.io/p/sandbox/react-l6tnvc?file=%2Fsrc%2FApp.js%3A21%2C7-42%2C9
 export default function GraphPlot() {
 
   function genRandomTree(N = 10, reverse = false) {
