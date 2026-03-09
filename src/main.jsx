@@ -7,7 +7,10 @@ import { store } from './app/store.ts';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
+// import "@radix-ui/themes/styles.css";
+// import "material/slider/styles";
 import './assets/css/Main.scss';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
