@@ -37,6 +37,8 @@ function GraphForm() {
     setClassificationList(checkedValues2.filter((x) => x[1]).map((x) => x[0]));
   };
 
+  // TODO: need to have the checked values set to defaults on first load
+  //  And need to assemble the values in to the api request.
 
   return (
     <div className="GraphForm" style={{ color: "white" }}>
