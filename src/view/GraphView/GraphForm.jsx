@@ -1,56 +1,65 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 // import Multiselect from 'react-bootstrap-multiselect'
 // Reference for multiselect:
 //  https://projects.skratchdot.com/react-bootstrap-multiselect/
 
 function GraphForm() {
   const [field, setField] = useState([]);
+  const [validated, setValidated] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(event);
+    // const form = event.currentTarget;
+    const checkedValues = Array.from(event.target.group1).map(el => [
+      el.id,
+      el.checked
+    ]);
+    console.log(Object.fromEntries(checkedValues));
+  };
+
 
   return (
-    <div className="GraphForm">
+    <div className="GraphForm" >
       <p style={{ color: "white" }}>Query the Knowledge Graph</p>
 
-      <Form style={{ color: "white" }}>
+      <Form style={{ color: "white" }} onSubmit={handleSubmit}>
+        <Form.Label>Phase of the Day</Form.Label>
         <div key={`inline-checkbox`} className="mb-3">
           <Form.Check
             inline
+            checked
             label="Night"
             name="group1"
             type="checkbox"
-            id={`inline-checkbox-1`}
+            id="inline-checkbox-1"
           />
           <Form.Check
             inline
             label="Dawn"
             name="group1"
             type="checkbox"
-            id={`inline-checkbox-2`}
+            id="inline-checkbox-2"
           />
           <Form.Check
             inline
             label="Day"
             name="group1"
             type="checkbox"
-            id={`inline-checkbox-3`}
+            id="inline-checkbox-3"
           />
           <Form.Check
             inline
             label="Dusk"
             name="group1"
             type="checkbox"
-            id={`inline-checkbox-4`}
+            id="inline-checkbox-4"
           />
         </div>
+        <Button type="submit">Submit form</Button>
       </Form>
-
-      <Form.Select aria-label="Default select example">
-        <option>Phase of the Day</option>
-        <option value="1">Night</option>
-        <option value="2">Dawn</option>
-        <option value="3">Day</option>
-        <option value="4">Dusk</option>
-      </Form.Select>
 
       <br />
 
@@ -75,17 +84,6 @@ function GraphForm() {
         <Form.Label>Distance From the Coast</Form.Label>
         <Form.Range min="0" max="1000" step="100" id="customRange3" />
       </div>
-
-      <br />
-
-      {/* <Form style={{ color: "white" }}>
-        <Form.Check
-          type="switch"
-          id="custom-switch"
-          label="Include Unknown"
-          default={true}
-        />
-      </Form> */}
     </div>
   );
 }
