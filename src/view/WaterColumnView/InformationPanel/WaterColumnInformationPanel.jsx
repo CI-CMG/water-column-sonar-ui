@@ -51,8 +51,8 @@ import {
   selectTime,
   selectDepth,
   //
-  selectTimeMinValue,
-  selectTimeMaxValue,
+  // selectTimeMinValue,
+  // selectTimeMaxValue,
   //
   selectBottom,
   selectSv,
@@ -75,7 +75,7 @@ const WaterColumnInformationPanel = () => {
   const sensor = useAppSelector(selectSensor);
   const colorMaps = useAppSelector(selectColorMaps); // from store
   const annotation = useAppSelector(selectAnnotation);
-  const annotationAI = useAppSelector(selectAnnotationAI);
+  // const annotationAI = useAppSelector(selectAnnotationAI);
   // const annotationColor = useAppSelector(selectAnnotationColor);
   const colorIndex = useAppSelector(selectColorIndex); //
   const attributes = useAppSelector(selectStoreAttributes);
@@ -146,9 +146,9 @@ const WaterColumnInformationPanel = () => {
     dispatch(updateAnnotation(!annotation));
   };
 
-  const handleSelectAnnotationAI = () => {
-    dispatch(updateAnnotationAI(!annotationAI));
-  };
+  // const handleSelectAnnotationAI = () => {
+  //   dispatch(updateAnnotationAI(!annotationAI));
+  // };
 
   useEffect(() => {
     if (frequencies !== null) {
@@ -438,7 +438,7 @@ const WaterColumnInformationPanel = () => {
           {/* <AnnotationColors /> */}
           {/* <br /> */}
 
-          {cruise === "HB1906" ? (
+          {/* {cruise === "HB1906" ? (
             <Row className="mb-3">
               <Form.Group>
                 <Form.Check
@@ -453,7 +453,7 @@ const WaterColumnInformationPanel = () => {
             </Row>
           ) : (
             <></>
-          )}
+          )} */}
 
           {/* <Row className="mb-3">
             <Form.Group>
