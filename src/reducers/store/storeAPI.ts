@@ -491,30 +491,12 @@ export const fetchParquetData = (startTime: Date, endTime: Date) => {
   // return;
 }
 
-
-// export const fetchParquetData = (
-//   ship: string,
-//   cruise: string,
-//   sensor: string,
-//   indexStart: number,
-//   indexEnd: number
-// ): any => {
-//   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
-//   const root = zarr.root(new zarr.FetchStore(url));
-
-//   return zarr.open
-//     .v3(root.resolve("time"), { kind: "array" })
-//     .then((timeArray) => {
-//       // Limit query to the bounds //
-//       const max_indices = timeArray.shape[0];
-
-//       return get(timeArray, [
-//         slice(Math.max(indexStart, 0), Math.min(indexEnd, max_indices)),
-//       ]);
-//     });
-// };
-
 /* ----------------------------------------------------*/
+/* ------------- KNOWLEDGE GRAPH ----------------------*/
 /* ----------------------------------------------------*/
+export const fetchPersonData = (size: Number, page: Number) => {
+  return {"user1": "rudy", "user2": "alex"};
+}
+
 /* ----------------------------------------------------*/
 /* ----------------------------------------------------*/

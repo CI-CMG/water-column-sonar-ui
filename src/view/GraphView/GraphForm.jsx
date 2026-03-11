@@ -3,6 +3,31 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
+import {
+  // Post,
+  useGetPostsQuery,
+} from '../../services/posts';
+
+const PostList = () => {
+  const { data: posts, isLoading } = useGetPostsQuery()
+  // const navigate = useNavigate()
+  if (isLoading) {
+    return <div>Loading</div>
+  }
+  if (!posts) {
+    return <div>No posts :(</div>
+  }
+
+  return (
+    <div>
+      {posts.map((post) => (
+        <p key={post.id}>
+        {{post}}
+        </p>
+      ))}
+    </div>
+  )
+}
 
 function GraphForm() {
   const altitudeInitial = [-497, 395]; // [-496.4299927, 394.730011] from parquet
@@ -29,14 +54,16 @@ function GraphForm() {
       el.id,
       el.checked,
     ]);
-    setPhaseOfDayList(checkedValues1.filter((x) => x[1]).map((x) => x[0]));
+    setPhaseOfDay(checkedValues1.filter((x) => x[1]).map((x) => x[0]));
 
     // classification
     const checkedValues2 = Array.from(event.target.group2).map((el) => [
       el.id,
       el.checked,
     ]);
-    setClassificationList(checkedValues2.filter((x) => x[1]).map((x) => x[0]));
+    setClassification(checkedValues2.filter((x) => x[1]).map((x) => x[0]));
+
+    // query the graph
   };
 
   // TODO: need to have the checked values set to defaults on first load
@@ -73,7 +100,7 @@ function GraphForm() {
             inline
             label="Dusk"
             name="group1"
-            type="checkbox"
+            type="radio"
             id="dusk"
           />
           <p>{JSON.stringify(phaseOfDay)}</p>
@@ -100,7 +127,6 @@ function GraphForm() {
           />
           <Form.Check
             inline
-            defaultChecked
             label="fish_school"
             name="group2"
             type="radio"
@@ -108,7 +134,6 @@ function GraphForm() {
           />
           <Form.Check
             inline
-            defaultChecked
             label="possible_herring"
             name="group2"
             type="radio"
@@ -128,7 +153,8 @@ function GraphForm() {
             defaultValue={altitudeInitial}
             onInput={(e) => { handleUpdateAltitude(e) }}
           />
-          <p>altitude: {JSON.stringify(altitude)}</p>
+          <br />
+          <p>{JSON.stringify(altitude)}</p>
         </div>
 
         <br />
@@ -142,12 +168,22 @@ function GraphForm() {
             defaultValue={distanceFromCoastlineInitial}
             onInput={(e) => { handleUpdateDistanceFromCoastline(e) }}
           />
-          <p>distance_from_coastline: {JSON.stringify(distanceFromCoast)}</p>
+          <br />
+          <p>{JSON.stringify(distanceFromCoast)}</p>
         </div>
         <br />
 
         <Button type="submit">Query the Graph</Button>
       </Form>
+      <br />
+      <p>
+        phaseOfDay: {JSON.stringify(phaseOfDay)},
+        classification: {JSON.stringify(classification)},
+        minAltitude: {altitude[0]}, maxAltitude: {altitude[1]},
+        minDistanceFromCoast: {distanceFromCoast[0]}, maxDistanceFromCoast: {distanceFromCoast[1]}
+      </p>
+
+      <PostList />
     </div>
   );
 }

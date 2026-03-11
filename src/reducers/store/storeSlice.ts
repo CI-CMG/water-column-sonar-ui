@@ -25,6 +25,7 @@ import {
   fetchDistance,
   //
   fetchParquetData,
+  fetchPersonData,
   //
   // alex's ai results
   fetchAIStoreAttributes, // probably don't need, just need tile?
@@ -827,5 +828,12 @@ export const parquetDataAsync = createAsyncThunk(
   "store/fetchParquetData",
   async ({ startTime, endTime }: { startTime: Date, endTime: Date }) => {
     return fetchParquetData(startTime, endTime);
+  },
+)
+
+export const personDataAsync = createAsyncThunk(
+  "store/fetchPersonData",
+  async ({ size, page }: { size: Number, page: Number }) => {
+    return fetchPersonData(size, page);
   },
 )

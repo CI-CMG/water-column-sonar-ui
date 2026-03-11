@@ -8,9 +8,7 @@ import GraphForm from "./GraphForm";
 import GraphPlot from "./GraphPlot";
 
 export default function GraphView() {
-  useEffect(() => {
-    document.title = `EchoFish Knowledge Graph`;
-  }, []);
+  useEffect(() => { document.title = `EchoFish Knowledge Graph`; }, []);
 
   return (
     <div className="GraphView">
@@ -18,24 +16,25 @@ export default function GraphView() {
         <br />
         <Row>
           <Col md={6}>
-            <GraphPlot />
+            <GraphForm />
           </Col>
           <Col md={6}>
-            <GraphForm />
+            <GraphPlot />
           </Col>
         </Row>
 
-        <br />
-        <CardGroup>
-          <GraphCard classification="AH School"/>
-          <GraphCard />
-          <GraphCard classification="unclassified" />
-          <GraphCard />
-          <GraphCard classification="unclassified" />
-          <GraphCard />
-          <GraphCard classification="AH School"/>
-          <GraphCard />
-        </CardGroup>
+        <Row className="mt-4">
+          <CardGroup>
+            <GraphCard classification="AH School"/>
+            <GraphCard />
+            <GraphCard classification="unclassified" />
+            <GraphCard />
+            <GraphCard classification="unclassified" />
+            <GraphCard />
+            <GraphCard classification="AH School"/>
+            <GraphCard />
+          </CardGroup>
+        </Row>
 
         <br />
       </Container>
