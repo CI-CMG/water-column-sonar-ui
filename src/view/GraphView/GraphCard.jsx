@@ -18,7 +18,7 @@ function GraphCard({
   solarAltitude=35.02,
   phaseOfDay="day",
   geometryHash="1d4b073ae6dda69972e42d4f707134640c1897c63b04c620d355dc527f7ef4ed",
-  creator="michael.jech@noaa.gov"
+  // creator="michael.jech@noaa.gov"
 }) {
   return (
     <div className="GraphCard">

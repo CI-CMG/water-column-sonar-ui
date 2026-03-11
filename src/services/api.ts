@@ -26,6 +26,6 @@ export const api = createApi({
 
 export const enhancedApi = api.enhanceEndpoints({
   endpoints: () => ({
-    getPokemon: () => 'test',
+    // getPokemon: () => 'test',
   }),
 })

@@ -14,10 +14,12 @@ function GraphPokemon() {
     return <div>No posts</div>
   }
 
+  const listItems = pokemon.map(pok => <p key={pok.name}>{pok.name}</p>);
+
   return (
     <div>
       {pokemon !== null ? (
-        <p>{pokemon[0]['name']}</p>
+        <>{listItems}</>
       ) : (
         <></>
       )}
