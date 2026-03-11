@@ -17,10 +17,10 @@ export default function GraphView() {
       <Container>
         <br />
         <Row>
-          <Col md={8}>
+          <Col md={6}>
             <GraphPlot />
           </Col>
-          <Col md={4}>
+          <Col md={6}>
             <GraphForm />
           </Col>
         </Row>

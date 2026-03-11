@@ -7,8 +7,10 @@ import "react-range-slider-input/dist/style.css";
 function GraphForm() {
   const altitudeInitial = [-497, 395]; // [-496.4299927, 394.730011] from parquet
   const distanceFromCoastlineInitial = [42, 157942]; // from parquet file
-  const [phaseOfDayList, setPhaseOfDayList] = useState([]);
-  const [classificationList, setClassificationList] = useState([]);
+  const phaseOfDayInitial = "night";  // from parquet file
+  const classificationInitial = "AH_School"; // from parquet file
+  const [phaseOfDay, setPhaseOfDay] = useState(phaseOfDayInitial);
+  const [classification, setClassification] = useState(classificationInitial);
   const [altitude, setAltitude] = useState(altitudeInitial);
   const [distanceFromCoast, setDistanceFromCoast] = useState(distanceFromCoastlineInitial);
 
@@ -44,51 +46,48 @@ function GraphForm() {
     <div className="GraphForm" style={{ color: "white" }}>
       <Form onSubmit={handleSubmit}>
         <Form.Label>Phase of the Day</Form.Label>
-        <div key="inline-checkbox1" className="mb-3">
+        <div key="inline-radio1" className="mb-3">
           <Form.Check
             inline
             defaultChecked
             label="Night"
             name="group1"
-            type="checkbox"
+            type="radio"
             id="night"
           />
           <Form.Check
             inline
-            defaultChecked
             label="Dawn"
             name="group1"
-            type="checkbox"
+            type="radio"
             id="dawn"
           />
           <Form.Check
             inline
-            defaultChecked
             label="Day"
             name="group1"
-            type="checkbox"
+            type="radio"
             id="day"
           />
           <Form.Check
             inline
-            defaultChecked
             label="Dusk"
             name="group1"
             type="checkbox"
             id="dusk"
           />
-          <p>{JSON.stringify(phaseOfDayList)}</p>
+          <p>{JSON.stringify(phaseOfDay)}</p>
         </div>
 
         <br />
 
         <Form.Label>Classification</Form.Label>
-        <div key="inline-checkbox2" className="mb-3">
+        <div key="inline-radio2" className="mb-3">
           <Form.Check
             inline
             label="Unclassified"
             name="group2"
-            type="checkbox"
+            type="radio"
             id="Unclassified"
           />
           <Form.Check
@@ -96,7 +95,7 @@ function GraphForm() {
             defaultChecked
             label="AH_School"
             name="group2"
-            type="checkbox"
+            type="radio"
             id="AH_School"
           />
           <Form.Check
@@ -104,7 +103,7 @@ function GraphForm() {
             defaultChecked
             label="fish_school"
             name="group2"
-            type="checkbox"
+            type="radio"
             id="fish_school"
           />
           <Form.Check
@@ -112,10 +111,10 @@ function GraphForm() {
             defaultChecked
             label="possible_herring"
             name="group2"
-            type="checkbox"
+            type="radio"
             id="possible_herring"
           />
-          <p>{JSON.stringify(classificationList)}</p>
+          <p>{JSON.stringify(classification)}</p>
         </div>
 
         <br />
