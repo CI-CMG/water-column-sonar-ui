@@ -7,7 +7,7 @@ import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 // http://localhost:8080/api/v1/person
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://pokeapi.co/api/v2/pokemon/',
+  baseUrl: 'https://pokeapi.co/api/v2/',
 })
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 })
@@ -15,7 +15,7 @@ const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 })
 export const api = createApi({
   reducerPath: 'splitApi',
   baseQuery: baseQueryWithRetry,
-  tagTypes: ['Time', 'Posts', 'Counter', 'Pokemon', 'People', 'Annotation'],
+  tagTypes: ['Pokemon'],
   /**
    * This api has endpoints injected in adjacent files,
    * which is why no endpoints are shown below.
@@ -26,6 +26,6 @@ export const api = createApi({
 
 export const enhancedApi = api.enhanceEndpoints({
   endpoints: () => ({
-    getPost: () => 'test',
+    getPokemon: () => 'test',
   }),
 })

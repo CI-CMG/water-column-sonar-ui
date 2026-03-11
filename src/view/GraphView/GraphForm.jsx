@@ -3,31 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
-import {
-  // Post,
-  useGetPostsQuery,
-} from '../../services/posts';
-
-const PostList = () => {
-  const { data: posts, isLoading } = useGetPostsQuery()
-  // const navigate = useNavigate()
-  if (isLoading) {
-    return <div>Loading</div>
-  }
-  if (!posts) {
-    return <div>No posts :(</div>
-  }
-
-  return (
-    <div>
-      {posts.map((post) => (
-        <p key={post.id}>
-        {{post}}
-        </p>
-      ))}
-    </div>
-  )
-}
+import GraphPokemon from "./GraphPokemon";
 
 function GraphForm() {
   const altitudeInitial = [-497, 395]; // [-496.4299927, 394.730011] from parquet
@@ -183,7 +159,7 @@ function GraphForm() {
         minDistanceFromCoast: {distanceFromCoast[0]}, maxDistanceFromCoast: {distanceFromCoast[1]}
       </p>
 
-      <PostList />
+      <GraphPokemon />
     </div>
   );
 }

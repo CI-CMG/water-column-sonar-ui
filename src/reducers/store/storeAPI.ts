@@ -494,9 +494,9 @@ export const fetchParquetData = (startTime: Date, endTime: Date) => {
 /* ----------------------------------------------------*/
 /* ------------- KNOWLEDGE GRAPH ----------------------*/
 /* ----------------------------------------------------*/
-export const fetchPersonData = (size: Number, page: Number) => {
-  return {"user1": "rudy", "user2": "alex"};
-}
+// export const fetchPersonData = (size: Number, page: Number) => {
+//   return {"user1": "rudy", "user2": "alex"};
+// }
 
 /* ----------------------------------------------------*/
 /* ----------------------------------------------------*/
