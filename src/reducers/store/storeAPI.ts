@@ -419,7 +419,11 @@ export const fetchAISvTile = (
 // const all_columns = ["geometry_hash", "classification", "point_count", "time_start", "time_end", "depth_min", "depth_max", "month", "altitude", "latitude", "longitude", "local_time", "distance_from_coastline", "solar_altitude", "filename", "region_id", "ship", "cruise", "instrument", "phase_of_day", "x", "y",];
 const parquetFile = await asyncBufferFromUrl({
   // url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/pmtiles/Henry_B._Bigelow_HB1906_neo4j_with_geometry.parquet"
-  url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/parquet/Henry_B._Bigelow_HB1906_geometry_26_3_2.parquet"
+  // Working URL of just mikes annotations
+  // url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/parquet/Henry_B._Bigelow_HB1906_geometry_26_3_2.parquet"
+  // Test URL for mike and Alex's annotations
+  url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/parquet/Henry_B._Bigelow_HB1906_geometry_26_3_3.parquet"
+  // goto: http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=2183819
 });
 
 export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
@@ -436,7 +440,7 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
     for (let i = 0; i < d.length; i++) {
       const destructured_x = d[i].x_index.map((x: any) => { return Number(x); })
       const destructured_y = d[i].y_index.map((y: any) => { return Number(y); })
-      if (destructured_x.length < 2000) {
+      if (destructured_x.length < 3000) {
         // For smaller polygons, <N points, create a polygon
         var poly = destructured_y.map((e: number, i: number) => {
           return [-1 * e, destructured_x[i]];
