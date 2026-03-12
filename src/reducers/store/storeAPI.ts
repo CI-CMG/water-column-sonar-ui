@@ -440,7 +440,7 @@ export const GetSelectGeometries = (rowStart: number, rowEnd: number): any => {
     for (let i = 0; i < d.length; i++) {
       const destructured_x = d[i].x_index.map((x: any) => { return Number(x); })
       const destructured_y = d[i].y_index.map((y: any) => { return Number(y); })
-      if (destructured_x.length < 3000) {
+      if (destructured_x.length < 1000) {
         // For smaller polygons, <N points, create a polygon
         var poly = destructured_y.map((e: number, i: number) => {
           return [-1 * e, destructured_x[i]];
