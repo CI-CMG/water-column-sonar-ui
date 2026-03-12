@@ -96,7 +96,7 @@ export default function GraphPlot() {
           nodeRelSize={3}
           linkDirectionalArrowLength={4}
           linkDirectionalArrowRelPos={1}
-          linkWidth={2}
+          linkWidth={1.5}
           // nodeCanvasObjectMode={() => "after"}
           // nodeThreeObject
           // nodeCanvasObject={(node, ctx, globalScale) => {
@@ -130,9 +130,9 @@ export default function GraphPlot() {
           linkThreeObject={(link) => {
             // extend link with text sprite
             const sprite = new SpriteText(`${link.source} > ${link.target}`);
-            sprite.color = 'lightgrey';
-            sprite.textHeight = 8;
-            sprite.textHeight = 1.5;
+            sprite.color = 'grey';
+            sprite.textHeight = 4;
+            // sprite.textHeight = 1.5;
             return sprite;
           }}
           linkPositionUpdate={(sprite, { start, end }) => {
