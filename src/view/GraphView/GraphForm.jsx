@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
-import GraphPokemon from "./GraphPokemon";
+import GraphList from "./GraphList";
 
 function GraphForm() {
   const altitudeInitial = [-497, 395]; // [-496.4299927, 394.730011] from parquet
@@ -159,7 +159,7 @@ function GraphForm() {
         minDistanceFromCoast: {distanceFromCoast[0]}, maxDistanceFromCoast: {distanceFromCoast[1]}
       </p>
 
-      <GraphPokemon />
+      <GraphList />
     </div>
   );
 }
