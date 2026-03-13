@@ -3,7 +3,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
-import GraphList from "./GraphList";
 
 function GraphForm() {
   const altitudeInitial = [-497, 395]; // [-496.4299927, 394.730011] from parquet
@@ -30,14 +29,15 @@ function GraphForm() {
       el.id,
       el.checked,
     ]);
-    setPhaseOfDay(checkedValues1.filter((x) => x[1]).map((x) => x[0]));
+    
+    setPhaseOfDay(checkedValues1.filter((x) => x[1])[0][0]);
 
     // classification
     const checkedValues2 = Array.from(event.target.group2).map((el) => [
       el.id,
       el.checked,
     ]);
-    setClassification(checkedValues2.filter((x) => x[1]).map((x) => x[0]));
+    setClassification(checkedValues2.filter((x) => x[1])[0][0]);
 
     // query the graph
   };
@@ -79,7 +79,6 @@ function GraphForm() {
             type="radio"
             id="dusk"
           />
-          <p>{JSON.stringify(phaseOfDay)}</p>
         </div>
 
         <br />
@@ -115,7 +114,7 @@ function GraphForm() {
             type="radio"
             id="possible_herring"
           />
-          <p>{JSON.stringify(classification)}</p>
+          {/* <p>{JSON.stringify(classification)}</p> */}
         </div>
 
         <br />
@@ -151,15 +150,15 @@ function GraphForm() {
 
         <Button type="submit">Query the Graph</Button>
       </Form>
+      
       <br />
-      <p>
+      
+      <p style={{ fontSize: "0.75em" }}>
         phaseOfDay: {JSON.stringify(phaseOfDay)},
         classification: {JSON.stringify(classification)},
         minAltitude: {altitude[0]}, maxAltitude: {altitude[1]},
         minDistanceFromCoast: {distanceFromCoast[0]}, maxDistanceFromCoast: {distanceFromCoast[1]}
       </p>
-
-      <GraphList />
     </div>
   );
 }
