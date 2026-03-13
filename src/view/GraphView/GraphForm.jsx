@@ -1,6 +1,6 @@
 // import { useState } from "react";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+// import Button from "react-bootstrap/Button";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -109,16 +109,14 @@ function GraphForm() {
           />
         </div>
 
-        <br />
-
         <Form.Label>Classification</Form.Label>
         <div key="inline-radio2" className="mb-3">
           <Form.Check
             inline
-            label="Unclassified"
+            label="Unclassified regions"
             name="group2"
             type="radio"
-            id="Unclassified"
+            id="Unclassified regions"
             onChange={(e) => { dispatch(updateSearchClassification(e.target.id)) }}
           />
           <Form.Check
@@ -148,8 +146,6 @@ function GraphForm() {
           />
           {/* <p>{JSON.stringify(classification)}</p> */}
         </div>
-
-        <br />
 
         <div>
           <Form.Label>Altitude (meters)</Form.Label>

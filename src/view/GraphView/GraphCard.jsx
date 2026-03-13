@@ -50,23 +50,23 @@ function GraphCard({
         />
         <Card.Body>
           <Card.Text className="text-center">
-            <strong>&quot;{classification}&quot;</strong>
+            <strong>{classification}</strong>
             <br />
-            {ship} | {cruise} | {instrument}
+            {ship} / {cruise} / {instrument}
             <br />
             start: {startTime}
             <br />
             end: {endTime}
             <br />
-            local time: {localTime}
+            local: {localTime}
             <br />
-            coordinates: {longitude}° E, {latitude}° N
+            gps: {longitude}° E, {latitude}° N
             <br />
-            depth: [{depthMin}, {depthMax}] m | altitude: {altitude} m
+            depth: <b>[{depthMin}, {depthMax}] m</b> | altitude: <b>{altitude} m</b>
             <br />
-            distance from coast: {distanceFromCoast} m
+            distance from coast: <b>{distanceFromCoast} m</b>
             <br />
-            solar altitude: {solarAltitude}° | phase: {phaseOfDay}
+            solar altitude: <b>{solarAltitude}°</b> | phase: <b>{phaseOfDay}</b>
             <br />
             {/* creator: {creator}
             <br /> */}
