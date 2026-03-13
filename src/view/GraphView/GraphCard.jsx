@@ -2,28 +2,44 @@ import Card from "react-bootstrap/Card";
 import PropTypes from "prop-types";
 
 function GraphCard({
-  classification="fish_school",
-  ship="Henry_B._Bigelow",
-  cruise="HB1906",
-  instrument="EK60",
-  startTime="2025-02-06 10:50:00",
-  endTime="2025-02-06 10:51:00",
-  localTime="2019-09-25T10:02:06.60",
-  longitude=-69.80750,
-  latitude=41.79967,
-  depthMin=11.12,
-  depthMax=13.15,
-  altitude=1.23,
-  distanceFromCoast=250,
-  solarAltitude=35.02,
-  phaseOfDay="day",
-  geometryHash="1d4b073ae6dda69972e42d4f707134640c1897c63b04c620d355dc527f7ef4ed",
+  // classification="fish_school",
+  // ship="Henry_B._Bigelow",
+  // cruise="HB1906",
+  // instrument="EK60",
+  // startTime="2025-02-06 10:50:00",
+  // endTime="2025-02-06 10:51:00",
+  // localTime="2019-09-25T10:02:06.60",
+  // longitude=-69.80750,
+  // latitude=41.79967,
+  // depthMin=11.12,
+  // depthMax=13.15,
+  // altitude=1.23,
+  // distanceFromCoast=250,
+  // solarAltitude=35.02,
+  // phaseOfDay="day",
+  // geometryHash="1d4b073ae6dda69972e42d4f707134640c1897c63b04c620d355dc527f7ef4ed",
   // creator="michael.jech@noaa.gov"
+  classification,
+  ship,
+  cruise,
+  instrument,
+  startTime,
+  endTime,
+  localTime,
+  longitude,
+  latitude,
+  depthMin,
+  depthMax,
+  altitude,
+  distanceFromCoast,
+  solarAltitude,
+  phaseOfDay,
+  geometryHash,
 }) {
   return (
     <div className="GraphCard">
       <Card
-        // style={{ width: '18rem' }}
+        style={{ width: '22rem' }}
         bg="light"
         text='dark'
         className="m-2"

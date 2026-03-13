@@ -75,7 +75,7 @@ export const annotationApi = api.injectEndpoints({
 
 export const {
   useGetAllAnnotationsQuery,
-  useGetAllAnnotationsSearchQuery,
+  useGetAllAnnotationsSearchQuery, // for the graph demo
 } = annotationApi
 
 export const {

@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import GraphCard from "./GraphCard";
-import CardGroup from 'react-bootstrap/CardGroup';
+// import GraphCard from "./GraphCard";
+// import CardGroup from 'react-bootstrap/CardGroup';
 import GraphForm from "./GraphForm";
 import GraphPlot from "./GraphPlot";
 // import Pagination from 'react-bootstrap/Pagination';
@@ -25,19 +25,6 @@ export default function GraphView() {
           <Col md={8}>
             <GraphPlot />
           </Col>
-        </Row>
-
-        <Row className="mt-4">
-          <CardGroup>
-            <GraphCard classification="AH_School"/>
-            <GraphCard />
-            <GraphCard classification="unclassified" />
-            <GraphCard />
-            <GraphCard classification="unclassified" />
-            <GraphCard />
-            <GraphCard classification="AH_School"/>
-            <GraphCard />
-          </CardGroup>
         </Row>
         <br />
         {/* <Pagination>{items}</Pagination> */}

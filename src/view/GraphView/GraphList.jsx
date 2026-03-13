@@ -1,11 +1,15 @@
 import {
   useGetAllAnnotationsSearchQuery,
 } from '../../services/annotation';
+import Row from "react-bootstrap/Row";
+// import Col from "react-bootstrap/Col";
+import GraphCard from "./GraphCard";
+import CardGroup from 'react-bootstrap/CardGroup';
 
 function GraphList() {
   
   // http://localhost:8080/api/v1/annotation/search?classification=AH_School&phaseOfDay=dawn&minAltitude=-100.0&maxAltitude=500.0&minDistanceFromCoastline=0&maxDistanceFromCoastline=200000&page=0&size=10
-  const { data: pokemon, isLoading } = useGetAllAnnotationsSearchQuery({
+  const { data: annotations, isLoading } = useGetAllAnnotationsSearchQuery({
     classification: "AH_School",
     phaseOfDay: "dawn",
     minAltitude: -100,
@@ -20,20 +24,64 @@ function GraphList() {
     return <div>Loading</div>
   }
   
-  if (!pokemon) {
-    return <div>No Results</div>
+  if (!annotations) {
+    return <div>No Results Found!</div>
   }
 
-  const listItems = pokemon.map((pok, i) => <p key={i}>{pok.depthMax}</p>);
+  // WAS WORKING
+  // const listItems = annotations.map((annotation, i) =>
+  //   <p key={i}>{annotation.classification}</p>
+  // );
+
+  const listItems = annotations.map((annotation, i) =>
+    <GraphCard
+      key={i}
+      classification={annotation.classification}
+      ship={annotation.ship}
+      cruise={annotation.cruise}
+      instrument={annotation.instrument}
+      startTime={annotation.timeStart}
+      endTime={annotation.timeEnd}
+      localTime={annotation.localTime}
+      longitude={annotation.longitude}
+      latitude={annotation.latitude}
+      depthMin={annotation.depthMin}
+      depthMax={annotation.depthMax}
+      altitude={annotation.altitude}
+      distanceFromCoast={annotation.distanceFromCoastline}
+      solarAltitude={annotation.solarAltitude}
+      phaseOfDay={annotation.phaseOfDay}
+      geometryHash={annotation.geometryHash}
+    />
+  );
 
   return (
-    <div>
-      {pokemon !== null ? (
-        <div>{listItems}</div>
-      ) : (
-        <></>
-      )}
-    </div>
+    <>
+      <div>
+        {annotations !== null ? (
+          <CardGroup>
+            {listItems}
+          </CardGroup>
+        ) : (
+          <></>
+        )}
+      </div>
+
+      {/* <br />
+
+      <Row className="mt-4">
+        <CardGroup>
+          <GraphCard classification="AH_School"/>
+          <GraphCard />
+          <GraphCard classification="unclassified" />
+          <GraphCard />
+          <GraphCard classification="unclassified" />
+          <GraphCard />
+          <GraphCard classification="AH_School"/>
+          <GraphCard />
+        </CardGroup>
+      </Row> */}
+    </>
   )
 }
 
