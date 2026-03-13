@@ -54,12 +54,12 @@ export const annotationApi = api.injectEndpoints({
     /* For the UI demo, returns searched results */
     // classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size
     // TODO: add 
-    getAllAnnotationsSearch: build.query<AnnotationResponse, { classification: string, phaseOfDay: string, minAltitude: number, maxAltitude: number, minDistanceFromCoastline: number, maxDistanceFromCoastline: number, size: number, page: number }>({
+    getAllAnnotationsSearch: build.query<AnnotationResponse, { classification: string, phaseOfDay: string, minAltitude: number, maxAltitude: number, minDistanceFromCoastline: number, maxDistanceFromCoastline: number, size: number, page: number, sort: string }>({
       query: (arg) => {
-        const { classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size } = arg;
+        const { classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size, sort } = arg;
         return {
-          url: 'annotation/all',
-          params: { classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size }
+          url: 'annotation/search',
+          params: { classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size, sort }
         };
       },
       

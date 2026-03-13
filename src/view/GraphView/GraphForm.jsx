@@ -1,24 +1,45 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  updateSearchPhaseOfDay,
+  updateSearchClassification,
+  updateSearchDistanceFromCoastline,
+  updateSearchAltitude,
+
+  selectSearchPhaseOfDay,
+  selectSearchClassification,
+  selectSearchDistanceFromCoastline,
+  selectSearchAltitude,
+} from "../../reducers/store/storeSlice";
 
 function GraphForm() {
+  const dispatch = useAppDispatch();
+
   const altitudeInitial = [-497, 395]; // [-496.4299927, 394.730011] from parquet
   const distanceFromCoastlineInitial = [42, 157942]; // from parquet file
-  const phaseOfDayInitial = "night";  // from parquet file
-  const classificationInitial = "AH_School"; // from parquet file
-  const [phaseOfDay, setPhaseOfDay] = useState(phaseOfDayInitial);
-  const [classification, setClassification] = useState(classificationInitial);
-  const [altitude, setAltitude] = useState(altitudeInitial);
-  const [distanceFromCoast, setDistanceFromCoast] = useState(distanceFromCoastlineInitial);
+  // const phaseOfDayInitial = "night";  // from parquet file
+  // const classificationInitial = "AH_School"; // from parquet file
+  // const [phaseOfDay, setPhaseOfDay] = useState(phaseOfDayInitial);
+  // const [classification, setClassification] = useState(classificationInitial);
+  // const [altitude, setAltitude] = useState(altitudeInitial);
+  // const [distanceFromCoast, setDistanceFromCoast] = useState(distanceFromCoastlineInitial);
+
+  const altitude = useAppSelector(selectSearchAltitude);
+  const distanceFromCoastline = useAppSelector(selectSearchDistanceFromCoastline);
+  const phaseOfDay = useAppSelector(selectSearchPhaseOfDay);
+  const classification = useAppSelector(selectSearchClassification);
 
   const handleUpdateAltitude = (e) => {
-    setAltitude(e);
+    // setAltitude(e);
+    dispatch(updateSearchAltitude(e));
   }
   const handleUpdateDistanceFromCoastline = (e) => {
-    setDistanceFromCoast(e);
+    // setDistanceFromCoast(e);
+    dispatch(updateSearchDistanceFromCoastline(e));
   }
 
   const handleSubmit = (event) => {
@@ -29,15 +50,16 @@ function GraphForm() {
       el.id,
       el.checked,
     ]);
-    
-    setPhaseOfDay(checkedValues1.filter((x) => x[1])[0][0]);
+    // setPhaseOfDay(checkedValues1.filter((x) => x[1])[0][0]);
+    dispatch(updateSearchPhaseOfDay(checkedValues1.filter((x) => x[1])[0][0]));
 
     // classification
     const checkedValues2 = Array.from(event.target.group2).map((el) => [
       el.id,
       el.checked,
     ]);
-    setClassification(checkedValues2.filter((x) => x[1])[0][0]);
+    // setClassification(checkedValues2.filter((x) => x[1])[0][0]);
+    dispatch(updateSearchClassification(checkedValues2.filter((x) => x[1])[0][0]));
 
     // query the graph
   };
@@ -48,22 +70,26 @@ function GraphForm() {
   return (
     <div className="GraphForm" style={{ color: "white" }}>
       <Form onSubmit={handleSubmit}>
+        
         <Form.Label>Phase of the Day</Form.Label>
+        
         <div key="inline-radio1" className="mb-3">
           <Form.Check
             inline
-            defaultChecked
             label="Night"
             name="group1"
             type="radio"
             id="night"
+            onChange={(e) => { dispatch(updateSearchPhaseOfDay(e.target.id)) }}
           />
           <Form.Check
             inline
+            defaultChecked
             label="Dawn"
             name="group1"
             type="radio"
             id="dawn"
+            onChange={(e) => { dispatch(updateSearchPhaseOfDay(e.target.id)) }}
           />
           <Form.Check
             inline
@@ -71,6 +97,7 @@ function GraphForm() {
             name="group1"
             type="radio"
             id="day"
+            onChange={(e) => { dispatch(updateSearchPhaseOfDay(e.target.id)) }}
           />
           <Form.Check
             inline
@@ -78,6 +105,7 @@ function GraphForm() {
             name="group1"
             type="radio"
             id="dusk"
+            onChange={(e) => { dispatch(updateSearchPhaseOfDay(e.target.id)) }}
           />
         </div>
 
@@ -91,6 +119,7 @@ function GraphForm() {
             name="group2"
             type="radio"
             id="Unclassified"
+            onChange={(e) => { dispatch(updateSearchClassification(e.target.id)) }}
           />
           <Form.Check
             inline
@@ -99,6 +128,7 @@ function GraphForm() {
             name="group2"
             type="radio"
             id="AH_School"
+            onChange={(e) => { dispatch(updateSearchClassification(e.target.id)) }}
           />
           <Form.Check
             inline
@@ -106,6 +136,7 @@ function GraphForm() {
             name="group2"
             type="radio"
             id="fish_school"
+            onChange={(e) => { dispatch(updateSearchClassification(e.target.id)) }}
           />
           <Form.Check
             inline
@@ -113,6 +144,7 @@ function GraphForm() {
             name="group2"
             type="radio"
             id="possible_herring"
+            onChange={(e) => { dispatch(updateSearchClassification(e.target.id)) }}
           />
           {/* <p>{JSON.stringify(classification)}</p> */}
         </div>
@@ -144,11 +176,9 @@ function GraphForm() {
             onInput={(e) => { handleUpdateDistanceFromCoastline(e) }}
           />
           <br />
-          <p>{JSON.stringify(distanceFromCoast)}</p>
+          <p>{JSON.stringify(distanceFromCoastline)}</p>
         </div>
-        <br />
-
-        <Button type="submit">Query the Graph</Button>
+        {/* <Button type="submit">Query the Graph</Button> */}
       </Form>
       
       <br />
@@ -157,7 +187,7 @@ function GraphForm() {
         phaseOfDay: {JSON.stringify(phaseOfDay)},
         classification: {JSON.stringify(classification)},
         minAltitude: {altitude[0]}, maxAltitude: {altitude[1]},
-        minDistanceFromCoast: {distanceFromCoast[0]}, maxDistanceFromCoast: {distanceFromCoast[1]}
+        minDistanceFromCoastline: {distanceFromCoastline[0]}, maxDistanceFromCoastline: {distanceFromCoastline[1]}
       </p>
     </div>
   );

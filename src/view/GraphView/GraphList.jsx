@@ -1,3 +1,4 @@
+// import { useEffect } from "react";
 import {
   useGetAllAnnotationsSearchQuery,
 } from '../../services/annotation';
@@ -5,19 +6,28 @@ import {
 // import Col from "react-bootstrap/Col";
 import GraphCard from "./GraphCard";
 import CardGroup from 'react-bootstrap/CardGroup';
+import PropTypes from "prop-types";
 
-function GraphList() {
-  
+function GraphList({
+  classification,
+  phaseOfDay,
+  minAltitude,
+  maxAltitude,
+  minDistanceFromCoastline,
+  maxDistanceFromCoastline,
+}) {
+  // useEffect(() => {}, []);
   // http://localhost:8080/api/v1/annotation/search?classification=AH_School&phaseOfDay=dawn&minAltitude=-100.0&maxAltitude=500.0&minDistanceFromCoastline=0&maxDistanceFromCoastline=200000&page=0&size=10
   const { data: annotations, isLoading } = useGetAllAnnotationsSearchQuery({
-    classification: "AH_School",
-    phaseOfDay: "dawn",
-    minAltitude: -100,
-    maxAltitude: 500,
-    minDistanceFromCoastline: 0,
-    maxDistanceFromCoastline: 200_000,
-    size: 20,
-    page: 0
+    classification: classification, //"AH_School",
+    phaseOfDay: phaseOfDay, //"dawn",
+    minAltitude: minAltitude, // -100,
+    maxAltitude: maxAltitude, // 500,
+    minDistanceFromCoastline: minDistanceFromCoastline, // 0,
+    maxDistanceFromCoastline: maxDistanceFromCoastline, // 200_000,
+    size: 40,
+    page: 0,
+    sort: "distanceFromCoastline"
   })
   
   if (isLoading) {
@@ -51,18 +61,27 @@ function GraphList() {
   );
 
   return (
-    <>
-      {annotations !== null ? (
+    <div style={{ minHeight: "400px" }}>
+      {listItems !== null ? (
         <CardGroup>
           {listItems}
         </CardGroup>
       ) : (
         <></>
       )}
-    </>
+
+      <br />
+    </div>
   )
 }
 
 export default GraphList;
 
-GraphList.propTypes = {};
+GraphList.propTypes = {
+  classification: PropTypes.string.isRequired,
+  phaseOfDay:  PropTypes.string.isRequired,
+  minAltitude:  PropTypes.number.isRequired,
+  maxAltitude:  PropTypes.number.isRequired,
+  minDistanceFromCoastline:  PropTypes.number.isRequired,
+  maxDistanceFromCoastline:  PropTypes.number.isRequired,
+};

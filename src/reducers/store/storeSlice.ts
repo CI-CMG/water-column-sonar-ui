@@ -42,6 +42,12 @@ export interface StoreState {
   cruise: string | null,
   sensor: string | null,
 
+  // For graph view search
+  searchClassification: string,
+  searchPhaseOfDay: string,
+  searchAltitude: number[],
+  searchDistanceFromCoastline: number[],
+
   shipHovered: string | null,
   cruiseHovered: string | null,
   sensorHovered: string | null,
@@ -142,6 +148,11 @@ const initialState: StoreState = {
   ship: null, // "Henry_B._Bigelow",
   cruise: null, // "HB0707",
   sensor: null, // "EK60",
+
+  searchClassification: "AH_School",
+  searchPhaseOfDay: "dawn",
+  searchAltitude: [-497, 395],
+  searchDistanceFromCoastline: [42, 157942],
 
   shipHovered: null,
   cruiseHovered: null,
@@ -250,6 +261,19 @@ export const storeSlice = createSlice({
     },
     updateSensor: (state, action: PayloadAction<string>) => {
       state.sensor = action.payload
+    },
+    //
+    updateSearchClassification: (state, action: PayloadAction<string>) => {
+      state.searchClassification = action.payload
+    },
+    updateSearchPhaseOfDay: (state, action: PayloadAction<string>) => {
+      state.searchPhaseOfDay = action.payload
+    },
+    updateSearchAltitude: (state, action: PayloadAction<number[]>) => {
+      state.searchAltitude = action.payload
+    },
+    updateSearchDistanceFromCoastline: (state, action: PayloadAction<number[]>) => {
+      state.searchDistanceFromCoastline = action.payload
     },
     //
     updateShipHovered: (state, action: PayloadAction<string>) => {
@@ -573,6 +597,11 @@ export const {
   updateCruise,
   updateSensor,
   //
+  updateSearchClassification,
+  updateSearchPhaseOfDay,
+  updateSearchAltitude,
+  updateSearchDistanceFromCoastline,
+  //
   updateShipHovered,
   updateCruiseHovered,
   updateSensorHovered,
@@ -628,6 +657,11 @@ export const selectShowInfoPanel = (state: RootState) => state.store.showInfoPan
 export const selectShip = (state: RootState) => state.store.ship;
 export const selectCruise = (state: RootState) => state.store.cruise;
 export const selectSensor = (state: RootState) => state.store.sensor;
+
+export const selectSearchClassification = (state: RootState) => state.store.searchClassification;
+export const selectSearchPhaseOfDay = (state: RootState) => state.store.searchPhaseOfDay;
+export const selectSearchAltitude = (state: RootState) => state.store.searchAltitude;
+export const selectSearchDistanceFromCoastline = (state: RootState) => state.store.searchDistanceFromCoastline;
 
 export const selectShipHovered = (state: RootState) => state.store.shipHovered;
 export const selectCruiseHovered = (state: RootState) => state.store.cruiseHovered;

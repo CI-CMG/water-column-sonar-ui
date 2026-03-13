@@ -27,8 +27,8 @@ import {
   selectAnnotation,
   updateAnnotation,
   //
-  selectAnnotationAI,
-  updateAnnotationAI,
+  // selectAnnotationAI,
+  // updateAnnotationAI,
   // selectAnnotationColor,
   // updateAnnotationColor,
   //
