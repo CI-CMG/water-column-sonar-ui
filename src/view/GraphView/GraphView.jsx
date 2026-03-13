@@ -13,15 +13,15 @@ export default function GraphView() {
   return (
     <div className="GraphView">
       
-      <Container>
+      <Container fluid>
         <br />
         <h1 className="text-center" style={{ color: "white", fontSize: "1.2em"}}>EchoFish Knowledge Graph</h1>
         
         <Row>
-          <Col md={6}>
+          <Col md={4}>
             <GraphForm />
           </Col>
-          <Col md={6}>
+          <Col md={8}>
             <GraphPlot />
           </Col>
         </Row>

@@ -9,19 +9,21 @@ import SpriteText from 'three-spritetext';
 // import { UnrealBloomPass } from "https://esm.sh/three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 
-function genRandomTree(N = 10, reverse = false) {
-  const foo = {
-    nodes: [...Array(N).keys()].map((i) => ({ id: i })),
-    links: [...Array(N).keys()]
-      .filter((id) => id)
-      .map((id) => ({
-        [reverse ? "target" : "source"]: id,
-        [reverse ? "source" : "target"]: Math.floor(Math.random() * (id - 1)),
-      })),
-  };
-  // debugger;
-  return foo;
-}
+// function genRandomTree(N = 10, reverse = false) {
+//   const foo = {
+//     nodes: [...Array(N).keys()].map((i) => ({ id: i })),
+//     links: [...Array(N).keys()]
+//       .filter((id) => id)
+//       .map((id) => ({
+//         [reverse ? "target" : "source"]: id,
+//         [reverse ? "source" : "target"]: Math.floor(Math.random() * (id - 1)),
+//       })),
+//   };
+//   // debugger;
+//   return foo;
+// }
+
+// const bloomPass = new UnrealBloomPass();
 
 // Would like to get this example working:
 // https://github.com/vasturiano/react-force-graph/blob/master/example/text-nodes/index-3d.html
@@ -44,10 +46,10 @@ export default function GraphPlot() {
   }, []);
 
   // useEffect(() => {
-  //   const bloomPass = new UnrealBloomPass();
-  //   bloomPass.strength = 0.033;
-  //   bloomPass.radius = 0.01;
-  //   bloomPass.threshold = 0;
+    
+  //   bloomPass.strength = 0.001;
+  //   bloomPass.radius = 0.001;
+  //   bloomPass.threshold = 0.001;
   //   fgRef.current.postProcessingComposer().addPass(bloomPass);
   // }, []);
 
@@ -62,14 +64,14 @@ export default function GraphPlot() {
       {"id": "Classification", "group": 7}
     ],
     "links": [
-      {"source": "Cruise", "target": "Ship", "value": 1},
-      {"source": "Instrument", "target": "Cruise", "value": 3},
-      {"source": "Annotation", "target": "Cruise", "value": 3},
-      {"source": "Annotation", "target": "Instrument", "value": 4},
-      {"source": "Person", "target": "Project", "value": 2},
-      {"source": "Person", "target": "Project", "value": 2},
-      {"source": "Person", "target": "Annotation", "value": 4},
-      {"source": "Classification", "target": "Annotation", "value": 4}
+      {"source": "Cruise", "target": "Ship", "value": 3, "predicate": "COLLECTED_DATA_FOR"},
+      {"source": "Instrument", "target": "Cruise", "value": 3, "predicate": "COLLECTED_DATA_FOR"},
+      {"source": "Annotation", "target": "Cruise", "value": 3, "predicate": "COLLECTED_BY"},
+      {"source": "Annotation", "target": "Instrument", "value": 4, "predicate": "COLLECTED_BY"},
+      {"source": "Person", "target": "Project", "value": 2, "predicate": "ADVISOR_TO"},
+      // {"source": "Person", "target": "Project", "value": 2, "predicate": "CONTRIBUTOR_TO"},
+      {"source": "Person", "target": "Annotation", "value": 4, "predicate": "CREATED"},
+      {"source": "Classification", "target": "Annotation", "value": 4, "predicate": "DEFINES"}
     ]
   };
 
@@ -77,6 +79,7 @@ export default function GraphPlot() {
     <div className="GraphPlot">
       <div ref={containerRef}>
         <ForceGraph3D
+          // style={{ border: "1px solid grey"}}
           ref={fgRef}
           // graphData={genRandomTree(15)}
           graphData={meta_graph}
@@ -84,7 +87,8 @@ export default function GraphPlot() {
           width={size[0]}
           height={size[1]}
           // backgroundColor='rgb(16,16,16)'
-          backgroundColor={"rgb(16,16,16)"}
+          // backgroundColor={"rgb(16,16,16)"}
+          backgroundColor={"rgb(11,11,11)"}
           nodeColor={"pink"}
           // linkColor={"black"}
           nodeAutoColorBy="id"
@@ -94,9 +98,9 @@ export default function GraphPlot() {
           linkDirectionalParticleSpeed={(d) => d.value * 0.001}
           //
           nodeRelSize={3}
-          linkDirectionalArrowLength={4}
+          linkDirectionalArrowLength={5}
           linkDirectionalArrowRelPos={1}
-          linkWidth={1.5}
+          linkWidth={1.1}
           // nodeCanvasObjectMode={() => "after"}
           // nodeThreeObject
           // nodeCanvasObject={(node, ctx, globalScale) => {
@@ -119,7 +123,7 @@ export default function GraphPlot() {
               const sprite = new SpriteText(node.id);
               sprite.material.depthWrite = false; // make sprite background transparent
               sprite.color = "white";
-              sprite.textHeight = 8;
+              sprite.textHeight = 5;
               sprite.center.y = -0.6; // shift above node
               return sprite;
             }
@@ -129,9 +133,10 @@ export default function GraphPlot() {
           linkThreeObjectExtend={true}
           linkThreeObject={(link) => {
             // extend link with text sprite
-            const sprite = new SpriteText(`${link.source} > ${link.target}`);
+            // const sprite = new SpriteText(`${link.source} > ${link.target}`);
+            const sprite = new SpriteText(`${link.predicate}`);
             sprite.color = 'grey';
-            sprite.textHeight = 4;
+            sprite.textHeight = 3;
             // sprite.textHeight = 1.5;
             return sprite;
           }}

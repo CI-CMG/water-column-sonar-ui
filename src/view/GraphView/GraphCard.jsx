@@ -23,7 +23,7 @@ function GraphCard({
   return (
     <div className="GraphCard">
       <Card
-        style={{ width: '18rem' }}
+        // style={{ width: '18rem' }}
         bg="light"
         text='dark'
         className="m-2"

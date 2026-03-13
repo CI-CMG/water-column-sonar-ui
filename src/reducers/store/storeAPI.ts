@@ -423,7 +423,7 @@ const parquetFile = await asyncBufferFromUrl({
   // url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/parquet/Henry_B._Bigelow_HB1906_geometry_26_3_2.parquet"
   // Test URL for mike and Alex's annotations
   // url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/parquet/Henry_B._Bigelow_HB1906_geometry_26_3_3.parquet"
-  // take 2 w alex
+  // take 2 w alex — working as expected
   url: "https://noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/parquet/Henry_B._Bigelow_HB1906_geometry_26_3_5.parquet"
   // goto: http://localhost:5173/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=2183819
 });
