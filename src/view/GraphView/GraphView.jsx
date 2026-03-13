@@ -6,6 +6,7 @@ import GraphCard from "./GraphCard";
 import CardGroup from 'react-bootstrap/CardGroup';
 import GraphForm from "./GraphForm";
 import GraphPlot from "./GraphPlot";
+// import Pagination from 'react-bootstrap/Pagination';
 
 export default function GraphView() {
   useEffect(() => { document.title = `EchoFish Knowledge Graph`; }, []);
@@ -28,16 +29,18 @@ export default function GraphView() {
 
         <Row className="mt-4">
           <CardGroup>
-            <GraphCard classification="AH School"/>
+            <GraphCard classification="AH_School"/>
             <GraphCard />
             <GraphCard classification="unclassified" />
             <GraphCard />
             <GraphCard classification="unclassified" />
             <GraphCard />
-            <GraphCard classification="AH School"/>
+            <GraphCard classification="AH_School"/>
             <GraphCard />
           </CardGroup>
         </Row>
+        <br />
+        {/* <Pagination>{items}</Pagination> */}
 
         <br />
       </Container>

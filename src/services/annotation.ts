@@ -28,23 +28,13 @@ export interface Annotation {
 type AnnotationResponse = Annotation[]
 
 // http://localhost:8080/api/v1/annotation/all?size=10&page=0
+// http://localhost:8080/api/v1/annotation/search?classification=AH_School&phaseOfDay=dawn&minAltitude=-100.0&maxAltitude=500.0&minDistanceFromCoastline=0&maxDistanceFromCoastline=200000&page=0&size=10
+//  classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size
 export const annotationApi = api.injectEndpoints({
   endpoints: (build) => ({
 
-    /* --- FROM DPMF PROJECT --- */
-    // getProducts: builder.query<DPMFResponse, { sat: string, inst: string }>({
-    //   query: (arg) => {
-    //     const { sat, inst } = arg;
-    //     return {
-    //       url: 'products',
-    //       params: { sat, inst },
-    //     };
-    //   },
-    //   keepUnusedDataFor: 300,
-    // }),
-
-    getAnnotation: build.query<AnnotationResponse, { size: number, page: number }>({
-      // query: ({ size, page }) => ({ url: `annotation/all?size=${size}&page=${page}` }),
+    /* Returns all the annotations in the database */
+    getAllAnnotations: build.query<AnnotationResponse, { size: number, page: number }>({
       query: (arg) => {
         const { size, page } = arg;
         return {
@@ -60,16 +50,38 @@ export const annotationApi = api.injectEndpoints({
         { type: 'Annotation' as const, geometryHash: 'LIST' },
       ],
     }),
+
+    /* For the UI demo, returns searched results */
+    // classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size
+    // TODO: add 
+    getAllAnnotationsSearch: build.query<AnnotationResponse, { classification: string, phaseOfDay: string, minAltitude: number, maxAltitude: number, minDistanceFromCoastline: number, maxDistanceFromCoastline: number, size: number, page: number }>({
+      query: (arg) => {
+        const { classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size } = arg;
+        return {
+          url: 'annotation/all',
+          params: { classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size }
+        };
+      },
+      
+      transformResponse: (response: { content: AnnotationResponse }, meta, arg) => response.content,
+      
+      providesTags: (result = []) => [
+        ...result.map(({ geometryHash }) => ({ type: 'Annotation', geometryHash }) as const),
+        { type: 'Annotation' as const, geometryHash: 'LIST' },
+      ],
+    }),
   }),
 })
 
 export const {
-  useGetAnnotationQuery,
+  useGetAllAnnotationsQuery,
+  useGetAllAnnotationsSearchQuery,
 } = annotationApi
 
 export const {
   endpoints: {
-    getAnnotation,
+    getAllAnnotations,
+    getAllAnnotationsSearch,
   },
 } = annotationApi
 
