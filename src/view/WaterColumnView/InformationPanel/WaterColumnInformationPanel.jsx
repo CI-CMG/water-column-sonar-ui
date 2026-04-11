@@ -56,8 +56,8 @@ import {
   //
   selectBottom,
   selectSv,
-  selectSpeed,
-  selectDistance,
+  // selectSpeed,
+  // selectDistance,
 } from "../../../reducers/store/storeSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
 import { MdAnchor } from "react-icons/md";
@@ -95,8 +95,8 @@ const WaterColumnInformationPanel = () => {
   //
   const bottom = useAppSelector(selectBottom);
   const sv = useAppSelector(selectSv);
-  const speed = useAppSelector(selectSpeed);
-  const distance = useAppSelector(selectDistance);
+  // const speed = useAppSelector(selectSpeed);
+  // const distance = useAppSelector(selectDistance);
 
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
@@ -292,7 +292,7 @@ const WaterColumnInformationPanel = () => {
           )}
 
           {/* https://github.com/CI-CMG/water-column-sonar-ui/issues/118 */}
-          {speed !== null ? (
+          {/* {speed !== null ? (
             <p>
               <b>Speed over water:</b>
               <span className="font-monospace float-end">
@@ -301,9 +301,9 @@ const WaterColumnInformationPanel = () => {
             </p>
           ) : (
             <></>
-          )}
+          )} */}
 
-          {distance !== null ? (
+          {/* {distance !== null ? (
             <p>
               <b>GPS alongtrack distance:</b>
               <span className="font-monospace float-end">
@@ -312,7 +312,7 @@ const WaterColumnInformationPanel = () => {
             </p>
           ) : (
             <></>
-          )}
+          )} */}
 
           {attributes !== null ? (
             <p>

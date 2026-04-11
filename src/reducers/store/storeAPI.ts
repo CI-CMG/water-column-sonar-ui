@@ -300,36 +300,36 @@ export const fetchSv = (
 };
 
 /* --- SPEED --- */
-export const fetchSpeed = (
-  ship: string,
-  cruise: string,
-  sensor: string,
-  indexTime: number
-): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
-  const root = zarr.root(new zarr.FetchStore(url));
+// export const fetchSpeed = (
+//   ship: string,
+//   cruise: string,
+//   sensor: string,
+//   indexTime: number
+// ): any => {
+//   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+//   const root = zarr.root(new zarr.FetchStore(url));
 
-  return zarr.open.v3(root.resolve("speed"), { kind: "array" }).then((arr) => {
-    return get(arr, [indexTime]);
-  });
-};
+//   return zarr.open.v3(root.resolve("speed"), { kind: "array" }).then((arr) => {
+//     return get(arr, [indexTime]);
+//   });
+// };
 
 /* --- DISTANCE --- */
-export const fetchDistance = (
-  ship: string,
-  cruise: string,
-  sensor: string,
-  indexTime: number
-): any => {
-  const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
-  const root = zarr.root(new zarr.FetchStore(url));
+// export const fetchDistance = (
+//   ship: string,
+//   cruise: string,
+//   sensor: string,
+//   indexTime: number
+// ): any => {
+//   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+//   const root = zarr.root(new zarr.FetchStore(url));
 
-  return zarr.open
-    .v3(root.resolve("distance"), { kind: "array" })
-    .then((arr) => {
-      return get(arr, [indexTime]);
-    });
-};
+//   return zarr.open
+//     .v3(root.resolve("distance"), { kind: "array" })
+//     .then((arr) => {
+//       return get(arr, [indexTime]);
+//     });
+// };
 
 /* --- SV TILE — Gets Data for Drawing Each Tile --- */
 export const fetchSvTile = (

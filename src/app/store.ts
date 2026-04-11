@@ -20,7 +20,11 @@ export const createStore = (
     //   serializableCheck: false, // TODO: make this more targeted to just the zarr store
     // }),
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(api.middleware),
+      // getDefaultMiddleware().concat(api.middleware),
+      // serializableCheck: false, // TODO: make this more targeted to just the zarr store
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
     ...options,
   })
 

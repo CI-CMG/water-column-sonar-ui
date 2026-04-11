@@ -21,8 +21,8 @@ import {
   fetchDepthArray,
   fetchBottom,
   fetchSv,
-  fetchSpeed,
-  fetchDistance,
+  // fetchSpeed,
+  // fetchDistance,
   //
   fetchParquetData,
   // fetchPersonData,
@@ -127,11 +127,11 @@ export interface StoreState {
   sv: any, // BigUInt64? -> Float32Array
   svStatus: "idle" | "loading" | "failed",
 
-  speed: any,
-  speedStatus: "idle" | "loading" | "failed",
+  // speed: any,
+  // speedStatus: "idle" | "loading" | "failed",
 
-  distance: any,
-  distanceStatus: "idle" | "loading" | "failed",
+  // distance: any,
+  // distanceStatus: "idle" | "loading" | "failed",
 
   // Alex's AI
   aiSv: any, // BigUInt64? -> Float32Array
@@ -228,11 +228,11 @@ const initialState: StoreState = {
   sv: null,
   svStatus: "idle",
 
-  speed: null,
-  speedStatus: "idle",
+  // speed: null,
+  // speedStatus: "idle",
 
-  distance: null,
-  distanceStatus: "idle",
+  // distance: null,
+  // distanceStatus: "idle",
 
   // alexs ai
   aiSv: null,
@@ -382,12 +382,12 @@ export const storeSlice = createSlice({
     updateSv: (state, action: PayloadAction<any>) => {
       state.sv = action.payload;
     },
-    updateSpeed: (state, action: PayloadAction<any>) => {
-      state.speed = action.payload;
-    },
-    updateDistance: (state, action: PayloadAction<any>) => {
-      state.distance = action.payload;
-    },
+    // updateSpeed: (state, action: PayloadAction<any>) => {
+    //   state.speed = action.payload;
+    // },
+    // updateDistance: (state, action: PayloadAction<any>) => {
+    //   state.distance = action.payload;
+    // },
     //
     updateParquetData: (state, action: PayloadAction<any>) => {
       state.parquetData = action.payload;
@@ -554,27 +554,27 @@ export const storeSlice = createSlice({
         state.svStatus = "failed";
       })
       // SPEED------------------------------------------ //
-      .addCase(speedAsync.pending, state => {
-        state.speedStatus = "loading";
-      })
-      .addCase(speedAsync.fulfilled, (state, action) => {
-        state.speedStatus = "idle";
-        state.speed = action.payload;
-      })
-      .addCase(speedAsync.rejected, state => {
-        state.speedStatus = "failed";
-      })
+      // .addCase(speedAsync.pending, state => {
+      //   state.speedStatus = "loading";
+      // })
+      // .addCase(speedAsync.fulfilled, (state, action) => {
+      //   state.speedStatus = "idle";
+      //   state.speed = action.payload;
+      // })
+      // .addCase(speedAsync.rejected, state => {
+      //   state.speedStatus = "failed";
+      // })
       // DISTANCE---------------------------------------- //
-      .addCase(distanceAsync.pending, state => {
-        state.distanceStatus = "loading";
-      })
-      .addCase(distanceAsync.fulfilled, (state, action) => {
-        state.distanceStatus = "idle";
-        state.distance = action.payload;
-      })
-      .addCase(distanceAsync.rejected, state => {
-        state.distanceStatus = "failed";
-      })
+      // .addCase(distanceAsync.pending, state => {
+      //   state.distanceStatus = "loading";
+      // })
+      // .addCase(distanceAsync.fulfilled, (state, action) => {
+      //   state.distanceStatus = "idle";
+      //   state.distance = action.payload;
+      // })
+      // .addCase(distanceAsync.rejected, state => {
+      //   state.distanceStatus = "failed";
+      // })
       // PARQUET DATA---------------------------------------- //
       .addCase(parquetDataAsync.pending, state => {
         state.parquetDataStatus = "loading";
@@ -641,8 +641,8 @@ export const {
   updateDepth,
   updateBottom,
   updateSv,
-  updateSpeed,
-  updateDistance,
+  // updateSpeed,
+  // updateDistance,
   //
   updateParquetData,
 } = storeSlice.actions;
@@ -708,8 +708,8 @@ export const selectTime = (state: RootState) => state.store.time;
 export const selectDepth = (state: RootState) => state.store.depth;
 export const selectBottom = (state: RootState) => state.store.bottom;
 export const selectSv = (state: RootState) => state.store.sv;
-export const selectSpeed = (state: RootState) => state.store.speed;
-export const selectDistance = (state: RootState) => state.store.distance;
+// export const selectSpeed = (state: RootState) => state.store.speed;
+// export const selectDistance = (state: RootState) => state.store.distance;
 
 export const selectParquetData = (state: RootState) => state.store.parquetData;
 
@@ -844,19 +844,19 @@ export const svAsync = createAsyncThunk(
   },
 )
 
-export const speedAsync = createAsyncThunk(
-  "store/fetchSpeed",
-  ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
-    return fetchSpeed(ship, cruise, sensor, indexTime);
-  },
-)
+// export const speedAsync = createAsyncThunk(
+//   "store/fetchSpeed",
+//   ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+//     return fetchSpeed(ship, cruise, sensor, indexTime);
+//   },
+// )
 
-export const distanceAsync = createAsyncThunk(
-  "store/fetchDistance",
-  ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
-    return fetchDistance(ship, cruise, sensor, indexTime);
-  },
-)
+// export const distanceAsync = createAsyncThunk(
+//   "store/fetchDistance",
+//   ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
+//     return fetchDistance(ship, cruise, sensor, indexTime);
+//   },
+// )
 
 export const parquetDataAsync = createAsyncThunk(
   "store/fetchParquetData",
