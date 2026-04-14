@@ -337,6 +337,29 @@ export default function HomeView() {
             <hr />
             <br />
             <br />
+            <h2>Acknowledgment</h2>
+            <br />
+            <ul>
+              <li>
+                This portal was supported by NOAA Fisheries and NOAA Center for
+                Artificial Intelligence under the University of Colorado Cooperative
+                Institute award #NA22OAR4320151, and the National Science Foundation
+                (NSF) award #2311843 . The team leveraged services provided by the
+                OSG Consortium supported by NSF awards #2030508 and #2323298 and <a target="_blank" href="https://doi.org/10.1093/icesjms/fsae133">Echopype</a>
+                {' '}led by Dr. Wu-Jung Lee and team at the University of Washington.
+              </li>
+              <br />
+              <li>
+                This research was done using services provided by the OSG
+                Consortium, which is supported by the National Science
+                Foundation awards #2030508 and #2323298.
+              </li>
+            </ul>
+
+            <br />
+            <hr />
+            <br />
+            <br />
             <h2>Additional Resources</h2>
             <br />
             <ul>
@@ -431,29 +454,6 @@ export default function HomeView() {
               <li>
                 OSG. (2015). Open Science Data Federation. OSG.
                 https://doi.org/10.21231/0KVZ-VE57.
-              </li>
-            </ul>
-
-            <br />
-            <hr />
-            <br />
-            <br />
-            <h2>Acknowledgment</h2>
-            <br />
-            <ul>
-              <li>
-                This portal was supported by NOAA Fisheries and NOAA Center for
-                Artificial Intelligence under the University of Colorado Cooperative
-                Institute award #NA22OAR4320151, and the National Science Foundation
-                (NSF) award #2311843 . The team leveraged services provided by the
-                OSG Consortium supported by NSF awards #2030508 and #2323298 and <a target="_blank" href="https://doi.org/10.1093/icesjms/fsae133">Echopype</a>
-                {' '}led by Dr. Wu-Jung Lee and team at the University of Washington.
-              </li>
-              <br />
-              <li>
-                This research was done using services provided by the OSG
-                Consortium, which is supported by the National Science
-                Foundation awards #2030508 and #2323298.
               </li>
             </ul>
 
