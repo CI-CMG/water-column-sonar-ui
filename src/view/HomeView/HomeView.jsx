@@ -10,8 +10,8 @@ import logo_noaa_fisheries from "../../../src/assets/images/noaa/noaa_fisheries_
 import logo_ncei from "../../../src/assets/images/noaa/ncei_logo.png";
 import logo_echopype from "../../../src/assets/images/echopype/echopype.png";
 import logo_cires from "../../../src/assets/images/cu/cires_cu_logo.png";
-import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { MdAnchor } from "react-icons/md";
 
 export default function HomeView() {
   useEffect(() => {
@@ -37,20 +37,23 @@ export default function HomeView() {
             <br />
             <br />
             <h1 className="text-left" style={{ lineHeight: "1.7em", fontWeight: "600", color: "LightSlateGrey" }}>
-              EchoFish<br />Water Column Sonar Data Explorer
+              EchoFish<br />Exploring Water Column Sonar Data
             </h1>
             <br />
             <br />
 
             <p className="text-center">
               <Link to="/map" className="LinkToMap">
-                Go to the Map <i className="bi bi-arrow-right" />
+                Go to the Map
+                {' '}
+                <i className="bi bi-arrow-right" />
               </Link>
             </p>
             <br />
+            <br />
 
             <p>
-              Water column sonar, the acoustic back-scatter from the
+              Water column sonar, the acoustic backscatter from the
               near-surface to the seafloor, is used to assess physical and
               biological characteristics of the ocean including the spatial
               distribution of plankton, fish, methane seeps, and underwater oil
@@ -62,66 +65,66 @@ export default function HomeView() {
               In collaboration with NOAA&apos;s National Marine Fisheries
               Service (NMFS) and the University of Colorado Boulder, NOAA’s
               National Centers for Environmental Information (NCEI) established
-              a national archive for water column sonar data. This project
-              entails ensuring the long-term stewardship of well-documented
-              water column sonar data, and enabling discovery and access to
-              researchers and the public around the world.
+              a national archive for <a target="_blank" href="https://www.ncei.noaa.gov/products/water-column-sonar-data">water column sonar data</a>. This archive
+              ensures the long-term stewardship of well-documented
+              water column sonar data, and enables discovery and access to
+              researchers and the public around the world through a <a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">dedicated portal</a>.
             </p>
             <br />
 
-            <Row> 
-              <Col>
+            <div className="d-flex justify-content-evenly"> 
+              <div>
                 <a target="_blank" href="https://www.fisheries.noaa.gov/">
                   <Image
                     src={logo_noaa_fisheries}
-                    style={{ height: "90px", padding: "0px 10px" }}
+                    style={{ height: "90px", padding: "10px" }}
                   />
                 </a>
-              </Col>
-              <Col>
-                <a target="_blank" href="https://cires.colorado.edu/">
-                  <Image
-                    src={logo_cires}
-                    style={{ height: "90px", padding: "0px 10px" }}
-                  />
-                </a>
-              </Col>
-              <Col>
+              </div>
+              <div>
                 <a target="_blank" href="https://www.ncei.noaa.gov/">
                   <Image
                     src={logo_ncei}
-                    style={{ height: "90px", padding: "0px 10px" }}
+                    style={{ height: "90px", padding: "10px" }}
                   />
                 </a>
-              </Col>
-            </Row>
+              </div>
+            </div>
+            <br />
+            <div className="d-flex justify-content-evenly">
+              <div>
+                <a target="_blank" href="https://cires.colorado.edu/">
+                  <Image
+                    src={logo_cires}
+                    style={{ height: "90px", padding: "10px" }}
+                  />
+                </a>
+              </div>
+            </div>
 
             <br />
             <br />
             <p>
-              Data providers include NOAA National Marine Fisheries Service
-              (NMFS), NOAA Office of Ocean Exploration and Research (OER), NOAA
-              National Ocean Service (NOS), Rolling Deck to Repository (R2R),
-              U.S. academic and private institutions, and international groups.
+              Data providers include NOAA NMFS, NOAA Office of Ocean Exploration
+              and Research (OER), NOAA National Ocean Service (NOS), Rolling Deck
+              to Repository (R2R), U.S. academic and private institutions, and
+              international research organizations.
             </p>
 
             <br />
             <p>
-              This data set comprises the water-column sonar data archived at
-              NCEI in a more readily accessible media. Data provided to NCEI are
-              in their raw format. Processing routines are being applied to a
-              subset of the archive, specifically focusing on Simrad EK60 single
-              and multiple frequency datasets. Ping alignment, noise removal
-              algorithms (De Robertis & Higgenbottom, 2007; Ryan et al., 2015),
-              and bottom detection algorithms are applied to the raw data binned
-              into one hour intervals using Echoview (Myriax, v.10). The
-              processed data are exported as a CSV for each interval and each
-              frequency.
+              This portal comprises water column sonar data archived at NCEI that
+              have been translated into a more readily accessible media. Data provided
+              to NCEI are in their raw format. Processing routines are being applied
+              to a subset of the archive, currently focusing on Simrad EK60 single and
+              multiple frequency datasets. Interactive visualization of the sonar data
+              enables exploration and understanding of large volumes of complex sonar
+              data to a broader audience.
             </p>
             <br />
 
             <br />
-            <h3>Additional Resources</h3>
+            <h3>Resources</h3>
 
             <br />
             <ul>
@@ -130,7 +133,7 @@ export default function HomeView() {
                   target="_blank"
                   href="https://www.ncei.noaa.gov/products/water-column-sonar-data"
                 >
-                  NCEI water-column sonar data archive
+                  NCEI Water Column Sonar Data Archive
                 </a>
               </li>
               <br />
@@ -139,7 +142,7 @@ export default function HomeView() {
                   target="_blank"
                   href="https://www.ncei.noaa.gov/maps/water-column-sonar/"
                 >
-                  NCEI water-column sonar archive data access page
+                  NCEI Water Column Sonar Data Archive Map Viewer
                 </a>
               </li>
             </ul>
@@ -147,36 +150,21 @@ export default function HomeView() {
             <br />
             <hr />
             <br />
-
+            <br />
             <h2>Data</h2>
             <br />
             <p>
-              Raw archived data were collected using a variety of vessel-mounted
-              sonars with Kongsberg&apos;s EM 122 (12 kHz) and EM 302 (30 kHz),
-              Simrad&apos;s EK60 (18-70 kHz, split beam), ME70 (70-120 kHz, can
-              be split beam), and EK80 (18-70 kHz, split beam and broadband)
-              being the most common. The configuration of each cruise&apos;s
-              sonar system (e.g., beam type and angle) can be found in the file
-              metadata.
+              Raw archived data were collected using a variety of vessel and
+              bottom-mounted sonar systems. Data collected from NOAA survey
+              vessels using Kongsberg&apos;s EM122 (12 kHz) and EM302 (30 kHz), and
+              Simrad&apos;s EK60, ME70, and EK80 (narrowband and broadband) comprise
+              the majority of the archive holdings.
             </p>
 
             <br />
-            <p>
-              File names contain the start time for that file, and often include
-              a preceding tag for that cruise. The timestamp in UTC follows the
-              convention: ‘D’YYYYMMDD’-T’hhmmss. For example,
-              “SaKe_2013-D20130522-T134850”, indicates a files from a 2013 SaKe
-              cruise and the start of the file is May 22, 2013 at 13:48:50
-              (UTC).
-            </p>
-
+            <h3>Data Levels</h3>
             <br />
-            <h3>Type</h3>
-            <br />
-            <p>Data are categorized in three levels.</p>
-
-            <br />
-            <h4>Level 0 — Raw Data Files</h4>
+            <h4>Level 0: Raw AWS S3 Explorer</h4>
             <br />
             <p>
               Binary files are generated during individual cruises. Users can
@@ -241,7 +229,8 @@ export default function HomeView() {
               Level 2a processed EK60 data is consolidated at a cruise level to
               form a larger singular Zarr store.
             </p>
-
+            <br />
+            <br />
             <p style={{ textIndent: "4em" }}>
               <a
                 target="_blank"
@@ -250,6 +239,7 @@ export default function HomeView() {
                 Level 3a: Zarr store S3 Explorer
               </a>
             </p>
+            <br />
 
             {/* <br />
             <br />
@@ -261,92 +251,12 @@ export default function HomeView() {
             </a> */}
 
             <br />
-            <br />
-            <h4>Data Details</h4>
-            <br />
-            <p>The raw EK60 data are processed with the following routine.</p>
-
-            <ul>
-              <li>Match ping times</li>
-              <li>Seafloor detection</li>
-              <li>
-                Noise removal including impulse, attenuation, transient, and
-                background noise
-              </li>
-              <li>Re-sample by pings</li>
-              <li>Removal of top 10 m of data due to bubble interference</li>
-            </ul>
 
             <br />
             <hr />
             <br />
-            <h2>Structure</h2>
-            <br />
-            <p>
-              Data are archived in an Amazon S3 bucket with access to the
-              general public. The folder structure is outlined as follows:
-            </p>
-
-            <br />
-            <ul>
-              <li>Ship → Cruise → Instrument → Raw File</li>
-            </ul>
-
-            <br />
-            <p>
-              To download a 18 kHz frequency file from the SH1305 cruise such as
-              &quot;SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv&quot;
-              you can read directly from the URL as follows:
-            </p>
-            <br />
-            <p>
-              <a
-                target="_blank"
-                href="https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv"
-              >
-                https://ncei-wcsd-archive.s3-us-west-2.amazonaws.com/data/processed/SH1305/18kHz/SaKe2013-D20130523-T080854_to_SaKe2013-D20130523-T085643.csv
-              </a>
-            </p>
-
-            <br />
-            <h3>Citation</h3>
-            <br />
-            <p>
-              If the archived data are used in a future publication, please cite
-              all used data sets to document and provide credit back to the data
-              creators. Cruises have unique citations. See individual cruises
-              for details. Citation information can be found at the NCEI
-              water-column sonar data archive.
-            </p>
-
-            <br />
-            <hr />
-            <br />
-            <h2>Access</h2>
-            <br />
-            <p>
-              Raw and processed data are stored in the cloud on an Amazon Web
-              Services S3 bucket and accessible for download using a variety of
-              tools.
-            </p>
-            <br />
-            <p>
-              The library boto3 provides an object-oriented and well documented
-              interface to the data set. We can configure the boto3 resource to
-              access our bucket, &quot;noaa-wcsd-pds&quot; as an anonymous user
-              using low-level functions from botocore.
-            </p>
-
-            <br />
-            <hr />
             <br />
             <h2>Tutorials</h2>
-            {/* <div
-              ref={ref}
-              className={`ordinary ${inView ? "itemShown" : "itemHidden"}`}
-            >
-              <span aria-label="Wave">🐍</span>
-            </div> */}
             <br />
             <p>
               There are several tutorials that will help you download the data
@@ -391,7 +301,7 @@ export default function HomeView() {
 
             <br />
             <p>
-              Updated tutorials utilizing cloud-native Zarr data from NOAA's
+              Updated tutorials utilizing cloud-native Zarr data from NOAA&apos;s
               Open Data Dissemination can be found here:
             </p>
 
@@ -426,10 +336,45 @@ export default function HomeView() {
             <br />
             <hr />
             <br />
+            <br />
+            <h2>Additional Resources</h2>
+            <br />
+            <ul>
+              <li><a target="_blank" href="https://www.ncei.noaa.gov/products/water-column-sonar-data">NCEI Water Column Sonar Data Archive</a></li>
+              <li><a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">NCEI Water Column Sonar Data Archive Map Viewer</a></li>
+              <li><a target="_blank" href="https://www.ngdc.noaa.gov/mgg/wcd/citations.html">Cruise Citations</a></li>
+              <li><a target="_blank" href="https://cires.gitbook.io/ncei-wcsd-archive">Background, AWS structure, and notebook tutorials</a></li>
+              <li><a target="_blank" href="https://echolevels.readthedocs.io/en/latest/">Echosounder Data Processing Levels</a></li>
+              <li><a target="_blank" href="https://echopype.readthedocs.io/en/latest/">Echopype</a></li>
+            </ul>
+            <br />
+            <p>
+              Please cite archived datasets in any future publication to document
+              and provide credit back to the data creators. Citations
+              can be found <a target="_blank" href="https://www.ngdc.noaa.gov/mgg/wcd/citations.html">here</a>.
+            </p>
+            <br />
+
+            <br />
+            <hr />
+            <br />
+            <br />
             <h2>References</h2>
             <br />
             <ul>
-              {/* TODO: add hyperlinks here... */}
+              <li>
+                Wu-Jung Lee, Landung Setiawan, Caesar Tuguinay, Emilio Mayorga,
+                Valentina Staneva, Interoperable and scalable echosounder data
+                processing with Echopype, ICES Journal of Marine Science, Volume
+                81, Issue 10, December 2024, Pages 1941–1951,{' '}
+                <a
+                  target="_blank"
+                  href="https://doi.org/10.1093/icesjms/fsae133"
+                >
+                  https://doi.org/10.1093/icesjms/fsae133
+                </a>
+              </li>
+              <br />
               <li>
                 De Robertis, A., & Higginbottom, I. (2007). A post-processing
                 technique to estimate the signal-to-noise ratio and remove
@@ -492,20 +437,17 @@ export default function HomeView() {
             <br />
             <hr />
             <br />
+            <br />
             <h2>Acknowledgment</h2>
             <br />
             <ul>
               <li>
-                Wu-Jung Lee, Landung Setiawan, Caesar Tuguinay, Emilio Mayorga,
-                Valentina Staneva, Interoperable and scalable echosounder data
-                processing with Echopype, ICES Journal of Marine Science, Volume
-                81, Issue 10, December 2024, Pages 1941–1951,{' '}
-                <a
-                  target="_blank"
-                  href="https://doi.org/10.1093/icesjms/fsae133"
-                >
-                  https://doi.org/10.1093/icesjms/fsae133
-                </a>
+                This portal was supported by NOAA Fisheries and NOAA Center for
+                Artificial Intelligence under the University of Colorado Cooperative
+                Institute award #NA22OAR4320151, and the National Science Foundation
+                (NSF) award #2311843 . The team leveraged services provided by the
+                OSG Consortium supported by NSF awards #2030508 and #2323298 and <a target="_blank" href="https://doi.org/10.1093/icesjms/fsae133">Echopype</a>
+                {' '}led by Dr. Wu-Jung Lee and team at the University of Washington.
               </li>
               <br />
               <li>
@@ -515,49 +457,46 @@ export default function HomeView() {
               </li>
             </ul>
 
-            {/* <br />
+            <br />
             <hr />
             <br />
-            <h2>Contributing</h2>
             <br />
-            <p>
-              <i className="bi bi-github"></i>
-            </p> */}
-
+            <h2>Source Code</h2>
+            <br />
+            <a target="_blank" href="https://pypi.org/project/water-column-sonar-processing/">
+              <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing?style=plastic&label=water-column-sonar-processing&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-processing%2F"></img>
+            </a>
+            <br />
+            <br />
+            <a target="_blank" href="https://pypi.org/project/water-column-sonar-annotation/">
+              <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-annotation?style=plastic&label=water-column-sonar-annotation&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-annotation%2F"></img>
+            </a>
+            <br />
+            <br />
+            <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-ui">
+              <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-ui?label=water-column-sonar-ui"></img>
+            </a>
+            <br />
+            <br />
+            <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-api">
+              <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-api?label=water-column-sonar-api"></img>
+            </a>
+            <br />
+            <br />
+            <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-catalog">
+              <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-catalog?label=water-column-sonar-catalog"></img>
+            </a>
             <br />
             <br />
             <br />
             <p className="text-end">
               <i>
-                Contact <b>wcd.info@noaa.gov</b> for support with the dataset
+                Contact <b>wcd.info@noaa.gov</b> with any questions
               </i>
             </p>
             <hr />
             <br />
-            
-            <a
-              target="_blank"
-              href="https://github.com/CI-CMG/water-column-sonar-ui"
-            >
-              <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing" />
-            </a>
-            <br />
-            <br />
-            <a
-              target="_blank"
-              href="https://github.com/CI-CMG/water-column-sonar-ui"
-            >
-              <FaGithub /> GitHub Source
-            </a>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
           </Col>
-
-          {/* <Col sm={2} /> */}
 
           <Col sm={3} />
 
@@ -565,7 +504,12 @@ export default function HomeView() {
           <br />
           <br />
         </Row>
-        <hr />
+        <br />
+        <br />
+        <p className="text-center">
+          <MdAnchor />
+        </p>
+        <br />
       </Container>
     </div>
   );
