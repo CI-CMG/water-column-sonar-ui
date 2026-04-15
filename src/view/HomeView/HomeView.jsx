@@ -71,6 +71,16 @@ export default function HomeView() {
               researchers and the public around the world through a <a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">dedicated portal</a>.
             </p>
             <br />
+            <p>
+              This portal comprises water column sonar data archived at NCEI that
+              have been translated into a more readily accessible media. Data provided
+              to NCEI are in their raw format. Processing routines are being applied
+              to a subset of the archive, currently focusing on Simrad EK60 single and
+              multiple frequency datasets. Interactive visualization of the sonar data
+              enables exploration and understanding of large volumes of complex sonar
+              data to a broader audience.
+            </p>
+            <br />
 
             <div className="d-flex justify-content-evenly"> 
               <div>
@@ -101,53 +111,8 @@ export default function HomeView() {
                 </a>
               </div>
             </div>
-
-            <br />
-            <br />
-            <p>
-              Data providers include NOAA NMFS, NOAA Office of Ocean Exploration
-              and Research (OER), NOAA National Ocean Service (NOS), Rolling Deck
-              to Repository (R2R), U.S. academic and private institutions, and
-              international research organizations.
-            </p>
-
-            <br />
-            <p>
-              This portal comprises water column sonar data archived at NCEI that
-              have been translated into a more readily accessible media. Data provided
-              to NCEI are in their raw format. Processing routines are being applied
-              to a subset of the archive, currently focusing on Simrad EK60 single and
-              multiple frequency datasets. Interactive visualization of the sonar data
-              enables exploration and understanding of large volumes of complex sonar
-              data to a broader audience.
-            </p>
             <br />
 
-            <br />
-            <h3>Resources</h3>
-
-            <br />
-            <ul>
-              <li>
-                <a
-                  target="_blank"
-                  href="https://www.ncei.noaa.gov/products/water-column-sonar-data"
-                >
-                  NCEI Water Column Sonar Data Archive
-                </a>
-              </li>
-              <br />
-              <li>
-                <a
-                  target="_blank"
-                  href="https://www.ncei.noaa.gov/maps/water-column-sonar/"
-                >
-                  NCEI Water Column Sonar Data Archive Map Viewer
-                </a>
-              </li>
-            </ul>
-
-            <br />
             <hr />
             <br />
             <br />
@@ -160,6 +125,13 @@ export default function HomeView() {
               Simrad&apos;s EK60, ME70, and EK80 (narrowband and broadband) comprise
               the majority of the archive holdings.
             </p>
+            <br />
+            <p>
+              Data providers include NOAA NMFS, NOAA Office of Ocean Exploration
+              and Research (OER), NOAA National Ocean Service (NOS), Rolling Deck
+              to Repository (R2R), U.S. academic and private institutions, and
+              international research organizations.
+            </p>
 
             <br />
             <h3>Data Levels</h3>
@@ -167,8 +139,11 @@ export default function HomeView() {
             <h4>Level 0: Raw AWS S3 Explorer</h4>
             <br />
             <p>
-              Binary files are generated during individual cruises. Users can
-              use open source tools such as{" "}
+              A copy of the NCEI Water Column Sonar Data Archive is available
+              this Level 0 S3 Explorer. The raw (binary) sonar files are generated
+              during individual cruises and are accompanied by associated metadata
+              and calibration information. Users can use open source tools such as
+              {" "}
               <a
                 target="_blank"
                 href="https://echopype.readthedocs.io/en/latest/"
@@ -180,7 +155,7 @@ export default function HomeView() {
             </p>
 
             <br />
-            <p style={{ textIndent: "4em" }}>
+            <p style={{ textIndent: "2em" }}>
               <a
                 target="_blank"
                 href="https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/"
@@ -212,7 +187,7 @@ export default function HomeView() {
             <br />
             <br />
 
-            <p style={{ textIndent: "4em" }}>
+            <p style={{ textIndent: "2em" }}>
               <a
                 target="_blank"
                 href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/"
@@ -231,7 +206,7 @@ export default function HomeView() {
             </p>
             <br />
             <br />
-            <p style={{ textIndent: "4em" }}>
+            <p style={{ textIndent: "2em" }}>
               <a
                 target="_blank"
                 href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/"
@@ -252,11 +227,48 @@ export default function HomeView() {
 
             <br />
 
+            <hr />
+            <br />
+            <br />
+            <h2>Acknowledgment</h2>
+            <br />
+            <ul>
+              <li>
+                This portal was supported by NOAA Fisheries and NOAA Center for
+                Artificial Intelligence under the University of Colorado Cooperative
+                Institute award #NA22OAR4320151, and the National Science Foundation
+                (NSF) award #2311843.
+              </li>
+              <br />
+              <li>
+                The team leveraged services provided by the
+                OSG Consortium supported by NSF awards #2030508 and #2323298 and <a target="_blank" href="https://doi.org/10.1093/icesjms/fsae133">Echopype</a>
+                {' '}led by Dr. Wu-Jung Lee and team at the University of Washington.
+              </li>
+            </ul>
+
             <br />
             <hr />
             <br />
             <br />
-            <h2>Tutorials</h2>
+            <h2>Additional Resources</h2>
+            <br />
+            <ul>
+              <li><a target="_blank" href="https://www.ncei.noaa.gov/products/water-column-sonar-data">NCEI Water Column Sonar Data Archive</a></li>
+              <li><a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">NCEI Water Column Sonar Data Archive Map Viewer</a></li>
+              <li><a target="_blank" href="https://www.ngdc.noaa.gov/mgg/wcd/citations.html">Cruise Citations</a></li>
+              <li><a target="_blank" href="https://cires.gitbook.io/ncei-wcsd-archive">Background, AWS structure, and notebook tutorials</a></li>
+              <li><a target="_blank" href="https://echolevels.readthedocs.io/en/latest/">Echosounder Data Processing Levels</a></li>
+              <li><a target="_blank" href="https://echopype.readthedocs.io/en/latest/">Echopype</a></li>
+            </ul>
+            <br />
+            <p>
+              Please cite archived datasets in any future publication to document
+              and provide credit back to the data creators. Citations
+              can be found <a target="_blank" href="https://www.ngdc.noaa.gov/mgg/wcd/citations.html">here</a>.
+            </p>
+            <br />
+            <h3>Tutorials</h3>
             <br />
             <p>
               There are several tutorials that will help you download the data
@@ -333,49 +345,6 @@ export default function HomeView() {
               </li>
             </ul>
 
-            <br />
-            <hr />
-            <br />
-            <br />
-            <h2>Acknowledgment</h2>
-            <br />
-            <ul>
-              <li>
-                This portal was supported by NOAA Fisheries and NOAA Center for
-                Artificial Intelligence under the University of Colorado Cooperative
-                Institute award #NA22OAR4320151, and the National Science Foundation
-                (NSF) award #2311843 . The team leveraged services provided by the
-                OSG Consortium supported by NSF awards #2030508 and #2323298 and <a target="_blank" href="https://doi.org/10.1093/icesjms/fsae133">Echopype</a>
-                {' '}led by Dr. Wu-Jung Lee and team at the University of Washington.
-              </li>
-              <br />
-              <li>
-                This research was done using services provided by the OSG
-                Consortium, which is supported by the National Science
-                Foundation awards #2030508 and #2323298.
-              </li>
-            </ul>
-
-            <br />
-            <hr />
-            <br />
-            <br />
-            <h2>Additional Resources</h2>
-            <br />
-            <ul>
-              <li><a target="_blank" href="https://www.ncei.noaa.gov/products/water-column-sonar-data">NCEI Water Column Sonar Data Archive</a></li>
-              <li><a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">NCEI Water Column Sonar Data Archive Map Viewer</a></li>
-              <li><a target="_blank" href="https://www.ngdc.noaa.gov/mgg/wcd/citations.html">Cruise Citations</a></li>
-              <li><a target="_blank" href="https://cires.gitbook.io/ncei-wcsd-archive">Background, AWS structure, and notebook tutorials</a></li>
-              <li><a target="_blank" href="https://echolevels.readthedocs.io/en/latest/">Echosounder Data Processing Levels</a></li>
-              <li><a target="_blank" href="https://echopype.readthedocs.io/en/latest/">Echopype</a></li>
-            </ul>
-            <br />
-            <p>
-              Please cite archived datasets in any future publication to document
-              and provide credit back to the data creators. Citations
-              can be found <a target="_blank" href="https://www.ngdc.noaa.gov/mgg/wcd/citations.html">here</a>.
-            </p>
             <br />
 
             <br />
@@ -461,7 +430,7 @@ export default function HomeView() {
             <hr />
             <br />
             <br />
-            <h2>Source Code</h2>
+            <h2>Code Source</h2>
             <br />
             <a target="_blank" href="https://pypi.org/project/water-column-sonar-processing/">
               <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing?style=plastic&label=water-column-sonar-processing&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-processing%2F"></img>

@@ -340,8 +340,8 @@ export default function MapView() {
           <Toast
             onClose={() => toggleShowToast()}
             show={showToast}
-            delay={120_000}
-            autohide
+            // delay={120_000}
+            // autohide
           >
             <Toast.Header>
               <strong className="me-auto">Clicked Cruise</strong>
