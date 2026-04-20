@@ -52,14 +52,20 @@ const style = {
   name: "Water Column Project",
   glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   sources: {
+    maplibre: {
+      url: "https://demotiles.maplibre.org/tiles/tiles.json",
+      type: "vector",
+    },
+    // maplibre: {
+    //   "type": "vector",
+    //   "tiles": [
+    //       "https://demotiles.maplibre.org/tiles/{z}/{x}/{y}.pbf"
+    //   ]
+    // },
     ocean: {
       url: `https://api.maptiler.com/maps/ocean/tiles.json?key=${map_key}`,
       type: "raster",
     },
-    // maplibre: {
-    //   url: "https://demotiles.maplibre.org/tiles/tiles.json",
-    //   type: "vector",
-    // },
     // "maplibre-demotiles": {
     //     "type": "vector",
     //     "url": "https://demotiles.maplibre.org/tiles/tiles.json"
@@ -76,12 +82,12 @@ const style = {
     },
   },
   layers: [
-    // {
-    //     id: "maplibre",
-    //     type: "vector",
-    //     source: "maplibre",
-    //     "source-layer": "cruises",
-    // },
+    {
+        id: "maplibre",
+        type: "vector",
+        source: "maplibre",
+        "source-layer": "cruises",
+    },
     {
       id: "Ocean",
       type: "raster",

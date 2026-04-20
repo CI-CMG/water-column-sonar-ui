@@ -82,12 +82,12 @@ export default function HomeView() {
             </p>
             <br />
 
-            <div className="d-flex justify-content-evenly"> 
+            <div className="d-flex justify-content-evenly">
               <div>
                 <a target="_blank" href="https://www.fisheries.noaa.gov/">
                   <Image
                     src={logo_noaa_fisheries}
-                    style={{ height: "90px", padding: "10px" }}
+                    style={{ height: "90px", padding: "5px" }}
                   />
                 </a>
               </div>
@@ -95,18 +95,15 @@ export default function HomeView() {
                 <a target="_blank" href="https://www.ncei.noaa.gov/">
                   <Image
                     src={logo_ncei}
-                    style={{ height: "90px", padding: "10px" }}
+                    style={{ height: "90px", padding: "5px" }}
                   />
                 </a>
               </div>
-            </div>
-            <br />
-            <div className="d-flex justify-content-evenly">
               <div>
                 <a target="_blank" href="https://cires.colorado.edu/">
                   <Image
                     src={logo_cires}
-                    style={{ height: "90px", padding: "10px" }}
+                    style={{ height: "90px", padding: "5px" }}
                   />
                 </a>
               </div>
@@ -209,7 +206,7 @@ export default function HomeView() {
             <p style={{ textIndent: "2em" }}>
               <a
                 target="_blank"
-                href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2/"
+                href="https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_2a/"
               >
                 Level 3a: Zarr store S3 Explorer
               </a>
@@ -432,30 +429,29 @@ export default function HomeView() {
             <br />
             <h2>Code Source</h2>
             <br />
-            <a target="_blank" href="https://pypi.org/project/water-column-sonar-processing/">
-              <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing?style=plastic&label=water-column-sonar-processing&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-processing%2F"></img>
-            </a>
+            <div className="d-flex justify-content-evenly">
+              <a target="_blank" href="https://pypi.org/project/water-column-sonar-processing">
+                <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing?style=plastic&label=water-column-sonar-processing&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-processing%2F"></img>
+              </a>
+              <a target="_blank" href="https://pypi.org/project/water-column-sonar-annotation">
+                <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-annotation?style=plastic&label=water-column-sonar-annotation&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-annotation%2F"></img>
+              </a>
+              <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-ui">
+                <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-ui?label=water-column-sonar-ui"></img>
+              </a>
+            </div>
+            
             <br />
-            <br />
-            <a target="_blank" href="https://pypi.org/project/water-column-sonar-annotation/">
-              <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-annotation?style=plastic&label=water-column-sonar-annotation&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-annotation%2F"></img>
-            </a>
-            <br />
-            <br />
-            <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-ui">
-              <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-ui?label=water-column-sonar-ui"></img>
-            </a>
-            <br />
-            <br />
-            <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-api">
-              <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-api?label=water-column-sonar-api"></img>
-            </a>
-            <br />
-            <br />
-            <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-catalog">
-              <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-catalog?label=water-column-sonar-catalog"></img>
-            </a>
-            <br />
+
+            <div className="d-flex justify-content-evenly">
+              <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-api">
+                <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-api?label=water-column-sonar-api"></img>
+              </a>
+              <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-catalog">
+                <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-catalog?label=water-column-sonar-catalog"></img>
+              </a>
+            </div>
+
             <br />
             <br />
             <p className="text-end">
