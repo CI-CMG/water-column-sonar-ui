@@ -58,7 +58,7 @@ export const annotationApi = api.injectEndpoints({
       query: (arg) => {
         const { classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size, sort } = arg;
         return {
-          url: 'annotation/search',
+          url: 'annotations/search',
           params: { classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline, page, size, sort }
         };
       },

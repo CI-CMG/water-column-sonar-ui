@@ -63,9 +63,13 @@ function GraphList({
   return (
     <div style={{ minHeight: "400px" }}>
       {listItems !== null ? (
-        <CardGroup>
-          {listItems}
-        </CardGroup>
+        <>
+          <CardGroup>
+            {listItems}
+          </CardGroup>
+          <br />
+          <p style={{ color: "white" }}>Results are paginated, only the top 40 will be returned.</p>
+        </>
       ) : (
         <></>
       )}
