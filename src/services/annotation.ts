@@ -38,7 +38,7 @@ export const annotationApi = api.injectEndpoints({
       query: (arg) => {
         const { size, page } = arg;
         return {
-          url: 'annotation/all',
+          url: 'annotations/all',
           params: { size, page }
         };
       },
