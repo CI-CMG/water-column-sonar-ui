@@ -8,7 +8,10 @@ import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 const baseQuery = fetchBaseQuery({
   // baseUrl: 'https://pokeapi.co/api/v2/',
-  baseUrl: 'http://localhost:8080/api/v1/'
+  // TODO: parameterize this...
+  // baseUrl: 'https://localhost:8080/api/v1/'
+  // https://ec2-3-93-164-150.compute-1.amazonaws.com:8080/api/v1/annotations
+  baseUrl: 'https://ec2-3-93-164-150.compute-1.amazonaws.com:8080/api/v1/'
 })
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 })
