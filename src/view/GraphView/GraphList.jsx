@@ -31,11 +31,11 @@ function GraphList({
   })
   
   if (isLoading) {
-    return <div>Loading</div>
+    return <div style={{ color: "white" }}>Loading</div>
   }
   
   if (!annotations) {
-    return <div>No Results Found!</div>
+    return <div style={{ color: "white" }}>No Results Found!</div>
   }
 
   const listItems = annotations.map((annotation, i) =>

@@ -71,12 +71,12 @@ function GraphCard({
             {/* creator: {creator}
             <br /> */}
             {/* TODO: need to convert time to ping_time */}
-            <Card.Link
+            {/* <Card.Link
               href={`/water-column?ship=${ship}&cruise=${cruise}&sensor=${instrument}&frequency=0&color=2&time=3974082`}
               target="_blank"
             >
               View in the water column →
-            </Card.Link>
+            </Card.Link> */}
           </Card.Text>
         </Card.Body>
       </Card>
