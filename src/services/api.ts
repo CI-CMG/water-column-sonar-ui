@@ -11,7 +11,8 @@ const baseQuery = fetchBaseQuery({
   // TODO: parameterize this...
   // baseUrl: 'https://localhost:8080/api/v1/'
   // https://ec2-3-93-164-150.compute-1.amazonaws.com:8080/api/v1/annotations
-  baseUrl: 'https://ec2-3-93-164-150.compute-1.amazonaws.com:8080/api/v1/'
+  // baseUrl: 'https://ec2-3-93-164-150.compute-1.amazonaws.com:8080/api/v1/'
+  baseUrl: 'https://api.echo.fish:8080/api/v1/'
 })
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 })
