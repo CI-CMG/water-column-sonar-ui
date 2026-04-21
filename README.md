@@ -5,6 +5,10 @@ https://echo.fish
 [![Deploy DEV to dev.echo.fish](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml/badge.svg)](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml)
 
 # TODO:
+ - fix graph legends
+ - uncomment graph button
+ - create service user and deploy app
+ - get backup map working
  - ~~need maitenance mode for when I am updating zarr stores~~
  - mask sub-bottom data w checkbox, not linestring
  - Update Robots.txt and reindex 
@@ -24,7 +28,7 @@ https://echo.fish
 # Tag a Release
 Step 1 --> increment the semantic version in the "package.json" under the "version" field.
 ```commandline
-git tag -a v26.4.2 -m "Releasing v26.4.2"
+git tag -a v26.4.4 -m "Releasing v26.4.4"
 git push origin --tags
 ```
 

@@ -439,14 +439,9 @@ export default function HomeView() {
               <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-ui">
                 <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-ui?label=water-column-sonar-ui"></img>
               </a>
-            </div>
-            
-            <br />
-
-            <div className="d-flex justify-content-evenly">
-              <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-api">
+              {/* <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-api">
                 <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-api?label=water-column-sonar-api"></img>
-              </a>
+              </a> */}
               <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-catalog">
                 <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-catalog?label=water-column-sonar-catalog"></img>
               </a>
