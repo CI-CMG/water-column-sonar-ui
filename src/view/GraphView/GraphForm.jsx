@@ -157,7 +157,7 @@ function GraphForm() {
             onInput={(e) => { handleUpdateAltitude(e) }}
           />
           <br />
-          <p>{JSON.stringify(altitude)}</p>
+          <p>min: {JSON.stringify(altitude[0])} meters, max: {JSON.stringify(altitude[1])} meters</p>
         </div>
 
         <br />
@@ -172,7 +172,7 @@ function GraphForm() {
             onInput={(e) => { handleUpdateDistanceFromCoastline(e) }}
           />
           <br />
-          <p>{JSON.stringify(distanceFromCoastline)}</p>
+          <p>min: {JSON.stringify(distanceFromCoastline[0])} meters, max: {JSON.stringify(distanceFromCoastline[1])} meters</p>
         </div>
         {/* <Button type="submit">Query the Graph</Button> */}
       </Form>

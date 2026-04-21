@@ -5,10 +5,12 @@ https://echo.fish
 [![Deploy DEV to dev.echo.fish](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml/badge.svg)](https://github.com/CI-CMG/water-column-sonar-ui/actions/workflows/deploy_dev_action.yaml)
 
 # TODO:
- - fix graph legends
- - uncomment graph button
- - create service user and deploy app
+ - ~~fix graph legends~~
+ - ~~uncomment graph button~~
+ - ~~create service user and deploy app~~
  - get backup map working
+ - reset parameters in water column info panel
+ - tag
  - ~~need maitenance mode for when I am updating zarr stores~~
  - mask sub-bottom data w checkbox, not linestring
  - Update Robots.txt and reindex 
