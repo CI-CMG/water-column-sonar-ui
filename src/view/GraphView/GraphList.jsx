@@ -25,7 +25,7 @@ function GraphList({
     maxAltitude: maxAltitude, // 500,
     minDistanceFromCoastline: minDistanceFromCoastline, // 0,
     maxDistanceFromCoastline: maxDistanceFromCoastline, // 200_000,
-    size: 40,
+    size: 20,
     page: 0,
     sort: "distanceFromCoastline"
   })
@@ -68,7 +68,7 @@ function GraphList({
             {listItems}
           </CardGroup>
           <br />
-          <p style={{ color: "white" }}>Results are paginated, only the top 40 will be returned.</p>
+          <p style={{ color: "white" }}>Results are paginated, only the top 20 will be returned.</p>
         </>
       ) : (
         <></>
