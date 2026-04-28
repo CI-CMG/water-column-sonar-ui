@@ -10,7 +10,7 @@ https://echo.fish
  - ~~create service user and deploy app~~
  - get backup map working
  - reset parameters in water column info panel
- - tag
+ - ~~tag~~
  - ~~need maitenance mode for when I am updating zarr stores~~
  - mask sub-bottom data w checkbox, not linestring
  - Update Robots.txt and reindex 
@@ -30,7 +30,7 @@ https://echo.fish
 # Tag a Release
 Step 1 --> increment the semantic version in the "package.json" under the "version" field.
 ```commandline
-git tag -a v26.4.6 -m "Releasing v26.4.6"
+git tag -a v26.4.8 -m "Releasing v26.4.8"
 git push origin --tags
 ```
 
