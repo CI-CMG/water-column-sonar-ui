@@ -18,13 +18,8 @@ export default function HomeView() {
     document.title = `EchoFish`;
   }, []);
 
-  // const { ref, inView } = useInView({
-  //   triggerOnce: false,
-  //   rootMargin: "-40px 0px",
-  // });
-
   return (
-    <div className="DatasetView">
+    <div className="HomeView">
       <Container fluid>
         <Row>
           <Image src={header} />
@@ -33,14 +28,9 @@ export default function HomeView() {
           <Col sm={3} />
 
           <Col sm={6}>
-            <br />
-            <br />
-            <br />
             <h1 className="text-left" style={{ lineHeight: "1.7em", fontWeight: "600", color: "LightSlateGrey" }}>
               EchoFish<br />Exploring Water Column Sonar Data
             </h1>
-            <br />
-            <br />
 
             <p className="text-center">
               <Link to="/map" className="LinkToMap">
@@ -49,8 +39,6 @@ export default function HomeView() {
                 <i className="bi bi-arrow-right" />
               </Link>
             </p>
-            <br />
-            <br />
 
             <p>
               Water column sonar, the acoustic backscatter from the
@@ -60,7 +48,6 @@ export default function HomeView() {
               plumes.
             </p>
 
-            <br />
             <p>
               In collaboration with NOAA&apos;s National Marine Fisheries
               Service (NMFS) and the University of Colorado Boulder, NOAA’s
@@ -70,7 +57,7 @@ export default function HomeView() {
               water column sonar data, and enables discovery and access to
               researchers and the public around the world through a <a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">dedicated portal</a>.
             </p>
-            <br />
+
             <p>
               This portal comprises water column sonar data archived at NCEI that
               have been translated into a more readily accessible media. Data provided
@@ -80,7 +67,6 @@ export default function HomeView() {
               enables exploration and understanding of large volumes of complex sonar
               data to a broader audience.
             </p>
-            <br />
 
             <div className="d-flex justify-content-evenly">
               <div>
@@ -91,6 +77,7 @@ export default function HomeView() {
                   />
                 </a>
               </div>
+
               <div>
                 <a target="_blank" href="https://www.ncei.noaa.gov/">
                   <Image
@@ -99,6 +86,7 @@ export default function HomeView() {
                   />
                 </a>
               </div>
+
               <div>
                 <a target="_blank" href="https://cires.colorado.edu/">
                   <Image
@@ -108,13 +96,11 @@ export default function HomeView() {
                 </a>
               </div>
             </div>
-            <br />
 
             <hr />
-            <br />
-            <br />
+
             <h2>Data</h2>
-            <br />
+
             <p>
               Raw archived data were collected using a variety of vessel and
               bottom-mounted sonar systems. Data collected from NOAA survey
@@ -122,7 +108,7 @@ export default function HomeView() {
               Simrad&apos;s EK60, ME70, and EK80 (narrowband and broadband) comprise
               the majority of the archive holdings.
             </p>
-            <br />
+
             <p>
               Data providers include NOAA NMFS, NOAA Office of Ocean Exploration
               and Research (OER), NOAA National Ocean Service (NOS), Rolling Deck
@@ -130,11 +116,10 @@ export default function HomeView() {
               international research organizations.
             </p>
 
-            <br />
             <h3>Data Levels</h3>
-            <br />
-            <h4>Level 0: Raw AWS S3 Explorer</h4>
-            <br />
+
+            <h4>Level 0 — Raw AWS S3 Explorer</h4>
+
             <p>
               A copy of the NCEI Water Column Sonar Data Archive is available
               this Level 0 S3 Explorer. The raw (binary) sonar files are generated
@@ -151,7 +136,6 @@ export default function HomeView() {
               Xarray Dataset format.
             </p>
 
-            <br />
             <p style={{ textIndent: "2em" }}>
               <a
                 target="_blank"
@@ -161,10 +145,8 @@ export default function HomeView() {
               </a>
             </p>
 
-            <br />
-            <br />
             <h4>Level 2a — File Level Zarr stores</h4>
-            <br />
+
             <p>
               EK60 data are opened and calibrated using{" "}
               <a
@@ -175,14 +157,12 @@ export default function HomeView() {
               </a>{" "}
               to generate Xarray datasets which are then saved as Zarr stores.
             </p>
-            <br />
+
             <center>
               <a target="_blank" href="https://echopype.readthedocs.io/">
                 <Image src={logo_echopype} style={{ height: "50px" }} />
               </a>
             </center>
-            <br />
-            <br />
 
             <p style={{ textIndent: "2em" }}>
               <a
@@ -193,16 +173,13 @@ export default function HomeView() {
               </a>
             </p>
 
-            <br />
-            <br />
             <h4>Level 3a — Cruise Level Zarr stores</h4>
-            <br />
+
             <p>
               Level 2a processed EK60 data is consolidated at a cruise level to
               form a larger singular Zarr store.
             </p>
-            <br />
-            <br />
+
             <p style={{ textIndent: "2em" }}>
               <a
                 target="_blank"
@@ -211,24 +188,11 @@ export default function HomeView() {
                 Level 3a: Zarr store S3 Explorer
               </a>
             </p>
-            <br />
-
-            {/* <br />
-            <br />
-            <a
-              target="_blank"
-              href="https://radiantearth.github.io/stac-browser/#/external/noaa-wcsd-pds-index.s3.us-east-1.amazonaws.com/catalog/catalog.json?.language=en"
-            >
-              Stac Catalog for the Zarr stores
-            </a> */}
-
-            <br />
 
             <hr />
-            <br />
-            <br />
+
             <h2>Acknowledgment</h2>
-            <br />
+
             <ul>
               <li>
                 This portal was supported by NOAA Fisheries and NOAA Center for
@@ -244,12 +208,10 @@ export default function HomeView() {
               </li>
             </ul>
 
-            <br />
             <hr />
-            <br />
-            <br />
+
             <h2>Additional Resources</h2>
-            <br />
+
             <ul>
               <li><a target="_blank" href="https://www.ncei.noaa.gov/products/water-column-sonar-data">NCEI Water Column Sonar Data Archive</a></li>
               <li><a target="_blank" href="https://www.ncei.noaa.gov/maps/water-column-sonar/">NCEI Water Column Sonar Data Archive Map Viewer</a></li>
@@ -258,21 +220,21 @@ export default function HomeView() {
               <li><a target="_blank" href="https://echolevels.readthedocs.io/en/latest/">Echosounder Data Processing Levels</a></li>
               <li><a target="_blank" href="https://echopype.readthedocs.io/en/latest/">Echopype</a></li>
             </ul>
-            <br />
+
             <p>
               Please cite archived datasets in any future publication to document
               and provide credit back to the data creators. Citations
               can be found <a target="_blank" href="https://www.ngdc.noaa.gov/mgg/wcd/citations.html">here</a>.
             </p>
-            <br />
+
             <h3>Tutorials</h3>
-            <br />
+
             <p>
               There are several tutorials that will help you download the data
               and begin analysis. They utilize both raw and processed data.
             </p>
 
-            <br />
+
             <ul>
               <li>
                 <a
@@ -308,13 +270,11 @@ export default function HomeView() {
               </li>
             </ul>
 
-            <br />
             <p>
               Updated tutorials utilizing cloud-native Zarr data from NOAA&apos;s
               Open Data Dissemination can be found here:
             </p>
 
-            <br />
             <ul>
               <li>
                 <a
@@ -342,14 +302,10 @@ export default function HomeView() {
               </li>
             </ul>
 
-            <br />
-
-            <br />
             <hr />
-            <br />
-            <br />
+
             <h2>References</h2>
-            <br />
+
             <ul>
               <li>
                 Wu-Jung Lee, Landung Setiawan, Caesar Tuguinay, Emilio Mayorga,
@@ -423,53 +379,37 @@ export default function HomeView() {
               </li>
             </ul>
 
-            <br />
             <hr />
-            <br />
-            <br />
+
             <h2>Code Source</h2>
-            <br />
-            <div className="d-flex justify-content-evenly">
+
+            <div>
               <a target="_blank" href="https://pypi.org/project/water-column-sonar-processing">
                 <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing?style=plastic&label=water-column-sonar-processing&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-processing%2F"></img>
               </a>
+              <br /><br />
               <a target="_blank" href="https://pypi.org/project/water-column-sonar-annotation">
                 <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-annotation?style=plastic&label=water-column-sonar-annotation&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-annotation%2F"></img>
               </a>
+              <br /><br />
               <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-ui">
                 <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-ui?label=water-column-sonar-ui"></img>
               </a>
-              {/* <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-api">
-                <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-api?label=water-column-sonar-api"></img>
-              </a> */}
+              <br /><br />
               <a target="_blank" href="https://github.com/CI-CMG/water-column-sonar-catalog">
                 <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/CI-CMG/water-column-sonar-catalog?label=water-column-sonar-catalog"></img>
               </a>
             </div>
 
-            <br />
-            <br />
-            <p className="text-end">
-              <i>
-                Contact <b>wcd.info@noaa.gov</b> with any questions
-              </i>
-            </p>
             <hr />
-            <br />
+            <p className="text-end">
+              Contact <b>wcd.info@noaa.gov</b> with any questions
+            </p>
           </Col>
 
           <Col sm={3} />
-
-          <br />
-          <br />
-          <br />
         </Row>
-        <br />
-        <br />
-        <p className="text-center">
-          <MdAnchor />
-        </p>
-        <br />
+        <p className="text-center"><MdAnchor /></p>
       </Container>
     </div>
   );

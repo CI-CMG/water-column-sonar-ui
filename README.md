@@ -30,7 +30,7 @@ https://echo.fish
 # Tag a Release
 Step 1 --> increment the semantic version in the "package.json" under the "version" field.
 ```commandline
-git tag -a v26.4.8 -m "Releasing v26.4.8"
+git tag -a v26.4.10 -m "Releasing v26.4.10"
 git push origin --tags
 ```
 

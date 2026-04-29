@@ -1,7 +1,8 @@
 /// Dataset View ///
 
-.DatasetView {
+.HomeView {
   .container-fluid {
+    // border: 1px solid red;
     width: 100%;
     padding-right: 0px;
     padding-left: 0px;
@@ -25,31 +26,31 @@
     transition: opacity 2s;
   }
   
-  p, a {
+  p, ul {
     line-height: 28px;
-    font-weight: 400;
-    font-size: 1.1em;
+    font-weight: 500;
+    font-size: 1.25em;
     letter-spacing: 0.2px;
+    color: #686868;
+    margin: 50px 0px 50px 0px;
   }
   a {
     color: rgb(55, 170, 194);
-    // background-color: yellow;
     font-weight: 600;
     text-decoration: none;
   }
+  h1, h2, h3, h4 {
+    margin: 50px 0px 50px 0px;
+  }
+  hr {
+    margin: 50px 0px 50px 0px;
+  }
+  
   .LinkToMap:hover {
-    font-size: 1.15em !important;
-    transition: all 0.25s ease-in-out;
+    font-size: 1.05em !important;
+    transition: all 0.5s ease-in-out;
     // color: DarkOrchid ;
     color: rgb(62, 182, 206);
-
-    // svg {
-    //   margin: 5px;
-    // }
-    // svg:hover {
-    //   transform: rotate(-45deg);
-    //   transition: all 0.35s ease-in-out;
-    // }
   }
 
   

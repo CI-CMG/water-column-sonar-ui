@@ -7,6 +7,7 @@ import {
 import GraphCard from "./GraphCard";
 import CardGroup from 'react-bootstrap/CardGroup';
 import PropTypes from "prop-types";
+import Pagination from 'react-bootstrap/Pagination';
 
 function GraphList({
   classification,
@@ -16,6 +17,18 @@ function GraphList({
   minDistanceFromCoastline,
   maxDistanceFromCoastline,
 }) {
+  // Pagination
+  let active = 1;
+  let items = [];
+  for (let number = 1; number <= 5; number++) {
+  items.push(
+      <Pagination.Item key={number} active={number === active}>
+        {number}
+      </Pagination.Item>,
+    );
+  }
+  // end Pagination
+
   // useEffect(() => {}, []);
   // http://localhost:8080/api/v1/annotation/search?classification=AH_School&phaseOfDay=dawn&minAltitude=-100.0&maxAltitude=500.0&minDistanceFromCoastline=0&maxDistanceFromCoastline=200000&page=0&size=10
   const { data: annotations, isLoading } = useGetAllAnnotationsSearchQuery({
@@ -75,6 +88,21 @@ function GraphList({
       )}
 
       <br />
+      <Pagination>{items}</Pagination>
+      <br />
+      <Pagination>
+        <Pagination.First />
+        <Pagination.Prev />
+        <Pagination.Item>{1}</Pagination.Item>
+        <Pagination.Ellipsis />
+        <Pagination.Item>{4}</Pagination.Item>
+        <Pagination.Item active>{5}</Pagination.Item>
+        <Pagination.Item>{6}</Pagination.Item>
+        <Pagination.Ellipsis />
+        <Pagination.Item>{10}</Pagination.Item>
+        <Pagination.Next />
+        <Pagination.Last />
+      </Pagination>
     </div>
   )
 }
