@@ -179,12 +179,12 @@ function GraphForm() {
       
       <br />
       
-      <p style={{ fontSize: "0.75em" }}>
+      {/* <p style={{ fontSize: "0.75em" }}>
         phaseOfDay: {JSON.stringify(phaseOfDay)},
         classification: {JSON.stringify(classification)},
         minAltitude: {altitude[0]}, maxAltitude: {altitude[1]},
         minDistanceFromCoastline: {distanceFromCoastline[0]}, maxDistanceFromCoastline: {distanceFromCoastline[1]}
-      </p>
+      </p> */}
     </div>
   );
 }

@@ -150,7 +150,7 @@ const style = {
 
 export default function MapView() {
   useEffect(() => {
-    document.title = `EchoFish`;
+    document.title = `EchoFish Map`;
   }, []);
 
   const [showToast, setShowToast] = useState(false);

@@ -15,7 +15,7 @@ import { MdAnchor } from "react-icons/md";
 
 export default function HomeView() {
   useEffect(() => {
-    document.title = `EchoFish`;
+    document.title = `EchoFish Home`;
   }, []);
 
   return (
@@ -24,10 +24,20 @@ export default function HomeView() {
         <Row>
           <Image src={header} />
         </Row>
-        <Row>
-          <Col sm={2} />
+        <Row className="justify-content-md-center">
+          <Col xs lg="2">
+            1 of 3
+          </Col>
+          <Col md="auto">Variable width content</Col>
+          <Col xs lg="2">
+            3 of 3
+          </Col>
+        </Row>
 
-          <Col sm={8}>
+        <Row>
+          <Col xs lg="2" />
+
+          <Col md="8">
             <h1 className="text-left" style={{ lineHeight: "1.7em", fontWeight: "600", color: "LightSlateGrey" }}>
               EchoFish<br />Exploring Water Column Sonar Data
             </h1>
@@ -407,7 +417,7 @@ export default function HomeView() {
             </p>
           </Col>
 
-          <Col sm={2} />
+          <Col xs lg="2" />
         </Row>
         <p className="text-center"><MdAnchor /></p>
       </Container>

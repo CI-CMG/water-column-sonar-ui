@@ -40,7 +40,7 @@ import {
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
   useEffect(() => {
-    document.title = `echofish`;
+    document.title = `EchoFish Water Column`;
   }, []);
 
   const [loadedCruiseInfo, setLoadedCruiseInfo] = useState(false);

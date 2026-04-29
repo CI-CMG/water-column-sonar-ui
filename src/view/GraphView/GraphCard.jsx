@@ -66,7 +66,7 @@ function GraphCard({
             <br />
             distance from coast: <b>{distanceFromCoast} m</b>
             <br />
-            solar altitude: <b>{solarAltitude}°</b> | phase: <b>{phaseOfDay}</b>
+            solar azimuth: <b>{solarAltitude}°</b> | phase: <b>{phaseOfDay}</b>
             <br />
             {/* creator: {creator}
             <br /> */}
