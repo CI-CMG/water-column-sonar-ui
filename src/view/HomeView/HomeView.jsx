@@ -25,9 +25,9 @@ export default function HomeView() {
           <Image src={header} />
         </Row>
         <Row>
-          <Col sm={3} />
+          <Col sm={2} />
 
-          <Col sm={6}>
+          <Col sm={8}>
             <h1 className="text-left" style={{ lineHeight: "1.7em", fontWeight: "600", color: "LightSlateGrey" }}>
               EchoFish<br />Exploring Water Column Sonar Data
             </h1>
@@ -407,7 +407,7 @@ export default function HomeView() {
             </p>
           </Col>
 
-          <Col sm={3} />
+          <Col sm={2} />
         </Row>
         <p className="text-center"><MdAnchor /></p>
       </Container>

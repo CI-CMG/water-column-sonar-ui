@@ -22,42 +22,48 @@ export default function LayoutView() {
     title = `${title}-dev`;
   }
 
+  // Bootstrap Nav Examples:
+  //   https://getbootstrap.com/docs/5.0/examples/navbars/
+
   return (
     <div className="LayoutView">
       <div className="NavBarView">
-        <Navbar bg="dark" data-bs-theme="dark">
+        <Navbar expand="lg" bg="dark" data-bs-theme="dark">
           <Container>
             <Navbar.Brand as={Link} to="/" className="font-weight-bold">
-              <h1 className="fs-4 m-0">
-                <i className="bi bi-intersect"></i>&nbsp; {title}
-              </h1>
+              <i className="bi bi-intersect"></i>&nbsp; {title}
+              {' '}
+              <span style={{ color: "grey", fontSize: "0.6em" }}>{`v${import.meta.env.VITE_REACT_APP_VERSION}`}</span>
             </Navbar.Brand>
-            <span style={{ color: "grey", fontSize: "0.75em" }}>{`v${import.meta.env.VITE_REACT_APP_VERSION}`}</span>
 
-            <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/map">
-                <PiMapTrifoldThin />
-                &nbsp;Map
-              </Nav.Link>
+            <Navbar.Toggle ariaControls="basic-navbar-nav" />
 
-              <Nav.Link
-                as={Link}
-                reloadDocument
-                to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
-              >
-                <PiCubeLight />
-                &nbsp;Water Column
-              </Nav.Link>
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="ms-auto">
+                <Nav.Link as={Link} to="/map">
+                  <PiMapTrifoldThin />
+                  &nbsp;Map
+                </Nav.Link>
 
-              <Nav.Link
-                // disabled
-                as={Link}
-                to="/graph"
-              >
-                <PiGraphLight />
-                &nbsp;Graph
-              </Nav.Link>
-            </Nav>
+                <Nav.Link
+                  as={Link}
+                  reloadDocument
+                  to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
+                >
+                  <PiCubeLight />
+                  &nbsp;Water Column
+                </Nav.Link>
+
+                <Nav.Link
+                  // disabled
+                  as={Link}
+                  to="/graph"
+                >
+                  <PiGraphLight />
+                  &nbsp;Graph
+                </Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
           </Container>
         </Navbar>
       </div>
