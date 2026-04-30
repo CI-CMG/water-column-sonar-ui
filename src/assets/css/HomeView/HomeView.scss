@@ -26,11 +26,15 @@
     transition: opacity 2s;
   }
   
+  // controls the mobile gutter
+  // .mainHomeContent {
+  //   // padding: 5px;
+  // }
   p, ul {
     line-height: 28px;
-    font-weight: 500;
-    font-size: 1.10em;
-    letter-spacing: 0.2px;
+    // font-weight: 600;
+    font-size: 1.1em;
+    letter-spacing: 0.4px;
     color: #686868;
     margin: 50px 0px 50px 0px;
     font-family: sans-serif;

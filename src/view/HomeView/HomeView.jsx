@@ -24,22 +24,13 @@ export default function HomeView() {
         <Row>
           <Image src={header} />
         </Row>
-        <Row className="justify-content-md-center">
-          <Col xs lg="2">
-            1 of 3
-          </Col>
-          <Col md="auto">Variable width content</Col>
-          <Col xs lg="2">
-            3 of 3
-          </Col>
-        </Row>
 
         <Row>
-          <Col xs lg="2" />
+          <Col />
 
-          <Col md="8">
+          <Col className="mainHomeContent">
             <h1 className="text-left" style={{ lineHeight: "1.7em", fontWeight: "600", color: "LightSlateGrey" }}>
-              EchoFish<br />Exploring Water Column Sonar Data
+              EchoFish<br />Exploring Water Column<br />Sonar Data
             </h1>
 
             <p className="text-center">
@@ -78,34 +69,37 @@ export default function HomeView() {
               data to a broader audience.
             </p>
 
+            {/* <div className="d-flex justify-content-evenly"> */}
             <div className="d-flex justify-content-evenly">
-              <div>
-                <a target="_blank" href="https://www.fisheries.noaa.gov/">
-                  <Image
-                    src={logo_noaa_fisheries}
-                    style={{ height: "90px", padding: "5px" }}
-                  />
-                </a>
-              </div>
-
-              <div>
-                <a target="_blank" href="https://www.ncei.noaa.gov/">
-                  <Image
-                    src={logo_ncei}
-                    style={{ height: "90px", padding: "5px" }}
-                  />
-                </a>
-              </div>
-
-              <div>
-                <a target="_blank" href="https://cires.colorado.edu/">
-                  <Image
-                    src={logo_cires}
-                    style={{ height: "90px", padding: "5px" }}
-                  />
-                </a>
-              </div>
+              <a target="_blank" href="https://www.fisheries.noaa.gov/">
+                <Image
+                  src={logo_noaa_fisheries}
+                  style={{ height: "90px", padding: "5px" }}
+                />
+              </a>
             </div>
+            <br /><br />
+
+            <div className="d-flex justify-content-evenly">
+              <a target="_blank" href="https://www.ncei.noaa.gov/">
+                <Image
+                  src={logo_ncei}
+                  style={{ height: "90px", padding: "5px" }}
+                />
+              </a>
+            </div>
+            <br /><br />
+
+            <div className="d-flex justify-content-evenly">
+              <a target="_blank" href="https://cires.colorado.edu/">
+                <Image
+                  src={logo_cires}
+                  style={{ height: "90px", padding: "5px" }}
+                />
+              </a>
+            </div>
+            <br /><br />
+            {/* </div> */}
 
             <hr />
 
@@ -393,7 +387,7 @@ export default function HomeView() {
 
             <h2>Code Source</h2>
 
-            <div>
+            <div style={{ display: "inlineBlock", marginLeft: "2em" }}>
               <a target="_blank" href="https://pypi.org/project/water-column-sonar-processing">
                 <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/water-column-sonar-processing?style=plastic&label=water-column-sonar-processing&link=https%3A%2F%2Fpypi.org%2Fproject%2Fwater-column-sonar-processing%2F"></img>
               </a>
@@ -412,14 +406,18 @@ export default function HomeView() {
             </div>
 
             <hr />
-            <p className="text-end">
+
+            <p className="text-center">
               Contact <b>wcd.info@noaa.gov</b> with any questions
             </p>
+
+            <br /><br />
+
+            <p className="text-center"><MdAnchor /></p>
           </Col>
 
-          <Col xs lg="2" />
+          <Col />
         </Row>
-        <p className="text-center"><MdAnchor /></p>
       </Container>
     </div>
   );
