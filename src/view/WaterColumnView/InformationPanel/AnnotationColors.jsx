@@ -1,8 +1,12 @@
 import { HuePicker } from 'react-color';
+// import {
+//   selectAnnotationColor,
+//   updateAnnotationColor,
+// } from "../../../reducers/store/storeSlice.ts";
 import {
   selectAnnotationColor,
   updateAnnotationColor,
-} from "../../../reducers/store/storeSlice.ts";
+} from "../../../reducers/waterColumn/waterColumnSlice.ts";
 import {
   useAppDispatch,
   useAppSelector,

@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
 // @ts-ignore
-import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors';
+// import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors';
 
 import {
   fetchStoreAttributes,
@@ -10,7 +10,7 @@ import {
   fetchFrequencies,
   fetchLatitude,
   fetchLongitude,
-  fetchGeospatialIndex,
+  // fetchGeospatialIndex,
   fetchTime,
   fetchTimeMinValue,
   fetchTimeMaxValue,
@@ -29,10 +29,6 @@ export interface StoreState {
   cruise: string | null,
   sensor: string | null,
 
-  // shipHovered: string | null,
-  // cruiseHovered: string | null,
-  // sensorHovered: string | null,
-
   // Sv Range thresholds
   svMin: number,
   svMax: number,
@@ -40,7 +36,6 @@ export interface StoreState {
   depthIndex: number,
   timeIndex: number | null, // value passed in via url to jump to location
   frequencyIndex: number | null,
-  colorIndex: number | null,
 
   depthMinIndex: number | null, // leaflet minY for axes
   depthMaxIndex: number | null, // leaflet maxY for axes
@@ -58,8 +53,6 @@ export interface StoreState {
   
   timeArray: Array<number> | null,
   timeArrayStatus: "idle" | "loading" | "failed",
-
-  colorMaps: any, // TODO: get rid of this?
 
   annotation: boolean, // highlights polygon annotations on the leaflet layer
   annotationColor: string, // color of polygon for annotations --> should be string
@@ -89,9 +82,6 @@ export interface StoreState {
   longitude: number | null,
   longitudeStatus: "idle" | "pending" | "succeeded" | "failed",
 
-  geospatialIndex: number | null,
-  geospatialIndexStatus: "idle" | "loading" | "failed",
-
   time: any,
   timeStatus: "idle" | "loading" | "failed",
 
@@ -114,15 +104,10 @@ export interface StoreState {
 }
 
 const initialState: StoreState = {
-  // showInfoPanel: false,
 
   ship: null, // "Henry_B._Bigelow",
   cruise: null, // "HB0707",
   sensor: null, // "EK60",
-
-  // shipHovered: null,
-  // cruiseHovered: null,
-  // sensorHovered: null,
 
   svMin: -120, // default values for min & max Sv threshold
   svMax: -10,
@@ -147,9 +132,6 @@ const initialState: StoreState = {
   
   timeArray: null,
   timeArrayStatus: "idle",
-
-  colorIndex: null,
-  colorMaps: WaterColumnColors, // get rid of
 
   annotation: true,
   annotationColor: "#fff",
@@ -176,9 +158,6 @@ const initialState: StoreState = {
   
   longitude: null,
   longitudeStatus: "idle",
-
-  geospatialIndex: null,
-  geospatialIndexStatus: "idle",
 
   time: null,
   timeStatus: "idle",
@@ -216,16 +195,6 @@ export const storeSlice = createSlice({
     updateSensor: (state, action: PayloadAction<string>) => {
       state.sensor = action.payload
     },
-    //
-    // updateShipHovered: (state, action: PayloadAction<string>) => {
-    //   state.shipHovered = action.payload
-    // },
-    // updateCruiseHovered: (state, action: PayloadAction<string>) => {
-    //   state.cruiseHovered = action.payload
-    // },
-    // updateSensorHovered: (state, action: PayloadAction<string>) => {
-    //   state.sensorHovered = action.payload
-    // },
     //
     updateSvMin: (state, action: PayloadAction<number>) => { // button click
       state.svMin = Number(action.payload);
@@ -271,13 +240,6 @@ export const storeSlice = createSlice({
       state.timeArray = action.payload;
     },
     //
-    updateColorIndex: (state, action: PayloadAction<number>) => {
-      state.colorIndex = action.payload;
-    },
-    //
-    updateColorMaps: (state, action: PayloadAction<any>) => { // do i need these
-      state.colorMaps = action.payload;
-    },
     updateAnnotation: (state, action: PayloadAction<any>) => {
       state.annotation = action.payload;
     },
@@ -298,10 +260,6 @@ export const storeSlice = createSlice({
     },
     updateLongitude: (state, action: PayloadAction<any>) => {
       state.longitude = action.payload;
-    },
-    //
-    updateGeospatialIndex: (state, action: PayloadAction<any>) => {
-      state.geospatialIndex = action.payload;
     },
     //
     updateTime: (state, action: PayloadAction<any>) => {
@@ -383,17 +341,7 @@ export const storeSlice = createSlice({
         state.longitudeStatus = "failed";
         // state.longitudeError = action.error.message ?? 'Unknown Error';
       })
-      // GEOSPATIAL------------------------------------- //
-      .addCase(geospatialIndexAsync.pending, state => {
-        state.geospatialIndexStatus = "loading";
-      })
-      .addCase(geospatialIndexAsync.fulfilled, (state, action) => {
-        state.geospatialIndexStatus = "idle";
-        state.geospatialIndex = action.payload;
-      })
-      .addCase(geospatialIndexAsync.rejected, state => {
-        state.geospatialIndexStatus = "failed";
-      })
+      
       // TIME------------------------------------------- //
       .addCase(timeAsync.pending, state => {
         state.timeStatus = "loading";
@@ -501,10 +449,6 @@ export const {
   updateCruise,
   updateSensor,
   //
-  // updateShipHovered,
-  // updateCruiseHovered,
-  // updateSensorHovered,
-  //
   updateSvMin,
   updateSvMax,
   //
@@ -521,9 +465,6 @@ export const {
   updateTimeMaxValue,
   updateTimeArray,
   //
-  updateColorIndex,
-  //
-  updateColorMaps,
   updateAnnotation,
   updateAnnotationColor,
   //
@@ -531,8 +472,6 @@ export const {
   updateFrequencies,
   updateLatitude,
   updateLongitude,
-  //
-  updateGeospatialIndex,
   //
   updateTime,
   updateDepth,
@@ -553,14 +492,9 @@ export const selectShip = (state: RootState) => state.store.ship;
 export const selectCruise = (state: RootState) => state.store.cruise;
 export const selectSensor = (state: RootState) => state.store.sensor;
 
-// export const selectShipHovered = (state: RootState) => state.store.shipHovered;
-// export const selectCruiseHovered = (state: RootState) => state.store.cruiseHovered;
-// export const selectSensorHovered = (state: RootState) => state.store.sensorHovered;
-
 export const selectSvMin = (state: RootState) => state.store.svMin;
 export const selectSvMax = (state: RootState) => state.store.svMax;
 
-export const selectColorMaps = (state: RootState) => state.store.colorMaps;
 export const selectAnnotation = (state: RootState) => state.store.annotation;
 export const selectAnnotationColor = (state: RootState) => state.store.annotationColor;
 
@@ -580,8 +514,6 @@ export const selectTimeMinValue = (state: RootState) => state.store.timeMinValue
 export const selectTimeMaxValue = (state: RootState) => state.store.timeMaxValue;
 export const selectTimeArray = (state: RootState) => state.store.timeArray;
 
-export const selectColorIndex = (state: RootState) => state.store.colorIndex;
-
 // export const selectAttributes = (state: RootState) => state.store.attributes; // TODO: remove
 export const selectFrequencies = (state: RootState) => state.store.frequencies;
 // export const selectFrequencyButtonIndex = (state: RootState) => state.store.frequencyButtonIndex;
@@ -589,9 +521,6 @@ export const selectLatitude = (state: RootState) => state.store.latitude;
 export const selectLatitudeStatus = (state: RootState) => state.store.latitudeStatus;
 export const selectLongitude = (state: RootState) => state.store.longitude;
 export const selectLongitudeStatus = (state: RootState) => state.store.longitudeStatus;
-//
-export const selectGeospatialIndex = (state: RootState) => state.store.geospatialIndex;
-export const selectGeospatialIndexStatus = (state: RootState) => state.store.geospatialIndexStatus;
 //
 export const selectTime = (state: RootState) => state.store.time;
 export const selectDepth = (state: RootState) => state.store.depth;
@@ -639,17 +568,6 @@ export const longitudeAsync = createAsyncThunk(
   async ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
     const response = await fetchLongitude(ship, cruise, sensor, indexTime);
     return Math.round(response * 1e5) / 1e5;
-  },
-)
-
-export const geospatialIndexAsync = createAsyncThunk( // for geohash lookup
-  "store/fetchGeospatialIndex",
-  async ({ ship, cruise, sensor, longitude, latitude }: { ship: string, cruise: string, sensor: string, longitude: number, latitude: number }) => {
-    // console.log('getting index...');
-    // debugger;
-    const response =  await fetchGeospatialIndex(ship, cruise, sensor, longitude, latitude)
-      
-    return response;
   },
 )
 
@@ -731,30 +649,9 @@ export const svAsync = createAsyncThunk(
   },
 )
 
-// export const speedAsync = createAsyncThunk(
-//   "store/fetchSpeed",
-//   ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
-//     return fetchSpeed(ship, cruise, sensor, indexTime);
-//   },
-// )
-
-// export const distanceAsync = createAsyncThunk(
-//   "store/fetchDistance",
-//   ({ ship, cruise, sensor, indexTime }: { ship: string, cruise: string, sensor: string, indexTime: number }) => {
-//     return fetchDistance(ship, cruise, sensor, indexTime);
-//   },
-// )
-
 export const parquetDataAsync = createAsyncThunk(
   "store/fetchParquetData",
   async ({ startTime, endTime }: { startTime: Date, endTime: Date }) => {
     return fetchParquetData(startTime, endTime);
   },
 )
-
-// export const personDataAsync = createAsyncThunk(
-//   "store/fetchPersonData",
-//   async ({ size, page }: { size: Number, page: Number }) => {
-//     return fetchPersonData(size, page);
-//   },
-// )

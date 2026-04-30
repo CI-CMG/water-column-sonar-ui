@@ -16,8 +16,12 @@ import {
   selectSvMin,
   selectSvMax,
   selectFrequencyIndex,
-  selectColorIndex,
+  // selectColorIndex,
 } from ".././../reducers/store/storeSlice.ts";
+
+import {
+  selectColorIndex,
+} from ".././../reducers/waterColumn/waterColumnSlice.ts";
 import { useAppSelector } from "../../app/hooks";
 import { fetchSvTile } from "../../reducers/store/storeAPI.ts"
 

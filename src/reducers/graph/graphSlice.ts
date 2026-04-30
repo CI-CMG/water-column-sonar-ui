@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.js";
 
 // For variables related to the knowledge graph view
-//  search interface
+//  and the respective search interface
 
 export interface GraphState {
 

@@ -3,10 +3,6 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as pmtiles from "pmtiles";
 import {
-  geospatialIndexAsync,
-  selectGeospatialIndexStatus,
-  selectGeospatialIndex,
-  //
   updateShip,
   updateCruise,
   updateSensor,
@@ -20,9 +16,14 @@ import {
   selectCruiseHovered,
   selectSensorHovered,
   //
+  selectGeospatialIndexStatus,
+  selectGeospatialIndex,
+  //
   updateShipHovered,
   updateCruiseHovered,
   updateSensorHovered,
+  //
+  geospatialIndexAsync,
 } from ".././../reducers/map/mapSlice.ts";
 import { useAppDispatch } from "../../app/hooks";
 // import MapInformationPanel from "./MapInformationPanel.jsx";

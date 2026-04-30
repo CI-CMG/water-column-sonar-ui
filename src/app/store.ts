@@ -1,10 +1,10 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { configureStore, ConfigureStoreOptions } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import counterReducer from "../reducers/counter/counterSlice";
 import storeReducer from "../reducers/store/storeSlice";
 import graphReduce from "../reducers/graph/graphSlice";
 import mapReducer from "../reducers/map/mapSlice";
+import waterColumnReducer from "../reducers/waterColumn/waterColumnSlice";
 import { api } from '../services/api';
 
 
@@ -13,11 +13,12 @@ export const createStore = (
 ) =>
   configureStore({
     reducer: {
-      counter: counterReducer,
-      // cruise: cruiseReducer,
       store: storeReducer,
+      //
       graph: graphReduce,
       map: mapReducer,
+      waterColumn: waterColumnReducer,
+      //
       [api.reducerPath]: api.reducer,
     },
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
@@ -37,10 +38,8 @@ export const createStore = (
 
 export const store = createStore();
 
-// export type AppDispatch = AppStore["dispatch"]
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
-// export type RootState = ReturnType<AppStore["getState"]>
 export type RootState = ReturnType<typeof store.getState>;
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 

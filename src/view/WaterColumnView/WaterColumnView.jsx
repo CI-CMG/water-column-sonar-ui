@@ -20,18 +20,25 @@ import {
   storeAttributesAsync,
   storeShapeAsync,
   frequenciesAsync,
-  // latitudeAsync,
-  // longitudeAsync,
-  // timeAsync,
+  latitudeAsync,
+  longitudeAsync,
+  timeAsync,
   //
   // depthAsync,
-  // bottomAsync,
+  bottomAsync,
   // svAsync,
   //
   updateTimeIndex,
   updateFrequencyIndex,
-  updateColorIndex,
+  selectFrequencies,
+  selectLatitude,
+  selectLongitude,
+  selectTime,
+  selectBottom,
 } from "../../reducers/store/storeSlice";
+import {
+  updateColorIndex,
+} from "../../reducers/waterColumn/waterColumnSlice";
 
 /* -------- Main View of Water Column Page ---------- */
 export default function WaterColumnView() {
@@ -52,6 +59,11 @@ export default function WaterColumnView() {
 
   const storeAttributes = useAppSelector(selectStoreAttributes); // not here
   const storeShape = useAppSelector(selectStoreShape);
+  const frequencies = useAppSelector(selectFrequencies);
+  const latitude = useAppSelector(selectLatitude);
+  const longitude = useAppSelector(selectLongitude);
+  const time = useAppSelector(selectTime);
+  const bottom = useAppSelector(selectBottom);
   // const indexDepth = useAppSelector(selectDepthIndex);
   // const indexTime = useAppSelector(selectTimeIndex); // if we are opening the page for the first time
   // const selectFrequency = useAppSelector(selectFrequencyIndex);
@@ -67,13 +79,12 @@ export default function WaterColumnView() {
     dispatch(storeAttributesAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
     dispatch(storeShapeAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
     dispatch(frequenciesAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
+    dispatch(latitudeAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexTime: initialTimeIndex }));
+    dispatch(longitudeAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexTime: initialTimeIndex }));
+    dispatch(timeAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexTime: initialTimeIndex }));
+    dispatch(bottomAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexTime: initialTimeIndex }));
     //
-    // is initialTimeIndex correct?
-    // dispatch(latitudeAsync({ initialShip, initialCruise, initialSensor, indexTime }));
-    // dispatch(longitudeAsync({ initialShip, initialCruise, initialSensor, indexTime }));
-    // dispatch(timeAsync({ initialShip, initialCruise, initialSensor, indexTime }));
     // dispatch(depthAsync({ initialShip, initialCruise, initialSensor, indexDepth }));
-    // dispatch(bottomAsync({ initialShip, initialCruise, initialSensor, indexTime }));
   }, []);
 
   // useEffect(() => {
@@ -96,7 +107,12 @@ export default function WaterColumnView() {
         storeAttributes !== null &&
         storeShape !== null &&
         initialTimeIndex !== null &&
-        initialFrequencyIndex !== null // selectLatitude-Longitude null in panel
+        initialFrequencyIndex !== null &&
+        frequencies !== null &&
+        latitude !== null &&
+        longitude !== null &&
+        time !== null &&
+        bottom !== null
         // plus time/depth/bottom/sv
         ? (
         <>
@@ -107,7 +123,7 @@ export default function WaterColumnView() {
             initialTimeIndex={initialTimeIndex}
           /> */}
 
-          {/* <WaterColumnInformationPanel /> */}
+          <WaterColumnInformationPanel />
         </>
       ) : (
         <></>

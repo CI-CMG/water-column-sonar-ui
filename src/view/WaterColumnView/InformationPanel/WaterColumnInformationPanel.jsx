@@ -9,8 +9,6 @@ import Form from "react-bootstrap/Form";
 import MiniMapView from "../MiniMapView.jsx";
 import ColorMap from "../ColorMap.jsx";
 import SvPlotView from "../SvPlotView.jsx";
-// import { HuePicker } from 'react-color';
-// import AnnotationColors from "./AnnotationColors.jsx"
 import {
   selectShip,
   selectCruise,
@@ -20,18 +18,8 @@ import {
   updateSvMin,
   updateSvMax,
   //
-  selectColorMaps,
-  selectColorIndex,
-  updateColorIndex,
-  //
   selectAnnotation,
   updateAnnotation,
-  //
-  // selectAnnotationAI,
-  // updateAnnotationAI,
-  // selectAnnotationColor,
-  // updateAnnotationColor,
-  //
   // selectDepthIndex,
   // selectTimeIndex,
   // selectFrequencyIndex,
@@ -47,18 +35,19 @@ import {
   selectLatitudeStatus,
   selectLongitude,
   selectLongitudeStatus,
-  //
   selectTime,
-  selectDepth,
-  //
-  // selectTimeMinValue,
-  // selectTimeMaxValue,
-  //
   selectBottom,
-  selectSv,
-  // selectSpeed,
-  // selectDistance,
+  //
+  // selectDepth,
+  // selectSv,
+  //
 } from "../../../reducers/store/storeSlice.ts";
+import {
+  selectColorMaps,
+  selectColorIndex,
+  //
+  updateColorIndex,
+} from "../../../reducers/waterColumn/waterColumnSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
 import { MdAnchor } from "react-icons/md";
 import Spinner from "react-bootstrap/Spinner";
@@ -67,37 +56,31 @@ import { GetDateTime } from "../GetDateTime.jsx";
 
 const WaterColumnInformationPanel = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-
+// debugger;
   const dispatch = useAppDispatch();
 
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
-  const colorMaps = useAppSelector(selectColorMaps); // from store
+  const colorMaps = useAppSelector(selectColorMaps);
   const annotation = useAppSelector(selectAnnotation);
-  // const annotationAI = useAppSelector(selectAnnotationAI);
-  // const annotationColor = useAppSelector(selectAnnotationColor);
-  const colorIndex = useAppSelector(selectColorIndex); //
+  const colorIndex = useAppSelector(selectColorIndex);
   const attributes = useAppSelector(selectStoreAttributes);
   const storeShape = useAppSelector(selectStoreShape);
-  const frequencies = useAppSelector(selectFrequencies); // from store
-  const frequencyIndex = useAppSelector(selectFrequencyIndex); //
-  // const frequencyButtonIndex = useAppSelector(selectFrequencyButtonIndex); //
-  const latitude = useAppSelector(selectLatitude); // from store
+  const frequencies = useAppSelector(selectFrequencies);
+  const frequencyIndex = useAppSelector(selectFrequencyIndex);
+  const latitude = useAppSelector(selectLatitude);
   const latitudeStatus = useAppSelector(selectLatitudeStatus);
   const longitude = useAppSelector(selectLongitude);
   const longitudeStatus = useAppSelector(selectLongitudeStatus);
-  //
   const time = useAppSelector(selectTime);
-  // const timeMinValue = useAppSelector(selectTimeMinValue); // for drawing leaflet polygons
-  // const timeMaxValue = useAppSelector(selectTimeMaxValue);
-  const depth = useAppSelector(selectDepth);
-  //
   const bottom = useAppSelector(selectBottom);
-  const sv = useAppSelector(selectSv);
-  // const speed = useAppSelector(selectSpeed);
-  // const distance = useAppSelector(selectDistance);
-
+  //
+  // const depth = useAppSelector(selectDepth); // todo; get here in panel
+  // const sv = useAppSelector(selectSv);
+  const depth = 123.45;
+  const sv = [-100, -90, -80, -70];
+  //
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
   // const depthIndex = useAppSelector(selectDepthIndex);
@@ -229,8 +212,7 @@ const WaterColumnInformationPanel = () => {
           <p>
             <b>Lon / Lat:</b>{" "}
             <span className="font-monospace float-end">
-              {latitudeStatus === "succeeded" &&
-              longitudeStatus === "succeeded" ? (
+              {latitude !== null && longitude !== null ? (
                 <>
                   {longitude.toFixed(5)}°E, {latitude.toFixed(5)}°N
                 </>
@@ -515,8 +497,9 @@ const WaterColumnInformationPanel = () => {
               style={{
                 textIndent: "6px",
                 fontFamily: "monospace",
-                fontSize: "14px",
+                fontSize: "11px",
                 color: "grey",
+                marginLeft: "5px"
               }}
             >
               {storeShape[0].toLocaleString()} x{" "}
@@ -565,7 +548,7 @@ const WaterColumnInformationPanel = () => {
             <></>
           )}
 
-          <br />
+          <br /><br /><br />
           <p className="text-center">
             <MdAnchor />
           </p>
