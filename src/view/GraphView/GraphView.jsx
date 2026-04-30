@@ -26,7 +26,9 @@ export default function GraphView() {
       
       <Container>
         <br />
-        <h1 className="text-center" style={{ color: "white", fontSize: "1.2em"}}>EchoFish Knowledge Graph</h1>
+        <h1 className="text-center" style={{ color: "white", fontSize: "1.2em"}}>
+          Water Column Sonar <span style={{ color: "#00CC33"  }}>|</span> Knowledge Graph <span style={{ color: "#00CC33"  }}>|</span>
+        </h1>
         <br />
         
         <Row>

@@ -29,8 +29,8 @@ export default function HomeView() {
           <Col />
 
           <Col className="mainHomeContent">
-            <h1 className="text-left" style={{ lineHeight: "1.7em", fontWeight: "600", color: "LightSlateGrey" }}>
-              EchoFish<br />Exploring Water Column<br />Sonar Data
+            <h1 className="text-center" style={{ lineHeight: "1.5em", fontWeight: "600", letterSpacing: "0.10em" }}>
+              EchoFish:<br />Exploring Water Column<br />Sonar Data
             </h1>
 
             <p className="text-center">
@@ -408,7 +408,7 @@ export default function HomeView() {
             <hr />
 
             <p className="text-center">
-              Contact <b>wcd.info@noaa.gov</b> with any questions
+              Contact <b>wcd.info@noaa.gov</b> with any questions.
             </p>
 
             <br /><br />
