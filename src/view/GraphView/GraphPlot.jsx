@@ -5,24 +5,6 @@ import {
 } from "react";
 import ForceGraph3D from "react-force-graph-3d";
 import SpriteText from 'three-spritetext';
-// import { UnrealBloomPass } from "https://esm.sh/three/examples/jsm/postprocessing/UnrealBloomPass.js";
-
-
-// function genRandomTree(N = 10, reverse = false) {
-//   const foo = {
-//     nodes: [...Array(N).keys()].map((i) => ({ id: i })),
-//     links: [...Array(N).keys()]
-//       .filter((id) => id)
-//       .map((id) => ({
-//         [reverse ? "target" : "source"]: id,
-//         [reverse ? "source" : "target"]: Math.floor(Math.random() * (id - 1)),
-//       })),
-//   };
-//   // debugger;
-//   return foo;
-// }
-
-// const bloomPass = new UnrealBloomPass();
 
 // Would like to get this example working:
 // https://github.com/vasturiano/react-force-graph/blob/master/example/text-nodes/index-3d.html
@@ -43,14 +25,6 @@ export default function GraphPlot() {
 
       return () => window.removeEventListener("resize", updateSize);
   }, []);
-
-  // useEffect(() => {
-    
-  //   bloomPass.strength = 0.001;
-  //   bloomPass.radius = 0.001;
-  //   bloomPass.threshold = 0.001;
-  //   fgRef.current.postProcessingComposer().addPass(bloomPass);
-  // }, []);
 
   const meta_graph = {
     "nodes": [

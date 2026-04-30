@@ -47,7 +47,7 @@ export default function LayoutView() {
 
                 <Nav.Link
                   as={Link}
-                  reloadDocument
+                  // reloadDocument
                   to="/water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=3974082"
                 >
                   <PiCubeLight />

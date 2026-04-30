@@ -1,8 +1,6 @@
-// import { RootState } from './../../app/store';
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { RootState } from "../../app/store.ts";
-import { useSearchParams } from 'react-router';
 // @ts-ignore
 import { WaterColumnColors } from '../../view/WaterColumnView/WaterColumnColors';
 
@@ -21,36 +19,19 @@ import {
   fetchDepthArray,
   fetchBottom,
   fetchSv,
-  // fetchSpeed,
-  // fetchDistance,
-  //
   fetchParquetData,
-  // fetchPersonData,
-  //
-  // alex's ai results
-  fetchAIStoreAttributes, // probably don't need, just need tile?
-  fetchAIStoreShape,
-  fetchAISvTile,
 } from "./storeAPI.js";
-// import { IntegerType } from "three/src/nodes/core/Node.js";
 
 
 export interface StoreState {
-  // showInfoPanel: boolean,
 
   ship: string | null,
   cruise: string | null,
   sensor: string | null,
 
-  // For graph view search
-  searchClassification: string,
-  searchPhaseOfDay: string,
-  searchAltitude: number[],
-  searchDistanceFromCoastline: number[],
-
-  shipHovered: string | null,
-  cruiseHovered: string | null,
-  sensorHovered: string | null,
+  // shipHovered: string | null,
+  // cruiseHovered: string | null,
+  // sensorHovered: string | null,
 
   // Sv Range thresholds
   svMin: number,
@@ -88,8 +69,6 @@ export interface StoreState {
 
   storeAttributes: any,
   storeAttributesStatus: "idle" | "loading" | "failed",
-  // attributes: any, // metadata of the store
-  // calibration_status, cruise_name, processing_software_name, processing_software_time, processing_software_version, sensor_name, ship_name, tile_size
 
   // Alex's AI
   aiStoreAttributes: any,
@@ -109,8 +88,6 @@ export interface StoreState {
 
   longitude: number | null,
   longitudeStatus: "idle" | "pending" | "succeeded" | "failed",
-  // longitudeStatus: "idle" | "pending" | "succeeded" | "failed",
-  // longitudeError: string | null,
 
   geospatialIndex: number | null,
   geospatialIndexStatus: "idle" | "loading" | "failed",
@@ -126,12 +103,6 @@ export interface StoreState {
 
   sv: any, // BigUInt64? -> Float32Array
   svStatus: "idle" | "loading" | "failed",
-
-  // speed: any,
-  // speedStatus: "idle" | "loading" | "failed",
-
-  // distance: any,
-  // distanceStatus: "idle" | "loading" | "failed",
 
   // Alex's AI
   aiSv: any, // BigUInt64? -> Float32Array
@@ -149,14 +120,9 @@ const initialState: StoreState = {
   cruise: null, // "HB0707",
   sensor: null, // "EK60",
 
-  searchClassification: "AH_School",
-  searchPhaseOfDay: "dawn",
-  searchAltitude: [-497, 395],
-  searchDistanceFromCoastline: [42, 157942],
-
-  shipHovered: null,
-  cruiseHovered: null,
-  sensorHovered: null,
+  // shipHovered: null,
+  // cruiseHovered: null,
+  // sensorHovered: null,
 
   svMin: -120, // default values for min & max Sv threshold
   svMax: -10,
@@ -192,7 +158,6 @@ const initialState: StoreState = {
 
   storeAttributes: null,
   storeAttributesStatus: "idle",
-  // attributes: null
   // alexs ai
   aiStoreAttributes: null,
   aiStoreAttributesStatus: "idle",
@@ -205,7 +170,6 @@ const initialState: StoreState = {
 
   frequencies: null, // BigUint64Array(4)
   frequenciesStatus: "idle",
-  // frequencyButtonIndex: null, // start with first frequency selected
   
   latitude: null,
   latitudeStatus: "idle",
@@ -228,12 +192,6 @@ const initialState: StoreState = {
   sv: null,
   svStatus: "idle",
 
-  // speed: null,
-  // speedStatus: "idle",
-
-  // distance: null,
-  // distanceStatus: "idle",
-
   // alexs ai
   aiSv: null,
   aiSvStatus: "idle",
@@ -249,10 +207,6 @@ export const storeSlice = createSlice({
   initialState,
   
   reducers: {
-    // updateShowInfoPanel: (state, action: PayloadAction<boolean>) => {
-    //   state.showInfoPanel = action.payload
-    // },
-    //
     updateShip: (state, action: PayloadAction<string>) => {
       state.ship = action.payload
     },
@@ -263,31 +217,17 @@ export const storeSlice = createSlice({
       state.sensor = action.payload
     },
     //
-    updateSearchClassification: (state, action: PayloadAction<string>) => {
-      state.searchClassification = action.payload
-    },
-    updateSearchPhaseOfDay: (state, action: PayloadAction<string>) => {
-      state.searchPhaseOfDay = action.payload
-    },
-    updateSearchAltitude: (state, action: PayloadAction<number[]>) => {
-      state.searchAltitude = action.payload
-    },
-    updateSearchDistanceFromCoastline: (state, action: PayloadAction<number[]>) => {
-      state.searchDistanceFromCoastline = action.payload
-    },
-    //
-    updateShipHovered: (state, action: PayloadAction<string>) => {
-      state.shipHovered = action.payload
-    },
-    updateCruiseHovered: (state, action: PayloadAction<string>) => {
-      state.cruiseHovered = action.payload
-    },
-    updateSensorHovered: (state, action: PayloadAction<string>) => {
-      state.sensorHovered = action.payload
-    },
+    // updateShipHovered: (state, action: PayloadAction<string>) => {
+    //   state.shipHovered = action.payload
+    // },
+    // updateCruiseHovered: (state, action: PayloadAction<string>) => {
+    //   state.cruiseHovered = action.payload
+    // },
+    // updateSensorHovered: (state, action: PayloadAction<string>) => {
+    //   state.sensorHovered = action.payload
+    // },
     //
     updateSvMin: (state, action: PayloadAction<number>) => { // button click
-      // console.log('updated Sv Min')
       state.svMin = Number(action.payload);
     },
     updateSvMax: (state, action: PayloadAction<number>) => { // button click
@@ -338,9 +278,6 @@ export const storeSlice = createSlice({
     updateColorMaps: (state, action: PayloadAction<any>) => { // do i need these
       state.colorMaps = action.payload;
     },
-    // updateColorIndex: (state, action: PayloadAction<any>) => {
-    //   state.colorMapIndex = action.payload;
-    // },
     updateAnnotation: (state, action: PayloadAction<any>) => {
       state.annotation = action.payload;
     },
@@ -355,9 +292,6 @@ export const storeSlice = createSlice({
     updateFrequencies: (state, action: PayloadAction<any>) => { // do i need these
       state.frequencies = action.payload;
     },
-    // updateFrequencyButtonIndex: (state, action: PayloadAction<any>) => {
-    //   state.frequencyButtonIndex = action.payload;
-    // },
     //
     updateLatitude: (state, action: PayloadAction<any>) => {
       state.latitude = action.payload;
@@ -382,12 +316,6 @@ export const storeSlice = createSlice({
     updateSv: (state, action: PayloadAction<any>) => {
       state.sv = action.payload;
     },
-    // updateSpeed: (state, action: PayloadAction<any>) => {
-    //   state.speed = action.payload;
-    // },
-    // updateDistance: (state, action: PayloadAction<any>) => {
-    //   state.distance = action.payload;
-    // },
     //
     updateParquetData: (state, action: PayloadAction<any>) => {
       state.parquetData = action.payload;
@@ -553,28 +481,6 @@ export const storeSlice = createSlice({
       .addCase(svAsync.rejected, state => {
         state.svStatus = "failed";
       })
-      // SPEED------------------------------------------ //
-      // .addCase(speedAsync.pending, state => {
-      //   state.speedStatus = "loading";
-      // })
-      // .addCase(speedAsync.fulfilled, (state, action) => {
-      //   state.speedStatus = "idle";
-      //   state.speed = action.payload;
-      // })
-      // .addCase(speedAsync.rejected, state => {
-      //   state.speedStatus = "failed";
-      // })
-      // DISTANCE---------------------------------------- //
-      // .addCase(distanceAsync.pending, state => {
-      //   state.distanceStatus = "loading";
-      // })
-      // .addCase(distanceAsync.fulfilled, (state, action) => {
-      //   state.distanceStatus = "idle";
-      //   state.distance = action.payload;
-      // })
-      // .addCase(distanceAsync.rejected, state => {
-      //   state.distanceStatus = "failed";
-      // })
       // PARQUET DATA---------------------------------------- //
       .addCase(parquetDataAsync.pending, state => {
         state.parquetDataStatus = "loading";
@@ -591,20 +497,13 @@ export const storeSlice = createSlice({
 });
 
 export const {
-  // updateShowInfoPanel, // controls map view panel
-  //
   updateShip,
   updateCruise,
   updateSensor,
   //
-  updateSearchClassification,
-  updateSearchPhaseOfDay,
-  updateSearchAltitude,
-  updateSearchDistanceFromCoastline,
-  //
-  updateShipHovered,
-  updateCruiseHovered,
-  updateSensorHovered,
+  // updateShipHovered,
+  // updateCruiseHovered,
+  // updateSensorHovered,
   //
   updateSvMin,
   updateSvMax,
@@ -625,12 +524,10 @@ export const {
   updateColorIndex,
   //
   updateColorMaps,
-  // updateColorMapButtonIndex, // TODO: get rid of
   updateAnnotation,
   updateAnnotationColor,
   //
   updateAnnotationAI,
-  // TODO: colorMap
   updateFrequencies,
   updateLatitude,
   updateLongitude,
@@ -641,8 +538,6 @@ export const {
   updateDepth,
   updateBottom,
   updateSv,
-  // updateSpeed,
-  // updateDistance,
   //
   updateParquetData,
 } = storeSlice.actions;
@@ -658,20 +553,14 @@ export const selectShip = (state: RootState) => state.store.ship;
 export const selectCruise = (state: RootState) => state.store.cruise;
 export const selectSensor = (state: RootState) => state.store.sensor;
 
-export const selectSearchClassification = (state: RootState) => state.store.searchClassification;
-export const selectSearchPhaseOfDay = (state: RootState) => state.store.searchPhaseOfDay;
-export const selectSearchAltitude = (state: RootState) => state.store.searchAltitude;
-export const selectSearchDistanceFromCoastline = (state: RootState) => state.store.searchDistanceFromCoastline;
-
-export const selectShipHovered = (state: RootState) => state.store.shipHovered;
-export const selectCruiseHovered = (state: RootState) => state.store.cruiseHovered;
-export const selectSensorHovered = (state: RootState) => state.store.sensorHovered;
+// export const selectShipHovered = (state: RootState) => state.store.shipHovered;
+// export const selectCruiseHovered = (state: RootState) => state.store.cruiseHovered;
+// export const selectSensorHovered = (state: RootState) => state.store.sensorHovered;
 
 export const selectSvMin = (state: RootState) => state.store.svMin;
 export const selectSvMax = (state: RootState) => state.store.svMax;
 
 export const selectColorMaps = (state: RootState) => state.store.colorMaps;
-// export const selectColorMapButtonIndex = (state: RootState) => state.store.colorMapButtonIndex;
 export const selectAnnotation = (state: RootState) => state.store.annotation;
 export const selectAnnotationColor = (state: RootState) => state.store.annotationColor;
 
@@ -708,8 +597,6 @@ export const selectTime = (state: RootState) => state.store.time;
 export const selectDepth = (state: RootState) => state.store.depth;
 export const selectBottom = (state: RootState) => state.store.bottom;
 export const selectSv = (state: RootState) => state.store.sv;
-// export const selectSpeed = (state: RootState) => state.store.speed;
-// export const selectDistance = (state: RootState) => state.store.distance;
 
 export const selectParquetData = (state: RootState) => state.store.parquetData;
 

@@ -58,6 +58,7 @@ const style = {
 };
 
 export default function MiniMapView() {
+  // TODO: this needs to reinitialize on the first load
   const [loadedMap, setLoadedMap] = useState(false);
 
   const latitude = useAppSelector(selectLatitude);
@@ -84,7 +85,7 @@ export default function MiniMapView() {
 
       // move all this somewhere else
       map.current.on('load', () => {
-map.current.setProjection({ type: 'globe' });
+        map.current.setProjection({ type: 'globe' });
         const layers = map.current.getStyle().layers;
         let firstSymbolId;
         for (let i = 0; i < layers.length; i++) {

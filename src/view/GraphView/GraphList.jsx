@@ -1,9 +1,6 @@
-// import { useEffect } from "react";
 import {
   useGetAllAnnotationsSearchQuery,
 } from '../../services/annotation';
-// import Row from "react-bootstrap/Row";
-// import Col from "react-bootstrap/Col";
 import GraphCard from "./GraphCard";
 import CardGroup from 'react-bootstrap/CardGroup';
 import PropTypes from "prop-types";

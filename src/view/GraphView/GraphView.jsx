@@ -11,7 +11,7 @@ import {
   selectSearchClassification,
   selectSearchDistanceFromCoastline,
   selectSearchAltitude,
-} from "../../reducers/store/storeSlice";
+} from "../../reducers/graph/graphSlice";
 
 export default function GraphView() {
   useEffect(() => { document.title = `EchoFish Knowledge Graph`; }, []);
@@ -27,7 +27,7 @@ export default function GraphView() {
       <Container>
         <br />
         <h1 className="text-center" style={{ color: "white", fontSize: "1.2em"}}>
-          Water Column Sonar <span style={{ color: "#00CC33"  }}>|</span> Knowledge Graph <span style={{ color: "#00CC33"  }}>|</span>
+          Water Column Sonar <span style={{ color: "#00CC33"  }}>&lt;</span>Knowledge Graph <span style={{ color: "#00CC33"  }}> /&gt;</span>
         </h1>
         <br />
         

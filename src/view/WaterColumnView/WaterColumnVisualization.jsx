@@ -18,16 +18,11 @@ import {
   updateTimeIndex,
   //
   selectAnnotation,
-  // selectParquetData,
-  // selectAnnotationColor,
-  // selectAnnotationAI,
   //
   updateDepthMinIndex,
   updateDepthMaxIndex,
   updateTimeMinIndex,
   updateTimeMaxIndex,
-  // updateTimeMinValue,
-  // updateTimeMaxValue,
   //
   selectTimeMinIndex,
   selectTimeMaxIndex,
@@ -76,6 +71,7 @@ const WaterColumnVisualization = ({
   initialTimeIndex,
 }) => {
   const dispatch = useAppDispatch();
+
   const ship = useAppSelector(selectShip);
   const cruise = useAppSelector(selectCruise);
   const sensor = useAppSelector(selectSensor);
@@ -135,8 +131,6 @@ const WaterColumnVisualization = ({
 
   const [map, setMap] = useState(null);
   const annotation = useAppSelector(selectAnnotation);
-  // const parquetData = useAppSelector(selectParquetData);
-  // const annotationColor = useAppSelector(selectAnnotationColor);
 
   const mapCenterX = initialTimeIndex;
   // TODO: this will create a problem when page is resized
@@ -144,19 +138,6 @@ const WaterColumnVisualization = ({
   const mapCenter = [mapCenterY, mapCenterX];
   const marginX = 500; // map maxBounds + margin
   const marginY = 100;
-
-  // useEffect(() => {
-  //   if (map) {
-  //     // color of the polygon annotation shape
-  //     map.eachLayer((x) => {
-  //       if (x.options.className === "Annotation") {
-  //         x.setStyle({
-  //           color: annotationColor,
-  //         });
-  //       }
-  //     });
-  //   }
-  // }, [annotationColor, map]);
 
   useEffect(() => {
     if (map) {
@@ -230,7 +211,6 @@ const WaterColumnVisualization = ({
             >
               <CustomLayer />
 
-              {/* {annotationAI && <CustomAILayer />} */}
               {annotation && cruise == "HB1906" ? <AnnotationLayer /> : <></>}
               
               <LocationMarker />

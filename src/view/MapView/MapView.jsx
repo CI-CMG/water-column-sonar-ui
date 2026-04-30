@@ -14,7 +14,8 @@ import {
   selectShip,
   selectCruise,
   selectSensor,
-  //
+} from ".././../reducers/store/storeSlice.ts";
+import {
   selectShipHovered,
   selectCruiseHovered,
   selectSensorHovered,
@@ -22,8 +23,7 @@ import {
   updateShipHovered,
   updateCruiseHovered,
   updateSensorHovered,
-  // updateShowInfoPanel,
-} from ".././../reducers/store/storeSlice.ts";
+} from ".././../reducers/map/mapSlice.ts";
 import { useAppDispatch } from "../../app/hooks";
 // import MapInformationPanel from "./MapInformationPanel.jsx";
 import { useAppSelector } from "../../app/hooks";

@@ -10,11 +10,11 @@ import {
   updateSearchDistanceFromCoastline,
   updateSearchAltitude,
 
-  selectSearchPhaseOfDay,
-  selectSearchClassification,
+  // selectSearchPhaseOfDay,
+  // selectSearchClassification,
   selectSearchDistanceFromCoastline,
   selectSearchAltitude,
-} from "../../reducers/store/storeSlice";
+} from "../../reducers/graph/graphSlice";
 
 function GraphForm() {
   const dispatch = useAppDispatch();
@@ -30,8 +30,8 @@ function GraphForm() {
 
   const altitude = useAppSelector(selectSearchAltitude);
   const distanceFromCoastline = useAppSelector(selectSearchDistanceFromCoastline);
-  const phaseOfDay = useAppSelector(selectSearchPhaseOfDay);
-  const classification = useAppSelector(selectSearchClassification);
+  // const phaseOfDay = useAppSelector(selectSearchPhaseOfDay);
+  // const classification = useAppSelector(selectSearchClassification);
 
   const handleUpdateAltitude = (e) => {
     // setAltitude(e);

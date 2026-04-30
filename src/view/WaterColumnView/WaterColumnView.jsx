@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  // useState
+} from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useSearchParams } from "react-router";
 import WaterColumnInformationPanel from "./InformationPanel/WaterColumnInformationPanel";
@@ -7,14 +10,9 @@ import {
   updateShip,
   updateCruise,
   updateSensor,
-  selectShip,
-  selectCruise,
-  selectSensor,
   //
-  selectDepthIndex,
-  selectTimeIndex,
-  selectFrequencyIndex,
-  selectColorIndex,
+  // selectDepthIndex,
+  // selectTimeIndex,
   //
   selectStoreAttributes,
   selectStoreShape,
@@ -22,15 +20,13 @@ import {
   storeAttributesAsync,
   storeShapeAsync,
   frequenciesAsync,
-  latitudeAsync,
-  longitudeAsync,
-  timeAsync,
+  // latitudeAsync,
+  // longitudeAsync,
+  // timeAsync,
   //
-  depthAsync,
-  bottomAsync,
-  svAsync,
-  // speedAsync,
-  // distanceAsync,
+  // depthAsync,
+  // bottomAsync,
+  // svAsync,
   //
   updateTimeIndex,
   updateFrequencyIndex,
@@ -43,118 +39,75 @@ export default function WaterColumnView() {
     document.title = `EchoFish Water Column`;
   }, []);
 
-  const [loadedCruiseInfo, setLoadedCruiseInfo] = useState(false);
-
   const dispatch = useAppDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
+  // load query params
+  const initialShip = searchParams.get("ship");
+  const initialCruise = searchParams.get("cruise");
+  const initialSensor = searchParams.get("sensor");
   const initialTimeIndex = Number(searchParams.get("time"));
   const initialFrequencyIndex = Number(searchParams.get("frequency"));
   const initialColorIndex = Number(searchParams.get("color"));
 
-  const ship = useAppSelector(selectShip);
-  const cruise = useAppSelector(selectCruise);
-  const sensor = useAppSelector(selectSensor);
-  const attributes = useAppSelector(selectStoreAttributes);
+  const storeAttributes = useAppSelector(selectStoreAttributes); // not here
   const storeShape = useAppSelector(selectStoreShape);
-  const indexDepth = useAppSelector(selectDepthIndex);
-  const indexTime = useAppSelector(selectTimeIndex); // we are opening the page for the first time
-  const indexFrequency = useAppSelector(selectFrequencyIndex);
-  const indexColor = useAppSelector(selectColorIndex);
+  // const indexDepth = useAppSelector(selectDepthIndex);
+  // const indexTime = useAppSelector(selectTimeIndex); // if we are opening the page for the first time
+  // const selectFrequency = useAppSelector(selectFrequencyIndex);
+  // const indexColor = useAppSelector(selectColorIndex);
 
   useEffect(() => {
-    // initialize query parameters:
-    // /water-column?ship=Henry_B._Bigelow&cruise=HB1906&sensor=EK60&frequency=0&color=2&time=1024
-    if (ship === null) {
-      dispatch(updateShip(searchParams.get("ship"))); // store in redux
-    }
-    if (cruise === null) {
-      dispatch(updateCruise(searchParams.get("cruise")));
-    }
-    if (sensor === null) {
-      dispatch(updateSensor(searchParams.get("sensor")));
-    }
-    if (indexTime === null) {
-      dispatch(updateTimeIndex(initialTimeIndex));
-    }
-    if (indexFrequency === null) {
-      dispatch(updateFrequencyIndex(initialFrequencyIndex));
-    }
-    if (indexColor === null) {
-      dispatch(updateColorIndex(initialColorIndex));
-    }
+    dispatch(updateShip(initialShip));
+    dispatch(updateCruise(initialCruise));
+    dispatch(updateSensor(initialSensor));
+    dispatch(updateTimeIndex(initialTimeIndex));
+    dispatch(updateFrequencyIndex(initialFrequencyIndex));
+    dispatch(updateColorIndex(initialColorIndex));
+    dispatch(storeAttributesAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
+    dispatch(storeShapeAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
+    dispatch(frequenciesAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
+    //
+    // is initialTimeIndex correct?
+    // dispatch(latitudeAsync({ initialShip, initialCruise, initialSensor, indexTime }));
+    // dispatch(longitudeAsync({ initialShip, initialCruise, initialSensor, indexTime }));
+    // dispatch(timeAsync({ initialShip, initialCruise, initialSensor, indexTime }));
+    // dispatch(depthAsync({ initialShip, initialCruise, initialSensor, indexDepth }));
+    // dispatch(bottomAsync({ initialShip, initialCruise, initialSensor, indexTime }));
+  }, []);
 
-    if (
-      ship !== null &&
-      cruise !== null &&
-      sensor !== null &&
-      !loadedCruiseInfo
-    ) {
-      setLoadedCruiseInfo(true); // only need to call once per cruise
-      dispatch(storeAttributesAsync({ ship, cruise, sensor }));
-      dispatch(storeShapeAsync({ ship, cruise, sensor }));
-      dispatch(frequenciesAsync({ ship, cruise, sensor }));
-    }
-  }, [
-    dispatch,
-    searchParams,
-    ship,
-    cruise,
-    sensor,
-    initialTimeIndex,
-    initialFrequencyIndex,
-    initialColorIndex,
-    indexTime,
-    indexFrequency,
-    indexColor,
-    loadedCruiseInfo,
-  ]);
-
-  useEffect(() => {
-    // make async requests for all infomation panel values
-    if (ship && cruise && sensor && indexFrequency !== null) {
-      dispatch(latitudeAsync({ ship, cruise, sensor, indexTime }));
-      dispatch(longitudeAsync({ ship, cruise, sensor, indexTime }));
-      dispatch(timeAsync({ ship, cruise, sensor, indexTime }));
-      //
-      dispatch(depthAsync({ ship, cruise, sensor, indexDepth }));
-      dispatch(bottomAsync({ ship, cruise, sensor, indexTime }));
-      // dispatch(speedAsync({ ship, cruise, sensor, indexTime }));
-      // dispatch(distanceAsync({ ship, cruise, sensor, indexTime }));
-      dispatch(
-        svAsync({
-          ship,
-          cruise,
-          sensor,
-          indexDepth,
-          indexTime,
-          indexFrequency,
-        }),
-      );
-    }
-  }, [
-    dispatch,
-    searchParams,
-    ship,
-    cruise,
-    sensor,
-    indexDepth,
-    indexTime,
-    indexFrequency,
-    indexColor,
-  ]);
+  // useEffect(() => {
+  //   // make async requests for all infomation panel values
+  //   dispatch(
+  //     svAsync({
+  //       initialShip,
+  //       initialCruise,
+  //       initialSensor,
+  //       indexDepth,
+  //       indexTime,
+  //       initialFrequencyIndex,
+  //     }),
+  //   );
+  // }, []);
 
   return (
     <div className="WaterColumnView">
-      {storeShape !== null && attributes !== null && indexFrequency !== null ? (
+      {
+        storeAttributes !== null &&
+        storeShape !== null &&
+        initialTimeIndex !== null &&
+        initialFrequencyIndex !== null // selectLatitude-Longitude null in panel
+        // plus time/depth/bottom/sv
+        ? (
         <>
-          <WaterColumnVisualization
-            tileSize={attributes.tile_size}
+          <p>test foo</p>
+          {/* <WaterColumnVisualization
+            tileSize={storeAttributes.tile_size}
             storeShape={storeShape}
             initialTimeIndex={initialTimeIndex}
-          />
+          /> */}
 
-          <WaterColumnInformationPanel />
+          {/* <WaterColumnInformationPanel /> */}
         </>
       ) : (
         <></>

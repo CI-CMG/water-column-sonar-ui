@@ -3,6 +3,8 @@ import { configureStore, ConfigureStoreOptions } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import counterReducer from "../reducers/counter/counterSlice";
 import storeReducer from "../reducers/store/storeSlice";
+import graphReduce from "../reducers/graph/graphSlice";
+import mapReducer from "../reducers/map/mapSlice";
 import { api } from '../services/api';
 
 
@@ -14,6 +16,8 @@ export const createStore = (
       counter: counterReducer,
       // cruise: cruiseReducer,
       store: storeReducer,
+      graph: graphReduce,
+      map: mapReducer,
       [api.reducerPath]: api.reducer,
     },
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
