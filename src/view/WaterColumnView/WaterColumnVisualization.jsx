@@ -47,7 +47,7 @@ function LocationMarker() {
       const newTimeIndex = parseInt(e.latlng.lng, 10);
       const newDepthIndex = parseInt(e.latlng.lat * -1.0, 10);
 
-      console.log(`newTimeIndex: ${newTimeIndex}, newDepthIndex: ${newDepthIndex}`);
+      // console.log(`newTimeIndex: ${newTimeIndex}, newDepthIndex: ${newDepthIndex}`);
 
       dispatch(updateTimeIndex(newTimeIndex));
       dispatch(updateDepthIndex(newDepthIndex));

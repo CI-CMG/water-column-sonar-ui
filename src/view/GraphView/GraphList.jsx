@@ -78,14 +78,14 @@ function GraphList({
             {listItems}
           </CardGroup>
           <br />
-          <p style={{ color: "white" }}>Results are paginated, only the top 20 will be returned.</p>
+          <p style={{ color: "grey", fontSize: "0.9em" }}>Results are paginated but only the top 20 will be returned.</p>
         </>
       ) : (
         <></>
       )}
 
       <br />
-      <Pagination>{items}</Pagination>
+      {/* <Pagination>{items}</Pagination>
       <br />
       <Pagination>
         <Pagination.First />
@@ -99,7 +99,7 @@ function GraphList({
         <Pagination.Item>{10}</Pagination.Item>
         <Pagination.Next />
         <Pagination.Last />
-      </Pagination>
+      </Pagination> */}
     </div>
   )
 }

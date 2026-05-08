@@ -131,7 +131,7 @@ const WaterColumnInformationPanel = () => {
 
   useEffect(() => {
     if (frequencies !== null && time !== null) {
-      console.log(`time loaded: ${time}`)
+      // console.log(`time loaded: ${time}`)
       setLoading(false);
     }
   }, [frequencies, time]);

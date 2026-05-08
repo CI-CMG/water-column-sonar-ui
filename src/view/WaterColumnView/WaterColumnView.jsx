@@ -60,6 +60,7 @@ export default function WaterColumnView() {
 
   const storeAttributes = useAppSelector(selectStoreAttributes); // not here
   const storeShape = useAppSelector(selectStoreShape);
+  // console.log(`storeShape: ${storeShape}`);
   const frequencies = useAppSelector(selectFrequencies);
   const latitude = useAppSelector(selectLatitude);
   const longitude = useAppSelector(selectLongitude);
@@ -78,6 +79,7 @@ export default function WaterColumnView() {
     dispatch(updateFrequencyIndex(initialFrequencyIndex));
     dispatch(updateColorIndex(initialColorIndex));
     dispatch(storeAttributesAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
+    // TODO: problem here still when jumping between cruises for shape
     dispatch(storeShapeAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
     dispatch(frequenciesAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor }));
     dispatch(latitudeAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexTime: initialTimeIndex }));
@@ -85,6 +87,7 @@ export default function WaterColumnView() {
     dispatch(timeAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexTime: initialTimeIndex }));
     dispatch(bottomAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexTime: initialTimeIndex }));
     //
+    // TODO: better initial values for depth and bottom
     // dispatch(depthAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexDepth:  }));
   }, []);
 
@@ -107,14 +110,12 @@ export default function WaterColumnView() {
     dispatch(bottomAsync({ ship: initialShip, cruise: initialCruise, sensor: initialSensor, indexTime }));
   }, [
     dispatch,
-    // searchParams,
     initialShip,
     initialCruise,
     initialSensor,
     indexTime,
     indexDepth,
     indexFrequency,
-    // indexColor,
   ]);
 
   return (

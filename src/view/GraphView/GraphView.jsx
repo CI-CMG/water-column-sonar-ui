@@ -27,7 +27,7 @@ export default function GraphView() {
       <Container>
         <br />
         <h1 className="text-center" style={{ color: "white", fontSize: "1.2em" }}>
-          Water Column Sonar <span style={{ color: "#00CC33"  }}>&lt;</span>Knowledge Graph<span style={{ color: "#00CC33"  }}>&gt;</span>
+          Water Column Sonar <span style={{ color: "#00CC33"  }}>/</span> Knowledge Graph
         </h1>
         <p className="text-center" style={{ color: "white", fontSize: "0.7em" }}>Integrating fisheries Atlantic Herring annotations in the water column alongside unsupervised deep learning clusters</p>
         <br />
@@ -44,7 +44,7 @@ export default function GraphView() {
         
         <br />
 
-        <Row style={{ border: "1px solid grey" }}>
+        <Row>
           <GraphList
             classification={classification}
             phaseOfDay={phaseOfDay}

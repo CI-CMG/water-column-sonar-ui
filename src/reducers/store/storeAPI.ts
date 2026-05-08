@@ -487,10 +487,10 @@ export const fetchParquetData = (startTime: Date, endTime: Date) => {
         if (overlapping_indices.length > 0) {
           rowStart = overlapping_indices[0];
           rowEnd = overlapping_indices[overlapping_indices.length -1]
-          console.log(`indices: ${rowStart}, ${rowEnd}`);
+          // console.log(`indices: ${rowStart}, ${rowEnd}`);
           return GetSelectGeometries(rowStart, rowEnd);
         }
-        console.log(`indices: ${rowStart}, ${rowEnd}`);
+        // console.log(`indices: ${rowStart}, ${rowEnd}`);
         return { bboxes: [], classifications: [] }
       })
       .catch((error) => console.error(error));
