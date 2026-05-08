@@ -29,7 +29,7 @@ export default function HomeView() {
           <Col />
 
           <Col className="mainHomeContent">
-            <h1 className="text-center" style={{ lineHeight: "1.5em", fontWeight: "600", letterSpacing: "0.10em" }}>
+            <h1 className="text-center" style={{ lineHeight: "1.5em", fontWeight: "600", letterSpacing: "0.12em" }}>
               EchoFish:<br />Exploring Water Column<br />Sonar Data
             </h1>
 

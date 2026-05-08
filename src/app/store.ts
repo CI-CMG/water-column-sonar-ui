@@ -31,7 +31,10 @@ export const createStore = (
     //     serializableCheck: false,
     //   }),
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(api.middleware),
+      getDefaultMiddleware({
+        // added this because there was a problem with the 'updateDepthArray'
+        serializableCheck: false,
+      }).concat(api.middleware),
     ...options,
   })
 

@@ -177,6 +177,7 @@ export const fetchTime = (
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open.v3(root.resolve("time"), { kind: "array" }).then((arr) => {
+    // return get(arr, [indexTime]);
     return get(arr, [indexTime]);
   });
 };

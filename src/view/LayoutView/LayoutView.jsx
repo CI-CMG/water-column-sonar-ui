@@ -36,7 +36,7 @@ export default function LayoutView() {
               <span style={{ color: "grey", fontSize: "0.6em" }}>{`v${import.meta.env.VITE_REACT_APP_VERSION}`}</span>
             </Navbar.Brand>
 
-            <Navbar.Toggle ariaControls="basic-navbar-nav" />
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">

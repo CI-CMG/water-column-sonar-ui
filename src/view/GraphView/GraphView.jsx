@@ -26,9 +26,10 @@ export default function GraphView() {
       
       <Container>
         <br />
-        <h1 className="text-center" style={{ color: "white", fontSize: "1.2em"}}>
-          Water Column Sonar <span style={{ color: "#00CC33"  }}>&lt;</span>Knowledge Graph <span style={{ color: "#00CC33"  }}> /&gt;</span>
+        <h1 className="text-center" style={{ color: "white", fontSize: "1.2em" }}>
+          Water Column Sonar <span style={{ color: "#00CC33"  }}>&lt;</span>Knowledge Graph<span style={{ color: "#00CC33"  }}>&gt;</span>
         </h1>
+        <p className="text-center" style={{ color: "white", fontSize: "0.7em" }}>Integrating fisheries Atlantic Herring annotations in the water column alongside unsupervised deep learning clusters</p>
         <br />
         
         <Row>

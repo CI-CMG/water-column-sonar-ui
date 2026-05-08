@@ -73,7 +73,7 @@ export interface StoreState {
   aiStoreShape: number[] | null,
   aiStoreShapeStatus: "idle" | "loading" | "failed",
 
-  frequencies: any,
+  frequencies: any, // should be number[] | null
   frequenciesStatus: "idle" | "loading" | "failed",
   
   latitude: number | null,
@@ -82,7 +82,7 @@ export interface StoreState {
   longitude: number | null,
   longitudeStatus: "idle" | "pending" | "succeeded" | "failed",
 
-  time: any,
+  time: number | null,
   timeStatus: "idle" | "loading" | "failed",
 
   depth: number | null,
@@ -113,8 +113,8 @@ const initialState: StoreState = {
   svMax: -10,
 
   depthIndex: 0, // these will hold mouse click coordinates
-  timeIndex: null,
-  frequencyIndex: null,
+  timeIndex: 0,
+  frequencyIndex: 0,
 
   depthMinIndex: null,
   depthMaxIndex: null,
@@ -205,10 +205,11 @@ export const storeSlice = createSlice({
 
     // these hold the clicked index position
     updateDepthIndex: (state, action: PayloadAction<number>) => {
+      // console.log(`store slice updateDepthIndex: ${action.payload}`);
       state.depthIndex = action.payload;
     },
     updateTimeIndex: (state, action: PayloadAction<number>) => {
-      // console.log('store slice updateTimeIndex');
+      // console.log(`store slice updateTimeIndex: ${action.payload}`);
       state.timeIndex = action.payload;
     },
     updateFrequencyIndex: (state, action: PayloadAction<number>) => {
@@ -222,6 +223,7 @@ export const storeSlice = createSlice({
       state.depthMaxIndex = action.payload;
     },
     updateDepthArray: (state, action: PayloadAction<Array<number>>) => { // TODO: Fix this type!!!
+      // console.log(`store DepthArray: ${action.payload}`);
       state.depthArray = action.payload;
     },
     updateTimeMinIndex: (state, action: PayloadAction<number>) => {
@@ -606,6 +608,7 @@ export const timeArrayAsync = createAsyncThunk( // Fetches subset of the time ar
 export const depthAsync = createAsyncThunk(
   "store/fetchDepth",
   async ({ ship, cruise, sensor, indexDepth }: { ship: string, cruise: string, sensor: string, indexDepth: number }) => {
+    debugger;
     const response = await fetchDepth(ship, cruise, sensor, indexDepth);
     return Math.round(response * 1e2) / 1e2;
   },

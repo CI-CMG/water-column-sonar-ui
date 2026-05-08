@@ -32,14 +32,14 @@ import {
   //
   updateFrequencyIndex,
   selectLatitude, // uses clicked index
-  selectLatitudeStatus,
+  // selectLatitudeStatus,
   selectLongitude,
-  selectLongitudeStatus,
+  // selectLongitudeStatus,
   selectTime,
   selectBottom,
   //
-  // selectDepth,
-  // selectSv,
+  selectDepth,
+  selectSv,
   //
 } from "../../../reducers/store/storeSlice.ts";
 import {
@@ -70,16 +70,16 @@ const WaterColumnInformationPanel = () => {
   const frequencies = useAppSelector(selectFrequencies);
   const frequencyIndex = useAppSelector(selectFrequencyIndex);
   const latitude = useAppSelector(selectLatitude);
-  const latitudeStatus = useAppSelector(selectLatitudeStatus);
+  // const latitudeStatus = useAppSelector(selectLatitudeStatus);
   const longitude = useAppSelector(selectLongitude);
-  const longitudeStatus = useAppSelector(selectLongitudeStatus);
-  const time = useAppSelector(selectTime);
-  const bottom = useAppSelector(selectBottom);
+  // const longitudeStatus = useAppSelector(selectLongitudeStatus);
+  const time = useAppSelector(selectTime); // wrong! this is the time array
+  const bottom = useAppSelector(selectBottom); // correct!
   //
-  // const depth = useAppSelector(selectDepth); // todo; get here in panel
-  // const sv = useAppSelector(selectSv);
-  const depth = 123.45;
-  const sv = [-100, -90, -80, -70];
+  const depth = useAppSelector(selectDepth); // todo; get here in panel
+  const sv = useAppSelector(selectSv);
+  // const depth = 123.45;
+  // const sv = [-100, -90, -80, -70];
   //
   const svMin = useAppSelector(selectSvMin);
   const svMax = useAppSelector(selectSvMax);
@@ -129,16 +129,12 @@ const WaterColumnInformationPanel = () => {
     dispatch(updateAnnotation(!annotation));
   };
 
-  // const handleSelectAnnotationAI = () => {
-  //   dispatch(updateAnnotationAI(!annotationAI));
-  // };
-
   useEffect(() => {
-    if (frequencies !== null) {
-      // TODO: add all constraints
+    if (frequencies !== null && time !== null) {
+      console.log(`time loaded: ${time}`)
       setLoading(false);
     }
-  }, [frequencies]);
+  }, [frequencies, time]);
 
   const url_level_0 = `https://noaa-wcsd-pds.s3.amazonaws.com/index.html#data/raw/${ship}/${cruise}/${sensor}/`;
   const url_level_1 = `https://noaa-wcsd-zarr-pds.s3.amazonaws.com/index.html#level_1/${ship}/${cruise}/${sensor}/`;
@@ -518,7 +514,7 @@ const WaterColumnInformationPanel = () => {
           {attributes ? (
             <>
               <p>
-                <b>Processing:</b>
+                <b>Platform:</b>
                 {/* <span className="float-end softwareName">{processingSoftwareName}</span> */}
                 <span className="font-monospace float-end">
                   {attributes.processing_software_name}
