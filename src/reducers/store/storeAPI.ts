@@ -4,7 +4,6 @@ import * as zarr from "zarrita";
 import { get } from "@zarrita/ndarray"; // TODO: get rid of ndarray, it's old
 import { slice } from "zarrita";
 //
-import { useEffect } from "react";
 import { asyncBufferFromUrl, parquetReadObjects } from "hyparquet";
 import { compressors } from "hyparquet-compressors";
 

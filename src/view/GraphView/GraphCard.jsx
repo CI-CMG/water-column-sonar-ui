@@ -52,21 +52,19 @@ function GraphCard({
           <Card.Text className="text-center">
             <strong>{classification}</strong>
             <br />
-            {ship} / {cruise} / {instrument}
+            {ship} <span style={{ color: "#00CC33"  }}>/</span> {cruise} <span style={{ color: "#00CC33"  }}>/</span> {instrument}
             <br />
-            start: {startTime}
+            {startTime.slice(0, 19)} <span style={{ color: "#00CC33"  }}>/</span> {endTime.slice(0, 19)}
             <br />
-            end: {endTime}
-            <br />
-            local: {localTime}
+            local time: {localTime.slice(0, 19)}
             <br />
             gps: {longitude}° E, {latitude}° N
             <br />
-            depth: <b>[{depthMin}, {depthMax}] m</b> | altitude: <b>{altitude} m</b>
+            depth: <b>[{depthMin}, {depthMax}] m</b> <span style={{ color: "#00CC33"  }}>/</span> altitude: <b>{altitude} m</b>
             <br />
             distance from coast: <b>{distanceFromCoast} m</b>
             <br />
-            solar azimuth: <b>{solarAltitude}°</b> | phase: <b>{phaseOfDay}</b>
+            solar azimuth: <b>{solarAltitude}°</b> <span style={{ color: "#00CC33"  }}>/</span> phase: <b>{phaseOfDay}</b>
             <br />
             {/* creator: {creator}
             <br /> */}

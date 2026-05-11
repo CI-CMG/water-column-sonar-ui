@@ -34,7 +34,8 @@ export default function GraphPlot() {
       {"id": "Annotation", "group": 4},
       {"id": "Project", "group": 5},
       {"id": "Person", "group": 6},
-      {"id": "Classification", "group": 7}
+      {"id": "Classification", "group": 7},
+      {"id": "Model", "group": 8}
     ],
     "links": [
       {"source": "Cruise", "target": "Ship", "value": 3, "predicate": "COLLECTED_DATA_FOR"},
@@ -42,7 +43,8 @@ export default function GraphPlot() {
       {"source": "Annotation", "target": "Cruise", "value": 3, "predicate": "COLLECTED_BY"},
       {"source": "Annotation", "target": "Instrument", "value": 4, "predicate": "COLLECTED_BY"},
       {"source": "Person", "target": "Project", "value": 2, "predicate": "ADVISOR_TO"},
-      // {"source": "Person", "target": "Project", "value": 2, "predicate": "CONTRIBUTOR_TO"},
+      {"source": "Person", "target": "Model", "value": 2, "predicate": "CREATED"},
+      {"source": "Model", "target": "Annotation", "value": 2, "predicate": "DEFINES"},
       {"source": "Person", "target": "Annotation", "value": 4, "predicate": "CREATED"},
       {"source": "Classification", "target": "Annotation", "value": 4, "predicate": "DEFINES"}
     ]

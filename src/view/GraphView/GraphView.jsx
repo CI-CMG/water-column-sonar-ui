@@ -11,6 +11,7 @@ import {
   selectSearchClassification,
   selectSearchDistanceFromCoastline,
   selectSearchAltitude,
+  // selectSearchPage,
 } from "../../reducers/graph/graphSlice";
 
 export default function GraphView() {
@@ -20,6 +21,7 @@ export default function GraphView() {
   const distanceFromCoastline = useAppSelector(selectSearchDistanceFromCoastline);
   const phaseOfDay = useAppSelector(selectSearchPhaseOfDay);
   const classification = useAppSelector(selectSearchClassification);
+  // const initialPage = useAppSelector(selectSearchPage);
 
   return (
     <div className="GraphView">
@@ -52,6 +54,7 @@ export default function GraphView() {
             maxAltitude={altitude[1]}
             minDistanceFromCoastline={distanceFromCoastline[0]}
             maxDistanceFromCoastline={distanceFromCoastline[1]}
+            // initialPage={initialPage}
           />
         </Row>
         <br />
