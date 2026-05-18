@@ -31,19 +31,19 @@ export const graphSlice = createSlice({
   reducers: {
 
     updateSearchClassification: (state, action: PayloadAction<string>) => {
-      state.page = 0; // changes to any params sets pagination back to zero
+      // state.page = 0; // changes to any params sets pagination back to zero
       state.searchClassification = action.payload
     },
     updateSearchPhaseOfDay: (state, action: PayloadAction<string>) => {
-      state.page = 0;
+      // state.page = 0;
       state.searchPhaseOfDay = action.payload
     },
     updateSearchAltitude: (state, action: PayloadAction<number[]>) => {
-      state.page = 0;
+      // state.page = 0;
       state.searchAltitude = action.payload
     },
     updateSearchDistanceFromCoastline: (state, action: PayloadAction<number[]>) => {
-      state.page = 0;
+      // state.page = 0;
       state.searchDistanceFromCoastline = action.payload
     },
     updateSearchPage: (state, action: PayloadAction<number>) => {

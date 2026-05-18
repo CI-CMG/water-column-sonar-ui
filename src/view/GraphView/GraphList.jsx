@@ -30,34 +30,33 @@ function GraphList({
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
-  // useEffect(() => {
-  //   setCurrentPage(0);
-
-  // }, [initialPage]);
+  // const [totalPages, setTotalPages] = useState(0);
 
   // const [totalPages, setTotalPages] = useState(0);
   const paginationPrevious = () => {
-    // let currentPage = annotations.number;
-    // console.log(`${currentPage}`)
-
+    // setTotalPages(annotations.totalPages);
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
-      // dispatch(updateSearchPage(currentPage - 1))
     }
   }
   const paginationNext = () => {
-    // let currentPage = annotations.number;
     let totalPages = annotations.totalPages;
-    // console.log(`${currentPage}, ${totalPages}`);
+    // setTotalPages(annotations.totalPages);
 
     if (currentPage < totalPages - 1) {
       setCurrentPage(annotations.number + 1);
-      // dispatch(updateSearchPage(currentPage + 1))
     }
   }
 
+  useEffect(() => {
+    // console.log(`loading: ${currentPage}, totalPages: ${totalPages}`);
+    console.log('request values changed')
+    setCurrentPage(0);
+
+  }, [classification, phaseOfDay, minAltitude, maxAltitude, minDistanceFromCoastline, maxDistanceFromCoastline]);
+
   // http://localhost:8080/api/v1/annotation/search?classification=AH_School&phaseOfDay=dawn&minAltitude=-100.0&maxAltitude=500.0&minDistanceFromCoastline=0&maxDistanceFromCoastline=200000&page=0&size=10
-  const { data: annotations, isLoading } = useGetAnnotationsSearchQuery({
+  const { data: annotations, error, isLoading } = useGetAnnotationsSearchQuery({
     classification: classification, //"AH_School",
     phaseOfDay: phaseOfDay, //"dawn",
     minAltitude: minAltitude, // -100,
@@ -67,16 +66,17 @@ function GraphList({
     size: 20,
     page: currentPage,
     sort: "distanceFromCoastline"
-  })
-  
+  });
+
   if (isLoading) {
-    // console.log(`page: ${page}`)
     return <div style={{ color: "white" }}>Loading</div>
+  }
+
+  if (error) {
+    console.log('error!!!!')
   }
   
   if (annotations.content.length === 0) {
-    console.log('no annotations');
-    // setCurrentPage(0);
     return <div style={{ color: "white" }}>No Results Found!</div>
   }
 
@@ -109,7 +109,9 @@ function GraphList({
           <CardGroup>
             {listItems}
           </CardGroup>
+          
           <br />
+
           <p style={{ color: "grey", fontSize: "0.9em" }}>Current page: {annotations.number}, Total pages: {annotations.totalPages - 1}</p>
         </>
       ) : (
@@ -117,9 +119,25 @@ function GraphList({
       )}
 
       <Pagination>
-        <Pagination.Prev onClick={() => paginationPrevious()} />
+        {(annotations.number === 0) ? (
+          <>
+            <Pagination.Prev disabled onClick={() => paginationPrevious()} />
+          </>
+        ) : (
+          <>
+            <Pagination.Prev onClick={() => paginationPrevious()} />
+          </>
+        )}
         <Pagination.Item active>{annotations.number}</Pagination.Item>
-        <Pagination.Next onClick={() => paginationNext()} />
+        {( annotations.number === annotations.totalPages - 1 ) ? (
+          <>
+            <Pagination.Next disabled onClick={() => paginationNext()} />
+          </>
+        ) : (
+          <>
+            <Pagination.Next onClick={() => paginationNext()} />
+          </>
+        )}
       </Pagination>
     </div>
   )
@@ -134,5 +152,4 @@ GraphList.propTypes = {
   maxAltitude:  PropTypes.number.isRequired,
   minDistanceFromCoastline:  PropTypes.number.isRequired,
   maxDistanceFromCoastline:  PropTypes.number.isRequired,
-  // initialPage: PropTypes.number.isRequired,
 };
