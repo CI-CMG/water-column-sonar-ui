@@ -204,7 +204,7 @@ export default function HomeView() {
               </li>
               <br />
               <li>
-                This application was supported by NOAA Fisheries and NOAA Center for
+                This application is supported by NOAA Fisheries and NOAA Center for
                 Artificial Intelligence under the University of Colorado Cooperative
                 Institute award #NA22OAR4320151.
               </li>
