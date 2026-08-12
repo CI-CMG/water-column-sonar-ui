@@ -199,10 +199,14 @@ export default function HomeView() {
 
             <ul>
               <li>
-                This portal was supported by NOAA Fisheries and NOAA Center for
+                This application is supported by National Science Foundation
+                cyberinfrastructure award <a target="_blank" href="https://www.nsf.gov/awardsearch/show-award/?AWD_ID=2311843">#2311843</a>.
+              </li>
+              <br />
+              <li>
+                This application was supported by NOAA Fisheries and NOAA Center for
                 Artificial Intelligence under the University of Colorado Cooperative
-                Institute award #NA22OAR4320151, and the National Science Foundation
-                (NSF) award #2311843.
+                Institute award #NA22OAR4320151.
               </li>
               <br />
               <li>
