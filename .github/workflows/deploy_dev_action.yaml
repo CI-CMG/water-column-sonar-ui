@@ -24,14 +24,18 @@ jobs:
           node-version: 22
           cache: 'npm'
           package-manager-cache: false
+        env:
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
       - run: npm ci
         env:
           VITE_MAPTILER_API: ${{ secrets.VITE_MAPTILER_API }}
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
       - run: npm run build
         env:
           VITE_MAPTILER_API: ${{ secrets.VITE_MAPTILER_API }}
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
       - run: aws s3 cp --recursive ./dist/ s3://dev.echo.fish/
         env:
