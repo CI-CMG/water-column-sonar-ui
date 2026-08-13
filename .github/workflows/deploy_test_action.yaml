@@ -18,20 +18,26 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Use Node.js 24
-        uses: actions/setup-node@v6
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: 'npm'
           package-manager-cache: false
+        env:
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
       - run: npm ci
         env:
           VITE_MAPTILER_API: ${{ secrets.VITE_MAPTILER_API }}
+        env:
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
       - run: npm run build
         env:
           VITE_MAPTILER_API: ${{ secrets.VITE_MAPTILER_API }}
+        env:
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
       - run: aws s3 cp --recursive ./dist/ s3://test.echo.fish/
         env:
