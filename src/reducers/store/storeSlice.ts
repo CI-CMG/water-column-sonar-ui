@@ -608,7 +608,7 @@ export const timeArrayAsync = createAsyncThunk( // Fetches subset of the time ar
 export const depthAsync = createAsyncThunk(
   "store/fetchDepth",
   async ({ ship, cruise, sensor, indexDepth }: { ship: string, cruise: string, sensor: string, indexDepth: number }) => {
-    debugger;
+    // debugger;
     const response = await fetchDepth(ship, cruise, sensor, indexDepth);
     return Math.round(response * 1e2) / 1e2;
   },

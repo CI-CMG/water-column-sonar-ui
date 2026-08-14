@@ -1,8 +1,9 @@
 import { point, lineString } from "@turf/helpers";
 import { nearestPointOnLine } from "@turf/nearest-point-on-line";
 import * as zarr from "zarrita";
-import { get } from "@zarrita/ndarray"; // TODO: get rid of ndarray, it's old
-import { slice } from "zarrita";
+// import { get } from "@zarrita/ndarray"; // TODO: get rid of ndarray, it's old
+// import { slice } from "zarrita";
+import { get, slice } from "zarrita";
 //
 import { asyncBufferFromUrl, parquetReadObjects } from "hyparquet";
 import { compressors } from "hyparquet-compressors";
@@ -57,7 +58,8 @@ export const fetchFrequencies = (
   return zarr.open
     .v3(root.resolve("frequency"), { kind: "array" })
     .then((arr) => {
-      return get(arr, [slice(null)]);
+      // return get(arr, [slice(null)]);
+      return get(arr, [null]);
     });
 };
 
@@ -124,9 +126,52 @@ export const fetchLongitudeAll = (
   return zarr.open
     .v3(root.resolve("longitude"), { kind: "array" })
     .then((arr) => {
-      return get(arr, [slice(null)]);
+      // return get(arr, [slice(null)]);
+      return get(arr, [null]);
     });
 };
+
+/* --- LNG/LAT All — for Geospatial lookup --- */
+// TODO: Experiment with newer version of Zarrita
+// export const fetchGeospatialIndex = (
+//   ship: string,
+//   cruise: string,
+//   sensor: string,
+//   longitude: number,
+//   latitude: number
+// ): any => {
+//   const url = `https://${bucketName}.s3.amazonaws.com/${level}/${ship}/${cruise}/${sensor}/${cruise}.zarr/`;
+//   const clickedPoint = point([longitude, latitude]);
+
+//   // THIS WORKS
+//   const store = new zarr.FetchStore(url);
+//   return zarr.open(store)
+//     .then((node) => {
+//       return Promise.all([
+//         zarr.open(node.resolve("longitude"), { kind: "array" }),
+//         zarr.open(node.resolve("latitude"), { kind: "array" }),
+//       ]);
+//     })
+//     .then((values) => {
+//       return Promise.all([
+//         get(values[0], [slice(null)]),
+//         get(values[1], [slice(null)]),
+//       ]);
+//     })
+//     .then(([longitudeData, latitudeData]) => {
+//       let aa = Array.from(latitudeData.data);
+//       let bb = Array.from(longitudeData.data);
+
+//       const dataJoined = aa.map((e, i) => {
+//         const bbNoise = bb[i] + Math.random() / 10000;
+//         return [bbNoise, e];
+//       });
+//       // Note: redundant points will cause problems, fixed with noise
+//       const clickedLinestring = lineString(dataJoined);
+//       let snapped = nearestPointOnLine(clickedLinestring, clickedPoint);
+//       return snapped.properties.index;
+//   });
+// };
 
 /* --- LNG/LAT All — for Geospatial lookup --- */
 export const fetchGeospatialIndex = (
@@ -146,8 +191,8 @@ export const fetchGeospatialIndex = (
   ])
   .then((values) => {
     return Promise.all([
-      get(values[0], [slice(null)]),
-      get(values[1], [slice(null)]),
+      get(values[0], [null]), // [slice(null)]),
+      get(values[1], [null]), // [slice(null)]),
     ]);
   })
   .then(([longitudeData, latitudeData]) => {
@@ -264,7 +309,8 @@ export const fetchDepthArray = (
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open.v3(root.resolve("depth"), { kind: "array" }).then((arr) => {
-    return get(arr, [slice(null)]);
+    // return get(arr, [slice(null)]);
+    return get(arr, [null]);
   });
 };
 
@@ -295,7 +341,8 @@ export const fetchSv = (
   const root = zarr.root(new zarr.FetchStore(url));
 
   return zarr.open.v3(root.resolve("Sv"), { kind: "array" }).then((arr) => {
-    return get(arr, [indexDepth, indexTime, slice(null)]);
+    // return get(arr, [indexDepth, indexTime, slice(null)]);
+    return get(arr, [indexDepth, indexTime, null]);
   });
 };
 
